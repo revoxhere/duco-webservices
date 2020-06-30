@@ -54,7 +54,7 @@
 				let login = document.querySelector('.login');
 				let algo = document.querySelector('.algo'); 
 
-				let ws = new WebSocket("ws://108.61.177.134:14808/");
+				let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
 
 				const sleep = (milliseconds) => {
 						return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -66,6 +66,7 @@
 
 					if (server_message == "OK") {
 						document.getElementById("loginstatus").innerHTML = "Logged-in successfully.";
+						ws.send("FROM,Webminer,web,web,web");
 					}
 
 					else if (server_message.includes("NO")) {
