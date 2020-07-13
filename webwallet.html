@@ -1,161 +1,263 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Hello Bulma!</title>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script>
-		window.onload = function(){
-			let message;
-			let version_received;
-			let sendinfo;
-			let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
-			let login = document.querySelector('.login');
-			let loginInput = document.querySelector('.loginInput');
-			let send = document.querySelector('.send');
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Duino-Coin | WebWallet</title>
+      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
+      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+      <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script>
+      	var speed = "slow";
+		$("html, body").hide();
+		$(document).ready(function() {
+		    $("html, body").fadeIn(speed, function() {
+		        $("a[href], button[href]").click(function(event) {
+		            var url = $(this).attr("href");
+		            if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
+		            event.preventDefault();
+		            $("html, body").fadeOut(speed, function() {
+		                window.location = url;
+		            });
+		        });
+		    });
+		});
 
-			var divOne = document.getElementById('recipientInput');
-			divOne.style.display='none';
-			var divOne = document.getElementById('amountInput');
-			divOne.style.display='none';
-			var divOne = document.getElementById('sendInput');
-			divOne.style.display='none';
-			var divOne = document.getElementById('balancetext');
-			divOne.style.display='none';
+        window.onload = function(){
+         	let message;
+         	let version_received;
+         	let sendinfo;
+         	var ducoprice;
+         	let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
+         	let login = document.querySelector(".login");
+         	let loginInput = document.querySelector(".loginInput");
+         	let send = document.querySelector(".send");
 
-			ws.onmessage = function (event) {
-				let server_message = event.data;
-				console.log("Server: " + server_message)
+         	n =  new Date();
+			y = n.getFullYear();
+			m = n.getMonth() + 1;
+			d = n.getDate();
+			document.getElementById("date").innerHTML = "DUCO WebWallet (v1.5) " + d + "/" + m + "/" + y;
 
-				if (server_message.includes("1.")) {
-					document.getElementById("loginstatus").innerHTML = "Proxy server is online";
-					version_received = 1;
-				}
-				else if (server_message == "OK") {
-					document.getElementById("loginstatus").innerHTML = "Logged-in successfully!";
-					$("#usernameInput").fadeOut(500);
-					$("#pwdInput").fadeOut(500);
-					$("#loginInput").fadeOut(500);
+         	$.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
+                ducoprice = `${data["Duco price"]}`
+                var cutducoprice = 1 * ducoprice;
+                cutducoprice = cutducoprice.toFixed(6);
+                document.getElementById("ducoprice").innerHTML = cutducoprice + " USD";
+            });
 
-					setTimeout(function (){
-						$("#recipientInput").fadeIn(500);
-						$("#amountInput").fadeIn(500);
-						$("#sendInput").fadeIn(500);
-						$("#balancetext").fadeIn(500);
-					}, 500);
-				}
+         	var divOne = document.getElementById("recipientInput");
+         	divOne.style.display="none";
+         	var divOne = document.getElementById("amountInput");
+         	divOne.style.display="none";
+         	var divOne = document.getElementById("sendInput");
+         	divOne.style.display="none";
+         	var divOne = document.getElementById("balancetext");
+         	divOne.style.display="none";
+         	var divOne = document.getElementById("mainsection");
+         	divOne.style.display="none";
+         
+         	ws.onmessage = function (event) {
+         		let server_message = event.data;
+         		console.log("Server: " + server_message)
+         
+         		if (server_message.includes("1.")) {
+         			document.getElementById("loginstatus").innerHTML = "Proxy server is online";
+         			version_received = 1;
+         		}
+         		else if (server_message == "OK") {
+         			document.getElementById("loginstatus").innerHTML = "Logged-in successfully!";
 
-				else if (server_message.includes("NO")) {
-					document.getElementById("loginstatus").innerHTML = "Error loging-in";
-				}
+         			var username = document.getElementById("username").value;
+         			const messages = ["Good to see you again, ", "Welcome back, ", "We were looking for you, ", "Duino-Coin wouldn't be the same without you, ", "Hello, ", "We were waiting for you, ", "Greetings, "];
+					const randomIndex = Math.round(Math.random()*messages.length);
+         			document.getElementById("welcometext").innerHTML = messages[randomIndex] + username + "!";
 
-				else if (version_received == 1 && server_message.includes(".")) {
-					document.getElementById("balancetext").innerHTML = "<i class='fa fa-coins fa-fw'></i>" + "Balance: " + server_message + " ᕲ";
-				}
-				else if (sendinfo == 1) {
-					document.getElementById("loginstatus").innerHTML = "Server message: " + server_message;
-					sendinfo = 0;
-				}
-			}
+         			$("#usernameInput").fadeOut(500);
+         			$("#herosection").fadeOut(500);
+         			$("#pwdInput").fadeOut(500);
+         			$("#loginInput").fadeOut(500);
 
-			login.onclick = function (event) {
-				var username = document.getElementById("username").value;
-				var password = document.getElementById("password").value;
-				ws.send("LOGI,"+username+","+password);
-				setTimeout(() => ws.send("FROM,Webwallet,-,-\n"), 150)
-				window.setInterval(function(){
-					ws.send("BALA")}, 750);
-			}
+         			$("#mainsection").fadeIn(500);
+         			$("#welcometext").fadeIn(500);
+         			$("#balancetext").fadeIn(500);
+         			$("#recipientInput").fadeIn(500);
+         			$("#amountInput").fadeIn(500);
+         			$("#sendInput").fadeIn(500);
 
-			send.onclick = function (event) {
-				var recipient = document.getElementById("recipient").value;
-				var amount = document.getElementById("amount").value;
-				ws.send("SEND,-,"+recipient+","+amount);
-				sendinfo = 1;
-			}
-		}
-		</script>
-	</head>
-	<body>
-	<section class="section">
-		<div class="container">
-			<h1 class="title">
-				 Duino-Coin Web Wallet
-			</h1>
-			<p class="subtitle">
-				Web version of <strong>Duino-Coin Wallet</strong>!
-			</p>
+         		}
+         
+         		else if (server_message.includes("NO")) {
+         			document.getElementById("loginstatus").innerHTML = "Error logging-in, refresh the page and try again";
+         		}
+         
+         		else if (version_received == 1 && server_message.includes(".")) {
+                	balanceusd = ducoprice * server_message;
+                	balanceusd = balanceusd.toFixed(4);
+                	
+                	cutbalance = server_message * 1;
+                	cutbalance = cutbalance.toFixed(6);
 
-			<h4 class="subtitle is-6" id="loginstatus">
-				Connecting... (If you're seeing this message for more than few seconds that means the proxy server is offline
-			</h4>
+         			document.getElementById("balancetext").innerHTML = cutbalance + " DUCO";
+         			document.getElementById("usdbalancetext").innerHTML = balanceusd + " USD";
+         		}
+         		else if (sendinfo == 1) {
+         			document.getElementById("sendstatus").innerHTML = "Server message: " + server_message;
+         			sendinfo = 0;
+         		}
+         	}
+         
+         	login.onclick = function (event) {
+         		var username = document.getElementById("username").value;
+         		var password = document.getElementById("password").value;
+         		ws.send("LOGI,"+username+","+password);
+         		setTimeout(() => ws.send("FROM,Webwallet,-,-\n"), 150)
+         		window.setInterval(function(){
+         			ws.send("BALA")}, 750);
+         	}
+         
+         	send.onclick = function (event) {
+         		var recipient = document.getElementById("recipient").value;
+         		var amount = document.getElementById("amount").value;
+         		ws.send("SEND,-,"+recipient+","+amount);
+         		sendinfo = 1;
+         	}
+         }
+      </script>
+   </head>
+   <body>
+      <section class="hero is-primary is-fullheight herosection" id="herosection">
+         <div class="hero-body">
+            <div class="container">
+               <div class="columns is-centered">
+                  <div class="column is-5-tablet is-4-desktop is-30-widescreen">
+                     <h1 class="title">DUCO Web Wallet</h1>
+                     <div class="box">
+                        <div class="field">
+                           <label for="" class="label">Username</label>
+                           <div id="usernameInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="input" id="username" type="text" placeholder="Username">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-user"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label for="" class="label">Password</label>
+                           <div id="pwdInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="input" id="password" type="password" placeholder="Password">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-lock"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div id="loginInput" class="buttons">
+                           <button class="button is-success login">Login</button>
+                        </div>
+                     </div>
+                     <h4 class="subtitle is-6" id="loginstatus">Connecting to proxy</h4>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
 
-			<br>
+      <section class="section" id="mainsection">
+        <div class="container">
+		    <main class="column">
+		      <div class="level">
+		        <div class="level-left">
+		          <div class="level-item">
+		            <div class="title" id="welcometext"></div>
+		          </div>
+		        </div>
+		        <div class="level-right">
+		          <div class="level-item">
+		            <button type="button" id="date" class="button is-small id-disabled"></button>
+		          </div>
+		        </div>
+		      </div>
+		      
+		      <div class="columns is-multiline">
+		        <div class="column">
+		          <div class="box">
+		            <div class="heading">DUCO balance</div>
+		            <div class="title" id="balancetext"></div>
+		          </div>
+		        </div>
 
-			<h2 class="title is-2"id="balancetext"></h2>
+		        <div class="column">
+		          <div class="box">
+		            <div class="heading">FIAT balance</div>
+		            <div class="title" id="usdbalancetext"></div>
+		          </div>
+		        </div>
 
-			<table>
-			<th>
-			<div id="usernameInput" class="field">
-				<p class="control has-icons-left">
-					<input class="input" id="username" type="text" placeholder="Username">
-					<span class="icon is-small is-left">
-						<i class="fas fa-user"></i>
-					</span>
-				</p>
-			</div>
-			</th>
+		        <div class="column">
+		          <div class="box">
+		            <div class="heading">DUCO price</div>
+		            <div class="title" id="ducoprice"></div>
+		          </div>
+		        </div>
+		      </div>
+       
+		    <hr>
+		    <div class="title">Send funds</div>
 
-			<th>
-			<div id="pwdInput" class="field">
-				<p class="control has-icons-left">
-					<input class="input" id="password" type="password" placeholder="Password">
-					<span class="icon is-small is-left">
-						<i class="fas fa-lock"></i>
-					</span>
-				</p>
-			</div>
-			</th>
+	        <table>
+	         <th class="mx-10">
+	            <div id="recipientInput" class="field">
+	               <p class="control has-icons-left has-icons-right">
+	                  <input class="input" id="recipient" type="text" placeholder="Recipient">
+	                  <span class="icon is-small is-left">
+	                  <i class="fas fa-address-book"></i>
+	                  </span>
+	               </p>
+	            </div>
+	         </th>
+	         <th>
+	            <div id="amountInput" class="field">
+	               <p class="control has-icons-left has-icons-right">
+	                  <input class="input" id="amount" type="number" placeholder="Amount">
+	                  <span class="icon is-small is-left">
+	                  <i class="fas fa-credit-card"></i>
+	                  </span>
+	               </p>
+	            </div>
+	         </th>
+	         <th>
+	            <div id="sendInput" class="buttons">
+	               <button class="button is-primary send">Send</button>
+	            </div>
+	         </th>
+	        </table>
 
-			<th>
-			<div id="loginInput" class="buttons">
-				<button class="button is-primary login">Login</button>
-			</div>
-			</th>
-			</table>
+	        <br>
+	        <div class="subtitle" id="sendstatus"></div>
 
-			<table>
-			<th>
-			<div id="recipientInput" class="field">
-				<p class="control has-icons-left has-icons-right">
-					<input class="input" id="recipient" type="text" placeholder="Recipient">
-					<span class="icon is-small is-left">
-						<i class="fas fa-address-book"></i>
-					</span>
-				</p>
-			</div>
-			</th>
+	        <hr>
+		    <div class="title">Receive funds</div>
 
-			<th>
-			<div id="amountInput" class="field">
-				<p class="control has-icons-left has-icons-right">
-					<input class="input" id="amount" type="number" placeholder="Amount">
-					<span class="icon is-small is-left">
-						<i class="fas fa-credit-card"></i>
-					</span>
-				</p>
-			</div>
-			</th>
+		    <div class="text">To receive funds, instruct others to send DUCO to your username. Successfull transaction will result in immediate money transfer.</div>
 
-			<th>
-			<div id="sendInput" class="buttons">
-				<button class="button is-warning send">Send</button>
-			</div>
-			</th>
+		    <hr>
+		    <div class="title">Useful links</div>
+		    <a href="https://revoxhere.github.io/duco-exchange/" class="button is-secondary"><i class="fas fa-coins"></i>&nbsp;Official DUCO exchange</a>
+		    <a href="https://discord.gg/kvBkccy" class="button is-secondary"><i class="fab fa-discord"></i>&nbsp;Duino-Coin Discord</a>
+		    <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary"><i class="fab fa-github"></i>&nbsp;Duino-Coin GitHub</a>
 
-	</section>
-	</body>
+		    <hr>
+      </section>
+      <footer class="footer">
+		<div class="content has-text-centered">
+			<p><strong>Duino-Coin WebWallet</strong> made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020</p>
+		</div>
+	  </footer>
+   </body>
 </html>
