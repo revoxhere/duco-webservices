@@ -55,17 +55,12 @@
 
 				let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
 
-				const sleep = (milliseconds) => {
-						return new Promise(resolve => setTimeout(resolve, milliseconds))
-				}
-
 				ws.onmessage = function (event) {
 					let server_message = event.data;
 					console.log("Server: " + server_message)
 
 					if (server_message == "OK") {
 						document.getElementById("loginstatus").innerHTML = "Logged-in successfully.";
-						ws.send("FROM,Webminer,web,web,web");
 					}
 
 					else if (server_message.includes("NO")) {
@@ -85,9 +80,7 @@
 
 						hash_count = 0;
 
-						sleep(50).then(() => {
-							ws.send("JOB");
-						})
+						setTimeout(() => ws.send("JOB"), 50)
 					}
 
 					else if (server_message == "GOOD") {
@@ -98,9 +91,7 @@
 
 						hash_count = 0;
 
-						sleep(50).then(() => {
-							ws.send("JOB");
-						})
+						setTimeout(() => ws.send("JOB"), 50)
 					}
 
 					else if (server_message.length > 64) { // If we receive long data which means its job
@@ -127,9 +118,7 @@
 					var password = document.getElementById("password").value;
 					ws.send("LOGI,"+username+","+password);
 
-					sleep(50).then(() => {
-						ws.send("JOB");;
-					})
+					setTimeout(() => ws.send("JOB"), 150)
 				}}
 		</script>
     </head>
