@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+   	<head>
+      	<meta charset="utf-8">
+      	<meta name="viewport" content="width=device-width, initial-scale=1">
+      	<title>Duino-Coin | WebServices</title>
+      	<link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
+      	<link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
+      	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+      	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      	<script>
+      	var speed = "slow";
+		$("html, body").hide();
+		$(document).ready(function() {
+		    $("html, body").fadeIn(speed, function() {
+		        $("a[href], button[href]").click(function(event) {
+		            var url = $(this).attr("href");
+		            if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
+		            event.preventDefault();
+		            $("html, body").fadeOut(speed, function() {
+		                window.location = url;
+		            });
+		        });
+		    });
+		});
+		</script>
+	  	<style>
+	  	html {
+	  		background-image: linear-gradient(to top left, #3399ff 0%, #ff33cc 100%);
+	  		width: 100%;
+	  		height: 100%;
+		}
+		.center {
+  			padding: 150px 0%;
+  			border: 0px solid green;
+  			text-align: center;
+		}
+		.white {
+			color: #fafafa;
+		}
+	  </style>
+   	</head>
+   	<body>
+   		<div class="center">
+   			<h1 class="title white" align="center">Duino-Coin WebServices</h1>
+   			<a class="button is-large is-primary" href="/webwallet.html">Wallet</a>&nbsp;
+   			<a class="button is-large is-primary" href="/webminer.html">Miner</a>&nbsp;
+   
+			
+		</div>
+		<br><br><br><br><br><br>
+		<div align="center">
+			<p class="white">Duino-Coin WebServices made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020</p>
+		</div>
+	</body>
+</html>
