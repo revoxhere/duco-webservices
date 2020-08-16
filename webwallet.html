@@ -11,7 +11,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <style>
         body {
-          background: url(https://images.pexels.com/photos/33834/landscape-shore-sunset-clouds.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940) no-repeat;
+          background: url(https://images.pexels.com/photos/977304/pexels-photo-977304.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940) no-repeat;
           background-size: cover;
           background-attachment: fixed;
         }
@@ -35,9 +35,9 @@
           border-radius: 6px;
           border-top: 100px;
           padding: 1em;
-          background-color: rgba(255, 255, 255, .15);
+          background-color: rgba(255, 255, 255, .001);
             
-          backdrop-filter: blur(10px);
+          backdrop-filter: blur(30px);
         }
       </style>
       <script>
@@ -57,23 +57,23 @@
         });
 
         window.onload = function(){
-           let message;
-           let version_received;
-           let sendinfo;
-           var ducoprice;
-           var oldbalance = 0;
-           let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
-           let login = document.querySelector(".login");
-           let loginInput = document.querySelector(".loginInput");
-           let send = document.querySelector(".send");
+          let message;
+          let version_received;
+          let sendinfo;
+          var ducoprice;
+          var oldbalance = 0;
+          let ws = new WebSocket("ws://revoxhere.ct8.pl:14808");
+          let login = document.querySelector(".login");
+          let loginInput = document.querySelector(".loginInput");
+          let send = document.querySelector(".send");
 
-           n =  new Date();
-      y = n.getFullYear();
-      m = n.getMonth() + 1;
-      d = n.getDate();
-      document.getElementById("date").innerHTML = "DUCO WebWallet (v1.5) " + d + "/" + m + "/" + y;
+          n =  new Date();
+          y = n.getFullYear();
+          m = n.getMonth() + 1;
+          d = n.getDate();
+          document.getElementById("date").innerHTML = "DUCO WebWallet (v1.5) " + d + "/" + m + "/" + y;
 
-           $.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
+          $.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
                 ducoprice = `${data["Duco price"]}`
                 var cutducoprice = 1 * ducoprice;
                 cutducoprice = cutducoprice.toFixed(6);
@@ -305,7 +305,7 @@
         <hr>
       </section>
       <div class="content has-text-centered">
-        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020</p>
+        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo by revox 2020</p></p>
       </div>
    </body>
 </html>
