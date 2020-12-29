@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Duino-Coin Web Wallet - Register</title>
+      <!-- SEO Stuff -->
+      <meta name="description" content="Duino-Coin Web Wallet - Register">
+      <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco webwallet">
+      <link rel="canonical" href="http://51.15.127.80/register.html" />
+      <meta name="robots" content="index, follow">
+      <meta name="theme-color" content="#f0932b">
+      <!-- Open Graph Metadata -->
+      <meta property="og:site_name" content="Duino-Coin Web Wallet - Register" />
+      <meta property="og:site" content="http://51.15.127.80/register.html" />
+      <meta property="og:title" content="Duino-Coin Web Wallet - Register"/>
+      <meta property="og:description" content="Duino-Coin Web Wallet - Register" /> 
+      <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
+      <meta property="og:url" content="http://51.15.127.80/register.html" />
+      <meta property="og:type" content="website" />   
+      <!-- Twitter Metadata -->
+      <meta name="twitter:title" content="Duino-Coin Web Wallet - Register">
+      <meta name="twitter:description" content="Duino-Coin Web Wallet - Register">
+      <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
+      <meta name="twitter:site" content="@CoinDuino">
+      <meta name="twitter:creator" content="@CoinDuino">
+      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
+      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
+      <link rel="stylesheet" href="bulma.min.css">
+      <script defer src="all.js"></script>
+      <script src="jquery.min.js"></script>
+      <style>
+        body {
+          background: url("bckg.jpg") no-repeat;
+          background-size: cover;
+          background-attachment: fixed;
+        }
+        h1, h2, h3, h4, h5, h6, p, label, div {
+          color: white !important;
+        }
+        a {
+          color: #2c3e50 !important;
+        }
+        ::placeholder {
+          color: #2c3e50 !important;
+          opacity: 1;
+        }
+        input {
+          background-color: none !important;
+          color: white !important;
+          border-style: none !important;
+        }
+        .custButton {
+          border-style: none !important;
+          color: white !important;
+        }
+        .container21 {
+          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
+          border-radius: 6px;
+          border-top: 100px;
+          padding: 1em;
+          background-color: rgba(0, 0, 0, .1);
+            
+          backdrop-filter: blur(15px);
+          -moz-filter: blur(15px);
+          -o-filter: blur(15px);
+          -ms-filter: blur(15px);
+        }
+        #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
+      </style>
+      <script>
+      $(window).on('load', function() {
+          $("#cover").hide();
+      });
+
+      window.onload = function() {
+        var speed = "normal";
+        $("html, body").hide();
+        $(document).ready(function() {
+          $("html, body").fadeIn(speed, function() {
+            $("a[href], button[href]").click(function(event) {
+              var url = $(this).attr("href");
+              if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
+              event.preventDefault();
+              $("html, body").fadeOut(speed, function() {
+                window.location = url;
+              });
+            });
+          });
+        });
+        let message;
+        let version_received;
+
+        let ws = new WebSocket("ws://51.15.127.80:15808");
+        let register = document.querySelector(".register");
+        let registerInput = document.querySelector(".registerInput");
+
+        ws.onmessage = function(event) {
+          let server_message = event.data;
+          console.log("Server: " + server_message)
+
+          if (server_message.includes("1.")) {
+            document.getElementById("loginstatus").innerHTML = "Proxy server is online";
+            version_received = 1;
+
+          } else if (server_message.includes("OK")) {
+            document.getElementById("loginstatus").innerHTML = "Registered new account successfully!";
+            if (confirm("Successfully registered new account! Go back to login page?")) {
+              location.replace("/webwallet.html");
+            }
+
+          } else if (server_message.includes("NO")) {
+            console.log(server_message);
+            document.getElementById("loginstatus").innerHTML = "Error registering new account, refresh the page and try again";
+            if (confirm("Error registering new account, refresh the page to try again?")) {
+              location.reload();
+            }
+          }
+
+          register.onclick = function(event) {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var passwordconfirm = document.getElementById("passwordconfirm").value;
+            var email = document.getElementById("email").value;
+
+            if (passwordconfirm == password) {
+              ws.send("REGI," + username + "," + password + "," + email);
+            } else {
+              document.getElementById("loginstatus").innerHTML = "Passwords don't match, refresh the page and try again";
+              if (confirm("Passwords don't match, refresh the page to try again?")) {
+                location.reload();
+              }
+            }
+          }
+        }
+      }
+      </script>
+   </head>
+   <body>
+    <div id="cover"></div>
+      <section id="herosection" style="height: 100em">
+         <div class="hero-body">
+               <div class="columns is-centered">
+                  <div class="column is-5-tablet is-4-desktop is-30-widescreen">
+                     <div class="box container21">
+                      <h1 class="title"><img height="25em" width="25em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">&nbsp;Duino-Coin Wallet</h1>
+                       <h2 class="subtitle">Register new account</h2>
+                        <div class="field">
+                           <label for="" class="label">New Account Username</label>
+                           <div id="usernameInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="container21 input" id="username" type="text" placeholder="Username">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-user"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label for="" class="label">Password</label>
+                           <div id="pwdInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="input container21" id="password" type="password" placeholder="Password">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-lock"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label for="" class="label">Confirm Password</label>
+                           <div id="pwdInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="input container21" id="passwordconfirm" type="password" placeholder="Confirm Password">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-lock"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div class="field">
+                           <label for="" class="label">E-Mail</label>
+                           <div id="pwdInput" class="field">
+                              <p class="control has-icons-left">
+                                 <input class="input container21" id="email" type="email" placeholder="E-Mail">
+                                 <span class="icon is-small is-left">
+                                 <i class="fas fa-at"></i>
+                                 </span>
+                              </p>
+                           </div>
+                        </div>
+                        <div id="loginInput" class="buttons">
+                           <button class="button container21 custButton register">Register</button>
+                           <a href="/webwallet.html" class="button container21 custButton">Login</a>
+                        </div>
+                        <h4 class="subtitle is-7" id="loginstatus">Connecting to proxy</h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </body>
+</html>
+
