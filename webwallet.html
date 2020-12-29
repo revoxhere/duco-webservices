@@ -3,15 +3,42 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Duino-Coin | WebWallet</title>
-      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
-      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png"/>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-      <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <title>Duino-Coin Web Wallet</title>
+      <!-- SEO Stuff -->
+      <meta name="description" content="Duino-Coin Web Wallet">
+      <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco webwallet">
+      <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
+      <meta name="robots" content="index, follow">
+      <meta name="theme-color" content="#D90088">
+      <!-- Open Graph Metadata -->
+      <meta property="og:site_name" content="Duino-Coin Web Wallet" />
+      <meta property="og:site" content="http://51.15.127.80/webwallet.html" />
+      <meta property="og:title" content="Duino-Coin Web Wallet"/>
+      <meta property="og:description" content="Duino-Coin Web Wallet" /> 
+      <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
+      <meta property="og:url" content="http://51.15.127.80/webwallet.html" />
+      <meta property="og:type" content="website" />   
+      <!-- Twitter Metadata -->
+      <meta name="twitter:title" content="Duino-Coin Web Wallet">
+      <meta name="twitter:description" content="Duino-Coin Web Wallet">
+      <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
+      <meta name="twitter:site" content="@CoinDuino">
+      <meta name="twitter:creator" content="@CoinDuino">
+      <!-- Linked content -->
+      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
+      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
+      <link rel="stylesheet" href="bulma.min.css">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Quicksand&display=swap" rel="stylesheet">
+      <script defer src="all.js"></script>
+      <script src="jquery.min.js"></script>
       <style>
+      * {
+        font-family: 'Quicksand', sans-serif;
+        text-shadow: 1px 1px 7px #000000;
+      }
         body {
-          background: url(https://images.pexels.com/photos/977304/pexels-photo-977304.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940) no-repeat;
+          background: url("bckg.jpg") no-repeat;
           background-size: cover;
           background-attachment: fixed;
         }
@@ -19,7 +46,11 @@
           color: white !important;
         }
         a {
-          color: #bdc3c7;
+          color: #2c3e50 !important;
+        }
+        ::placeholder {
+          color: #FAFAFA !important;
+          opacity: 1;
         }
         input {
           background-color: none !important;
@@ -35,34 +66,40 @@
           border-radius: 6px;
           border-top: 100px;
           padding: 1em;
-          background-color: rgba(255, 255, 255, .001);
+          background-color: rgba(0, 0, 0, .2);
             
-          backdrop-filter: blur(30px);
+          backdrop-filter: blur(5px);
+          -moz-filter: blur(5px);
+          -o-filter: blur(5px);
+          -ms-filter: blur(5px);
         }
+        #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
       </style>
       <script>
-        var speed = "slow";
-        $("html, body").hide();
-        $(document).ready(function() {
-            $("html, body").fadeIn(speed, function() {
-                $("a[href], button[href]").click(function(event) {
-                    var url = $(this).attr("href");
-                    if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
-                    event.preventDefault();
-                    $("html, body").fadeOut(speed, function() {
-                        window.location = url;
-                    });
-                });
-            });
+        $(window).on('load', function() {
+           $("#cover").hide();
         });
-
         window.onload = function(){
+          var speed = "normal";
+          $("html, body").hide();
+          $(document).ready(function() {
+              $("html, body").fadeIn(speed, function() {
+                  $("a[href], button[href]").click(function(event) {
+                      var url = $(this).attr("href");
+                      if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
+                      event.preventDefault();
+                      $("html, body").fadeOut(speed, function() {
+                          window.location = url;
+                      });
+                  });
+              });
+          });
           let message;
-          let version_received;
+          let version_received = 0;
           let sendinfo;
           var ducoprice;
           var oldbalance = 0;
-          let ws = new WebSocket("ws://163.172.179.54:15808");
+          let ws = new WebSocket("ws://51.15.127.80:15808");
           let login = document.querySelector(".login");
           let loginInput = document.querySelector(".loginInput");
           let send = document.querySelector(".send");
@@ -71,7 +108,7 @@
           y = n.getFullYear();
           m = n.getMonth() + 1;
           d = n.getDate();
-          document.getElementById("date").innerHTML = "DUCO WebWallet (v1.5) " + d + "/" + m + "/" + y;
+          document.getElementById("date").innerHTML = "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.7) " + d + "/" + m + "/" + y;
 
           $.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
                 ducoprice = `${data["Duco price"]}`
@@ -80,22 +117,17 @@
                 document.getElementById("ducoprice").innerHTML = cutducoprice + " USD";
             });
 
-           var divOne = document.getElementById("recipientInput");
-           divOne.style.display="none";
-           var divOne = document.getElementById("amountInput");
-           divOne.style.display="none";
-           var divOne = document.getElementById("sendInput");
-           divOne.style.display="none";
-           var divOne = document.getElementById("balancetext");
-           divOne.style.display="none";
-           var divOne = document.getElementById("mainsection");
-           divOne.style.display="none";
+           document.getElementById("recipientInput").style.display="none";
+           document.getElementById("amountInput").style.display="none";
+           document.getElementById("sendInput").style.display="none";
+           document.getElementById("balancetext").style.display="none";
+           document.getElementById("mainsection").style.display="none";
          
            ws.onmessage = function (event) {
              let server_message = event.data;
              console.log("Server: " + server_message)
          
-             if (server_message.includes("1.")) {
+             if (version_received == 0 && server_message.includes("1.")) {
                document.getElementById("loginstatus").innerHTML = "Proxy server is online";
                version_received = 1;
              }
@@ -105,22 +137,25 @@
                var username = document.getElementById("username").value;
                document.getElementById("welcometext").innerHTML = "Welcome back, " + username + "!";
 
-               $("#usernameInput").fadeOut(500);
-               $("#herosection").fadeOut(500);
-               $("#pwdInput").fadeOut(500);
-               $("#loginInput").fadeOut(500);
+               $("#usernameInput").fadeOut(500, "linear");
+               $("#herosection").fadeOut(500, "linear");
+               $("#pwdInput").fadeOut(500, "linear");
+               $("#loginInput").fadeOut(500, "linear");
 
-               $("#mainsection").fadeIn(500);
-               $("#welcometext").fadeIn(500);
-               $("#balancetext").fadeIn(500);
-               $("#recipientInput").fadeIn(500);
-               $("#amountInput").fadeIn(500);
-               $("#sendInput").fadeIn(500);
+               $("#mainsection").fadeIn(800, "linear");
+               $("#welcometext").fadeIn(500, "linear");
+               $("#balancetext").fadeIn(1500, "linear");
+               $("#recipientInput").fadeIn(1000, "linear");
+               $("#amountInput").fadeIn(1000, "linear");
+               $("#sendInput").fadeIn(1000, "linear");
 
              }
          
              else if (server_message.includes("NO")) {
                document.getElementById("loginstatus").innerHTML = "Error logging-in, refresh the page and try again";
+               if (confirm("Error logging-in, refresh the page to try again?")) {
+                 location.reload();
+               }
              }
          
              else if (version_received == 1 && server_message.includes(".")) {
@@ -154,7 +189,6 @@
              var username = document.getElementById("username").value;
              var password = document.getElementById("password").value;
              ws.send("LOGI,"+username+","+password);
-             setTimeout(() => ws.send("FROM,Webwallet,-,-\n"), 150)
              window.setInterval(function(){
                ws.send("BALA")}, 750);
            }
@@ -169,12 +203,14 @@
       </script>
    </head>
    <body>
+    <div id="cover"></div>
       <section id="herosection" style="height: 100em">
          <div class="hero-body">
                <div class="columns is-centered">
                   <div class="column is-5-tablet is-4-desktop is-30-widescreen">
                      <div class="box container21">
-                      <h1 class="title">Duino-Coin Wallet</h1>
+                      <h1 class="title"><img height="25em" width="25em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">&nbsp;Duino-Coin Wallet</h1>
+                      <h2 class="subtitle">Login to existing account</h2>
                         <div class="field">
                            <label for="" class="label">Username</label>
                            <div id="usernameInput" class="field">
@@ -199,9 +235,9 @@
                         </div>
                         <div id="loginInput" class="buttons">
                            <button class="button container21 custButton login">Login</button>
-                           <p>Don't have an account? <a class="is-info" href="register.html" >Register</a><br>
-                           <h4 class="subtitle is-7" id="loginstatus">Connecting to proxy</h4><br>
+                           <a href="/register.html" class="button container21 custButton">Register</a>
                         </div>
+                        <h4 class="subtitle is-7" id="loginstatus">Connecting to proxy</h4>
                      </div>
                   </div>
                </div>
@@ -220,7 +256,7 @@
             </div>
             <div class="level-right">
               <div class="level-item">
-                <button type="button" id="date" class="button is-small is-disabled container21 custButton"></button>
+                <button type="button" id="date" href="https://duinocoin.com" class="button is-small is-disabled container21 custButton"></button>
               </div>
             </div>
           </div>
@@ -242,7 +278,7 @@
 
             <div class="column">
               <div class="container21">
-                <div class="heading">DUCO price</div>
+                <div class="heading">1 DUCO =</div>
                 <div class="title" id="ducoprice"></div>
               </div>
             </div>
@@ -273,18 +309,18 @@
            </tr>
            <tr>
               <div id="amountInput" class="field">
-                 <p class="control has-icons-left has-icons-right">
+              <td width="100%">
+                <p class="control has-icons-left has-icons-right">
                     <input class="container21 input" id="amount" type="number" placeholder="Amount">
-                    <span class="icon is-small is-left">
-                    <i class="fas fa-credit-card"></i>
-                    </span>
-                 </p>
-              </div>
-           </tr>
-           <tr>
-              <div id="sendInput" class="buttons">
-                 <button class="button container21 custButton send">Send funds</button>
-              </div>
+                    <span class="icon is-small is-left"><i class="fas fa-credit-card"></i></span>
+                </p>
+              </td>
+              <td>
+                <div id="sendInput" class="buttons">
+                <button class="button container21 custButton send">Send funds</button>
+                </div>
+              </td>
+            </div>
            </tr>
           </table>
 
@@ -294,18 +330,21 @@
           <hr>
         <div class="title">Receive funds</div>
 
-        <div class="text">To receive funds, instruct others to send DUCO to your username. Successfull transaction will result in immediate money transfer.</div>
+        <div class="title-2">To receive funds, instruct others to send DUCO to your username. Successfull transaction will result in immediate money transfer.</div>
 
         <hr>
         <div class="title">Useful links</div>
-        <a href="https://revoxhere.github.io/duco-exchange/" class="custButton container21"><i class="fas fa-coins"></i>&nbsp;Official DUCO exchange</a>
-        <a href="https://discord.gg/kvBkccy" class="custButton container21"><i class="fab fa-discord"></i>&nbsp;Duino-Coin Discord</a>
-        <a href="https://github.com/revoxhere/duino-coin" class="custButton container21"><i class="fab fa-github"></i>&nbsp;Duino-Coin GitHub</a>
+        <a href="https://revoxhere.github.io/duco-exchange/" class="button container21 custButton"><i class="fas fa-coins"></i>&nbsp;Official DUCO exchange</a>
+        <a href="https://discord.gg/kvBkccy" class="button container21 custButton"><i class="fab fa-discord"></i>&nbsp;Duino-Coin Discord</a>
+        <a href="https://github.com/revoxhere/duino-coin" class="button container21 custButton"><i class="fab fa-github"></i>&nbsp;Duino-Coin GitHub</a>
+        <a href="/webminer.html" class="button container21 custButton">Duino-Coin Online (Web) Miner</a>
 
         <hr>
-      </section>
+      
       <div class="content has-text-centered">
-        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo by revox 2020</p></p>
+        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo by u/CampsG from r/EarthPorn</p></p>
       </div>
+      </section>
    </body>
 </html>
+
