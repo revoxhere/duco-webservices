@@ -9,7 +9,7 @@
       <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco webwallet">
       <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
       <meta name="robots" content="index, follow">
-      <meta name="theme-color" content="#D90088">
+      <meta name="theme-color" content="#f0932b">
       <!-- Open Graph Metadata -->
       <meta property="og:site_name" content="Duino-Coin Web Wallet" />
       <meta property="og:site" content="http://51.15.127.80/webwallet.html" />
@@ -108,8 +108,8 @@
           y = n.getFullYear();
           m = n.getMonth() + 1;
           d = n.getDate();
-          document.getElementById("date").innerHTML = "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.7) " + d + "/" + m + "/" + y;
-
+          document.getElementById("date").innerHTML = "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.8) " + d + "/" + m + "/" + y;
+          
           $.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
                 ducoprice = `${data["Duco price"]}`
                 var cutducoprice = 1 * ducoprice;
@@ -136,6 +136,30 @@
 
                var username = document.getElementById("username").value;
                document.getElementById("welcometext").innerHTML = "Welcome back, " + username + "!";
+               
+               let myMiners = []
+               let contentjson = {}
+               jQuery.get('https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json', function(data) {
+                contentjson = JSON.parse(data);
+                for(process in contentjson["Miners"]) {
+                    if(username.includes(contentjson["Miners"][process]["User"])){
+                    myMiners.push(contentjson["Miners"][process])
+                    jQuery('#NoMiners').replaceWith("");
+                    }
+                }
+                for(miner in myMiners) {
+                    let IsEstimated = "";
+                    if (myMiners[miner]["Is estimated"] == "True") {
+                        IsEstimated = " (Estimated)";
+                    }
+                    var node = document.createElement("li");
+                    var textnode = document.createTextNode(
+                        "Miner #" + miner + " (" + myMiners[miner]["Software"] + ") " + Math.round(myMiners[miner]["Hashrate"] / 1000) + " kH/s" + IsEstimated +
+                        " @ diff " + myMiners[miner]["Diff"] + ", " + myMiners[miner]["Accepted"] + "/" + (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) + " (" + Math.round(myMiners[miner]["Accepted"] / (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) * 100) + "%)" + " accepted shares (" + myMiners[miner]["Sharetime"] + "ms last share time)");
+                        node.appendChild(textnode);
+                        document.getElementById("MyMiners").appendChild(node);
+                }
+               })
 
                $("#usernameInput").fadeOut(500, "linear");
                $("#herosection").fadeOut(500, "linear");
@@ -148,6 +172,7 @@
                $("#recipientInput").fadeIn(1000, "linear");
                $("#amountInput").fadeIn(1000, "linear");
                $("#sendInput").fadeIn(1000, "linear");
+               $("#MyMiners").fadeIn(1000, "linear");
 
              }
          
@@ -331,6 +356,10 @@
         <div class="title">Receive funds</div>
 
         <div class="title-2">To receive funds, instruct others to send DUCO to your username. Successfull transaction will result in immediate money transfer.</div>
+        
+        <hr>
+        <div class="title">My Miners</div>
+        <div class="title-2" id="NoMiners">Couldn't find any miners mining on your account. If you turned them on lately, please wait a few minutes and refresh the page.</div><div class="title-2" id="MyMiners"></div>
 
         <hr>
         <div class="title">Useful links</div>
