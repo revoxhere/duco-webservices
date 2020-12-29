@@ -38,7 +38,8 @@
         text-shadow: 1px 1px 7px #000000;
       }
         body {
-          background: url("bckg.jpg") no-repeat;
+          background: rgba(0,0,0, .2) url("bckg.jpg") no-repeat;
+          background-blend-mode: darken;
           background-size: cover;
           background-attachment: fixed;
         }
@@ -139,8 +140,8 @@
                
                let myMiners = []
                let contentjson = {}
-               jQuery.get('https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json', function(data) {
-                contentjson = JSON.parse(data);
+               jQuery.getJSON('http://51.15.127.80/api.json', function(data) {
+                contentjson = data;
                 for(process in contentjson["Miners"]) {
                     if(username.includes(contentjson["Miners"][process]["User"])){
                     myMiners.push(contentjson["Miners"][process])
@@ -359,7 +360,7 @@
         
         <hr>
         <div class="title">My Miners</div>
-        <div class="title-2" id="NoMiners">Couldn't find any miners mining on your account. If you turned them on lately, please wait a few minutes and refresh the page.</div><div class="title-2" id="MyMiners"></div>
+        <div class="title-2" id="NoMiners">Couldn't find any miners mining on your account. If you turned them on lately, please wait a few minutes and refresh the page.</div><div class="title-2 container21" id="MyMiners"></div>
 
         <hr>
         <div class="title">Useful links</div>
