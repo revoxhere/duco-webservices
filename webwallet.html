@@ -29,17 +29,17 @@
       <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
       <link rel="stylesheet" href="bulma.min.css">
       <link rel="preconnect" href="https://fonts.gstatic.com">
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Quicksand&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
       <script defer src="all.js"></script>
       <script src="jquery.min.js"></script>
       <style>
       * {
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Lato', sans-serif;
         text-shadow: 1px 1px 7px #000000;
       }
         body {
-          background: rgba(0,0,0, .2) url("bckg.jpg") no-repeat;
-          background-blend-mode: darken;
+          background: rgba(243,156,18, .4) url("https://images.pexels.com/photos/426983/pexels-photo-426983.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260") no-repeat;
+          background-blend-mode: lighten;
           background-size: cover;
           background-attachment: fixed;
         }
@@ -61,18 +61,19 @@
         .custButton {
           border-style: none !important;
           color: white !important;
+          border-radius: 8px;
         }
         .container21 {
-          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
-          border-radius: 6px;
+          box-shadow: 0 0 1rem 0 rgba(0,0,0, .2);   
+          border-radius: 8px;
           border-top: 100px;
           padding: 1em;
-          background-color: rgba(0, 0, 0, .2);
+          background-color: rgba(243,156,18, .1);
             
-          backdrop-filter: blur(5px);
-          -moz-filter: blur(5px);
-          -o-filter: blur(5px);
-          -ms-filter: blur(5px);
+          backdrop-filter: blur(10px);
+          -moz-filter: blur(10px);
+          -o-filter: blur(10px);
+          -ms-filter: blur(10px);
         }
         #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
       </style>
@@ -109,13 +110,13 @@
           y = n.getFullYear();
           m = n.getMonth() + 1;
           d = n.getDate();
-          document.getElementById("date").innerHTML = "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.8) " + d + "/" + m + "/" + y;
+          document.getElementById("date").innerHTML = "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.9) " + d + "/" + m + "/" + y;
           
           $.getJSON("https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json", function(data) {
                 ducoprice = `${data["Duco price"]}`
                 var cutducoprice = 1 * ducoprice;
                 cutducoprice = cutducoprice.toFixed(6);
-                document.getElementById("ducoprice").innerHTML = cutducoprice + " USD";
+                document.getElementById("ducoprice").innerHTML = "$" + cutducoprice;
             });
 
            document.getElementById("recipientInput").style.display="none";
@@ -123,6 +124,46 @@
            document.getElementById("sendInput").style.display="none";
            document.getElementById("balancetext").style.display="none";
            document.getElementById("mainsection").style.display="none";
+
+           function MinerApi(username) {
+               let myMiners = []
+               let contentjson = {}
+               jQuery.getJSON('http://51.15.127.80/api.json', function(data) {
+                contentjson = data;
+                for(process in contentjson["Miners"]) {
+                    if(username.includes(contentjson["Miners"][process]["User"])){
+                    myMiners.push(contentjson["Miners"][process])
+                    jQuery('#NoMiners').replaceWith("");
+                    }
+                }
+                var textnode = "<div id='MyMiners' class='container21'>";
+                for(miner in myMiners) {
+                    let IsEstimated = "";
+                    if (myMiners[miner]["Is estimated"] == "True") {
+                        IsEstimated = " (Estimated)";
+                    }
+                    textnode += "<li>Miner #" + miner + " (" + myMiners[miner]["Software"] + ") " + Math.round(myMiners[miner]["Hashrate"] / 1000) + " kH/s" + IsEstimated +" @ diff " + myMiners[miner]["Diff"] + ", " + myMiners[miner]["Accepted"] + "/" + (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) + " (" + Math.round(myMiners[miner]["Accepted"] / (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) * 100) + "%)" + " accepted shares (" + myMiners[miner]["Sharetime"] + "ms last share time)</li>";
+                	}
+                textnode += "</div>"
+                $("#MyMiners").replaceWith(textnode);
+               })
+           }
+           let curr_bal = 0;
+           let profitcheck = 0;
+           function ProfitCalculator() {
+                let prev_bal = curr_bal;
+                curr_bal = balance;
+                let tensec = curr_bal - prev_bal
+                let minute = tensec * 6
+                let hourly = minute * 60
+                let daily = hourly * 12
+                profitcheck++;
+
+                if (tensec > 0 && profitcheck > 1) {
+                    profit_array = [minute, hourly, daily];
+                    document.getElementById("profitlabel").innerHTML = "~" + daily.toFixed(4) + " ᕲ/24h";
+                }
+            }
          
            ws.onmessage = function (event) {
              let server_message = event.data;
@@ -136,45 +177,26 @@
                document.getElementById("loginstatus").innerHTML = "Logged-in successfully!";
 
                var username = document.getElementById("username").value;
-               document.getElementById("welcometext").innerHTML = "Welcome back, " + username + "!";
+               document.getElementById("welcometext").innerHTML = "Good to see you, " + username + "!";
+
+               $("#usernameInput").fadeOut(100, "linear");
+               $("#herosection").fadeOut(100, "linear");
+               $("#pwdInput").fadeOut(100, "linear");
+               $("#loginInput").fadeOut(100, "linear");
+
+               $("#mainsection").fadeIn(100, "linear");
+               $("#welcometext").fadeIn(200, "linear");
+               $("#balancetext").fadeIn(200, "linear");
+               $("#recipientInput").fadeIn(200, "linear");
+               $("#amountInput").fadeIn(200, "linear");
+               $("#sendInput").fadeIn(200, "linear");
+               $("#MyMiners").fadeIn(200, "linear");
                
-               let myMiners = []
-               let contentjson = {}
-               jQuery.getJSON('http://51.15.127.80/api.json', function(data) {
-                contentjson = data;
-                for(process in contentjson["Miners"]) {
-                    if(username.includes(contentjson["Miners"][process]["User"])){
-                    myMiners.push(contentjson["Miners"][process])
-                    jQuery('#NoMiners').replaceWith("");
-                    }
-                }
-                for(miner in myMiners) {
-                    let IsEstimated = "";
-                    if (myMiners[miner]["Is estimated"] == "True") {
-                        IsEstimated = " (Estimated)";
-                    }
-                    var node = document.createElement("li");
-                    var textnode = document.createTextNode(
-                        "Miner #" + miner + " (" + myMiners[miner]["Software"] + ") " + Math.round(myMiners[miner]["Hashrate"] / 1000) + " kH/s" + IsEstimated +
-                        " @ diff " + myMiners[miner]["Diff"] + ", " + myMiners[miner]["Accepted"] + "/" + (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) + " (" + Math.round(myMiners[miner]["Accepted"] / (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) * 100) + "%)" + " accepted shares (" + myMiners[miner]["Sharetime"] + "ms last share time)");
-                        node.appendChild(textnode);
-                        document.getElementById("MyMiners").appendChild(node);
-                }
-               })
-
-               $("#usernameInput").fadeOut(500, "linear");
-               $("#herosection").fadeOut(500, "linear");
-               $("#pwdInput").fadeOut(500, "linear");
-               $("#loginInput").fadeOut(500, "linear");
-
-               $("#mainsection").fadeIn(800, "linear");
-               $("#welcometext").fadeIn(500, "linear");
-               $("#balancetext").fadeIn(1500, "linear");
-               $("#recipientInput").fadeIn(1000, "linear");
-               $("#amountInput").fadeIn(1000, "linear");
-               $("#sendInput").fadeIn(1000, "linear");
-               $("#MyMiners").fadeIn(1000, "linear");
-
+               window.setInterval(function(){
+               	MinerApi(username)}, 3500);
+            
+               window.setInterval(function(){
+               	ProfitCalculator()}, 10000);
              }
          
              else if (server_message.includes("NO")) {
@@ -186,24 +208,23 @@
          
              else if (version_received == 1 && server_message.includes(".")) {
                   balanceusd = ducoprice * server_message;
-                  balanceusd = balanceusd.toFixed(4);
+                  balanceusd = balanceusd.toFixed(6);
                   
-                  cutbalance = server_message * 1;
-                  cutbalance = cutbalance.toFixed(6);
+                  balance = server_message * 1;
+                  cutbalance = balance.toFixed(6);
 
-                  difference = cutbalance - oldbalance;
-                  difference = difference.toFixed(6);
+                  difference = balance - oldbalance;
+                  difference = difference.toFixed(8);
 
                   if (difference != 0){
                     oldbalance = cutbalance;
-            var today = new Date();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            document.getElementById("lasttransaction").innerHTML = time + " : " + difference + " DUCO";
-            
+                    var today = new Date();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    document.getElementById("lasttransaction").innerHTML = time + " : " + difference + " ᕲ";
                   }
 
-               document.getElementById("balancetext").innerHTML = cutbalance + " DUCO";
-               document.getElementById("usdbalancetext").innerHTML = balanceusd + " USD";
+               document.getElementById("balancetext").innerHTML = cutbalance + " ᕲ";
+               document.getElementById("usdbalancetext").innerHTML = "$" + balanceusd;
              }
              else if (sendinfo == 1) {
                document.getElementById("sendstatus").innerHTML = "Server message: " + server_message;
@@ -297,14 +318,14 @@
 
             <div class="column">
               <div class="container21">
-                <div class="heading">FIAT balance</div>
+                <div class="heading">USD balance</div>
                 <div class="title" id="usdbalancetext"></div>
               </div>
             </div>
 
             <div class="column">
               <div class="container21">
-                <div class="heading">1 DUCO =</div>
+                <div class="heading">1 DUCO IS WORTH</div>
                 <div class="title" id="ducoprice"></div>
               </div>
             </div>
@@ -317,6 +338,12 @@
                 <div class="title" id="lasttransaction">No local transactions</div>
               </div>
             </div>
+            <div class="column">
+              <div class="container21">
+                <div class="heading">ESTIMATED Profit</div>
+                <div class="title" id="profitlabel">Please wait</div>
+              </div>
+            </div>
         </div>
        
         <hr>
@@ -326,7 +353,7 @@
            <tr class="mx-10">
               <div id="recipientInput" class="field">
                  <p class="control has-icons-left has-icons-right">
-                    <input class="container21 input" id="recipient" type="text" placeholder="Recipient">
+                    <input class="container21 input" id="recipient" type="text" placeholder="Recipient's username">
                     <span class="icon is-small is-left">
                     <i class="fas fa-address-book"></i>
                     </span>
@@ -337,7 +364,7 @@
               <div id="amountInput" class="field">
               <td width="100%">
                 <p class="control has-icons-left has-icons-right">
-                    <input class="container21 input" id="amount" type="number" placeholder="Amount">
+                    <input class="container21 input" id="amount" type="number" placeholder="Amount to send">
                     <span class="icon is-small is-left"><i class="fas fa-credit-card"></i></span>
                 </p>
               </td>
@@ -360,19 +387,19 @@
         
         <hr>
         <div class="title">My Miners</div>
-        <div class="title-2" id="NoMiners">Couldn't find any miners mining on your account. If you turned them on lately, please wait a few minutes and refresh the page.</div><div class="title-2 container21" id="MyMiners"></div>
+        <div class="title-2 container21" id="MyMiners"><div class="title-2" id="NoMiners">Couldn't find any miners mining on your account. If you turned them on lately, please wait a few minutes and refresh the page.</div></div>
 
         <hr>
         <div class="title">Useful links</div>
         <a href="https://revoxhere.github.io/duco-exchange/" class="button container21 custButton"><i class="fas fa-coins"></i>&nbsp;Official DUCO exchange</a>
         <a href="https://discord.gg/kvBkccy" class="button container21 custButton"><i class="fab fa-discord"></i>&nbsp;Duino-Coin Discord</a>
         <a href="https://github.com/revoxhere/duino-coin" class="button container21 custButton"><i class="fab fa-github"></i>&nbsp;Duino-Coin GitHub</a>
-        <a href="/webminer.html" class="button container21 custButton">Duino-Coin Online (Web) Miner</a>
+        <a href="/webminer.html" class="button container21 custButton"><i class="fa fa-caret-right"></i>&nbsp;Duino-Coin Online (Web) Miner</a>
 
         <hr>
       
       <div class="content has-text-centered">
-        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo by u/CampsG from r/EarthPorn</p></p>
+        <p>Duino-Coin WebWallet made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo from pexels.com</p></p>
       </div>
       </section>
    </body>
