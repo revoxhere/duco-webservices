@@ -1,8 +1,11 @@
 /* Main */
 
 html {
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -63,7 +66,11 @@ input {
   padding: 12px 45px !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
+  -webkit-transition: -webkit-transform 80ms ease-in !important;
+  transition: -webkit-transform 80ms ease-in !important;
+  -o-transition: transform 80ms ease-in !important;
   transition: transform 80ms ease-in !important;
+  transition: transform 80ms ease-in, -webkit-transform 80ms ease-in !important;
   text-decoration: none !important;
 }
 
@@ -156,7 +163,8 @@ hr {
 }
 
 .login input {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   display: block;
   width: 100%;
   border-width: 1px;
@@ -165,6 +173,26 @@ hr {
   outline: 0;
   font-family: inherit;
   font-size: 0.95em;
+}
+
+.login input::-webkit-input-placeholder {
+  color: #000000 !important;
+  opacity: 1;
+}
+
+.login input::-moz-placeholder {
+  color: #000000 !important;
+  opacity: 1;
+}
+
+.login input:-ms-input-placeholder {
+  color: #000000 !important;
+  opacity: 1;
+}
+
+.login input::-ms-input-placeholder {
+  color: #000000 !important;
+  opacity: 1;
 }
 
 .login input::placeholder {
@@ -266,6 +294,8 @@ hr {
 }
 
 .walletMain {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   height: 100vh;
 }
@@ -310,7 +340,9 @@ li {
 
 .content {
   background: #2c2f33;
-  flex: 1 0 auto;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
   height: 105.2vh;
 }
 
@@ -331,7 +363,8 @@ li {
 
 .data-card .wrap {
   background: #424549;
-  box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
+          box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
   text-align: center;
   position: relative;
@@ -369,39 +402,45 @@ li {
 }
 
 .data-card:nth-child(1) .wrap:after {
+  background: -o-linear-gradient(7.41deg, #00c48c 0%, #00a173 100%);
   background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
 }
 .data-card:nth-child(2) .wrap:after {
+  background: -o-linear-gradient(8.33deg, #0084f4 0%, #1a4da2 100%);
   background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
 }
 .data-card:nth-child(3) .wrap:after {
+  background: -o-linear-gradient(20.17deg, #0084f4 0%, #00c48c 100%);
   background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
 }
 .data-card:nth-child(4) .wrap:after {
+  background: -o-linear-gradient(8.33deg, #ff647c 0%, #1f5dc5 100%);
   background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
 }
 
 .content .row:nth-child(2) .data-card:nth-child(1) .wrap:after {
+  background: -o-linear-gradient(20.17deg, #0084f4 0%, #00c48c 100%);
   background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
 }
 .content .row:nth-child(2) .data-card:nth-child(2) .wrap:after {
+  background: -o-linear-gradient(8.33deg, #ff647c 0%, #1f5dc5 100%);
   background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
 }
 
 /* Miners Data */
 
 .window {
-  width: 600px;
+  width: 100%;
   background: #36393e;
-  height: 290px;
+  height: 100%;
   border-radius: 5px;
   display: relative;
 }
 
 .bash {
-  width: 600px;
+  width: 100%;
   background: #424549;
-  height: 250px;
+  height: 25vh;
   border-radius: 5px;
   top: 40px;
   display: absolute;
@@ -430,7 +469,8 @@ li {
 }
 
 .funds input {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   display: block;
   width: 100%;
   border-width: 1px;
@@ -442,6 +482,26 @@ li {
   background: #55595e;
   color: #ffffff !important;
   caret-color: #ffffff !important;
+}
+
+.funds input::-webkit-input-placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.funds input::-moz-placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.funds input:-ms-input-placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.funds input::-ms-input-placeholder {
+  color: #ffffff;
+  opacity: 1;
 }
 
 .funds input::placeholder {
@@ -471,22 +531,46 @@ li {
 
 @media (max-width: 800px) {
   .row {
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
+
   .wrap { 
     margin-top: 10px !important; 
     margin-bottom: 0;
+  }
+
+  /* Font Size Fix */
+
+  .data-card__title,
+  .data-card__subInfo {
+    font-size: 1em;
+  }
+
+  .data-card__count {
+    font-weight: 600;
+    font-size: 1.5em;
+    line-height: 64px;
   }
 
   /* Background fix */
 
   .sideBar-body {
     background-color: #23272a;
-    height: 250vh;
+    height: 190.5vh;
   }
 
   .content {
-    height: 269.5vh;
+    height: 210vh;
+  }
+
+  /* Miners fix */
+
+  .window {
+    width: 100%;
+    margin-top: 10px;
   }
 
   /* Rows fix */
@@ -502,17 +586,22 @@ li {
   .content .row:nth-child(3) .wrap { 
     margin-top: 0 !important; 
   }
+}
 
-  /* Miners fix */
+/* iPad fix */
 
-  .window {
-    margin-top: 15px;
-    width: 250px;
-    height: 290px;
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+
+  /* Background fix */
+
+  .sideBar-body {
+    background-color: #23272a;
+    height: 134vh;
   }
-  
-  .bash {
-    width: 250px;
-    height: 250px;
+
+  .content {
+    height: 145vh;
   }
 }

@@ -34,28 +34,53 @@ function init() {
     send = document.querySelector("#send"),
     ws = new WebSocket("ws://51.15.127.80:15808");
 
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
-      var centers = document.querySelectorAll(".center"); // removes center
-      [].forEach.call(centers, function(el) {
-        el.classList.remove("center");
-      });
+  if(/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
+    var centers = document.querySelectorAll(".center"); // removes center
+    [].forEach.call(centers, function(el) {
+      el.classList.remove("center");
+    });
 
-      var columns = document.querySelectorAll(".col-sm-3"); // changes columns size
-      [].forEach.call(columns, function(el) {
-        el.classList.remove("col-sm-3");
-        el.classList.add("col-sm-6");
-      });
+    var columns = document.querySelectorAll(".col-sm-4"); // changes columns size
+    [].forEach.call(columns, function(el) {
+      el.classList.remove("col-sm-4");
+      el.classList.add("col-sm-3");
+    });
 
-      var columns = document.querySelectorAll(".col-sm-4"); // changes columns size
-      [].forEach.call(columns, function(el) {
-        el.classList.remove("col-sm-4");
-        el.classList.add("col-sm-6");
-      });
+    var minerC = document.querySelector(".col-sm-5");
+    minerC.classList.remove("col-sm-5");
+    minerC.classList.add("col-sm-4");
 
-      document.getElementsByClassName("footer")[0].innerHTML = `Duino-Coin WebWallet made with<br/>
-           <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
-           Background photo from pexels.com <br/>Edit made by LDarki 2021>`;
-    }
+    document.getElementsByClassName("footer")[0].innerHTML = `Duino-Coin WebWallet made with<br/>
+          <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
+          Background photo from pexels.com <br/>Edit made by LDarki 2021>`;
+  }
+
+  if(/iPad/i.test(navigator.userAgent)){ // if is a iPad
+    var centers = document.querySelectorAll(".center"); // removes center
+    [].forEach.call(centers, function(el) {
+      el.classList.remove("center");
+    });
+
+    var minerC = document.querySelector(".col-sm-5");
+    minerC.classList.remove("col-sm-5");
+    minerC.classList.add("col-sm-7");
+
+    var columns = document.querySelectorAll(".col-sm-3"); // changes columns size
+    [].forEach.call(columns, function(el) {
+      el.classList.remove("col-sm-3");
+      el.classList.add("col-sm-6");
+    });
+
+    var columns = document.querySelectorAll(".col-sm-4"); // changes columns size
+    [].forEach.call(columns, function(el) {
+      el.classList.remove("col-sm-4");
+      el.classList.add("col-sm-6");
+    });
+
+    document.getElementsByClassName("footer")[0].innerHTML = `Duino-Coin WebWallet made with>
+          <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
+          Background photo from pexels.com Edit made by LDarki 2021`;
+  }
 
   let message,
     version_received = 0,
