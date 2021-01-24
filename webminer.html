@@ -9,7 +9,7 @@
       <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
       <link rel="canonical" href="http://51.15.127.80/webminer.html" />
       <meta name="robots" content="index, follow">
-      <meta name="theme-color" content="#D90088">
+      <meta name="theme-color" content="#f0932b">
       <!-- Open Graph Metadata -->
       <meta property="og:site_name" content="Duino-Coin Web Miner" />
       <meta property="og:site" content="http://51.15.127.80/webminer.html" />
@@ -31,14 +31,15 @@
       <script src="jquery.min.js"></script>
       <script src="hashes.js"></script>
       <link rel="preconnect" href="https://fonts.gstatic.com">
-      <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Quicksand&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
       <style>
       * {
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Lato', sans-serif;
         text-shadow: 1px 1px 7px #000000;
       }
         body {
-          background: url(https://images.pexels.com/photos/111755/pexels-photo-111755.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940) no-repeat;
+          background: rgba(243,156,18, .4) url("https://images.pexels.com/photos/426983/pexels-photo-426983.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260") no-repeat;
+          background-blend-mode: lighten;
           background-size: cover;
           background-attachment: fixed;
         }
@@ -60,18 +61,19 @@
         .custButton {
           border-style: none !important;
           color: white !important;
+          border-radius: 8px;
         }
         .container21 {
-          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
-          border-radius: 6px;
+          box-shadow: 0 0 1rem 0 rgba(0,0,0, .2);   
+          border-radius: 8px;
           border-top: 100px;
           padding: 1em;
-          background-color: rgba(0, 0, 0, .1);
+          background-color: rgba(243,156,18, .1);
             
-          backdrop-filter: blur(5px);
-          -moz-filter: blur(5px);
-          -o-filter: blur(5px);
-          -ms-filter: blur(5px);
+          backdrop-filter: blur(10px);
+          -moz-filter: blur(10px);
+          -o-filter: blur(10px);
+          -ms-filter: blur(10px);
         }
         #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
       </style>
@@ -122,13 +124,13 @@
             hash_count = hash_count / 1000;
 
             hash_count = hash_count / 1000;
-            document.getElementById("sharecount").innerHTML = " ✔️ Accepted: " + sharecounter + "<br> ❌ Rejected: " + badsharecounter + "<br> ⚡ Hashrate: ~" + hash_count + " kH/s";
+            document.getElementById("sharecount").innerHTML = " ✔️ Accepted: " + sharecounter + "<br> ❌ Rejected: " + badsharecounter + "<br> ⚡ Hashrate: ~" + hash_count.toFixed(2) + " kH/s";
 
             hash_count = 0;
 
-            sleep(50).then(() => {
+            sleep(75).then(() => {
               var username = document.getElementById("username").value;
-              ws.send("JOB," + username);
+              ws.send("JOB," + username + ",MEDIUM");
             })
           }
 
@@ -140,9 +142,9 @@
 
             hash_count = 0;
 
-            sleep(10).then(() => {
+            sleep(75).then(() => {
               var username = document.getElementById("username").value;
-              ws.send("JOB," + username);
+              ws.send("JOB," + username + ",MEDIUM");
             })
           }
           else if (server_message == "INVU") {
@@ -164,7 +166,7 @@
               if(job[1] == ducos1){ // and if correct result is found
                 
                 console.log("Miner: Share found: " + result);
-                ws.send(result+","+hash_count+",Official Webminer v1.8"); // send the result to the server
+                ws.send(result+","+hash_count+",Official Webminer v1.9"); // send the result to the server
                 break;
               }
              }
@@ -173,11 +175,12 @@
         
         login.onclick = function (event) {
         	document.getElementById("sharecount").innerHTML = "Please wait...";
-          document.getElementById("loginstatus").innerHTML = "Mining thread started";
-			    var username = document.getElementById("username").value;
-	        sleep(50).then(() => {
-                ws.send("JOB," + username);;
-          })
+            document.getElementById("loginstatus").innerHTML = "Mining thread started";
+            var username = document.getElementById("username").value;
+	        sleep(100).then(() => {
+              var username = document.getElementById("username").value;
+              ws.send("JOB," + username + ",MEDIUM");
+            })
         }}
     </script>
     </head>
@@ -189,7 +192,7 @@
 		            <div class="column is-5-tablet is-4-desktop is-30-widescreen">
 		                <div class="box container21">
 		                    <h1 class="title"><img height="24em" width="24em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">&nbsp;Duino-Coin Miner</h1>
-                        <h2 class="subtitle">Official JS Miner</h2>
+                        <h2 class="subtitle">Official JS Miner v1.9</h2>
 						    <table>
 						    	<tr>
 						    		<label for="" class="label">Username</label>
