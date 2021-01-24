@@ -1,0 +1,518 @@
+/* Main */
+
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  background: rgba(243, 156, 18, 0.4)
+    url("https://images.pexels.com/photos/426983/pexels-photo-426983.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260")
+    no-repeat !important;
+  background-blend-mode: lighten !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+* {
+  font-family: "Lato", sans-serif;
+}
+
+/* General */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #55595e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #757b82;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8e969e;
+}
+
+input {
+  background-color: none !important;
+  color: gray !important;
+  border-style: none !important;
+}
+
+.btn-custom {
+  background-color: transparent !important;
+
+  cursor: pointer !important;
+
+  width: 50% !important;
+
+  border-radius: 20px !important;
+  border: 1px solid #0275d8 !important;
+
+  color: #000000 !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  padding: 12px 45px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  transition: transform 80ms ease-in !important;
+  text-decoration: none !important;
+}
+
+.btn-custom:hover {
+  background-color: #0787f5 !important;
+}
+
+.btn-custom:focus {
+  outline: 0 !important;
+}
+
+hr {
+  border-top: 1px solid #ccc;
+}
+
+.hide {
+  display: none;
+}
+
+#error {
+  margin: 0 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+  color: #d8000c;
+  background-color: #ffbaba;
+}
+
+#error * {
+  margin: 0;
+  padding: 0;
+}
+
+#notificate {
+  margin: 0 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+
+#notificate * {
+  margin: 0;
+  padding: 0;
+}
+
+#notificate .close {
+  float: right;
+  margin: 3px 12px 0px 0px;
+  cursor: pointer;
+}
+
+/* Login page */
+
+.login {
+  width: 400px;
+  display: block;
+  margin: 0 auto;
+  font-size: 16px;
+  margin-top: 25vh;
+  background: #ebebeb;
+}
+
+.login-header,
+.login p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.login-header {
+  background: #2196f3;
+  padding: 20px;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.login-header h2 {
+  font-size: 1.4em;
+  margin: 0px 1px 0px 1px;
+}
+
+.login-container {
+  background: #ebebeb;
+  padding: 12px;
+}
+
+.login p {
+  padding: 12px;
+}
+
+.login input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+
+.login input::placeholder {
+  color: #000000 !important;
+  opacity: 1;
+}
+
+.login input:-ms-input-placeholder {
+  color: #000000 !important;
+}
+
+.login input::-ms-input-placeholder {
+  color: #000000 !important;
+}
+
+.login-footer {
+  width: 100% !important;
+  height: 5vh !important;
+  background: #3a3a3a !important;
+  vertical-align: middle !important;
+  line-height: 5vh !important;
+}
+
+.login-footer h4 {
+  display: block !important;
+  float: left !important;
+
+  color: #ffffff;
+
+  margin-left: 5px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.login-footer ul {
+  display: block;
+  float: right;
+
+  padding: 0;
+
+  margin-right: 10px;
+  margin-top: 5px;
+
+  list-style: none;
+}
+
+.login-footer .connected li {
+  width: 6px;
+  height: 6px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 12px;
+  background: yellowgreen;
+}
+
+.login-footer .idle li {
+  width: 6px;
+  height: 6px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 12px;
+  background: orange;
+}
+
+.login-footer .error li {
+  width: 6px;
+  height: 6px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 12px;
+  background: red;
+}
+
+.login-footer .idle li {
+  -webkit-animation: pattern1 0.14s linear infinite;
+}
+
+@-webkit-keyframes pattern1 {
+  0% {
+    background: rgba(255, 165, 0, 0.3);
+  }
+  100% {
+    background: rgba(255, 165, 0, 1);
+  }
+}
+
+/* Wallet page */
+
+.wallet {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background: #f5f9ff;
+}
+
+.center {
+  display: block;
+  margin: 0 auto;
+}
+
+.walletMain {
+  display: flex;
+  height: 100vh;
+}
+
+.sideBar {
+  width: 25vh;
+  color: #ffffff;
+  text-align: center;
+  background-color: #1e2124;
+}
+
+.sideBar-body {
+  background-color: #23272a;
+  height: 90vh;
+}
+
+.sideBar-body ul,
+li {
+  display: block;
+  list-style: none;
+  text-align: left;
+}
+
+.sideBar-body ul li a {
+  text-decoration: none;
+  color: #f5f9ff;
+}
+
+.sideBar-body ul {
+  margin: 0;
+  padding: 0px;
+}
+
+.sideBar-body li {
+  margin: 0;
+  padding: 12px 12px;
+}
+
+.sideBar-body li:hover {
+  background-color: #2c2f33;
+}
+
+.content {
+  background: #2c2f33;
+  flex: 1 0 auto;
+  height: 105.2vh;
+}
+
+.content .row {
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.content .row:nth-child(2) {
+  margin-top: 50px;
+}
+
+.content .row:nth-child(3) {
+  margin-top: 40px;
+}
+
+/* Wallet Cards */
+
+.data-card .wrap {
+  background: #424549;
+  box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 7px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 15px;
+  height: 100%;
+  width: 100%;
+}
+
+.data-card__title,
+.data-card__subInfo {
+  color: #ffffff;
+  font-size: 1.18em;
+}
+
+.data-card span {
+  display: block;
+}
+
+.data-card__count {
+  font-weight: 600;
+  font-size: 1.8em;
+  line-height: 64px;
+  color: #ffffff;
+}
+
+.data-card .wrap:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  content: "";
+}
+
+.data-card:nth-child(1) .wrap:after {
+  background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
+}
+.data-card:nth-child(2) .wrap:after {
+  background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
+}
+.data-card:nth-child(3) .wrap:after {
+  background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
+}
+.data-card:nth-child(4) .wrap:after {
+  background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
+}
+
+.content .row:nth-child(2) .data-card:nth-child(1) .wrap:after {
+  background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
+}
+.content .row:nth-child(2) .data-card:nth-child(2) .wrap:after {
+  background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
+}
+
+/* Miners Data */
+
+.window {
+  width: 600px;
+  background: #36393e;
+  height: 290px;
+  border-radius: 5px;
+  display: relative;
+}
+
+.bash {
+  width: 600px;
+  background: #424549;
+  height: 250px;
+  border-radius: 5px;
+  top: 40px;
+  display: absolute;
+  color: #fff;
+  overflow-y: scroll;
+}
+
+.title {
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Send Funds */
+
+#send {
+  color: #ffffff !important;
+}
+
+.funds .data-card__title {
+  margin: 0;
+}
+
+.funds p {
+  padding: 12px;
+}
+
+.funds input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+  background: #55595e;
+  color: #ffffff !important;
+  caret-color: #ffffff !important;
+}
+
+.funds input::placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
+.funds input:-ms-input-placeholder {
+  color: #ffffff;
+}
+
+.funds input::-ms-input-placeholder {
+  color: #ffffff;
+}
+
+.funds input:hover {
+  background: #757b82;
+  outline: none;
+}
+
+.footer {
+  color: #ffffff;
+  margin-left: 15px;
+}
+
+/* Phone / Tablet fix */
+
+@media (max-width: 800px) {
+  .row {
+    flex-direction: column;
+  }
+  .wrap { 
+    margin-top: 10px !important; 
+    margin-bottom: 0;
+  }
+
+  /* Background fix */
+
+  .sideBar-body {
+    background-color: #23272a;
+    height: 250vh;
+  }
+
+  .content {
+    height: 269.5vh;
+  }
+
+  /* Rows fix */
+
+  .content .row:nth-child(2) {
+    margin-top: 10px;
+  }
+  
+  .content .row:nth-child(3) {
+    margin-top: 10px;
+  }
+
+  .content .row:nth-child(3) .wrap { 
+    margin-top: 0 !important; 
+  }
+
+  /* Miners fix */
+
+  .window {
+    margin-top: 15px;
+    width: 250px;
+    height: 290px;
+  }
+  
+  .bash {
+    width: 250px;
+    height: 250px;
+  }
+}
