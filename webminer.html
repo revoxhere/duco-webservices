@@ -1,226 +1,92 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Duino-Coin Web Miner</title>
-      <!-- SEO Stuff -->
-      <meta name="description" content="Duino-Coin Web Miner">
-      <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
-      <link rel="canonical" href="http://51.15.127.80/webminer.html" />
-      <meta name="robots" content="index, follow">
-      <meta name="theme-color" content="#f0932b">
-      <!-- Open Graph Metadata -->
-      <meta property="og:site_name" content="Duino-Coin Web Miner" />
-      <meta property="og:site" content="http://51.15.127.80/webminer.html" />
-      <meta property="og:title" content="Duino-Coin Web Miner"/>
-      <meta property="og:description" content="Duino-Coin Web Miner" /> 
-      <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" />
-      <meta property="og:url" content="http://51.15.127.80/webminer.html" />
-      <meta property="og:type" content="website" />   
-      <!-- Twitter Metadata -->
-      <meta name="twitter:title" content="Duino-Coin Web Miner">
-      <meta name="twitter:description" content="Duino-Coin Web Miner">
-      <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
-      <meta name="twitter:site" content="@CoinDuino">
-      <meta name="twitter:creator" content="@CoinDuino">
-      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png"/>
-      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png"/>
-      <link rel="stylesheet" href="bulma.min.css">
-      <script defer src="all.js"></script>
-      <script src="jquery.min.js"></script>
-      <script src="hashes.js"></script>
-      <link rel="preconnect" href="https://fonts.gstatic.com">
-      <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-      <style>
-      * {
-        font-family: 'Lato', sans-serif;
-        text-shadow: 1px 1px 7px #000000;
-      }
-        body {
-          background: rgba(243,156,18, .4) url("https://images.pexels.com/photos/426983/pexels-photo-426983.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260") no-repeat;
-          background-blend-mode: lighten;
-          background-size: cover;
-          background-attachment: fixed;
-        }
-        h1, h2, h3, h4, h5, h6, p, label, div {
-          color: white !important;
-        }
-        a {
-          color: #2c3e50 !important;
-        }
-        ::placeholder {
-          color: #FAFAFA !important;
-          opacity: 1;
-        }
-        input {
-          background-color: none !important;
-          color: white !important;
-          border-style: none !important;
-        }
-        .custButton {
-          border-style: none !important;
-          color: white !important;
-          border-radius: 8px;
-        }
-        .container21 {
-          box-shadow: 0 0 1rem 0 rgba(0,0,0, .2);   
-          border-radius: 8px;
-          border-top: 100px;
-          padding: 1em;
-          background-color: rgba(243,156,18, .1);
-            
-          backdrop-filter: blur(10px);
-          -moz-filter: blur(10px);
-          -o-filter: blur(10px);
-          -ms-filter: blur(10px);
-        }
-        #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
-      </style>
-      <script>
-        $(window).on('load', function() {
-           $("#cover").hide();
-        });
-        window.onload = function(){
-          var speed = "normal";
-          $("html, body").hide();
-          $(document).ready(function() {
-              $("html, body").fadeIn(speed, function() {
-                  $("a[href], button[href]").click(function(event) {
-                      var url = $(this).attr("href");
-                      if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
-                      event.preventDefault();
-                      $("html, body").fadeOut(speed, function() {
-                          window.location = url;
-                      });
-                  });
-              });
-          });
-        let SHA1 = new Hashes.SHA1
-        let sharecounter = 0;
-        var hash_count = 0;
-        let badsharecounter = 0;
-        let message;
 
-        let login = document.querySelector('.login');
-        let algo = document.querySelector('.algo'); 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Duino-Coin Web Miner</title>
+  <!-- SEO Stuff -->
+  <meta name="description" content="Duino-Coin Web Miner">
+  <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
+  <link rel="canonical" href="http://51.15.127.80/webminer.html" />
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f0932b">
+  <!-- Open Graph Metadata -->
+  <meta property="og:site_name" content="Duino-Coin Web Miner" />
+  <meta property="og:site" content="http://51.15.127.80/webminer.html" />
+  <meta property="og:title" content="Duino-Coin Web Miner" />
+  <meta property="og:description" content="Duino-Coin Web Miner" />
+  <meta property="og:image"
+    content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" />
+  <meta property="og:url" content="http://51.15.127.80/webminer.html" />
+  <meta property="og:type" content="website" />
+  <!-- Twitter Metadata -->
+  <meta name="twitter:title" content="Duino-Coin Web Miner">
+  <meta name="twitter:description" content="Duino-Coin Web Miner">
+  <meta name="twitter:image"
+    content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
+  <meta name="twitter:site" content="@CoinDuino">
+  <meta name="twitter:creator" content="@CoinDuino">
+  <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true"
+    type="image/png" />
+  <link rel="shortcut icon"
+    href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png" />
+  <script src="assets/js/sha1.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link href="assets/css/miner.css" rel="stylesheet">
+  <script src="assets/js/miner.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
 
-        let ws = new WebSocket("ws://51.15.127.80:15808");
-
-        const sleep = (milliseconds) => {
-            return new Promise(resolve => setTimeout(resolve, milliseconds))
-        }
-
-        ws.onmessage = function (event) {
-          let server_message = event.data;
-          console.log("Server: " + server_message)
-
-          if (server_message.includes("1.")) {
-            document.getElementById("loginstatus").innerHTML = "Proxy server is online";
-          }
-
-          else if (server_message == "BAD") {
-            badsharecounter++;
-            hash_count = hash_count / 1000;
-
-            hash_count = hash_count / 1000;
-            document.getElementById("sharecount").innerHTML = " ✔️ Accepted: " + sharecounter + "<br> ❌ Rejected: " + badsharecounter + "<br> ⚡ Hashrate: ~" + hash_count.toFixed(2) + " kH/s";
-
-            hash_count = 0;
-
-            sleep(75).then(() => {
-              var username = document.getElementById("username").value;
-              ws.send("JOB," + username + ",MEDIUM");
-            })
-          }
-
-          else if (server_message == "GOOD") {
-            sharecounter++;
-            hash_count = hash_count / 1000;
-            
-            document.getElementById("sharecount").innerHTML = " ✔️ Accepted: " + sharecounter + "<br> ❌ Rejected: " + badsharecounter + "<br> ⚡ Hashrate: ~" + hash_count + " kH/s";
-
-            hash_count = 0;
-
-            sleep(75).then(() => {
-              var username = document.getElementById("username").value;
-              ws.send("JOB," + username + ",MEDIUM");
-            })
-          }
-          else if (server_message == "INVU") {
-            document.getElementById("loginstatus").innerHTML = "This user doesn't exist. Refresh the page and try again.";
-               if (confirm("This user doesn't exist. Refresh the page to try again?")) {
-                 location.reload();
-               }
-          }
-
-          else if (server_message.length > 64) { // If we receive long data which means its job
-            content = String(server_message)
-            let job = content.split(',');
-            let difficulty = job[2];
-            let result;
-
-            for(result = 0; result < (100 * difficulty + 1); result++){
-              let ducos1 = SHA1.hex(job[0] + result); // calculate sha1 hash
-              hash_count++;
-              if(job[1] == ducos1){ // and if correct result is found
-                
-                console.log("Miner: Share found: " + result);
-                ws.send(result+","+hash_count+",Official Webminer v1.9"); // send the result to the server
-                break;
-              }
-             }
-           }
-        }
-        
-        login.onclick = function (event) {
-        	document.getElementById("sharecount").innerHTML = "Please wait...";
-            document.getElementById("loginstatus").innerHTML = "Mining thread started";
-            var username = document.getElementById("username").value;
-	        sleep(100).then(() => {
-              var username = document.getElementById("username").value;
-              ws.send("JOB," + username + ",MEDIUM");
-            })
-        }}
-    </script>
-    </head>
-    <body>
-    <div id="cover"></div>
-		  <section id="herosection" style="height: 50em">
-		    <div class="hero-body">
-		        <div class="columns is-centered">
-		            <div class="column is-5-tablet is-4-desktop is-30-widescreen">
-		                <div class="box container21">
-		                    <h1 class="title"><img height="24em" width="24em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">&nbsp;Duino-Coin Miner</h1>
-                        <h2 class="subtitle">Official JS Miner v1.9</h2>
-						    <table>
-						    	<tr>
-						    		<label for="" class="label">Username</label>
-							    	<div id="amountInput" class="field">
-							        	<p class="control has-icons-left has-icons-right">
-							        		<input class="container21 input" id="username" type="text" placeholder="Username">
-							        		<span class="icon is-small is-left">
-							        			<i class="fas fa-user"></i>
-							        		</span>
-							        	</p>
-							        </div>
-						            <button style="width:100%; text-align:center; margin-bottom:3px !important;" class="button container21 custButton login">Start mining</button>
-                        <a href="http://51.15.127.80/webwallet.html" style="width:100%; text-align:center;" class="button container21 custButton">Open Online (Web) Wallet</a>
-						        </tr>
-						    </table>
-						   	<br>
-						   	<div class="box container21">
-							    <h1 class="title is-4" id="miningstatus">Status</h1>
-							    <p id="loginstatus">Connecting...</p>
-							    <p id="sharecount"></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<div class="content has-text-centered">
-        <p>Duino-Coin WebMiner made with <i class="fa fa-code"></i>, <i class="fa fa-coffee"></i> and <i class="fa fa-heart"></i> by revox 2020<br>Background photo from Pexels.com</p>
+<body>
+  <div class="content">
+    <div class="row margin-t">
+      <div class="data-card col-4 center col-sm-8 col-md-6">
+        <div class="wrap minerD">
+          <h4 class="data-card__title"><img height="24em" width="24em"
+              src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">&nbsp;Duino-Coin
+            Miner</h4>
+          <span class="data-card__count">Official JS Miner v2.0</span>
+          <input type="text" id="userN" placeholder="Username">
+          <p></p>
+          <div id="fundInput" class="buttons">
+            <button type='button' class="btn-custom" id="miningBtn">Start Mining</button>
+            <hr style="visibility: hidden;" />
+            <a href="http://51.15.127.80/webwallet.html" class="btn-custom">Open Web Wallet</a>
+          </div>
+          <p></p>
+          <div class="mining-footer">
+            <h4 id="proxy">
+              Connecting to proxy
+            </h4>
+            <ul class="idle" id="proxyD">
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="hide" id="error">Error logging-in, refresh the page to try again. </div>
+        </div>
       </div>
-    </body>
+
+      <div class="col-4 margin-t center col-sm-8 col-md-6">
+        <div class="window">
+          <div class="title">Console</div>
+          <div class="bash">
+          </div>
+          <div class="console-footer">
+            <span id="minerRej"></span>
+            <span id="minerAcc"></span>
+            <span id="minerHR"></span>
+          </div>
+        </div>
+      </div>
+      <div class="footer">Duino-Coin WebMiner made with <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i>
+        and <i class="fas fa-heart"></i> by revox 2020
+        | Background photo from pexels.com | Edit made by LDarki 2021</div>
+    </div>
+</body>
+
 </html>
