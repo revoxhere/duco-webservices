@@ -314,20 +314,12 @@ input {
   width: 100%;
   height: 10px;
   content: "";
-}
-
-.data-card:nth-child(1) .wrap:after {
-  background: -o-linear-gradient(20.17deg, #0084f4 0%, #00c48c 100%);
-  background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
+  background: rgb(223,31,31);
+  background: linear-gradient(158deg, rgba(223,31,31,1) 0%, rgba(223,129,31,1) 50%, rgba(255,203,0,1) 100%);
 }
 
 .margin-t {
   margin-top: 15px;
-}
-
-.data-card:nth-child(2) .wrap:after {
-  background: -o-linear-gradient(8.33deg, #ff647c 0%, #1f5dc5 100%);
-  background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
 }
 
 /* Mining footer */
@@ -407,10 +399,25 @@ input {
 
 .window {
   width: 100%;
-  background: #36393e;
+  background: #323538;
   height: 100%;
-  border-radius: 5px;
-  display: relative;
+  border-radius: 7px;
+
+  position: relative;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.window:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  content: "";
+  background: rgb(223,31,31);
+  background: linear-gradient(158deg, rgba(223,31,31,1) 0%, rgba(223,129,31,1) 50%, rgba(255,203,0,1) 100%);
 }
 
 .bash {
