@@ -46,7 +46,7 @@ function init() {
       "footer"
     )[0].innerHTML = `Duino-Coin WebWallet made with
             <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
-            Background photo from pexels.com Edit made by LDarki 2021`;
+            | Edit made by LDarki 2021`;
   }
 
   const sleep = (milliseconds) => {

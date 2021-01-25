@@ -577,32 +577,7 @@ li {
   width: 100%;
   height: 10px;
   content: "";
-}
-
-.data-card:nth-child(1) .wrap:after {
-  background: -o-linear-gradient(7.41deg, #00c48c 0%, #00a173 100%);
-  background: linear-gradient(82.59deg, #00c48c 0%, #00a173 100%);
-}
-.data-card:nth-child(2) .wrap:after {
-  background: -o-linear-gradient(8.33deg, #0084f4 0%, #1a4da2 100%);
-  background: linear-gradient(81.67deg, #0084f4 0%, #1a4da2 100%);
-}
-.data-card:nth-child(3) .wrap:after {
-  background: -o-linear-gradient(20.17deg, #0084f4 0%, #00c48c 100%);
-  background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
-}
-.data-card:nth-child(4) .wrap:after {
-  background: -o-linear-gradient(8.33deg, #ff647c 0%, #1f5dc5 100%);
-  background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
-}
-
-.content .row:nth-child(2) .data-card:nth-child(1) .wrap:after {
-  background: -o-linear-gradient(20.17deg, #0084f4 0%, #00c48c 100%);
-  background: linear-gradient(69.83deg, #0084f4 0%, #00c48c 100%);
-}
-.content .row:nth-child(2) .data-card:nth-child(2) .wrap:after {
-  background: -o-linear-gradient(8.33deg, #ff647c 0%, #1f5dc5 100%);
-  background: linear-gradient(81.67deg, #ff647c 0%, #1f5dc5 100%);
+  background: #282b30;
 }
 
 /* Miners Data */
