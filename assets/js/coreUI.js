@@ -220,7 +220,7 @@ function init() {
     var password = document.getElementById("password").value;
     ws.send("LOGI," + username + "," + password);
     window.setInterval(function () {
-      ws.send("BALA");
+      if(isWSOpen(ws)) ws.send("BALA");
     }, 750);
   };
 
