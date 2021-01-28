@@ -46,3 +46,8 @@ function fadeIn(el, display) {
     }
   })();
 }
+
+function isWSOpen(ws)
+{
+	return ws.readyState === ws.OPEN;
+}
