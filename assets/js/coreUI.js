@@ -1,15 +1,12 @@
-function init() {
-  setTimeout(
-    console.log.bind(console, "%cWarning", "color: red; font-size: 64px")
-  );
-  
-  setTimeout(
+const init = () => {
+  setTimeout(() => {
+    console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
     console.log.bind(
       console,
       "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
       "font-size: large"
-    )
-  );
+    );
+  });
 
   const DEBUG = false; // set true to print data to console
 
@@ -17,9 +14,9 @@ function init() {
 
   if (!DEBUG) {
     if (!window.console) window.console = {};
-    var methods = ["log", "debug", "warn", "info"];
-    for (var i = 0; i < methods.length; i++) {
-      console[methods[i]] = function () {};
+    let methods = ["log", "debug", "warn", "info"];
+    for (let i in methods) {
+      console[methods[i]] = () => {};
     }
   }
 
@@ -35,8 +32,8 @@ function init() {
 
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
 
-    var centers = document.querySelectorAll(".center"); // removes center
-    [].forEach.call(centers, function(el) {
+    let centers = document.querySelectorAll(".center"); // removes center
+    [].forEach.call(centers, (el) => {
       if(!/iPad/.test(navigator.userAgent)) el.classList.remove("center");
     });
 
@@ -45,8 +42,7 @@ function init() {
           Background photo from pexels.com Edit made by LDarki 2021`;
   }
 
-  let message,
-    version_received = 0,
+  let version_received = 0,
     sendinfo,
     ducoprice,
     oldbalance = 0,
@@ -71,13 +67,13 @@ function init() {
     "https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json"
   ).then((data) => {
     ducoprice = `${data["Duco price"]}`;
-    var cutducoprice = 1 * ducoprice;
+    let cutducoprice = 1 * ducoprice;
     cutducoprice = cutducoprice.toFixed(6);
     document.getElementById("ducoprice").innerHTML = cutducoprice + " $";
     console.log(data);
   });
 
-  function MinerApi(username) {
+  const MinerApi = (username) => {
     let myMiners = [];
     let contentjson = {};
     getJSON(
@@ -124,7 +120,7 @@ function init() {
     });
   }
 
-  function ProfitCalculator() {
+  const ProfitCalculator = () => {
     let prev_bal = curr_bal;
     curr_bal = balance;
     let tensec = curr_bal - prev_bal;
@@ -140,13 +136,13 @@ function init() {
     }
   }
 
-  ws.onerror = function () {
+  ws.onerror = () => {
     loginstatus.innerHTML = "Proxy server failed to connect";
     status.classList.remove("idle");
     status.classList.add("error");
   };
 
-  ws.onmessage = function (event) {
+  ws.onmessage = (event) => {
     let server_message = event.data;
     console.log("Server: " + server_message);
 
@@ -158,18 +154,18 @@ function init() {
     } else if (server_message == "OK") {
       loginstatus.innerHTML = "Logged-in successfully!";
 
-      var username = document.getElementById("username").value;
+      let username = document.getElementById("username").value;
 
       navname.innerHTML = username;
 
       fadeOut(loginpage);
       fadeIn(walletpage);
 
-      window.setInterval(function () {
+      window.setInterval(() => {
         MinerApi(username);
       }, 3500);
 
-      window.setInterval(function () {
+      window.setInterval(() => {
         ProfitCalculator();
       }, 10000);
     } else if (server_message.includes("NO")) {
@@ -191,8 +187,8 @@ function init() {
 
       if (difference != 0) {
         oldbalance = cutbalance;
-        var today = new Date();
-        var time =
+        let today = new Date();
+        let time =
           today.getHours() +
           ":" +
           today.getMinutes() +
@@ -211,22 +207,22 @@ function init() {
     }
   };
 
-  document.getElementsByClassName("alertC")[0].onclick = function (event) {
+  document.getElementsByClassName("alertC")[0].onclick = (event) => {
     document.getElementById("notificate").classList.add("hide");
   };
 
-  login.onclick = function (event) {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+  login.onclick = (event) => {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
     ws.send("LOGI," + username + "," + password);
-    window.setInterval(function () {
+    window.setInterval(() => {
       if(isWSOpen(ws)) ws.send("BALA");
     }, 750);
   };
 
-  send.onclick = function (event) {
-    var recipient = document.getElementById("recipient").value;
-    var amount = document.getElementById("amountInput").value;
+  send.onclick = (event) => {
+    let recipient = document.getElementById("recipient").value;
+    let amount = document.getElementById("amountInput").value;
     ws.send("SEND,-," + recipient + "," + amount);
     sendinfo = 1;
     document.getElementById("notificate").classList.remove("hide");
@@ -237,7 +233,7 @@ if (document.addEventListener) {
   document.addEventListener("DOMContentLoaded", init, false);
 }
 else if (/WebKit/i.test(navigator.userAgent)) { 
-  var _timer = setInterval(function() {
+  let _timer = setInterval(() => {
     if (/loaded|complete/.test(document.readyState)) {
       init(); 
     }

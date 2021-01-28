@@ -1,5 +1,5 @@
-function getJSON(url, qs_params = "") {
-  function buildQueryString(params) {
+const getJSON = (url, qs_params = "") => {
+  const buildQueryString = (params) => {
     return Object.entries(params)
       .map((d) => `${d[0]}=${d[1]}`)
       .join("&");
@@ -22,7 +22,7 @@ function getJSON(url, qs_params = "") {
   });
 }
 
-function fadeOut(el) {
+const fadeOut = (el) => {
   el.style.opacity = 1;
 
   (function fade() {
@@ -34,12 +34,12 @@ function fadeOut(el) {
   })();
 }
 
-function fadeIn(el, display) {
+const fadeIn = (el, display) => {
   el.style.opacity = 0;
   el.style.display = display || "block";
 
   (function fade() {
-    var val = parseFloat(el.style.opacity);
+    let val = parseFloat(el.style.opacity);
     if (!((val += 0.1) > 1)) {
       el.style.opacity = val;
       requestAnimationFrame(fade);
@@ -47,7 +47,6 @@ function fadeIn(el, display) {
   })();
 }
 
-function isWSOpen(ws)
-{
+const isWSOpen = (ws) => {
 	return ws.readyState === ws.OPEN;
 }

@@ -512,8 +512,14 @@ input {
   text-align: center;
   font-size: 12px;
   padding: 10px;
-  position: fixed;
-  left: 0;
+  position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+@media (max-width: 800px) {
+  .btn-custom {
+    width: 80% !important;
+    padding: 12px 30px !important;
+  }
 }
