@@ -1,25 +1,22 @@
-function init() {
-  setTimeout(
-    console.log.bind(console, "%cWarning", "color: red; font-size: 64px")
-  );
-
-  setTimeout(
+const init = () => {
+  setTimeout(() => {
+    console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
     console.log.bind(
       console,
       "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
       "font-size: large"
-    )
-  );
-
+    );
+  });
+  
   const DEBUG = false; // set true to print data to console
 
   //  If not debug mode disable console functions
 
   if (!DEBUG) {
     if (!window.console) window.console = {};
-    var methods = ["log", "debug", "warn", "info"];
-    for (var i = 0; i < methods.length; i++) {
-      console[methods[i]] = function () {};
+    let methods = ["log", "debug", "warn", "info"];
+    for (let i in methods) {
+      console[methods[i]] = () => {};
     }
   }
 
@@ -53,13 +50,13 @@ function init() {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
 
-  ws.onerror = function () {
+  ws.onerror = () => {
     proxyStatus.innerHTML = "Proxy server failed to connect";
     proxyDots.classList.remove("idle");
     proxyDots.classList.add("error");
   };
 
-  ws.onmessage = function (event) {
+  ws.onmessage = (event) => {
     let server_message = event.data;
     console.log("Server: " + server_message);
 
@@ -79,7 +76,7 @@ function init() {
       hash_count = 0;
 
       sleep(75).then(() => {
-        var username = document.getElementById("userN").value;
+        let username = document.getElementById("userN").value;
         ws.send("JOB," + username + ",MEDIUM");
       });
     } else if (server_message == "GOOD") {
@@ -93,7 +90,7 @@ function init() {
       hash_count = 0;
 
       sleep(75).then(() => {
-        var username = document.getElementById("userN").value;
+        let username = document.getElementById("userN").value;
         ws.send("JOB," + username + ",MEDIUM");
       });
     } else if (server_message == "INVU") {
@@ -122,23 +119,25 @@ function init() {
     }
   };
 
-  login.onclick = function (event) {
+  login.onclick = (event) => {
     minerConsole.innerHTML += "<br/>Please wait...";
     minerConsole.innerHTML += "<br/>Mining thread started";
-    var username = document.getElementById("userN").value;
+    let username = document.getElementById("userN").value;
     sleep(100).then(() => {
-      var username = document.getElementById("userN").value;
+      let username = document.getElementById("userN").value;
       ws.send("JOB," + username + ",MEDIUM");
     });
   };
 }
 
-if (document.addEventListener) {
+if (document.addEventListener) { 
   document.addEventListener("DOMContentLoaded", init, false);
-} else if (/WebKit/i.test(navigator.userAgent)) {
-  var _timer = setInterval(function () {
+}
+else if (/WebKit/i.test(navigator.userAgent)) { 
+  let _timer = setInterval(() => {
     if (/loaded|complete/.test(document.readyState)) {
-      init();
+      init(); 
     }
   }, 10);
-} else window.onload = init;
+}
+else window.onload = init;
