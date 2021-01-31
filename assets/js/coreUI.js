@@ -227,6 +227,13 @@ const init = () => {
     sendinfo = 1;
     document.getElementById("notificate").classList.remove("hide");
   };
+
+  document.getElementsByClassName("login-container")[0].addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      login.click();
+    }
+  });
 };
 
 if (document.addEventListener) { 
