@@ -2,7 +2,7 @@
 
 html {
   min-width: 100vw;
-  min-height: 100vh;
+  height: -webkit-fill-available;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -15,14 +15,14 @@ body {
   background-blend-mode: lighten !important;
   background-size: cover !important;
   background-attachment: fixed !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  width: 100% !important;
+  min-height: -webkit-fill-available;
   overflow-x: hidden !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-* {
+*, *:before, *:after {
   box-sizing: border-box;
   font-family: "Lato", sans-serif;
 }
@@ -30,9 +30,10 @@ body {
 /* Grid */
 
 .row {
-  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: space-between;
+  margin: 0 auto;
 }
 
 /************* Default *************/
@@ -460,8 +461,8 @@ hr {
 /* Wallet page */
 
 .wallet {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: none;
   background: #f5f9ff;
 }
@@ -475,7 +476,8 @@ hr {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 100vh;
+  width: 100%;
+  min-height: 100%;
 }
 
 .sideBar {
@@ -487,7 +489,7 @@ hr {
 
 .sideBar-body {
   background-color: #23272a;
-  height: 94.5vh;
+  min-height: 100vh;
 }
 
 .sideBar-body ul,
@@ -518,10 +520,13 @@ li {
 
 .content {
   background: #2c2f33;
-  -webkit-box-flex: 1;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
-  height: 110vh;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-y: scroll;
+  height: calc(100vh - 5vh);
 }
 
 .content .row {
@@ -547,6 +552,9 @@ li {
   text-align: center;
   position: relative;
   overflow: hidden;
+
+  display: block;
+
   padding: 15px;
   height: 100%;
   width: 100%;
@@ -570,7 +578,6 @@ li {
 }
 
 .data-card .wrap:after {
-  display: block;
   position: absolute;
   top: 0;
   left: 0;
@@ -693,14 +700,19 @@ li {
 
 .footer {
   background-color: #282b30;
+
   color: #ffffff;
+
   text-align: center;
   font-size: 12px;
   padding: 10px;
-  position: fixed;
-  left: 0;
-  bottom: 0;
+
   width: 100%;
+  height: 5vh;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 /* Phone / Tablet fix */
@@ -736,20 +748,9 @@ li {
     line-height: 64px;
   }
 
-  /* Background fix */
-
-  .sideBar-body {
-    background-color: #23272a;
-    height: 162.5vh;
-  }
-
   .footer {
     margin-top: 20px;
     margin-bottom: 0;
-  }
-
-  .content {
-    height: 182vh;
   }
 
   /* Miners fix */
@@ -772,48 +773,4 @@ li {
   .content .row:nth-child(3) .wrap {
     margin-top: 0 !important;
   }
-}
-
-
-/* 800x600 fix */
-
-@media screen and (min-width: 600px) and (max-width: 800px) {
-  /* Background fix */
-
-  .sideBar-body {
-    background-color: #23272a;
-    height: 220vh;
-  }
-
-  .content {
-    height: 250vh;
-  }
-
-}
-
-/* iPad fix */
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  /* Background fix */
-
-  .sideBar-body {
-    background-color: #23272a;
-    height: 140vh;
-  }
-
-  .content {
-    height: 152vh;
-  }
-
-}
-
-
-/* large devices fix */
-
-@media (min-width: 1025px) {
-    
-  .sideBar-body {
-    height: 98vh;
-  }
-
 }
