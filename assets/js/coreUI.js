@@ -234,6 +234,133 @@ const init = () => {
       login.click();
     }
   });
+
+  // Modal Functions
+
+    const trigger = document.querySelector('.modal_trigger');
+    const modal = document.querySelector('.modal');
+    const modalbg = document.querySelector('.modal_bg');
+    const content = document.querySelector('.modal_content');
+    const closer = document.querySelector('.modal_close');
+    const w = window;
+    let isOpen = false;
+    const contentDelay = 100;
+    const len = trigger.length;
+  
+    var getId = function(event) {
+      event.preventDefault();
+      var self = this;
+      makeDiv(self, modal);
+    };
+  
+    var makeDiv = function(self, modal) {
+      var fakediv = document.getElementById('modal_temp');
+      if (fakediv === null) {
+        var div = document.createElement('div');
+        div.id = 'modal_temp';
+        self.appendChild(div);
+        moveTrig(self, modal, div);
+      }
+    };
+  
+    var moveTrig = function(trig, modal, div) {
+      var trigProps = trig.getBoundingClientRect();
+      var m = modal;
+      var mProps = m.querySelector('.modal_content').getBoundingClientRect();
+      var transX, transY, scaleX, scaleY;
+      var xc = w.innerWidth / 2;
+      var yc = w.innerHeight / 2;
+  
+      trig.classList.add('modal_trigger--active');
+  
+      scaleX = mProps.width / trigProps.width;
+      scaleY = mProps.height / trigProps.height;
+  
+      scaleX = scaleX.toFixed(3); 
+      scaleY = scaleY.toFixed(3);
+  
+      transX = Math.round(xc - trigProps.left - trigProps.width / 2);
+      transY = Math.round(yc - trigProps.top - trigProps.height / 2);
+  
+      if (m.classList.contains('modal--align-top')) {
+        transY = Math.round(mProps.height / 2 + mProps.top - trigProps.top - trigProps.height / 2);
+      }
+
+      div.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
+      div.style.webkitTransform = 'scale(' + scaleX + ',' + scaleY + ')';
+  
+  
+      window.setTimeout(function() {
+        window.requestAnimationFrame(function() {
+          open(m, div);
+        });
+      }, contentDelay);
+    };
+  
+    var open = function(m, div) {
+      if (!isOpen) {
+        var content = m.querySelector('.modal_content');
+        m.classList.add('modal--active');
+        content.classList.add('modal_content--active');
+        content.addEventListener('transitionend', hideDiv, false);
+        isOpen = true;
+      }
+  
+      function hideDiv() {
+        div.style.opacity = '0';
+        content.removeEventListener('transitionend', hideDiv, false);
+      }
+    };
+  
+    var close = function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var target = event.target;
+      var div = document.getElementById('modal_temp');
+
+      if (isOpen && target.classList.contains('modal_bg') || target.classList.contains('modal_close')) {
+
+        div.style.opacity = '1';
+        div.removeAttribute('style');
+        modal.classList.remove('modal--active');
+        content.classList.remove('modal_content--active');
+        trigger.style.transform = 'none';
+        trigger.style.webkitTransform = 'none';
+        trigger.classList.remove('modal_trigger--active');
+
+        div.addEventListener('transitionend', removeDiv, false);
+        isOpen = false;
+      }
+  
+      function removeDiv() {
+        setTimeout(function() {
+          window.requestAnimationFrame(function() {
+            div.remove();
+          });
+        }, contentDelay - 50);
+      }
+    };
+    trigger.addEventListener('click', getId, false);
+    closer.addEventListener('click', close, false);
+    modalbg.addEventListener('click', close, false);
+
+    var donateBtns = document.querySelectorAll('#donate');
+
+    [].forEach.call(donateBtns, function(div) {
+      div.onclick = () => {
+        var copyText = document.getElementById(div.dataset.id);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        
+        var tooltip = document.getElementById(div.dataset.tooltip);
+        tooltip.innerHTML = "Copied: " + copyText.value;
+      }
+      div.onmouseout = () => {
+        var tooltip = document.getElementById(div.dataset.tooltip);
+        tooltip.innerHTML = "Copy to clipboard";
+      }
+    });
 };
 
 if (document.addEventListener) { 
