@@ -33,9 +33,6 @@
   <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true"
     type="image/png" />
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
@@ -43,6 +40,9 @@
 
   <script
     src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2Ces2016%2Ces2017%2Ces2018%2Ces2019%2Ces5%2Ces6%2Ces7%2Cdefault%2Cblissfuljs%2CIntl%2CCSS.supports%2CDate.now%2CDate.prototype.toISOString%2CDocument%2CElement.prototype.classList%2CFunction.name%2CFunction.prototype.bind%2CFunction.prototype.name%2CHTMLDocument%2CJSON%2CNumber.isFinite%2CNumber.isInteger%2CNumber.isNaN%2CNumber.isSafeInteger%2CNumber.parseFloat%2CNumber.parseInt%2CObject.create%2CObject.assign%2CObject.keys%2CObject.values%2CString.prototype.includes%2CString.prototype.trim%2CString.prototype.startsWith%2Cconsole.log%2Cdom4%2Ces2021%2Cfetch%2Cwindow.scrollBy%2Cwindow.scroll%2C%7Ehtml5-elements%2Cviewport%2Csmoothscroll%2CsetImmediate%2CscrollY%2CscrollX%2C%7Eviewport%2CscrollIntoView%2CscrollBy%2Cscroll%2Cscreen.orientation%2Cperformance.now%2CinnerHeight%2CinnerWidth%2Chtml5shiv%2CglobalThis%2Ccss_fq%2Cdocument%2Cdocument.querySelector%2Cdocument.getElementsByClassName"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
   <script src="assets/js/Functions.js"></script>
   <script src="assets/js/coreUI.js"></script>
@@ -104,10 +104,103 @@
             <li>
               <a href="http://51.15.127.80/webminer.html"><span>WebMiner</span></a>
             </li>
+            <li>
+              <a href="#!" class="modal_trigger" data-modal="#donate">
+                Donate
+              </a>
+            </li>
+            <li>
+              <a href="http://www.dev.node-s.co.za/duco_exchange/home"><span>Node-S Exchange</span></a>
+            </li>
           </ul>
         </div>
       </div>
       <div class="content">
+        <div id="donate" class="modal modal_bg">
+          <div class="modal_dialog">
+            <div class="modal_content">
+              <div class="modal_header">
+                <div class="modal_title">
+                  <h2 class="modal_title-text">Donate</h2>
+                </div>
+
+                <button class="modal_close">
+                  X
+                </button>
+              </div>
+
+              <div class="modal_text">
+                Bitcoin address: 
+                <form>
+                <input type="text" value="39GpTtgCNNwFbPnhEbCCBzNBewG3bA7oso" id="btc">
+                <div class="tooltip">
+                  <button id="donate" data-id="btc" data-tooltip="btc-toolTip">
+                    <span class="tooltiptext" id="btc-toolTip">Copy to clipboard</span>
+                    Copy
+                  </button>
+                </div>
+              </form><br/>
+
+                BTC Cash address: 
+                <form>
+                <input type="text" value="bitcoincash:qquxqfrq78xp4n98m86ex26j3g54pfs8cvqj7dwaa9"
+                  id="btcc">
+                <div class="tooltip">
+                  <button id="donate" data-id="btcc" data-tooltip="btcc-toolTip">
+                    <span class="tooltiptext" id="btcc-toolTip">Copy to clipboard</span>
+                    Copy
+                  </button>
+                </div>
+              </form><br/>
+
+                Litecoin address: 
+                <form>
+                  <input type="text" value="LUgz5FArRpjma52jjEQAYjBK9VVV2Z9d3D" id="ltc">
+                <div class="tooltip">
+                  <button id="donate" data-id="ltc" data-tooltip="ltc-toolTip">
+                    <span class="tooltiptext" id="ltc-toolTip">Copy to clipboard</span>
+                    Copy
+                  </button>
+                </div>
+              </form><br/>
+
+                Monero address: 
+                <form>
+                <input type="text"
+                  value="86Y4ZYjN8KP5JUzTSWZjtYBrh9EaL2Z7yCSPmcrZHibX6gNaQBrN3eeRdL6HEyETyk5KkGsPLtg1fGW8rv3tRwY6FNmJvm5"
+                  id="xmr">
+                <div class="tooltip">
+                  <button id="donate" data-id="xmr" data-tooltip="xmr-toolTip">
+                    <span class="tooltiptext" id="xmr-toolTip">Copy to clipboard</span>
+                    Copy
+                  </button>
+                </div>
+              </form><br/>
+
+                Coin Magi address: 
+                <form>
+                <input type="text" value="93qJ8j93ibCye7pTWKTu88pr6a8xy7EUqC" id="xmg">
+                <div class="tooltip">
+                  <button id="donate" data-id="xmg" data-tooltip="xmg-toolTip">
+                    <span class="tooltiptext" id="xmg-toolTip">Copy to clipboard</span>
+                    Copy
+                  </button>
+                </div>
+              </form><br/>
+              
+                Duino-Coin usernames:<br />
+                revox<br />
+                Bilaboz
+              </div>
+              <div class="modal_footer">
+                If you'd like to donate in other way, feel free to <a style="color: #f39c12"
+                  href="https://duinocoin.com/contact">contact us</a>.
+              </div>
+
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
             <div class="wrap">
@@ -179,9 +272,9 @@
           </div>
         </div>
       </div>
-        <div class="footer">Duino-Coin WebWallet made with <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i>
-          and <i class="fas fa-heart"></i> by revox 2020
-          | Background photo from pexels.com | Edit made by LDarki 2021</div>
+      <div class="footer">Duino-Coin WebWallet made with <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i>
+        and <i class="fas fa-heart"></i> by revox 2020
+        | Background photo from pexels.com | Edit made by LDarki 2021</div>
     </div>
   </div>
   </div>
