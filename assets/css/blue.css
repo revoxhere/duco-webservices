@@ -1,0 +1,12 @@
+:root {
+    --dark-bg: #080e15;
+    --semidark-bg: #131722;
+    --semilight-bg: #181c29;
+    --light-bg: #1f2638;
+    --input-bg: #232b40;
+    --footer-bg: #161b29;
+    --hover: #2b354f;
+    --scroll-track: #485882;
+    --scroll-thumb: #5b70a6;
+    --scroll-thumb-hover: #6981bf;
+}

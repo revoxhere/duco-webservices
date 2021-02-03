@@ -212,15 +212,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #55595e;
+  background: var(--scroll-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #757b82;
+  background: var(--scroll-thumb);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #8e969e;
+  background: var(--scroll-thumb-hover);
 }
 
 input {
@@ -484,11 +484,11 @@ hr {
   width: 25vh;
   color: #ffffff;
   text-align: center;
-  background-color: #1e2124;
+  background-color: var(--dark-bg);
 }
 
 .sideBar-body {
-  background-color: #23272a;
+  background-color: var(--semidark-bg);
   min-height: 100vh;
 }
 
@@ -519,11 +519,11 @@ li {
 }
 
 .sideBar-body li:hover {
-  background-color: #2c2f33;
+  background-color: var(--hover);
 }
 
 .content {
-  background: #2c2f33;
+  background: var(--semilight-bg);
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -549,7 +549,7 @@ li {
 /* Wallet Cards */
 
 .data-card .wrap {
-  background: #424549;
+  background: var(--light-bg);
   -webkit-box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
   box-shadow: 2px 10px 20px rgba(0, 0, 0, 0.1);
   border-radius: 7px;
@@ -596,7 +596,7 @@ li {
 
 .window {
   width: 100%;
-  background: #323538;
+  background: var(--light-bg);
   height: 100%;
   border-radius: 7px;
 
@@ -619,7 +619,7 @@ li {
 
 .bash {
   width: 100%;
-  background: #424549;
+  background:  var(--hover);
   height: 30vh;
   border-radius: 5px;
   top: 40px;
@@ -659,7 +659,7 @@ li {
   outline: 0;
   font-family: inherit;
   font-size: 0.95em;
-  background: #55595e;
+  background: var(--input-bg);
   color: #ffffff !important;
   caret-color: #ffffff !important;
 }
@@ -697,13 +697,13 @@ li {
   color: #ffffff;
 }
 
-.funds input:hover {
-  background: #757b82;
+.funds * input:hover {
+  background: var(--hover);
   outline: none;
 }
 
 .footer {
-  background-color: #282b30;
+  background-color: var(--footer-bg);
 
   color: #ffffff;
 
@@ -772,7 +772,7 @@ li {
   overflow: hidden;
   color: #ffffff;
   z-index: 1;
-  background: #23272a;
+  background: var(--semilight-bg);
   border-radius: 2px;
   box-sizing: border-box;
   box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
@@ -795,7 +795,7 @@ li {
   perspective-origin: 165px 56px;
   transform-origin: 165px 56px;
   box-sizing: border-box;
-  background: #1e2124;
+  background: var(--semidark-bg);
 }
 
 .modal_title .modal_title-text {
@@ -831,7 +831,7 @@ li {
   outline: 0;
   font-family: inherit;
   font-size: 0.95em;
-  background: #424549;
+  background: var(--input-bg);
   color: #ffffff !important;
   caret-color: #ffffff !important;
   float: left;
@@ -883,7 +883,7 @@ li {
 }
 
 .modal_text input:hover {
-  background: #757b82;
+  background:  var(--hover);
   outline: none;
 }
 
@@ -891,7 +891,7 @@ li {
   font-size: 16px;
   line-height: normal;
   width: 100%;
-  background-color: #2c2f33;
+  background-color: var(--light-bg);
   padding: 8px;
   box-sizing: border-box;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -971,6 +971,76 @@ li {
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+/* theme-switcher */
+
+.switch {
+  position: relative;
+  display: block;
+  width: 70px;
+  height: 26px;
+  margin: 0 auto;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 30px;
+  width: 30px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: #8e969e;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #485882;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #485882;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(40px);
+  -ms-transform: translateX(40px);
+  transform: translateX(40px);
+  background: #2b354f;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 /* Phone / Tablet fix */
