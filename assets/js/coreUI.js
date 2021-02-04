@@ -364,19 +364,21 @@ const init = () => {
 
     /* THEME CHANGER */
 
+    const switcher = document.getElementById("theme-changer");
+
     const themeStyle = document.createElement( 'link' );
     themeStyle.rel  = 'stylesheet';
     document.head.appendChild( themeStyle );
 
-      if (localStorage.getItem('mode') === 'dark')
+      if (localStorage.getItem('mode') === 'blue')
       {
         themeStyle.href = "assets/css/blue.css";
+        switcher.checked = true;
       }
       else {
         themeStyle.href = "assets/css/gray.css";
+        switcher.checked = false;
       }
-
-      const switcher = document.getElementById("theme-changer");
 
       switcher.onchange = () => {
         if(switcher.checked == true)
