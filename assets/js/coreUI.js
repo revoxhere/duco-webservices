@@ -361,6 +361,34 @@ const init = () => {
         tooltip.innerHTML = "Copy to clipboard";
       }
     });
+
+    /* THEME CHANGER */
+
+    const themeStyle = document.createElement( 'link' );
+    themeStyle.rel  = 'stylesheet';
+    document.head.appendChild( themeStyle );
+
+      if (localStorage.getItem('mode') === 'dark')
+      {
+        themeStyle.href = "assets/css/blue.css";
+      }
+      else {
+        themeStyle.href = "assets/css/gray.css";
+      }
+
+      const switcher = document.getElementById("theme-changer");
+
+      switcher.onchange = () => {
+        if(switcher.checked == true)
+        {
+          localStorage.setItem('mode', "blue");
+          themeStyle.href = "assets/css/blue.css";
+        }
+        else {
+          localStorage.setItem('mode', "gray");
+          themeStyle.href = "assets/css/gray.css";
+        }
+      };
 };
 
 if (document.addEventListener) { 
