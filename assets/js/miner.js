@@ -68,7 +68,6 @@ const init = () => {
       badsharecounter++;
       hash_count = hash_count / 1000;
 
-      hash_count = hash_count / 1000;
       minerAccepted.innerHTML = "✔️ Accepted: " + sharecounter + " | ";
       minerRejected.innerHTML = "❌ Rejected: " + badsharecounter + " | ";
       minerHashrate.innerHTML = "⚡ Hashrate: ~" + hash_count.toFixed(2) + " kH/s";
@@ -77,7 +76,7 @@ const init = () => {
 
       sleep(75).then(() => {
         let username = document.getElementById("userN").value;
-        ws.send("JOB," + username + ",MEDIUM");
+        ws.send("JOB," + username + ",2500");
       });
     } else if (server_message == "GOOD") {
       sharecounter++;
@@ -91,7 +90,7 @@ const init = () => {
 
       sleep(75).then(() => {
         let username = document.getElementById("userN").value;
-        ws.send("JOB," + username + ",MEDIUM");
+        ws.send("JOB," + username + ",2500");
       });
     } else if (server_message == "INVU") {
       minerConsole.innerHTML += "<br/>Error logging-in.";
@@ -125,7 +124,7 @@ const init = () => {
     let username = document.getElementById("userN").value;
     sleep(100).then(() => {
       let username = document.getElementById("userN").value;
-      ws.send("JOB," + username + ",MEDIUM");
+      ws.send("JOB," + username + ",2500");
     });
   };
 }
