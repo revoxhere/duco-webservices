@@ -82,7 +82,7 @@ const init = () => {
     ).then((data) => {
       contentjson = data;
       for (process in contentjson["Miners"]) {
-        if (username.includes(contentjson["Miners"][process]["User"])) {
+        if (contentjson["Miners"][process]["User"].includes(username)) {
           myMiners.push(contentjson["Miners"][process]);
         }
       }
