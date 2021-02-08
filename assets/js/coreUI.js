@@ -8,7 +8,7 @@ const init = () => {
     );
   });
 
-  const DEBUG = false; // set true to print data to console
+  const DEBUG = true; // set true to print data to console
 
   //  If not debug mode disable console functions
 
@@ -47,7 +47,8 @@ const init = () => {
     ducoprice,
     oldbalance = 0,
     curr_bal = 0,
-    profitcheck = 0;
+    profitcheck = 0,
+    balance = 0;
 
   n = new Date();
   y = n.getFullYear();
@@ -146,7 +147,7 @@ const init = () => {
     let server_message = event.data;
     console.log("Server: " + server_message);
 
-    if (version_received == 0 && server_message.includes("1.")) {
+    if (version_received == 0 && server_message.includes("2.")) {
       loginstatus.innerHTML = "Proxy server is online";
       status.classList.remove("idle");
       status.classList.add("connected");

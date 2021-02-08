@@ -60,7 +60,7 @@ const init = () => {
     let server_message = event.data;
     console.log("Server: " + server_message);
 
-    if (server_message.includes("1.")) {
+    if (server_message.includes("2.")) {
       proxyStatus.innerHTML = "Proxy server is online";
       proxyDots.classList.remove("idle");
       proxyDots.classList.add("connected");
