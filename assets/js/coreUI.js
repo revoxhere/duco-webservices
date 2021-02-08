@@ -8,7 +8,7 @@ const init = () => {
     );
   });
 
-  const DEBUG = true; // set true to print data to console
+  const DEBUG = false; // set true to print data to console
 
   //  If not debug mode disable console functions
 
