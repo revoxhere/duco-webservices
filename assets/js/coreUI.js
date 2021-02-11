@@ -28,6 +28,7 @@ const init = () => {
     miners = document.getElementsByClassName("bash")[0],
     login = document.querySelector("#login"),
     send = document.querySelector("#send"),
+    minerHashrate = document.getElementById("minerHR"),
     ws = new WebSocket("ws://51.15.127.80:15808");
 
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
@@ -48,14 +49,15 @@ const init = () => {
     oldbalance = 0,
     curr_bal = 0,
     profitcheck = 0,
-    balance = 0;
+    balance = 0,
+    totalHashes = 0;
 
   n = new Date();
   y = n.getFullYear();
   m = n.getMonth() + 1;
   d = n.getDate();
   document.getElementById("date").innerHTML =
-    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v1.9) " +
+    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v2.0) " +
     d +
     "/" +
     m +
@@ -73,6 +75,17 @@ const init = () => {
     document.getElementById("ducoprice").innerHTML = cutducoprice + " $";
     console.log(data);
   });
+
+  const calculateHashrate = (hashes) => {
+    hashes = parseFloat(hashes);
+    let hashrate = hashes.toFixed(2) + " h/s";
+
+    if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " Kh/s";
+    if (hashes / 1000000 > 0.5) hashrate = (hashes / 1000000).toFixed(2) + " Mh/s";
+    if (hashes / 1000000000 > 0.5) hashrate = (hashes / 1000000000).toFixed(2) + " Gh/s";
+
+    return hashrate;
+  };
 
   const MinerApi = (username) => {
     let myMiners = [];
@@ -98,7 +111,7 @@ const init = () => {
           " (" +
           myMiners[miner]["Software"] +
           ") " +
-          Math.round(myMiners[miner]["Hashrate"] / 1000) +
+          calculateHashrate(myMiners[miner]["Hashrate"]) +
           " kH/s" +
           IsEstimated +
           " @ diff " +
@@ -117,8 +130,12 @@ const init = () => {
           " accepted shares (" +
           myMiners[miner]["Sharetime"] +
           "ms last share time)</li>";
+
+          totalHashes = totalHashes + myMiners[miner]["Hashrate"];
       }
     });
+    minerHashrate.innerHTML = "⚡ Hashrate: ~" + calculateHashrate(totalHashes);
+    totalHashes = 0;
   }
 
   const ProfitCalculator = () => {
