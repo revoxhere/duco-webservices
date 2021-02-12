@@ -25,9 +25,7 @@ const init = () => {
     login = document.querySelector("#miningBtn"),
     ws = new WebSocket("ws://51.15.127.80:15808"),
     minerConsole = document.getElementsByClassName("bash")[0],
-    minerHashrate = document.getElementById("minerHR"),
-    minerRejected = document.getElementById("minerRej"),
-    minerAccepted = document.getElementById("minerAcc");
+    minerData = document.getElementById("minerData");
 
   let sharecounter = 0,
     hash_count = 0,
@@ -68,30 +66,24 @@ const init = () => {
       badsharecounter++;
       hash_count = hash_count / 1000;
 
-      minerAccepted.innerHTML = "✔️ Accepted: " + sharecounter + " | ";
-      minerRejected.innerHTML = "❌ Rejected: " + badsharecounter + " | ";
-      minerHashrate.innerHTML = "⚡ Hashrate: ~" + hash_count.toFixed(2) + " kH/s";
+      minerData.innerHTML = "✔️ Accepted: " + sharecounter + " | ";
+      minerData.innerHTML += "❌ Rejected: " + badsharecounter + "<br/>";
+      minerData.innerHTML += "⚡ Hashrate: ~ " + hash_count.toFixed(2) + " kH/s";
 
       hash_count = 0;
 
-      sleep(75).then(() => {
-        let username = document.getElementById("userN").value;
-        ws.send("JOB," + username + ",2500");
-      });
+      getJob();
     } else if (server_message == "GOOD") {
       sharecounter++;
       hash_count = hash_count / 1000;
-
-      minerAccepted.innerHTML = "✔️ Accepted: " + sharecounter + " | ";
-      minerRejected.innerHTML = "❌ Rejected: " + badsharecounter + " | ";
-      minerHashrate.innerHTML = "⚡ Hashrate: ~" + hash_count.toFixed(2) + " kH/s";
+      
+      minerData.innerHTML = "✔️ Accepted: " + sharecounter + " | ";
+      minerData.innerHTML += "❌ Rejected: " + badsharecounter + "<br/>";
+      minerData.innerHTML += "⚡ Hashrate: ~ " + hash_count.toFixed(2) + " kH/s";
 
       hash_count = 0;
 
-      sleep(75).then(() => {
-        let username = document.getElementById("userN").value;
-        ws.send("JOB," + username + ",2500");
-      });
+      getJob();
     } else if (server_message == "INVU") {
       minerConsole.innerHTML += "<br/>Error logging-in.";
       document.getElementById("error").classList.remove("hide");
@@ -118,14 +110,40 @@ const init = () => {
     }
   };
 
+  let GetWork = false;
+
+  const getJob = () => {
+    if(GetWork == true)
+    {
+      sleep(75).then(() => {
+        let username = document.getElementById("userN").value;
+        ws.send("JOB," + username + ",2500");
+      });
+    }
+  }
+
   login.onclick = (event) => {
-    minerConsole.innerHTML += "<br/>Please wait...";
-    minerConsole.innerHTML += "<br/>Mining thread started";
-    let username = document.getElementById("userN").value;
-    sleep(100).then(() => {
-      let username = document.getElementById("userN").value;
-      ws.send("JOB," + username + ",2500");
-    });
+    if(GetWork == false && login.innerHTML == "Start Mining")
+    {
+      minerConsole.innerHTML += "Please wait...<br/>";
+      minerConsole.innerHTML += "Mining thread started<br/>";
+
+      GetWork = true;
+
+      getJob();
+
+      login.innerHTML = "Stop Mining";
+      login.classList.toggle("btn-red");
+    }
+    else {
+      GetWork = false; 
+
+      minerConsole.innerHTML += "Please wait...<br/>";
+      minerConsole.innerHTML += "Mining thread stopped<br/>";
+
+      login.innerHTML = "Start Mining";
+      login.classList.toggle("btn-red");
+    }
   };
 }
 

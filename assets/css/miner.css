@@ -166,40 +166,40 @@ body {
 /************* Small Device *************/
 @media (min-width: 320px) and (max-width: 480px) {
   .col-sm-1 {
-    width: 8.33333%;
+    width: 8.33333% !important;
   }
   .col-sm-2 {
-    width: 16.66667%;
+    width: 16.66667% !important;
   }
   .col-sm-3 {
-    width: 25%;
+    width: 25% !important;
   }
   .col-sm-4 {
-    width: 33.33333%;
+    width: 33.33333% !important;
   }
   .col-sm-5 {
-    width: 41.66667%;
+    width: 41.66667% !important;
   }
   .col-sm-6 {
-    width: 50%;
+    width: 50% !important;
   }
   .col-sm-7 {
-    width: 58.33333%;
+    width: 58.33333% !important;
   }
   .col-sm-8 {
-    width: 66.66667%;
+    width: 66.66667% !important;
   }
   .col-sm-9 {
-    width: 75%;
+    width: 75% !important;
   }
   .col-sm-10 {
-    width: 83.33333%;
+    width: 83.33333% !important;
   }
   .col-sm-11 {
-    width: 91.66667%;
+    width: 91.66667% !important;
   }
   .col-sm-12 {
-    width: 100%;
+    width: 100% !important;
   }
 }
 
@@ -259,14 +259,16 @@ input {
   font-weight: bold !important;
   padding: 12px 45px !important;
   letter-spacing: 1px !important;
+  display: inline-block !important;
+  text-align: center !important;
   text-transform: uppercase !important;
-  -webkit-transition: -webkit-transform 80ms ease-in !important;
-  transition: -webkit-transform 80ms ease-in !important;
-  -o-transition: transform 80ms ease-in !important;
-  transition: transform 80ms ease-in !important;
-  transition: transform 80ms ease-in, -webkit-transform 80ms ease-in !important;
   text-decoration: none !important;
   background-color: #0787f5 !important;
+}
+
+.btn-red {
+  background-color: #f44336 !important;
+  border: 1px solid #d32f2f !important;
 }
 
 .btn-custom:focus {
@@ -344,15 +346,15 @@ input {
 }
 
 .mining-footer ul {
-  display: block;
-  float: right;
+  display: block !important;
+  float: right !important;
 
-  padding: 0;
+  padding: 0 !important;
 
-  margin-right: 10px;
-  margin-top: 5px;
+  margin-right: 10px !important;
+  margin-top: 5px !important;
 
-  list-style: none;
+  list-style: none !important;
 }
 
 .mining-footer .connected li {
@@ -434,10 +436,9 @@ input {
 .console-footer {
   width: 100%;
   background: #282b30;
-  height: 4vh;
+  min-height: 4vh;
   font-size: 0.9em;
   bottom: 0px;
-  display: absolute;
   color: #fff;
 }
 
@@ -521,5 +522,18 @@ input {
   .btn-custom {
     width: 80% !important;
     padding: 12px 30px !important;
+  }
+
+  .mining-footer h4 {
+    display: block !important;
+    float: left !important;
+  
+    font-size: 13px !important;
+
+    color: #ffffff;
+  
+    margin-left: 5px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
