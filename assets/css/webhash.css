@@ -518,6 +518,12 @@ input {
   width: 100%;
 }
 
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .footer {
+    position: fixed !important;
+  }
+}
+
 @media (max-width: 800px) {
   .btn-custom {
     width: 80% !important;
