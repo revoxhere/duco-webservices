@@ -65,6 +65,29 @@ const init = () => {
     "/" +
     y;
 
+  if(d == 14 && m == 2)
+  {
+    document.getElementById("date").innerHTML =
+    "❤️&nbsp;DUCO WebWallet (v2.0) " +
+    d +
+    "/" +
+    m +
+    "/" +
+    y;
+    document.head.innerHTML += `<style>
+    .bash {
+      background-image: radial-gradient(var(--scroll-track) 8.1333333333px, transparent 9.1333333333px),
+      radial-gradient(var(--scroll-track) 8.1333333333px, transparent 9.1333333333px),
+      radial-gradient(var(--scroll-track) 16.2666666667px, transparent 17.2666666667px),
+      radial-gradient(var(--scroll-track) 16.2666666667px, transparent 17.2666666667px),
+      linear-gradient(135deg, var(--scroll-track) 6%, var(--hover) 6.45%, var(--hover) 44%, transparent 46%, transparent 63%, var(--hover) 63.25%), 
+      linear-gradient(45deg, transparent 39.75%, var(--scroll-track) 40.5%, var(--scroll-track) 60%, transparent 0, transparent 93.25%, var(--scroll-track) 94%);
+      background-size: 122px 122px;
+      background-position: 54.4933333333px 56.9333333333px, 68.32px 56.9333333333px, -8.1333333333px -8.1333333333px, 16.2666666667px -8.1333333333px, 0 0, 0 0;
+    }
+    </style>`;
+  }
+
   // Get duco coin price
 
   getJSON(
