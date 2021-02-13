@@ -29,6 +29,7 @@ const init = () => {
     login = document.querySelector("#login"),
     send = document.querySelector("#send"),
     minerHashrate = document.getElementById("minerHR"),
+    loader = document.getElementById("loader");
     ws = new WebSocket("ws://51.15.127.80:15808");
 
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
@@ -176,8 +177,13 @@ const init = () => {
 
       navname.innerHTML = username;
 
-      fadeOut(loginpage);
-      fadeIn(walletpage);
+      window.setInterval(() => {
+        loader.style.display = "none";
+        loader.style.opacity = "0";
+
+        walletpage.style.display = "block";
+        walletpage.style.opacity = "1";
+      }, 500);
 
       window.setInterval(() => {
         MinerApi(username);
@@ -232,6 +238,13 @@ const init = () => {
   login.onclick = (event) => {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
+
+    loginpage.style.display = "none";
+    loginpage.style.opacity = "0";
+
+    loader.style.display = "block";
+    loader.style.opacity = "1";
+
     ws.send("LOGI," + username + "," + password);
     window.setInterval(() => {
       if(isWSOpen(ws)) ws.send("BALA");
