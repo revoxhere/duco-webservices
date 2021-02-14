@@ -1235,3 +1235,34 @@ input:checked + .slider:before {
     margin-top: 0 !important;
   }
 }
+
+/* HALLOWEEN */
+
+.content img {max-width:100%;}
+
+.spider {
+  display: block;
+  height: 45px;
+  right: 5%;
+  margin-left: -22px;
+  position: absolute;
+  top: 0;
+  width: 45px;
+  z-index: 2 !important;
+}
+
+@keyframes spider-move {
+  0% {height: 50px;}
+  100% {height: 200px;}
+}
+
+.spider::before {
+  display: block;
+  content: "";
+  width: 1px;
+  height: 50px;
+  background: #efebe4;
+  margin-left: 24px;
+  margin-bottom: -3px;
+  animation: spider-move 4s ease-in-out infinite alternate;
+}

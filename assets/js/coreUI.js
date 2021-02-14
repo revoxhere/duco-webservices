@@ -30,16 +30,23 @@ const init = () => {
     send = document.querySelector("#send"),
     minerHashrate = document.getElementById("minerHR"),
     loader = document.getElementById("loader");
-    ws = new WebSocket("ws://51.15.127.80:15808");
+  ws = new WebSocket("ws://51.15.127.80:15808");
 
-  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // if is a phone
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    // if is a phone
 
     let centers = document.querySelectorAll(".center"); // removes center
     [].forEach.call(centers, (el) => {
-      if(!/iPad/.test(navigator.userAgent)) el.classList.remove("center");
+      if (!/iPad/.test(navigator.userAgent)) el.classList.remove("center");
     });
 
-    document.getElementsByClassName("footer")[0].innerHTML = `Duino-Coin WebWallet made with
+    document.getElementsByClassName(
+      "footer"
+    )[0].innerHTML = `Duino-Coin WebWallet made with
           <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
           Background photo from pexels.com Edit made by LDarki 2021`;
   }
@@ -65,15 +72,9 @@ const init = () => {
     "/" +
     y;
 
-  if(d == 14 && m == 2)
-  {
+  if (d == 14 && m == 2) {
     document.getElementById("date").innerHTML =
-    "❤️&nbsp;DUCO WebWallet (v2.0) " +
-    d +
-    "/" +
-    m +
-    "/" +
-    y;
+      "❤️&nbsp;DUCO WebWallet (v2.0) " + d + "/" + m + "/" + y;
     document.head.innerHTML += `<style>
     .bash {
       background-image: radial-gradient(var(--scroll-track) 8.1333333333px, transparent 9.1333333333px),
@@ -84,6 +85,17 @@ const init = () => {
       linear-gradient(45deg, transparent 39.75%, var(--scroll-track) 40.5%, var(--scroll-track) 60%, transparent 0, transparent 93.25%, var(--scroll-track) 94%);
       background-size: 122px 122px;
       background-position: 54.4933333333px 56.9333333333px, 68.32px 56.9333333333px, -8.1333333333px -8.1333333333px, 16.2666666667px -8.1333333333px, 0 0, 0 0;
+    }
+    </style>`;
+  }
+
+  if (d == 31 && m == 10) {
+    document.getElementById("date").innerHTML =
+      "🎃&nbsp;DUCO WebWallet (v2.0) " + d + "/" + m + "/" + y;
+
+    document.head.innerHTML += `<style>
+    .spider {
+      display: block !important;
     }
     </style>`;
   }
@@ -105,8 +117,10 @@ const init = () => {
     let hashrate = hashes.toFixed(2) + " h/s";
 
     if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " Kh/s";
-    if (hashes / 1000000 > 0.5) hashrate = (hashes / 1000000).toFixed(2) + " Mh/s";
-    if (hashes / 1000000000 > 0.5) hashrate = (hashes / 1000000000).toFixed(2) + " Gh/s";
+    if (hashes / 1000000 > 0.5)
+      hashrate = (hashes / 1000000).toFixed(2) + " Mh/s";
+    if (hashes / 1000000000 > 0.5)
+      hashrate = (hashes / 1000000000).toFixed(2) + " Gh/s";
 
     return hashrate;
   };
@@ -155,12 +169,12 @@ const init = () => {
           myMiners[miner]["Sharetime"] +
           "ms last share time)</li>";
 
-          totalHashes = totalHashes + myMiners[miner]["Hashrate"];
+        totalHashes = totalHashes + myMiners[miner]["Hashrate"];
       }
     });
     minerHashrate.innerHTML = "⚡ Hashrate: ~" + calculateHashrate(totalHashes);
     totalHashes = 0;
-  }
+  };
 
   const ProfitCalculator = () => {
     let prev_bal = curr_bal;
@@ -176,7 +190,7 @@ const init = () => {
       document.getElementById("profitlabel").innerHTML =
         "~" + daily.toFixed(4) + " ᕲ/24h";
     }
-  }
+  };
 
   ws.onerror = () => {
     loginstatus.innerHTML = "Proxy server failed to connect";
@@ -275,7 +289,7 @@ const init = () => {
 
     ws.send("LOGI," + username + "," + password);
     window.setInterval(() => {
-      if(isWSOpen(ws)) ws.send("BALA");
+      if (isWSOpen(ws)) ws.send("BALA");
     }, 750);
   };
 
@@ -287,179 +301,178 @@ const init = () => {
     document.getElementById("notificate").classList.remove("hide");
   };
 
-  document.getElementsByClassName("login-container")[0].addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-      event.preventDefault();
-      login.click();
-    }
-  });
-
-  // Modal Functions
-
-    const trigger = document.querySelector('.modal_trigger');
-    const modal = document.querySelector('.modal');
-    const modalbg = document.querySelector('.modal_bg');
-    const content = document.querySelector('.modal_content');
-    const closer = document.querySelector('.modal_close');
-    const w = window;
-    let isOpen = false;
-    const contentDelay = 100;
-    const len = trigger.length;
-  
-    var getId = function(event) {
-      event.preventDefault();
-      var self = this;
-      makeDiv(self, modal);
-    };
-  
-    var makeDiv = function(self, modal) {
-      var fakediv = document.getElementById('modal_temp');
-      if (fakediv === null) {
-        var div = document.createElement('div');
-        div.id = 'modal_temp';
-        self.appendChild(div);
-        moveTrig(self, modal, div);
-      }
-    };
-  
-    var moveTrig = function(trig, modal, div) {
-      var trigProps = trig.getBoundingClientRect();
-      var m = modal;
-      var mProps = m.querySelector('.modal_content').getBoundingClientRect();
-      var transX, transY, scaleX, scaleY;
-      var xc = w.innerWidth / 2;
-      var yc = w.innerHeight / 2;
-  
-      trig.classList.add('modal_trigger--active');
-  
-      scaleX = mProps.width / trigProps.width;
-      scaleY = mProps.height / trigProps.height;
-  
-      scaleX = scaleX.toFixed(3); 
-      scaleY = scaleY.toFixed(3);
-  
-      transX = Math.round(xc - trigProps.left - trigProps.width / 2);
-      transY = Math.round(yc - trigProps.top - trigProps.height / 2);
-  
-      if (m.classList.contains('modal--align-top')) {
-        transY = Math.round(mProps.height / 2 + mProps.top - trigProps.top - trigProps.height / 2);
-      }
-
-      div.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
-      div.style.webkitTransform = 'scale(' + scaleX + ',' + scaleY + ')';
-  
-  
-      window.setTimeout(function() {
-        window.requestAnimationFrame(function() {
-          open(m, div);
-        });
-      }, contentDelay);
-    };
-  
-    var open = function(m, div) {
-      if (!isOpen) {
-        var content = m.querySelector('.modal_content');
-        m.classList.add('modal--active');
-        content.classList.add('modal_content--active');
-        content.addEventListener('transitionend', hideDiv, false);
-        isOpen = true;
-      }
-  
-      function hideDiv() {
-        div.style.opacity = '0';
-        content.removeEventListener('transitionend', hideDiv, false);
-      }
-    };
-  
-    var close = function(event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      var target = event.target;
-      var div = document.getElementById('modal_temp');
-
-      if (isOpen && target.classList.contains('modal_bg') || target.classList.contains('modal_close')) {
-
-        div.style.opacity = '1';
-        div.removeAttribute('style');
-        modal.classList.remove('modal--active');
-        content.classList.remove('modal_content--active');
-        trigger.style.transform = 'none';
-        trigger.style.webkitTransform = 'none';
-        trigger.classList.remove('modal_trigger--active');
-
-        div.addEventListener('transitionend', removeDiv, false);
-        isOpen = false;
-      }
-  
-      function removeDiv() {
-        setTimeout(function() {
-          window.requestAnimationFrame(function() {
-            div.remove();
-          });
-        }, contentDelay - 50);
-      }
-    };
-    trigger.addEventListener('click', getId, false);
-    closer.addEventListener('click', close, false);
-    modalbg.addEventListener('click', close, false);
-
-    var donateBtns = document.querySelectorAll('#donate');
-
-    [].forEach.call(donateBtns, function(div) {
-      div.onclick = () => {
-        var copyText = document.getElementById(div.dataset.id);
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        
-        var tooltip = document.getElementById(div.dataset.tooltip);
-        tooltip.innerHTML = "Copied: " + copyText.value;
-      }
-      div.onmouseout = () => {
-        var tooltip = document.getElementById(div.dataset.tooltip);
-        tooltip.innerHTML = "Copy to clipboard";
+  document
+    .getElementsByClassName("login-container")[0]
+    .addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        login.click();
       }
     });
 
-    /* THEME CHANGER */
+  // Modal Functions
 
-    const switcher = document.getElementById("theme-changer");
+  const trigger = document.querySelector(".modal_trigger");
+  const modal = document.querySelector(".modal");
+  const modalbg = document.querySelector(".modal_bg");
+  const content = document.querySelector(".modal_content");
+  const closer = document.querySelector(".modal_close");
+  const w = window;
+  let isOpen = false;
+  const contentDelay = 100;
+  const len = trigger.length;
 
-    const themeStyle = document.createElement( 'link' );
-    themeStyle.rel  = 'stylesheet';
-    document.head.appendChild( themeStyle );
+  var getId = function (event) {
+    event.preventDefault();
+    var self = this;
+    makeDiv(self, modal);
+  };
 
-      if (localStorage.getItem('mode') === 'blue')
-      {
-        themeStyle.href = "assets/css/blue.css";
-        switcher.checked = true;
-      }
-      else {
-        themeStyle.href = "assets/css/gray.css";
-        switcher.checked = false;
-      }
+  var makeDiv = function (self, modal) {
+    var fakediv = document.getElementById("modal_temp");
+    if (fakediv === null) {
+      var div = document.createElement("div");
+      div.id = "modal_temp";
+      self.appendChild(div);
+      moveTrig(self, modal, div);
+    }
+  };
 
-      switcher.onchange = () => {
-        if(switcher.checked == true)
-        {
-          localStorage.setItem('mode', "blue");
-          themeStyle.href = "assets/css/blue.css";
-        }
-        else {
-          localStorage.setItem('mode', "gray");
-          themeStyle.href = "assets/css/gray.css";
-        }
-      };
+  var moveTrig = function (trig, modal, div) {
+    var trigProps = trig.getBoundingClientRect();
+    var m = modal;
+    var mProps = m.querySelector(".modal_content").getBoundingClientRect();
+    var transX, transY, scaleX, scaleY;
+    var xc = w.innerWidth / 2;
+    var yc = w.innerHeight / 2;
+
+    trig.classList.add("modal_trigger--active");
+
+    scaleX = mProps.width / trigProps.width;
+    scaleY = mProps.height / trigProps.height;
+
+    scaleX = scaleX.toFixed(3);
+    scaleY = scaleY.toFixed(3);
+
+    transX = Math.round(xc - trigProps.left - trigProps.width / 2);
+    transY = Math.round(yc - trigProps.top - trigProps.height / 2);
+
+    if (m.classList.contains("modal--align-top")) {
+      transY = Math.round(
+        mProps.height / 2 + mProps.top - trigProps.top - trigProps.height / 2
+      );
+    }
+
+    div.style.transform = "scale(" + scaleX + "," + scaleY + ")";
+    div.style.webkitTransform = "scale(" + scaleX + "," + scaleY + ")";
+
+    window.setTimeout(function () {
+      window.requestAnimationFrame(function () {
+        open(m, div);
+      });
+    }, contentDelay);
+  };
+
+  var open = function (m, div) {
+    if (!isOpen) {
+      var content = m.querySelector(".modal_content");
+      m.classList.add("modal--active");
+      content.classList.add("modal_content--active");
+      content.addEventListener("transitionend", hideDiv, false);
+      isOpen = true;
+    }
+
+    function hideDiv() {
+      div.style.opacity = "0";
+      content.removeEventListener("transitionend", hideDiv, false);
+    }
+  };
+
+  var close = function (event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    var target = event.target;
+    var div = document.getElementById("modal_temp");
+
+    if (
+      (isOpen && target.classList.contains("modal_bg")) ||
+      target.classList.contains("modal_close")
+    ) {
+      div.style.opacity = "1";
+      div.removeAttribute("style");
+      modal.classList.remove("modal--active");
+      content.classList.remove("modal_content--active");
+      trigger.style.transform = "none";
+      trigger.style.webkitTransform = "none";
+      trigger.classList.remove("modal_trigger--active");
+
+      div.addEventListener("transitionend", removeDiv, false);
+      isOpen = false;
+    }
+
+    function removeDiv() {
+      setTimeout(function () {
+        window.requestAnimationFrame(function () {
+          div.remove();
+        });
+      }, contentDelay - 50);
+    }
+  };
+  trigger.addEventListener("click", getId, false);
+  closer.addEventListener("click", close, false);
+  modalbg.addEventListener("click", close, false);
+
+  var donateBtns = document.querySelectorAll("#donate");
+
+  [].forEach.call(donateBtns, function (div) {
+    div.onclick = () => {
+      var copyText = document.getElementById(div.dataset.id);
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+
+      var tooltip = document.getElementById(div.dataset.tooltip);
+      tooltip.innerHTML = "Copied: " + copyText.value;
+    };
+    div.onmouseout = () => {
+      var tooltip = document.getElementById(div.dataset.tooltip);
+      tooltip.innerHTML = "Copy to clipboard";
+    };
+  });
+
+  /* THEME CHANGER */
+
+  const switcher = document.getElementById("theme-changer");
+
+  const themeStyle = document.createElement("link");
+  themeStyle.rel = "stylesheet";
+  document.head.appendChild(themeStyle);
+
+  if (localStorage.getItem("mode") === "blue") {
+    themeStyle.href = "assets/css/blue.css";
+    switcher.checked = true;
+  } else {
+    themeStyle.href = "assets/css/gray.css";
+    switcher.checked = false;
+  }
+
+  switcher.onchange = () => {
+    if (switcher.checked == true) {
+      localStorage.setItem("mode", "blue");
+      themeStyle.href = "assets/css/blue.css";
+    } else {
+      localStorage.setItem("mode", "gray");
+      themeStyle.href = "assets/css/gray.css";
+    }
+  };
 };
 
-if (document.addEventListener) { 
+if (document.addEventListener) {
   document.addEventListener("DOMContentLoaded", init, false);
-}
-else if (/WebKit/i.test(navigator.userAgent)) { 
+} else if (/WebKit/i.test(navigator.userAgent)) {
   let _timer = setInterval(() => {
     if (/loaded|complete/.test(document.readyState)) {
-      init(); 
+      init();
     }
   }, 10);
-}
-else window.onload = init;
+} else window.onload = init;
