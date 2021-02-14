@@ -1241,7 +1241,7 @@ input:checked + .slider:before {
 .content img {max-width:100%;}
 
 .spider {
-  display: block;
+  display: none;
   height: 45px;
   right: 5%;
   margin-left: -22px;
