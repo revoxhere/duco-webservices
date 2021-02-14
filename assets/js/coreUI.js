@@ -216,6 +216,9 @@ const init = () => {
         ProfitCalculator();
       }, 10000);
     } else if (server_message.includes("NO")) {
+      loginpage.style.display = "block";
+      loginpage.style.opacity = "1";
+
       loader.style.display = "none";
       loader.style.opacity = "0";
       document.getElementById("error").classList.remove("hide");
