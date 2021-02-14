@@ -279,8 +279,6 @@ const init = () => {
       document.getElementById("balancetext").innerHTML = cutbalance + " ᕲ";
       document.getElementById("usdbalancetext").innerHTML = "$" + balanceusd;
     } else if (sendinfo == 1) {
-      document.getElementById("sendstatus").innerHTML =
-        "Server message: " + server_message;
       document.getElementById("notificate").classList.remove("hide");
       sendinfo = 0;
     }
