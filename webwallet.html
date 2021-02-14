@@ -54,7 +54,7 @@
       <h2>Duino-Coin Wallet</h2>
       <p>Login to existing account</p>
     </div>
-    <form class="login-container" autocomplete="off">
+    <form class="login-container">
       <p>
         <input type="text" id="username" placeholder="Username">
       </p>
@@ -151,7 +151,6 @@
                 <input type="text" value="39GpTtgCNNwFbPnhEbCCBzNBewG3bA7oso" id="btc">
                 <div class="tooltip">
                   <button id="donate" data-id="btc" data-tooltip="btc-toolTip">
-                    <span class="tooltiptext" id="btc-toolTip">Copy to clipboard</span>
                     Copy
                   </button>
                 </div>
@@ -163,7 +162,6 @@
                   id="btcc">
                 <div class="tooltip">
                   <button id="donate" data-id="btcc" data-tooltip="btcc-toolTip">
-                    <span class="tooltiptext" id="btcc-toolTip">Copy to clipboard</span>
                     Copy
                   </button>
                 </div>
@@ -174,7 +172,6 @@
                   <input type="text" value="LUgz5FArRpjma52jjEQAYjBK9VVV2Z9d3D" id="ltc">
                 <div class="tooltip">
                   <button id="donate" data-id="ltc" data-tooltip="ltc-toolTip">
-                    <span class="tooltiptext" id="ltc-toolTip">Copy to clipboard</span>
                     Copy
                   </button>
                 </div>
@@ -187,7 +184,6 @@
                   id="xmr">
                 <div class="tooltip">
                   <button id="donate" data-id="xmr" data-tooltip="xmr-toolTip">
-                    <span class="tooltiptext" id="xmr-toolTip">Copy to clipboard</span>
                     Copy
                   </button>
                 </div>
@@ -198,7 +194,6 @@
                 <input type="text" value="93qJ8j93ibCye7pTWKTu88pr6a8xy7EUqC" id="xmg">
                 <div class="tooltip">
                   <button id="donate" data-id="xmg" data-tooltip="xmg-toolTip">
-                    <span class="tooltiptext" id="xmg-toolTip">Copy to clipboard</span>
                     Copy
                   </button>
                 </div>
@@ -266,13 +261,20 @@
               <input type="text" id="recipient" placeholder="Receiver">
               <p></p>
               <input type="text" id="amountInput" placeholder="Amount">
-              <p></p>
+              <p style="margin: 6px;"></p>
               <div id="fundInput" class="buttons">
                 <button type='button' class="btn-custom" id="send">Send</button>
               </div>
+              <hr style="visibility: hidden;"/>
               <div class="hide" id="notificate">
                 Coins sent successfully
                 <label class="close alertC">
+                  X
+                </label>
+              </div>
+              <div class="hide" id="notificateErr">
+                Error sending coins
+                <label class="close alertCErr">
                   X
                 </label>
               </div>
@@ -289,8 +291,8 @@
                 ⚡ Hashrate: ~ 0 H/s
               </div>
             </div>
-
           </div>
+          <hr style="visibility: hidden;"/>
         </div>
       </div>
       <div class="footer">Duino-Coin WebWallet made with <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i>

@@ -52,7 +52,7 @@ const init = () => {
   }
 
   let version_received = 0,
-    sendinfo,
+    sendinfo = 0,
     ducoprice,
     oldbalance = 0,
     curr_bal = 0,
@@ -236,12 +236,18 @@ const init = () => {
         ProfitCalculator();
       }, 10000);
     } else if (server_message.includes("NO")) {
-      loginpage.style.display = "block";
-      loginpage.style.opacity = "1";
-
-      loader.style.display = "none";
-      loader.style.opacity = "0";
-      document.getElementById("error").classList.remove("hide");
+      if(sendinfo == 0)
+      {
+        loginpage.style.display = "block";
+        loginpage.style.opacity = "1";
+  
+        loader.style.display = "none";
+        loader.style.opacity = "0";
+        document.getElementById("error").classList.remove("hide");
+      }
+      else {
+        document.getElementById("notificateErr").classList.remove("hide");
+      }
     } else if (
       version_received == 1 &&
       server_message.includes(".") &&
@@ -275,12 +281,17 @@ const init = () => {
     } else if (sendinfo == 1) {
       document.getElementById("sendstatus").innerHTML =
         "Server message: " + server_message;
+      document.getElementById("notificate").classList.remove("hide");
       sendinfo = 0;
     }
   };
 
   document.getElementsByClassName("alertC")[0].onclick = (event) => {
     document.getElementById("notificate").classList.add("hide");
+  };
+
+  document.getElementsByClassName("alertCErr")[0].onclick = (event) => {
+    document.getElementById("notificateErr").classList.add("hide");
   };
 
   login.onclick = (event) => {
@@ -302,9 +313,11 @@ const init = () => {
   send.onclick = (event) => {
     let recipient = document.getElementById("recipient").value;
     let amount = document.getElementById("amountInput").value;
-    ws.send("SEND,-," + recipient + "," + amount);
-    sendinfo = 1;
-    document.getElementById("notificate").classList.remove("hide");
+    if(amount && recipient)
+    {
+      ws.send("SEND,-," + recipient + "," + amount);
+      sendinfo = 1;
+    }
   };
 
   document
@@ -436,13 +449,6 @@ const init = () => {
       copyText.select();
       copyText.setSelectionRange(0, 99999);
       document.execCommand("copy");
-
-      var tooltip = document.getElementById(div.dataset.tooltip);
-      tooltip.innerHTML = "Copied: " + copyText.value;
-    };
-    div.onmouseout = () => {
-      var tooltip = document.getElementById(div.dataset.tooltip);
-      tooltip.innerHTML = "Copy to clipboard";
     };
   });
 
