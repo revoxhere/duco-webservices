@@ -188,7 +188,7 @@ const init = () => {
     let tensec = curr_bal - prev_bal;
     let minute = tensec * 6;
     let hourly = minute * 60;
-    let daily = hourly * 12;
+    let daily = hourly * 24;
     profitcheck++;
 
     if (tensec > 0 && profitcheck > 1) {
