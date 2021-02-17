@@ -44,8 +44,8 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 
+  <script src="assets/js/Chart.min.js"></script>
   <script src="assets/js/Functions.js"></script>
-  <script src="assets/js/coreUI.js"></script>
 </head>
 
 <body>
@@ -215,73 +215,90 @@
         </div>
 
         <div class="row">
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
+          <div class="data-card col-xl-3 col-lg-3 col-md-6 col-sm-11 center">
             <div class="wrap">
               <h4 class="data-card__title">Duco Balance</h4>
-              <span class="data-card__count" id="balancetext">00.000000 ᕲ</span>
+              <span class="data-card__count" id="balancetext">00.000000 ᕲ ($0.000000)</span>
             </div>
           </div>
 
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
-            <div class="wrap">
-              <h4 class="data-card__title">U$D Balance</h4>
-              <span class="data-card__count" id="usdbalancetext">$0.000000</span>
-            </div>
-          </div>
-
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
+          <div class="data-card col-xl-3 col-lg-3 col-md-6 col-sm-11 center">
             <div class="wrap">
               <h4 class="data-card__title">1 Duco is worth</h4>
               <span class="data-card__count" id="ducoprice">$0.000000</span>
             </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
-            <div class="wrap">
-              <h4 class="data-card__title">LAST LOCAL TRANSACTION</h4>
-              <span class="data-card__count" id="lasttransaction">No Local Transactions</span>
-            </div>
-          </div>
-
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
+          <div class="data-card col-xl-3 col-lg-3 col-md-6 col-sm-11 center">
             <div class="wrap">
               <h4 class="data-card__title">ESTIMATED PROFIT (10s)</h4>
               <span class="data-card__count" id="profitlabel">PLEASE WAIT</span>
             </div>
           </div>
         </div>
+        <div class="row">
+        <div class="data-card col-3 col-sm-11 col-md-6 col-lg-3 center">
+          <div class="funds wrap">
+            <h4 class="data-card__title">Send Funds</h4>
+            <p></p>
+            <input type="text" id="recipient" placeholder="Receiver">
+            <p></p>
+            <input type="text" id="amountInput" placeholder="Amount">
+            <p style="margin: 6px;"></p>
+            <div id="fundInput" class="buttons">
+              <button type='button' class="btn-custom" id="send">Send</button>
+            </div>
+            <hr style="visibility: hidden;"/>
+            <div class="hide" id="notificate">
+              Coins sent successfully
+              <label class="close alertC">
+                X
+              </label>
+            </div>
+            <div class="hide" id="notificateErr">
+              Error sending coins
+              <label class="close alertCErr">
+                X
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="data-card col-3 col-sm-11 col-md-6 col-lg-3 center balanceTC">
+          <div class="wrap text-center">
+            <div class="caption">Account Transactions</div>
+            <div class="balanceT">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="transTable">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+        <hr style="border-color: #1b1f2e !important;"/>
 
         <div class="row">
-          <div class="data-card col-3 center col-sm-10 col-md-8 col-lg-3">
-            <div class="funds wrap">
-              <h4 class="data-card__title">Send Funds</h4>
-              <p></p>
-              <input type="text" id="recipient" placeholder="Receiver">
-              <p></p>
-              <input type="text" id="amountInput" placeholder="Amount">
-              <p style="margin: 6px;"></p>
-              <div id="fundInput" class="buttons">
-                <button type='button' class="btn-custom" id="send">Send</button>
-              </div>
-              <hr style="visibility: hidden;"/>
-              <div class="hide" id="notificate">
-                Coins sent successfully
-                <label class="close alertC">
-                  X
-                </label>
-              </div>
-              <div class="hide" id="notificateErr">
-                Error sending coins
-                <label class="close alertCErr">
-                  X
-                </label>
+          <div class="data-card col-md-6 col-sm-11 col-lg-4 center">
+            <div class="wrap">
+              <div class="card text-center">
+                <div class="card-body">
+                  <h2>Last 7 Transactions</h2>
+                  <canvas id="dataChart" class="center" width="100%" height="50%"></canvas>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="col-4 center col-sm-10 col-md-8 col-lg-3">
+          <div class="col-4 col-sm-11 col-md-6 col-lg-4 center">
             <div class="window">
               <div class="title">My Miners (3.5s)</div>
               <div class="bash">
@@ -301,6 +318,7 @@
     </div>
   </div>
   </div>
+  <script src="assets/js/coreUI.js"></script>
 </body>
 
 </html>

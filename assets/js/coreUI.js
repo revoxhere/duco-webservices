@@ -8,7 +8,7 @@ const init = () => {
     );
   });
 
-  const DEBUG = false; // set true to print data to console
+  const DEBUG = true; // set true to print data to console
 
   //  If not debug mode disable console functions
 
@@ -29,27 +29,53 @@ const init = () => {
     login = document.querySelector("#login"),
     send = document.querySelector("#send"),
     minerHashrate = document.getElementById("minerHR"),
-    loader = document.getElementById("loader");
-  ws = new WebSocket("ws://51.15.127.80:15808");
+    loader = document.getElementById("loader"),
+    chartCtx = document.getElementById('dataChart').getContext('2d'),
+    ws = new WebSocket("ws://51.15.127.80:15808"),
+    transtable = document.getElementById("transTable");
 
   if (
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
   ) {
-    // if is a phone
-
-    let centers = document.querySelectorAll(".center"); // removes center
-    [].forEach.call(centers, (el) => {
-      if (!/iPad/.test(navigator.userAgent)) el.classList.remove("center");
-    });
-
     document.getElementsByClassName(
       "footer"
     )[0].innerHTML = `Duino-Coin WebWallet made with
           <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i> and <i class="fas fa-heart"></i> by revox 2020<br/>
           Background photo from pexels.com Edit made by LDarki 2021`;
   }
+
+  var config = {
+    type: 'line',
+    data: {
+      labels: ["0", "0", "0", "0", "0", "0", "0"],
+      datasets: [{
+        label: 'Amount',
+        data: [0, 0, 0, 0, 0, 0, 0],
+        lineTension: 0,
+        backgroundColor: 'transparent',
+        borderColor: '#007bff',
+        borderWidth: 4,
+        fill: false,
+        pointBackgroundColor: '#007bff'
+      }]
+    },
+    options: {
+      animation: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false,
+          }
+        }]
+      },
+      legend: {
+        display: false,
+      }
+    }
+  };
+  const chartData = new Chart(chartCtx, config);
 
   let version_received = 0,
     sendinfo = 0,
@@ -60,12 +86,16 @@ const init = () => {
     balance = 0,
     totalHashes = 0;
 
+  ws.onclose = (code) => {
+    console.log('ws is closed with code: ' + code.code);
+  };
+
   n = new Date();
   y = n.getFullYear();
   m = n.getMonth() + 1;
   d = n.getDate();
   document.getElementById("date").innerHTML =
-    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v2.0) " +
+    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v2.1) " +
     d +
     "/" +
     m +
@@ -74,7 +104,7 @@ const init = () => {
 
   if (d == 14 && m == 2) {
     document.getElementById("date").innerHTML =
-      "❤️&nbsp;DUCO WebWallet (v2.0) " + d + "/" + m + "/" + y;
+      "❤️&nbsp;DUCO WebWallet (v2.1) " + d + "/" + m + "/" + y;
     document.head.innerHTML += `<style>
     .bash {
       background-image: -o-radial-gradient(var(--scroll-track) 8.1333333333px, transparent 9.1333333333px),
@@ -97,7 +127,7 @@ const init = () => {
 
   if (d == 31 && m == 10) {
     document.getElementById("date").innerHTML =
-      "🎃&nbsp;DUCO WebWallet (v2.0) " + d + "/" + m + "/" + y;
+      "🎃&nbsp;DUCO WebWallet (v2.1) " + d + "/" + m + "/" + y;
 
     document.head.innerHTML += `<style>
     .spider {
@@ -156,7 +186,6 @@ const init = () => {
           myMiners[miner]["Software"] +
           ") " +
           calculateHashrate(myMiners[miner]["Hashrate"]) +
-          " kH/s" +
           IsEstimated +
           " @ diff " +
           myMiners[miner]["Diff"] +
@@ -185,14 +214,12 @@ const init = () => {
   const ProfitCalculator = () => {
     let prev_bal = curr_bal;
     curr_bal = balance;
-    let tensec = curr_bal - prev_bal;
-    let minute = tensec * 6;
-    let hourly = minute * 60;
-    let daily = hourly * 12;
+
+    let daily = (((curr_bal - prev_bal)*6)*60)*24;
+
     profitcheck++;
 
-    if (tensec > 0 && profitcheck > 1) {
-      profit_array = [minute, hourly, daily];
+    if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
       document.getElementById("profitlabel").innerHTML =
         "~" + daily.toFixed(4) + " ᕲ/24h";
     }
@@ -206,6 +233,8 @@ const init = () => {
 
   ws.onmessage = (event) => {
     let server_message = event.data;
+    let servermsg = server_message;
+    servermsg = servermsg.replaceAll("'", '"').replaceAll("&#39;", '"');
     console.log("Server: " + server_message);
 
     if (version_received == 0 && server_message.includes("2.")) {
@@ -235,6 +264,7 @@ const init = () => {
       window.setInterval(() => {
         ProfitCalculator();
       }, 10000);
+
     } else if (server_message.includes("NO")) {
       if(sendinfo == 0)
       {
@@ -250,12 +280,36 @@ const init = () => {
       }
     } else if (
       version_received == 1 &&
+      hasKeys(servermsg)
+      ) {
+
+      jsonD = eval('(' + servermsg + ')');
+
+      transtable.innerHTML = "";
+      for (var i in jsonD)
+      {
+        let classD = "positive";
+        let symbolD = "+";
+
+        if(jsonD[i].Sender == document.getElementById("username").value) 
+        {
+          classD = "negative";
+          symbolD = "-";
+        }
+        
+        transtable.innerHTML += `<tr>
+          <td data-label="Date">${jsonD[i].Date}</td>
+          <td data-label="Amount" class="${classD}">${symbolD} ${jsonD[i].Amount}</td>
+        </tr>`;
+      }
+    } else if (
+      version_received == 1 &&
       server_message.includes(".") &&
       !isNaN(server_message) &&
       server_message.toString().indexOf(".") != -1
     ) {
       balanceusd = ducoprice * server_message;
-      balanceusd = balanceusd.toFixed(6);
+      balanceusd = balanceusd.toFixed(2);
 
       balance = server_message * 1;
       cutbalance = balance.toFixed(6);
@@ -272,12 +326,20 @@ const init = () => {
           today.getMinutes() +
           ":" +
           today.getSeconds();
-        document.getElementById("lasttransaction").innerHTML =
-          time + " : " + difference + " ᕲ";
+
+        chartData.data.labels.push(time);
+        chartData.data.labels.splice(0, 1); // remove first label
+    
+        chartData.data.datasets.forEach((dataset) => {
+          dataset.data.push(difference); 
+          dataset.data.splice(0, 1); // remove first data point
+        });
+
+        chartData.update();
       }
 
-      document.getElementById("balancetext").innerHTML = cutbalance + " ᕲ";
-      document.getElementById("usdbalancetext").innerHTML = "$" + balanceusd;
+      if(Number.isNaN(balanceusd)) balanceusd = " Error";
+      document.getElementById("balancetext").innerHTML = cutbalance + " ᕲ ($"+balanceusd+")";
     } else if (sendinfo == 1) {
       document.getElementById("notificate").classList.remove("hide");
       sendinfo = 0;
@@ -305,6 +367,7 @@ const init = () => {
     ws.send("LOGI," + username + "," + password);
     window.setInterval(() => {
       if (isWSOpen(ws)) ws.send("BALA");
+      if (isWSOpen(ws)) ws.send("GTXL," + document.getElementById("username").value + ",7");
     }, 750);
   };
 

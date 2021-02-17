@@ -22,6 +22,20 @@ const getJSON = (url, qs_params = "") => {
   });
 }
 
+const isJson = (str) => {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
+const hasKeys = (str) => {
+  if(str.includes("{") || str.includes("}")) return true;
+  return false;
+}
+
 const isWSOpen = (ws) => {
 	return ws.readyState === ws.OPEN;
 }

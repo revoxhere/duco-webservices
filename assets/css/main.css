@@ -21,9 +21,13 @@ body {
 }
 
 *, *:before, *:after {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
   font-family: "Lato", sans-serif;
+}
+
+* {
+  color: #ffffff !important;
 }
 
 /* Grid */
@@ -210,6 +214,10 @@ body {
 }
 
 /* General */
+
+canvas {
+  max-width: 415px !important;
+}
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -656,7 +664,7 @@ li {
 .bash {
   width: 100%;
   background:  var(--hover);
-  height: 30vh;
+  min-height: 30vh;
   border-radius: 5px;
   top: 40px;
   display: absolute;
@@ -1223,6 +1231,11 @@ input:checked + .slider:before {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+    margin-left: 0 !important;
+  }
+
+  ::-webkit-scrollbar { /* hide scrollbar*/
+    width: 0px !important;
   }
 
   .funds p {
@@ -1247,11 +1260,6 @@ input:checked + .slider:before {
     line-height: 64px;
   }
 
-  .footer {
-    margin-top: 20px;
-    margin-bottom: 0;
-  }
-
   /* Miners fix */
 
   .window {
@@ -1261,17 +1269,75 @@ input:checked + .slider:before {
 
   /* Rows fix */
 
-  .content .row:nth-child(2) {
-    margin-top: 10px;
-  }
-
-  .content .row:nth-child(3) {
-    margin-top: 10px;
-  }
-
   .content .row:nth-child(3) .wrap {
     margin-top: 0 !important;
   }
+}
+
+@media only screen and (max-width: 600px) 
+{ 
+  .sideBar {
+    display: none;
+    opacity: 0;
+  }
+}
+
+/* TRANSACTIONS DATA */
+
+.balanceTC .wrap {
+  padding: 5px !important;
+}
+
+.balanceT {
+  width: 100%;
+  max-height: 30vh;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+}
+
+.balanceT table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: 1px solid var(--light-bg);
+  border-collapse: collapse;
+}
+
+.balanceTC .caption {
+  font-size: 1.5em !important;
+  margin: .5em 0 .75em;
+}
+
+.balanceT table tr {
+  background-color: var(--hover) !important;
+  border: 1px solid var(--light-bg) !important;
+  padding: .35em !important;
+}
+
+.balanceT table th,
+.balanceT table td {
+  padding: .625em !important;
+  text-align: center !important;
+}
+
+.balanceT table th {
+  font-size: .85em !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+}
+
+@media screen and (max-width: 600px) {
+  .balanceTC .caption {
+    font-size: 1.3em !important;
+  }
+}
+
+.positive {
+  color: #00ff00 !important;
+}
+
+.negative {
+  color: #ff0000 !important;
 }
 
 /* HALLOWEEN */
