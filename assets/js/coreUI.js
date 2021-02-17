@@ -136,6 +136,12 @@ const init = () => {
     </style>`;
   }
 
+  if(isMobile.any())
+  {
+    document.getElementById("datePhone").innerHTML = document.getElementById("date").innerHTML;
+    document.querySelector(".sideBar").remove();
+  }
+
   // Get duco coin price
 
   getJSON(
@@ -299,7 +305,7 @@ const init = () => {
         
         transtable.innerHTML += `<tr>
           <td data-label="Date">${jsonD[i].Date}</td>
-          <td data-label="Amount" class="${classD}">${symbolD} ${jsonD[i].Amount}</td>
+          <td data-label="Amount" class="${classD}">${symbolD} ${jsonD[i].Amount.toFixed(6)}</td>
         </tr>`;
       }
     } else if (
