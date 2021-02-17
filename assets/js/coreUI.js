@@ -214,9 +214,16 @@ const init = () => {
   const ProfitCalculator = () => {
     let prev_bal = curr_bal;
     curr_bal = balance;
+<<<<<<< HEAD
 
     let daily = (((curr_bal - prev_bal)*6)*60)*24;
 
+=======
+    let tensec = curr_bal - prev_bal;
+    let minute = tensec * 6;
+    let hourly = minute * 60;
+    let daily = hourly * 24;
+>>>>>>> fa5d5e1c6f8f8262e760b9073639365e2ba1b22e
     profitcheck++;
 
     if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
