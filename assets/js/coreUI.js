@@ -1,14 +1,15 @@
-const init = () => {
-  setTimeout(() => {
-    console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
-    console.log.bind(
-      console,
-      "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
-      "font-size: large"
-    );
-  });
+setTimeout(() => {
+  console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
+  console.log.bind(
+    console,
+    "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
+    "font-size: large"
+  );
+});
 
-  const DEBUG = true; // set true to print data to console
+const init = () => {
+
+  const DEBUG = false; // set true to print data to console
 
   //  If not debug mode disable console functions
 
