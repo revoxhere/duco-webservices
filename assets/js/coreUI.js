@@ -1,13 +1,12 @@
-setTimeout(() => {
-  console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
-  console.log.bind(
-    console,
-    "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
-    "font-size: large"
-  );
-});
-
 const init = () => {
+  setTimeout(() => {
+    console.log.bind(console, "%cWarning", "color: red; font-size: 64px");
+    console.log.bind(
+      console,
+      "%cDo not paste anything on this console unless you know what you are doing, otherwise, without knowing what you are doing, your money or even personal data can be stolen!",
+      "font-size: large"
+    );
+  });
 
   const DEBUG = false; // set true to print data to console
 
@@ -157,13 +156,13 @@ const init = () => {
 
   const calculateHashrate = (hashes) => {
     hashes = parseFloat(hashes);
-    let hashrate = hashes.toFixed(2) + " h/s";
+    let hashrate = hashes.toFixed(2) + " H/s";
 
-    if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " Kh/s";
+    if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " kH/s";
     if (hashes / 1000000 > 0.5)
-      hashrate = (hashes / 1000000).toFixed(2) + " Mh/s";
+      hashrate = (hashes / 1000000).toFixed(2) + " MH/s";
     if (hashes / 1000000000 > 0.5)
-      hashrate = (hashes / 1000000000).toFixed(2) + " Gh/s";
+      hashrate = (hashes / 1000000000).toFixed(2) + " GH/s";
 
     return hashrate;
   };
