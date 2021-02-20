@@ -103,7 +103,7 @@ const init = () => {
           // and if correct result is found
 
           console.log("Miner: Share found: " + result);
-          ws.send(result + "," + hash_count + ",Official Webminer v2.0"); // send the result to the server
+          ws.send(result + "," + hash_count + ",Official Webminer v2.1"); // send the result to the server
           break;
         }
       }
@@ -117,7 +117,7 @@ const init = () => {
     {
       sleep(75).then(() => {
         let username = document.getElementById("userN").value;
-        ws.send("JOB," + username + ",2500");
+        ws.send("JOB," + username + ",MEDIUM");
       });
     }
   }
