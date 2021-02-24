@@ -145,7 +145,7 @@ const init = () => {
   // Get duco coin price
 
   getJSON(
-    "https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json"
+    "http://51.15.127.80/api.json"
   ).then((data) => {
     ducoprice = `${data["Duco price"]}`;
     let cutducoprice = 1 * ducoprice;
@@ -171,7 +171,7 @@ const init = () => {
     let myMiners = [];
     let contentjson = {};
     getJSON(
-      "https://raw.githubusercontent.com/revoxhere/duco-statistics/master/api.json"
+      "http://51.15.127.80/api.json"
     ).then((data) => {
       contentjson = data;
       for (process in contentjson["Miners"]) {
@@ -185,9 +185,16 @@ const init = () => {
         if (myMiners[miner]["Is estimated"] == "True") {
           IsEstimated = " (Estimated)";
         }
+        if(myMiners[miner]["Identifier"] == "None") {
+            minerId = "";
+        } else {
+            minerId = myMiners[miner]["Identifier"];
+        }
         miners.innerHTML +=
-          "<li>Miner #" +
+          "<li>#" +
           miner +
+          ": " +
+          minerId +
           " (" +
           myMiners[miner]["Software"] +
           ") " +
@@ -206,9 +213,9 @@ const init = () => {
               100
           ) +
           "%)" +
-          " accepted shares (" +
+          " acc. (" +
           myMiners[miner]["Sharetime"] +
-          "ms last share time)</li>";
+          "ms)</li>";
 
         totalHashes = totalHashes + myMiners[miner]["Hashrate"];
       }
@@ -374,7 +381,7 @@ const init = () => {
     window.setInterval(() => {
       if (isWSOpen(ws)) ws.send("BALA");
       if (isWSOpen(ws)) ws.send("GTXL," + document.getElementById("username").value + ",7");
-    }, 750);
+    }, 1000);
   };
 
   send.onclick = (event) => {
