@@ -8,7 +8,7 @@ const init = () => {
     );
   });
 
-  const DEBUG = false; // set true to print data to console
+  const DEBUG = true; // set true to print data to console
 
   //  If not debug mode disable console functions
 
@@ -95,7 +95,7 @@ const init = () => {
   m = n.getMonth() + 1;
   d = n.getDate();
   document.getElementById("date").innerHTML =
-    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v2.1) " +
+    "<img height='16em' width='16em' src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true'>&nbsp;DUCO WebWallet (v2.2) " +
     d +
     "/" +
     m +
@@ -104,7 +104,7 @@ const init = () => {
 
   if (d == 14 && m == 2) {
     document.getElementById("date").innerHTML =
-      "❤️&nbsp;DUCO WebWallet (v2.1) " + d + "/" + m + "/" + y;
+      "❤️&nbsp;DUCO WebWallet (v2.2) " + d + "/" + m + "/" + y;
     document.head.innerHTML += `<style>
     .bash {
       background-image: -o-radial-gradient(var(--scroll-track) 8.1333333333px, transparent 9.1333333333px),
@@ -127,7 +127,7 @@ const init = () => {
 
   if (d == 31 && m == 10) {
     document.getElementById("date").innerHTML =
-      "🎃&nbsp;DUCO WebWallet (v2.1) " + d + "/" + m + "/" + y;
+      "🎃&nbsp;DUCO WebWallet (v2.2) " + d + "/" + m + "/" + y;
 
     document.head.innerHTML += `<style>
     .spider {
@@ -379,9 +379,16 @@ const init = () => {
 
     ws.send("LOGI," + username + "," + password);
     window.setInterval(() => {
-      if (isWSOpen(ws)) ws.send("BALA");
-      if (isWSOpen(ws)) ws.send("GTXL," + document.getElementById("username").value + ",7");
+      if (isWSOpen(ws) && sendinfo == 0) {
+          ws.send("BALA");
+      }
     }, 1000);
+    
+    window.setInterval(() => {
+      if (isWSOpen(ws) && sendinfo == 0) {
+          ws.send("GTXL," + document.getElementById("username").value + ",7");
+      }
+    }, 3000);
   };
 
   send.onclick = (event) => {
