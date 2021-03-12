@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +34,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
     <style>
+      body {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+      }
+
+      .light body, .light .container {
+        background: rgb(231, 242, 252);
+      }
+      .light .icon svg {
+        color: #000000;
+      }
+
       .is-primary { 
         /* Override Bulmas primary color to Duco-Colored gradient*/
         background: linear-gradient(160deg, #e74c3c, #f39c12) !important;
@@ -60,8 +74,12 @@
           clickcount++;
           if (clickcount % 2 == 1) {
             $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+            $("html").removeClass("light");
+            $("html").addClass("dark");
           }
           if (clickcount % 2 == 0) {
+            $("html").removeClass("dark");
+            $("html").addClass("light");
             $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
           }
         }
