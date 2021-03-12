@@ -1,99 +1,253 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Duino-Coin | Web Miner</title>
+    <!-- SEO Stuff -->
+    <meta name="description" content="Duino-Coin Web Miner">
+    <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
+    <link rel="canonical" href="http://51.15.127.80/webminer.html" />
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#f0932b">
+    <!-- Open Graph Metadata -->
+    <meta property="og:site_name" content="Duino-Coin Web Miner" />
+    <meta property="og:site" content="http://51.15.127.80/webminer.html" />
+    <meta property="og:title" content="Duino-Coin Web Miner" />
+    <meta property="og:description" content="Duino-Coin Web Miner" />
+    <meta property="og:image"
+      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" />
+    <meta property="og:url" content="http://51.15.127.80/webminer.html" />
+    <meta property="og:type" content="website" />
+    <!-- Twitter Metadata -->
+    <meta name="twitter:title" content="Duino-Coin Web Miner">
+    <meta name="twitter:description" content="Duino-Coin Web Miner">
+    <meta name="twitter:image"
+      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
+    <meta name="twitter:site" content="@CoinDuino">
+    <meta name="twitter:creator" content="@CoinDuino">
+    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true"
+      type="image/png" />
+    <link rel="shortcut icon"
+      href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png" />
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
+    <style>
+      .is-primary { 
+        /* Override Bulmas primary color to Duco-Colored gradient*/
+        background: linear-gradient(160deg, #e74c3c, #f39c12) !important;
+      }
+    </style>
+    <!-- JS -->
+    <script type="text/javascript" src="http://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <!-- WebMiner -->
+    <script type="text/javascript">
+      let versionReceived = false;
+      let allShares = 0;
+      let acceptedShares = 0;
+      let inProgress = false;
+      let hashrate = 0;
+      let diff = "LOW";
+      let SHA1 = new Hashes.SHA1();
+      let timeDiff;
+      let clickcount = 0;
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Duino-Coin Web Miner</title>
-  <!-- SEO Stuff -->
-  <meta name="description" content="Duino-Coin Web Miner">
-  <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
-  <link rel="canonical" href="http://51.15.127.80/webminer.html" />
-  <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#f0932b">
-  <!-- Open Graph Metadata -->
-  <meta property="og:site_name" content="Duino-Coin Web Miner" />
-  <meta property="og:site" content="http://51.15.127.80/webminer.html" />
-  <meta property="og:title" content="Duino-Coin Web Miner" />
-  <meta property="og:description" content="Duino-Coin Web Miner" />
-  <meta property="og:image"
-    content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" />
-  <meta property="og:url" content="http://51.15.127.80/webminer.html" />
-  <meta property="og:type" content="website" />
-  <!-- Twitter Metadata -->
-  <meta name="twitter:title" content="Duino-Coin Web Miner">
-  <meta name="twitter:description" content="Duino-Coin Web Miner">
-  <meta name="twitter:image"
-    content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
-  <meta name="twitter:site" content="@CoinDuino">
-  <meta name="twitter:creator" content="@CoinDuino">
-  <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true"
-    type="image/png" />
-  <link rel="shortcut icon"
-    href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png" />
-  <script src="assets/js/sha1.js"></script>
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-  <link href="assets/css/webhash.css" rel="stylesheet">
-  <script src="assets/js/webhash.js"></script>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-</head>
+      window.addEventListener('load', function () {
+        document.getElementById('darkmode').onclick = function() {
+          clickcount++;
+          if (clickcount % 2 == 1) {
+            $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+          }
+          if (clickcount % 2 == 0) {
+            $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
+          }
+        }
 
-<body>
-  <div class="content">
-    <div class="row margin-t">
-      <div class="data-card col-4 center col-sm-8 col-md-6">
-        <div class="wrap minerD">
-          <h4 class="data-card__title"><img height="24em" width="24em"
-              src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">&nbsp;Duino-Coin
-            Miner</h4>
-          <span class="data-card__count">Official JS Miner v2.0</span>
-          <input type="text" id="userN" placeholder="Username">
-          <p></p>
-          <div id="fundInput" class="buttons">
-            <button type='button' class="btn-custom" id="miningBtn">Start Mining</button>
-            <hr style="visibility: hidden;" />
-            <a href="http://51.15.127.80/webwallet.html" class="btn-custom">Open Web Wallet</a>
-          </div>
-          <p></p>
-          <div class="mining-footer">
-            <h4 id="proxy">
-              Connecting to proxy
-            </h4>
-            <ul class="idle" id="proxyD">
-              <li></li>
-              <li></li>
-              <li></li>
-            </ul>
-          </div>
-          <div class="hide" id="error">Error logging-in, refresh the page to try again. </div>
-        </div>
-      </div>
+        let url_string = window.location;
+        let url = new URL(url_string);
+        let username = url.searchParams.get("username");
+        if (username != null && username != "" && username != undefined) {
+          document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
+          document.getElementById("minebuttonclass").style = "background-color: #27ae60;";
+          document.getElementById("usernameinput").value = username;
 
-      <div class="col-4 margin-t center col-sm-8 col-md-6">
-        <div class="window">
-          <div class="title">Console</div>
-          <div class="bash">
+          let socket = new WebSocket("ws://51.15.127.80:15808", null, 5000, 5);
+          socket.onmessage = function(msg) {
+            serverMessage = msg.data;
+            if (serverMessage.includes("2.")) {
+              console.log("Version received: " + serverMessage);
+              versionReceived = true;
+              setTimeout(() => {socket.send("JOB," + username + "," + diff)}, 500);
+            }
+
+            if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
+              console.log("Share accepted");
+              acceptedShares++;
+              allShares++;
+              document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
+              document.getElementById("sharesperc").innerHTML = " (" + acceptedShares/allShares*100 + "%)";
+              document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
+              document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
+              socket.send("JOB," + username + "," + diff)
+            }
+
+            else if (versionReceived && serverMessage === "BAD") {
+              console.log("Share rejected");
+              document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
+              document.getElementById("sharesperc").innerHTML = " (" + acceptedShares/allShares*100 + "%)";
+              document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
+              allShares++;
+              socket.send("JOB," + username + "," + diff)
+            }
+
+            if (versionReceived && serverMessage.includes("This user doesn't exist")) {
+              console.log("User not found!");
+              document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
+              document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
+            }
+
+            if (versionReceived && serverMessage.length > 80) {
+              console.log("Job received: " + serverMessage);
+              job = serverMessage.split(",");
+              difficulty = job[2];
+
+              startTime = new Date();
+              for (result = 0; result < 100 * difficulty + 1; result++) {
+                ducos1 = SHA1.hex(job[0] + result);
+                if (job[1] === ducos1) {
+                  endTime = new Date();
+                  timeDiff = (endTime - startTime) / 1000;
+                  hashrate = (result / timeDiff).toFixed(2);
+                  console.log("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                  socket.send(result + "," + hashrate + ",Official Webminer v2.3"); // send the result to the server
+                  break;
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
+      <span class="title">Duino-Coin Web Miner</span>
+    </div>
+    <div class="container">
+      <section class="hero is-full">
+        <div class="hero-body">
+          <br>
+          <p class="title">
+            <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
+            Duino-Coin Web Miner
+          </p>
+          <p class="subtitle">
+            Official JavaScript miner v2.3
+            <span class="subtitle is-size-6">
+              by
+              <a href="https://github.com/revoxhere/">revox</a>
+               & 
+              <a href="https://github.com/LDarki">LDarki</a>
+              <br>2020-2021 Duino-Coin Community
+            </span>
+          </p>
+          <div class="container">
+            <form>
+              <div class="field has-addons">
+                <div class="control has-icons-left is-expanded">
+                  <input class="input has-icons" type="text" id="usernameinput" placeholder="Enter your username" name="username">
+                  <span class="icon is-left">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+                <div class="control">
+                  <button type="submit" class="button is-link" id="minebuttonclass">
+                    <span id="minebutton">Start mining</span>
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
-          <div class="console-footer">
-            <div id="minerData">
-              ✔️ Accepted: 0 | 
-              ❌ Rejected: 0<br/>
-              ⚡ Hashrate: ~ 0 kH/s      
+          <br>
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <p class="subtitle">
+                  <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
+                  ACCEPTED SHARES
+                </p>
+                <p class="title">
+                  <span id="shares">
+                    0/0
+                  </span>
+                  <span class="subtitle" id="sharesperc">
+                    (0%)
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="box">
+                <p class="subtitle">
+                  <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
+                  HASHRATE
+                </p>
+                <p class="title">
+                  <span id="hashrate">
+                    0 H/s
+                  </span>
+                  <span class="subtitle" id="time">
+                    0 s
+                  </span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+          <div class="columns">
+            <div class="column">
+              <button id="darkmode" class="button is-secondary">
+                <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
+                <span>Switch theme</span>
+              </button>
+              <a href="http://51.15.127.80/webwallet.html" class="button is-secondary">
+                <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWallet.ico">
+                <span>Web Wallet</span>
+              </a>
+              <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
+                <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
+                <span>GitHub</span>
+              </a>
+              <a href="https://duinocoin.com" class="button is-secondary">
+                <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+                <span>Duino-Coin</span>
+              </a>
+              <a href="https://bulma.io" class="button is-secondary">
+                <span>Made with</span>&nbsp;&nbsp;
+                <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
+                <span><b>BULMA</b></span>
+              </a>
+              <a href="https://github.com/h2non/jshashes" class="button is-secondary">
+                <i class="fa fa-fw fa-code icon is-small" style="color:#78e08f;"></i>&nbsp;
+                <span>Hashing with</span>&nbsp;
+                <span><b>jsHashes</b></span>
+              </a>
             </div>
           </div>
         </div>
-      </div>
-      <hr style="visibility: hidden;">
-      <hr style="visibility: hidden;">
-      <hr style="visibility: hidden;">
-      <hr style="visibility: hidden;">
-      <hr style="visibility: hidden;">
-      <div class="footer">Duino-Coin WebMiner made with <i class="fas fa-coffee"></i>, <i class="fas fa-code"></i>
-        and <i class="fas fa-heart"></i> by revox 2020
-        | Edit made by LDarki 2021</div>
+      </section>
     </div>
-</body>
-
+  </body>
 </html>
+
+<script>
+  let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
+  pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
+  window.addEventListener('load', function() {
+    pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
+  });
+</script>
