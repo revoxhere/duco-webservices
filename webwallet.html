@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -34,8 +33,8 @@
       type="image/png" />
     <link rel="shortcut icon"
       href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
-
-    <!-- Preload BackGround Images -->
+    
+    <!-- Preload Background Images -->
     <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
     <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
     <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
@@ -50,7 +49,6 @@
         background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
       }
       body {
-        /*background: url("https://i.imgur.com/trNkG47.png");*/
         background-size: cover !important;
         background-attachment: fixed !important;
         width: 100% !important;
@@ -306,8 +304,8 @@
                   ProfitCalculator();
                 }, 5000);
 
-                $("#login").hide("300")
-                $("#wallet").show("1300")
+                $("#login").hide("1000")
+                $("#wallet").show("2000")
               }
 
               else if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("NO")) {
