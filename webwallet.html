@@ -335,7 +335,7 @@
                       classD = "negative";
                       symbolD = "-";
                     }
-                    transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount} ᕲ</td></tr>`;
+                    transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(4)} ᕲ</td></tr>`;
                   }
                 }
                 catch (e) {
