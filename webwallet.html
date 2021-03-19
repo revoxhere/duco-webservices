@@ -160,6 +160,13 @@
           return hashrate;
         };
 
+        // IF CAN EVAL
+
+        const canEval = (str) => {
+          try { eval(str); } catch (e){ return false; }
+          return true;
+        }
+
         // MINER DATA FROM API
         const MinerAPI = (username) => {
           $.getJSON('http://51.15.127.80/api.json', function(data) {
@@ -322,7 +329,7 @@
                 setTimeout(() => {socket.send("GTXL," + username + ",10")}, 900);
               }
 
-              else if (sending == false && loggedIn && versionReceived) {
+              else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
                 try {
                   jsonD = eval('(' + serverMessage + ')');
                   transtable.innerHTML = "";
