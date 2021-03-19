@@ -73,7 +73,7 @@
       }
       .balanceTC .caption {
         font-size: 1.5em !important;
-        margin: .5em 0 .75em;
+        margin: .5em 0 .5em;
       }
       .balanceT table tr {
         background-color: var(--hover) !important;
@@ -82,11 +82,11 @@
       }
       .balanceT table th,
       .balanceT table td {
-        padding: .625em !important;
-        text-align: center !important;
+        padding: .5em !important;
+        text-align: left !important;
       }
       .balanceT table th {
-        font-size: .85em !important;
+        /*font-size: .85em !important;*/
         letter-spacing: .1em !important;
         text-transform: uppercase !important;
       }
@@ -159,9 +159,8 @@
 
           return hashrate;
         };
-
+        
         // IF CAN EVAL
-
         const canEval = (str) => {
           try { eval(str); } catch (e){ return false; }
           return true;
@@ -311,7 +310,7 @@
                   ProfitCalculator();
                 }, 5000);
 
-                $("#login").hide("1000")
+                $("#login").hide("2000")
                 $("#wallet").show("2000")
               }
 
@@ -326,7 +325,7 @@
                 balanceusd = balance * ducoUsdPrice;
                 document.getElementById("balance").innerHTML = balance.toFixed(8) + " ᕲ";
                 document.getElementById("balanceusd").innerHTML = "≈$" + balanceusd.toFixed(4);
-                setTimeout(() => {socket.send("GTXL," + username + ",10")}, 900);
+                setTimeout(() => {socket.send("GTXL," + username + ",7")}, 900);
               }
 
               else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
@@ -340,7 +339,7 @@
                       classD = "negative";
                       symbolD = "-";
                     }
-                    transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(4)} ᕲ</td></tr>`;
+                    transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td><td data-label="Sender">${jsonD[i].Sender}</td><td data-label="Recipient">${jsonD[i].Recipient}</td></tr>`;
                   }
                 }
                 catch (e) {
@@ -388,6 +387,7 @@
 
             <section id="login">
               <div class="column">
+               <!-- <p style="color:red">Warning: server is under maintenance<br>There may be some access issues.</p>-->
                 <div class="field">
                   <label for="" class="label">Username</label>
                   <div class="control has-icons-left">
@@ -489,6 +489,8 @@
                             <tr>
                               <th scope="col">Date</th>
                               <th scope="col">Amount</th>
+                              <th scope="col">Sender</th>
+                              <th scope="col">Recipient</th>
                             </tr>
                           </thead>
                           <tbody id="transactions">
