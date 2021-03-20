@@ -1,79 +1,78 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Duino-Coin Web Wallet - Register</title>
-      <!-- SEO Stuff -->
-      <meta name="description" content="Duino-Coin Web Wallet - Register">
-      <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco webwallet">
-      <link rel="canonical" href="http://51.15.127.80/register.html" />
-      <meta name="robots" content="index, follow">
-      <meta name="theme-color" content="#f0932b">
-      <!-- Open Graph Metadata -->
-      <meta property="og:site_name" content="Duino-Coin Web Wallet - Register" />
-      <meta property="og:site" content="http://51.15.127.80/register.html" />
-      <meta property="og:title" content="Duino-Coin Web Wallet - Register"/>
-      <meta property="og:description" content="Duino-Coin Web Wallet - Register" /> 
-      <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
-      <meta property="og:url" content="http://51.15.127.80/register.html" />
-      <meta property="og:type" content="website" />   
-      <!-- Twitter Metadata -->
-      <meta name="twitter:title" content="Duino-Coin Web Wallet - Register">
-      <meta name="twitter:description" content="Duino-Coin Web Wallet - Register">
-      <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
-      <meta name="twitter:site" content="@CoinDuino">
-      <meta name="twitter:creator" content="@CoinDuino">
-      <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
-      <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png"/>
-      <link rel="stylesheet" href="bulma.min.css">
-      <script defer src="all.js"></script>
-      <script src="jquery.min.js"></script>
-      <style>
-        body {
-          background: url("bckg.jpg") no-repeat;
-          background-size: cover;
-          background-attachment: fixed;
-        }
-        h1, h2, h3, h4, h5, h6, p, label, div {
-          color: white !important;
-        }
-        a {
-          color: #2c3e50 !important;
-        }
-        ::placeholder {
-          color: #2c3e50 !important;
-          opacity: 1;
-        }
-        input {
-          background-color: none !important;
-          color: white !important;
-          border-style: none !important;
-        }
-        .custButton {
-          border-style: none !important;
-          color: white !important;
-        }
-        .container21 {
-          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);   
-          border-radius: 6px;
-          border-top: 100px;
-          padding: 1em;
-          background-color: rgba(0, 0, 0, .1);
-            
-          backdrop-filter: blur(15px);
-          -moz-filter: blur(15px);
-          -o-filter: blur(15px);
-          -ms-filter: blur(15px);
-        }
-        #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #FFFFFF; z-index:9999;}
-      </style>
-      <script>
-      $(window).on('load', function() {
-          $("#cover").hide();
-      });
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Duino-Coin | Web Wallet</title>
 
+    <!-- SEO Stuff -->
+    <meta name="description" content="Duino-Coin Web Wallet">
+    <meta name="keywords" content="Wallet, webWallet, duinocoin, duco, duco webWallet, web Wallet">
+    <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#f0932b">
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:site_name" content="Duino-Coin Web Wallet" />
+    <meta property="og:site" content="http://51.15.127.80/webwallet.html" />
+    <meta property="og:title" content="Duino-Coin Web Wallet" />
+    <meta property="og:description" content="Duino-Coin Web Wallet" />
+    <meta property="og:image"
+      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
+    <meta property="og:url" content="http://51.15.127.80/webwallet.html" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Metadata -->
+    <meta name="twitter:title" content="Duino-Coin Web Wallet">
+    <meta name="twitter:description" content="Duino-Coin Web Wallet">
+    <meta name="twitter:image"
+      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
+    <meta name="twitter:site" content="@CoinDuino">
+    <meta name="twitter:creator" content="@CoinDuino">
+    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true"
+      type="image/png" />
+    <link rel="shortcut icon"
+      href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
+    
+    <!-- Preload Background Images -->
+    <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
+
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
+
+    <style>
+      .is-primary { 
+        /* Override Bulmas primary color to Duco-Colored gradient*/
+        background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
+      }
+      body {
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        width: 100% !important;
+        min-height: -webkit-fill-available;
+        overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-repeat: no-repeat !important;
+      }
+      </style>
+
+    <!-- JS -->
+    <script type="text/javascript" src="http://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
+    <script>
       window.onload = function() {
+        // RANDOM BACKGROUND
+        let num = Math.ceil(Math.random() * 3);
+        if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
+        if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
+        if (num >= 3) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+
         var speed = "normal";
         $("html, body").hide();
         $(document).ready(function() {
@@ -99,7 +98,7 @@
           let server_message = event.data;
           console.log("Server: " + server_message)
 
-          if (server_message.includes("1.")) {
+          if (server_message.includes("2.")) {
             document.getElementById("loginstatus").innerHTML = "Proxy server is online";
             version_received = 1;
 
@@ -134,72 +133,82 @@
           }
         }
       }
-      </script>
-   </head>
-   <body>
-    <div id="cover"></div>
-      <section id="herosection" style="height: 100em">
-         <div class="hero-body">
-               <div class="columns is-centered">
-                  <div class="column is-5-tablet is-4-desktop is-30-widescreen">
-                     <div class="box container21">
-                      <h1 class="title"><img height="25em" width="25em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">&nbsp;Duino-Coin Wallet</h1>
-                       <h2 class="subtitle">Register new account</h2>
-                        <div class="field">
-                           <label for="" class="label">New Account Username</label>
-                           <div id="usernameInput" class="field">
-                              <p class="control has-icons-left">
-                                 <input class="container21 input" id="username" type="text" placeholder="Username">
-                                 <span class="icon is-small is-left">
-                                 <i class="fas fa-user"></i>
-                                 </span>
-                              </p>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label for="" class="label">Password</label>
-                           <div id="pwdInput" class="field">
-                              <p class="control has-icons-left">
-                                 <input class="input container21" id="password" type="password" placeholder="Password">
-                                 <span class="icon is-small is-left">
-                                 <i class="fas fa-lock"></i>
-                                 </span>
-                              </p>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label for="" class="label">Confirm Password</label>
-                           <div id="pwdInput" class="field">
-                              <p class="control has-icons-left">
-                                 <input class="input container21" id="passwordconfirm" type="password" placeholder="Confirm Password">
-                                 <span class="icon is-small is-left">
-                                 <i class="fas fa-lock"></i>
-                                 </span>
-                              </p>
-                           </div>
-                        </div>
-                        <div class="field">
-                           <label for="" class="label">E-Mail</label>
-                           <div id="pwdInput" class="field">
-                              <p class="control has-icons-left">
-                                 <input class="input container21" id="email" type="email" placeholder="E-Mail">
-                                 <span class="icon is-small is-left">
-                                 <i class="fas fa-at"></i>
-                                 </span>
-                              </p>
-                           </div>
-                        </div>
-                        <div id="loginInput" class="buttons">
-                           <button class="button container21 custButton register">Register</button>
-                           <a href="/webwallet.html" class="button container21 custButton">Login</a>
-                        </div>
-                        <h4 class="subtitle is-7" id="loginstatus">Connecting to proxy</h4>
-                     </div>
+    </script>
+  </head>
+  <body>
+    <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
+      <span class="title">Duino-Coin Web Wallet</span>
+    </div>
+      <section class="hero is-fullheight">
+        <div class="hero-body is-align-self-center">
+          <div class="container">
+            <div class="box">
+              <h1 class="title"><img height="25em" width="25em" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">&nbsp;Duino-Coin Web Wallet</h1>
+              <h2 class="subtitle">Register a new account</h2>
+              <div class="field">
+                <label for="" class="label">New Account Username</label>
+                <div id="usernameInput" class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" id="username" type="text" placeholder="Username">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label for="" class="label">Password</label>
+                <div id="pwdInput" class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" id="password" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label for="" class="label">Confirm Password</label>
+                <div id="pwdInput" class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" id="passwordconfirm" type="password" placeholder="Confirm Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="field">
+                <label for="" class="label">E-Mail</label>
+                <div id="pwdInput" class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" id="email" type="email" placeholder="E-Mail">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-at"></i>
+                      </span>
+                    </p>
                   </div>
-               </div>
+                </div>
+                <div class="field">
+                  <p class="subtitle is-size-6">By registering you agree to comply with the Duino-Coin <a href="https://github.com/revoxhere/duino-coin#terms-of-usage">terms of usage</a>.</p>
+                  <div id="loginInput" class="buttons">
+                    <button class="button is-success register">Register</button>
+                    <a href="/webwallet.html" class="button is-link">Login</a>
+                  </div>
+                  <h4 class="subtitle is-size-7" id="loginstatus">Connecting to proxy</h4>
+                </div>
+              </div>
             </div>
          </div>
       </section>
    </body>
 </html>
+
+<script>
+  let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
+  pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
+  window.addEventListener('load', function() {
+    pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
+  });
+</script>
 
