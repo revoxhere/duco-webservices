@@ -59,9 +59,9 @@
         background-repeat: no-repeat !important;
       }
       .balanceT {
-        width: 100%;
+        max-width: 60vw;
         max-height: 30vh;
-        overflow-x: hidden !important;
+        overflow-x: scroll !important;
         overflow-y: scroll !important;
       }
       .balanceT table {
@@ -86,7 +86,6 @@
         text-align: left !important;
       }
       .balanceT table th {
-        /*font-size: .85em !important;*/
         letter-spacing: .1em !important;
         text-transform: uppercase !important;
       }
@@ -95,6 +94,19 @@
       }
       .negative {
         color: #EA2027 !important;
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
       }
     </style>
 
