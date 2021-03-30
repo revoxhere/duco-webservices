@@ -30,6 +30,10 @@
       type="image/png" />
     <link rel="shortcut icon"
       href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true" type="image/png" />
+    <!-- Preload Background Images -->
+    <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
@@ -38,9 +42,30 @@
         /* Override Bulmas primary color to Duco-Colored gradient*/
         background: linear-gradient(160deg, #e74c3c, #f39c12) !important;
       }
+      body {
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-repeat: no-repeat !important;
+      }
+      html {
+        /* Height and width fallback for older browsers. */
+        height: 100%;
+        width: 100%;
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+      }
+      .fullscreen {
+        backdrop-filter: blur(12px);
+        backdrop-filter: contrast(40%);
+      }
     </style>
     <!-- JS -->
-    <script type="text/javascript" src="http://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
     <!-- WebMiner -->
@@ -54,8 +79,16 @@
       let SHA1 = new Hashes.SHA1();
       let timeDiff;
       let clickcount = 0;
-
+      if (window.location.href === "https://server.duinocoin.com/webminer.html") {
+        window.location.replace("http://51.15.127.80/webminer.html");
+      }
       window.addEventListener('load', function () {
+        // RANDOM BACKGROUND
+        let num = Math.ceil(Math.random() * 3);
+        if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
+        if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
+        if (num >= 3) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+        
         document.getElementById('darkmode').onclick = function() {
           clickcount++;
           if (clickcount % 2 == 1) {
@@ -75,40 +108,62 @@
           rigid = "None"
         }
 
-        console.log(rigid)
+        let minerlog = ["Awaiting input..."];
+        let finalstring = "";
+        var intervalId = window.setInterval(function(){
+          for (miner in minerlog) {
+            finalstring = "";
+            if (minerlog[miner-2] != undefined) {
+              finalstring = minerlog[miner-2] + "<br>";
+            }
+            if (minerlog[miner-1] != undefined) {
+              finalstring += minerlog[miner-1] + "<br>";
+            }
+            if (minerlog[miner] != undefined) {
+              finalstring += minerlog[miner];
+            }
+          }
+          document.getElementById("minerlog").innerHTML = finalstring;
+        }, 100);
+
         if (username != null && username != "" && username != undefined) {
           document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
-          document.getElementById("minebuttonclass").style = "background-color: #27ae60;";
+          document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
           document.getElementById("usernameinput").value = username;
           document.getElementById("riginput").value = rigid;
 
-          let socket = new WebSocket("ws://51.15.127.80:15808", null, 5000, 5);
+          let socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
           socket.onmessage = function(msg) {
             serverMessage = msg.data;
             if (serverMessage.includes("2.")) {
               console.log("Version received: " + serverMessage);
+              minerlog.push("Version received: " + serverMessage);
               versionReceived = true;
               setTimeout(() => {socket.send("JOB," + username + "," + diff)}, 500);
             }
 
             if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-              console.log("Share accepted");
+              console.log("Share accepted:" + result);
+              minerlog.push("Share accepted: " + result);
               acceptedShares++;
               allShares++;
               document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
-              document.getElementById("sharesperc").innerHTML = " (" + acceptedShares/allShares*100 + "%)";
+              document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares/allShares*100).toFixed(2) + "%)";
               document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
               document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
-              socket.send("JOB," + username + "," + diff)
+              
+              setTimeout(() => {socket.send("JOB," + username + "," + diff)}, 100);
             }
 
-            else if (versionReceived && serverMessage === "BAD") {
+            if (versionReceived && serverMessage === "BAD") {
               console.log("Share rejected");
-              document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
-              document.getElementById("sharesperc").innerHTML = " (" + acceptedShares/allShares*100 + "%)";
-              document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
+              minerlog.push("Share rejected: " + result);
               allShares++;
-              socket.send("JOB," + username + "," + diff)
+              document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
+              document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares/allShares*100).toFixed(2) + "%)";
+              document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
+              document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
+              setTimeout(() => {socket.send("JOB," + username + "," + diff)}, 100);
             }
 
             if (versionReceived && serverMessage.includes("This user doesn't exist")) {
@@ -117,10 +172,19 @@
               document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
             }
 
-            if (versionReceived && serverMessage.length > 80) {
+            if (versionReceived && serverMessage.length > 40) {
               console.log("Job received: " + serverMessage);
+              minerlog.push("Job received: " + serverMessage);
               job = serverMessage.split(",");
               difficulty = job[2];
+
+              if (difficulty > 15000) {
+                document.getElementById("difficultytext").innerHTML = "MEDIUM";
+              } else {
+                document.getElementById("difficultytext").innerHTML = "LOW";
+              } 
+
+              document.getElementById("difficulty").innerHTML = difficulty;
 
               startTime = new Date();
               for (result = 0; result < 100 * difficulty + 1; result++) {
@@ -130,7 +194,8 @@
                   timeDiff = (endTime - startTime) / 1000;
                   hashrate = (result / timeDiff).toFixed(2);
                   console.log("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                  socket.send(result + "," + hashrate + ",Official Webminer v2.3," + rigid); // send the result to the server
+                  minerlog.push("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                  socket.send(result + "," + hashrate + ",Official Webminer v2.3.5," + rigid); // send the result to the server
                   break;
                 }
               }
@@ -145,112 +210,141 @@
       <span class="title">Duino-Coin Web Miner</span>
     </div>
     <div class="container">
-      <section class="hero is-full">
+      <section class="container">
         <div class="hero-body">
-          <br>
-          <p class="title">
-            <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
-            Duino-Coin Web Miner
-          </p>
-          <p class="subtitle">
-            Official JavaScript miner v2.3
-            <span class="subtitle is-size-6">
-              by
-              <a href="https://github.com/revoxhere/">revox</a>
-               & 
-              <a href="https://github.com/LDarki">LDarki</a>
-              <br>2020-2021 Duino-Coin Community
-            </span>
-          </p>
-          <form>
+          <div class="box">
+            <p class="title">
+              <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWebMiner.png?raw=true">
+              Duino-Coin Web Miner
+            </p>
+            <p class="subtitle">
+              Official JavaScript miner v2.3.5
+              <span class="subtitle is-size-6">
+                by
+                <a href="https://github.com/revoxhere/">revox</a>
+                 & 
+                <a href="https://github.com/LDarki">LDarki</a>
+                <br>2020-2021 Duino-Coin Community
+              </span>
+            </p>
+            <form>
+              <div class="columns">
+                <div class="column">
+                  <div class="control has-icons-left">
+                    <input class="input has-icons" type="text" id="usernameinput" placeholder="DUCO Username" name="username">
+                    <span class="icon is-left">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="control has-icons-left">
+                    <input class="input has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
+                    <span class="icon is-left">
+                      <i class="fa fa-comment"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="column">
+                  <button type="submit" class="button is-link" id="minebuttonclass">
+                    <span id="minebutton">Start mining</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
             <div class="columns">
               <div class="column">
-                <div class="control has-icons-left">
-                  <input class="input has-icons" type="text" id="usernameinput" placeholder="DUCO Username" name="username">
-                  <span class="icon is-left">
-                    <i class="fa fa-user"></i>
-                  </span>
+                <div class="box">
+                  <p class="subtitle">
+                    <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
+                    ACCEPTED SHARES
+                  </p>
+                  <p class="title">
+                    <span id="shares">
+                      0/0
+                    </span>
+                    <span class="subtitle" id="sharesperc">
+                      (0%)
+                    </span>
+                  </p>
                 </div>
               </div>
+
               <div class="column">
-                <div class="control has-icons-left">
-                  <input class="input has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
-                  <span class="icon is-left">
-                    <i class="fa fa-comment"></i>
-                  </span>
+                <div class="box">
+                  <p class="subtitle">
+                    <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
+                    HASHRATE
+                  </p>
+                  <p class="title">
+                    <span id="hashrate">
+                      0 H/s
+                    </span>
+                    <span class="subtitle" id="time">
+                      0 s
+                    </span>
+                  </p>
                 </div>
               </div>
+
               <div class="column">
-                <button type="submit" class="button is-link" id="minebuttonclass">
-                  <span id="minebutton">Start mining</span>
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <div class="columns">
-            <div class="column">
-              <div class="box">
-                <p class="subtitle">
-                  <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
-                  ACCEPTED SHARES
-                </p>
-                <p class="title">
-                  <span id="shares">
-                    0/0
-                  </span>
-                  <span class="subtitle" id="sharesperc">
-                    (0%)
-                  </span>
-                </p>
+                <div class="box">
+                  <p class="subtitle">
+                    <i class="fa fa-cogs fa-fw" style="color:#2980b9;"></i>
+                    DIFFICULTY
+                  </p>
+                  <p class="title">
+                    <span id="difficulty">
+                      0
+                    </span>
+                    <span class="subtitle" id="difficultytext">
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div class="column">
-              <div class="box">
-                <p class="subtitle">
-                  <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
-                  HASHRATE
-                </p>
-                <p class="title">
-                  <span id="hashrate">
-                    0 H/s
-                  </span>
-                  <span class="subtitle" id="time">
-                    0 s
-                  </span>
-                </p>
+            <div class="columns">
+              <div class="column">
+                <div class="box">
+                  <p class="subtitle">
+                    <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
+                    MINER LOG
+                  </p>
+                  <span style="color:#57606f;" id="minerlog">Awaiting input...</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="buttons">
-            <button id="darkmode" class="button is-secondary">
-              <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
-              <span>Switch theme</span>
-            </button>
-            <a href="http://51.15.127.80/webwallet.html" class="button is-secondary">
-              <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWallet.ico">
-              <span>Web Wallet</span>
-            </a>
-            <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
-              <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
-              <span>GitHub</span>
-            </a>
-            <a href="https://duinocoin.com" class="button is-secondary">
-              <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
-                <span>Duino-Coin</span>
-            </a>
-            <a href="https://bulma.io" class="button is-secondary">
-              <span>Made with</span>&nbsp;&nbsp;
-              <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
-              <span><b>BULMA</b></span>
-            </a>
-            <a href="https://github.com/h2non/jshashes" class="button is-secondary">
-              <i class="fa fa-fw fa-code icon is-small" style="color:#78e08f;"></i>&nbsp;
-              <span>Hashing with</span>&nbsp;
-              <span><b>jsHashes</b></span>
-            </a>
+            <div class="buttons">
+              <button id="darkmode" class="button is-secondary">
+                <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
+                <span>Switch theme</span>
+              </button>
+              <a href="http://51.15.127.80/webwallet.html" class="button is-secondary">
+                <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWallet.ico">
+                <span>Web Wallet</span>
+              </a>
+              <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
+                <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
+                <span>GitHub</span>
+              </a>
+              <a href="https://duinocoin.com" class="button is-secondary">
+                <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+                  <span>Duino-Coin</span>
+              </a>
+              <a href="https://bulma.io" class="button is-secondary">
+                <span>Made with</span>&nbsp;&nbsp;
+                <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
+                <span><b>BULMA</b></span>
+              </a>
+              <a href="https://github.com/h2non/jshashes" class="button is-secondary">
+                <i class="fa fa-fw fa-code icon is-small" style="color:#78e08f;"></i>&nbsp;
+                <span>Hashing with</span>&nbsp;
+                <span><b>jsHashes</b></span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
