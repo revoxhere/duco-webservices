@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -58,16 +59,25 @@
         padding: 0 !important;
         background-repeat: no-repeat !important;
       }
-      .balanceT {
-        max-width: 60vw;
-        max-height: 30vh;
-        overflow-x: scroll !important;
-        overflow-y: scroll !important;
-      }
+      @media only screen and (max-width: 500px) {
+        .balanceT {
+            max-width: 16em;
+            max-height: 45vh;
+            overflow-x: scroll !important;
+            overflow-y: scroll !important;
+        }
+     }
+      @media only screen and (min-width: 500px) {
+        .balanceT {
+            max-width: 26em;
+            max-height: 45vh;
+            overflow-x: scroll !important;
+            overflow-y: scroll !important;
+        }
+     }
       .balanceT table {
         margin: 0;
         padding: 0;
-        width: 100%;
         border: 1px solid var(--light-bg);
         border-collapse: collapse;
       }
@@ -262,7 +272,7 @@
           transtable.innerHTML += `<tr><td data-label="Date">No transactions yet</td></tr>`;
 
           if (username != null && username != "" && username != undefined && password != null && password != "" && password != undefined) {
-            let socket = new WebSocket("ws://51.15.127.80:15808", null, 5000, 5);
+            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
 
             document.getElementById('send').onclick = function() {
               document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
@@ -438,7 +448,7 @@
             <section id="wallet" style="display: none;">
               <div class="container">
                 <div class="columns">
-                  <div class="column">
+                  <div class="column is-one-third">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-wallet fa-fw" style="color:#f39c12;"></i>
@@ -455,7 +465,7 @@
                     </div>
                   </div>
 
-                  <div class="column">
+                  <div class="column is-one-third">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-coins fa-fw" style="color:#ff6b6b;"></i>
@@ -471,7 +481,7 @@
                     </div>
                   </div>
 
-                  <div class="column">
+                  <div class="column is-one-third">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
@@ -489,7 +499,7 @@
                 </div>
 
                 <div class="columns">
-                  <div class="column">
+                  <div class="column is-one-third is-mobile">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-list-ul fa-fw" style="color:#2ecc71;"></i>
@@ -512,7 +522,7 @@
                     </div>
                   </div>
 
-                  <div class="column">
+                  <div class="column is-one-third">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-share fa-fw" style="color:#17c0eb;"></i>
@@ -544,7 +554,7 @@
                     </div>
                   </div>
 
-                  <div class="column">
+                  <div class="column is-one-third">
                     <div class="box">
                       <p class="subtitle">
                         <i class="fa fa-chart-bar fa-fw" style="color:#e17055;"></i>
