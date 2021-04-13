@@ -157,7 +157,7 @@
 
         // PRICE FROM API
         const GetData = () => {
-          $.getJSON('http://51.15.127.80/api.json', function(data) {
+          $.getJSON('https://server.duinocoin.com/api.json', function(data) {
             ducoUsdPrice = data["Duco price"];
             document.getElementById("ducousd").innerHTML = "1 ᕲ ≈ $" + (ducoUsdPrice).toFixed(4);
           });
@@ -190,7 +190,7 @@
 
         // MINER DATA FROM API
         const MinerAPI = (username) => {
-          $.getJSON('http://51.15.127.80/api.json', function(data) {
+          $.getJSON('https://server.duinocoin.com/api.json', function(data) {
             let myMiners = [];
             let contentjson = {};
             miners = document.getElementById("miners");
