@@ -184,9 +184,9 @@
                 miners = document.getElementById("miners");
                 minerHashrate = document.getElementById("minerHR"),
                     contentjson = data;
-                for (process in contentjson["Miners"]) {
-                    if (contentjson["Miners"][process]["User"].includes(username)) {
-                        myMiners.push(contentjson["Miners"][process]);
+                for (process in contentjson) {
+                    if (contentjson[process]["User"].includes(username)) {
+                        myMiners.push(contentjson[process]);
                     }
                 }
                 miners.innerHTML = "";
