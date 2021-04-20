@@ -1,51 +1,41 @@
-
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Duino-Coin | Web Wallet</title>
-
     <!-- SEO Stuff -->
     <meta name="description" content="Duino-Coin Web Wallet">
     <meta name="keywords" content="Wallet, webWallet, duinocoin, duco, duco webWallet, web Wallet">
     <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#f0932b">
-
     <!-- Open Graph Metadata -->
     <meta property="og:site_name" content="Duino-Coin Web Wallet" />
     <meta property="og:site" content="https://wallet.duinocoin.com" />
     <meta property="og:title" content="Duino-Coin Web Wallet" />
     <meta property="og:description" content="Duino-Coin Web Wallet" />
-    <meta property="og:image"
-      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
+    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
     <meta property="og:url" content="https://wallet.duinocoin.com" />
     <meta property="og:type" content="website" />
-
     <!-- Twitter Metadata -->
     <meta name="twitter:title" content="Duino-Coin Web Wallet">
     <meta name="twitter:description" content="Duino-Coin Web Wallet">
-    <meta name="twitter:image"
-      content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
+    <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
     <meta name="twitter:site" content="@CoinDuino">
     <meta name="twitter:creator" content="@CoinDuino">
-    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true"
-      type="image/png" />
-    <link rel="shortcut icon"
-      href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
-    
+    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
+    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
     <!-- Preload Background Images -->
     <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
     <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
     <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
-
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
-
     <style>
-      .is-primary { 
+        .is-primary { 
         /* Override Bulmas primary color to Duco-Colored gradient*/
         background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
       }
@@ -119,24 +109,22 @@
         background: #555;
       }
     </style>
-
     <!-- JS -->
     <script type="text/javascript" src="http://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-
     <!-- WebWallet -->
     <script type="text/javascript">
-      let versionReceived = false;
-      let loggedIn = false;
-      let clickcount = 0;
-      let balance = 0;
-      let curr_bal = 0;
-      let profitcheck = 0;
-      let ducoUsdPrice = 0.0065;
-      let sending = false;
+    let versionReceived = false;
+    let loggedIn = false;
+    let clickcount = 0;
+    let balance = 0;
+    let curr_bal = 0;
+    let profitcheck = 0;
+    let ducoUsdPrice = 0.0065;
+    let sending = false;
 
-      window.addEventListener('load', function () {
+    window.addEventListener('load', function() {
 
         // RANDOM BACKGROUND
         let num = Math.ceil(Math.random() * 3);
@@ -146,495 +134,481 @@
 
         // THEME SWITCHER
         document.getElementById('darkmode').onclick = function() {
-          clickcount++;
-          if (clickcount % 2 == 1) {
-            $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
-          }
-          if (clickcount % 2 == 0) {
-            $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-          }
+            clickcount++;
+            if (clickcount % 2 == 1) {
+                $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+            }
+            if (clickcount % 2 == 0) {
+                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
+            }
         }
 
         // PRICE FROM API
         const GetData = () => {
-          $.getJSON('https://server.duinocoin.com/api.json', function(data) {
-            ducoUsdPrice = data["Duco price"];
-            document.getElementById("ducousd").innerHTML = "1 ᕲ ≈ $" + (ducoUsdPrice).toFixed(4);
-          });
+            $.getJSON('https://server.duinocoin.com/api.json', function(data) {
+                ducoUsdPrice = data["Duco price"];
+                document.getElementById("ducousd").innerHTML = "1 ᕲ ≈ $" + (ducoUsdPrice).toFixed(4);
+            });
         };
         GetData();
         window.setInterval(() => {
-          GetData();
+            GetData();
         }, 10000);
 
         // HASHRATE PREFIX CALCULATOR
         let totalHashes = 0;
         const calculateHashrate = (hashes) => {
-          hashes = parseFloat(hashes);
-          let hashrate = hashes.toFixed(2) + " H/s";
+            hashes = parseFloat(hashes);
+            let hashrate = hashes.toFixed(2) + " H/s";
 
-          if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " kH/s";
-          if (hashes / 1000000 > 0.5)
-            hashrate = (hashes / 1000000).toFixed(2) + " MH/s";
-          if (hashes / 1000000000 > 0.5)
-            hashrate = (hashes / 1000000000).toFixed(2) + " GH/s";
+            if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " kH/s";
+            if (hashes / 1000000 > 0.5)
+                hashrate = (hashes / 1000000).toFixed(2) + " MH/s";
+            if (hashes / 1000000000 > 0.5)
+                hashrate = (hashes / 1000000000).toFixed(2) + " GH/s";
 
-          return hashrate;
+            return hashrate;
         };
-        
+
         // IF CAN EVAL
         const canEval = (str) => {
-          try { eval(str); } catch (e){ return false; }
-          return true;
+            try { eval(str); } catch (e) { return false; }
+            return true;
         }
 
         // MINER DATA FROM API
         const MinerAPI = (username) => {
-          $.getJSON('https://server.duinocoin.com/api.json', function(data) {
-            let myMiners = [];
-            let contentjson = {};
-            miners = document.getElementById("miners");
-            minerHashrate = document.getElementById("minerHR"),
-            contentjson = data;
-            for (process in contentjson["Miners"]) {
-              if (contentjson["Miners"][process]["User"].includes(username)) {
-                myMiners.push(contentjson["Miners"][process]);
-              }
-            }
-            miners.innerHTML = "";
-            for (miner in myMiners) {
-              let IsEstimated = "";
-              if (myMiners[miner]["Is estimated"] == "True") {
-                IsEstimated = " (Estimated)";
-              }
-              if(myMiners[miner]["Identifier"] == "None") {
-                minerId = "";
-              } else {
-                minerId = myMiners[miner]["Identifier"];
-              }
-              miners.innerHTML +=
-                "<b>#" +
-                miner +
-                "</b>: " +
-                minerId +
-                " (" +
-                myMiners[miner]["Software"] +
-                ") <b>" +
-                calculateHashrate(myMiners[miner]["Hashrate"]) +
-                IsEstimated +
-                "</b> @ diff " +
-                myMiners[miner]["Diff"] +
-                ", " +
-                myMiners[miner]["Accepted"] +
-                "/" +
-                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
-                " <b>(" +
-                Math.round(
-                  (myMiners[miner]["Accepted"] /
-                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
-                    100
-                ) +
-                "%)</b><br>";
-              totalHashes = totalHashes + myMiners[miner]["Hashrate"];
-            }
-            minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
-            totalHashes = 0;
-          });
+            $.getJSON('https://server.duinocoin.com/api.json', function(data) {
+                let myMiners = [];
+                let contentjson = {};
+                miners = document.getElementById("miners");
+                minerHashrate = document.getElementById("minerHR"),
+                    contentjson = data;
+                for (process in contentjson["Miners"]) {
+                    if (contentjson["Miners"][process]["User"].includes(username)) {
+                        myMiners.push(contentjson["Miners"][process]);
+                    }
+                }
+                miners.innerHTML = "";
+                for (miner in myMiners) {
+                    let IsEstimated = "";
+                    if (myMiners[miner]["Is estimated"] == "True") {
+                        IsEstimated = " (Estimated)";
+                    }
+                    if (myMiners[miner]["Identifier"] == "None") {
+                        minerId = "";
+                    } else {
+                        minerId = myMiners[miner]["Identifier"];
+                    }
+                    miners.innerHTML +=
+                        "<b>#" +
+                        miner +
+                        "</b>: " +
+                        minerId +
+                        " (" +
+                        myMiners[miner]["Software"] +
+                        ") <b>" +
+                        calculateHashrate(myMiners[miner]["Hashrate"]) +
+                        IsEstimated +
+                        "</b> @ diff " +
+                        myMiners[miner]["Diff"] +
+                        ", " +
+                        myMiners[miner]["Accepted"] +
+                        "/" +
+                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                        " <b>(" +
+                        Math.round(
+                            (myMiners[miner]["Accepted"] /
+                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                            100
+                        ) +
+                        "%)</b><br>";
+                    totalHashes = totalHashes + myMiners[miner]["Hashrate"];
+                }
+                minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
+                totalHashes = 0;
+            });
         }
 
         // PROFIT CALCULATOR
         const ProfitCalculator = () => {
-          let prev_bal = curr_bal;
-          curr_bal = balance;
-          let daily = (((curr_bal - prev_bal)*12)*60)*24;
-          profitcheck++;
-          if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
-            document.getElementById("estimatedprofit").innerHTML = daily.toFixed(2) + " ᕲ";
-            document.getElementById("estimatedprofitusd").innerHTML = "≈$" + (daily * ducoUsdPrice).toFixed(2);
-          }
+            let prev_bal = curr_bal;
+            curr_bal = balance;
+            let daily = (((curr_bal - prev_bal) * 12) * 60) * 24;
+            profitcheck++;
+            if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
+                document.getElementById("estimatedprofit").innerHTML = daily.toFixed(2) + " ᕲ";
+                document.getElementById("estimatedprofitusd").innerHTML = "≈$" + (daily * ducoUsdPrice).toFixed(2);
+            }
         };
 
         // ENTER KEY AS LOGIN
         var input = document.getElementById("login");
         input.addEventListener("keyup", function(event) {
-          if (event.keyCode === 13) {
-            event.preventDefault();
-            document.getElementById("loginbutton").click();
-          }
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("loginbutton").click();
+            }
         });
 
         // MAIN WALLET SCRIPT
         document.getElementById('loginbutton').onclick = function() {
-          document.getElementById("loginstatus").innerHTML = "Connecting...";
-          let username = document.getElementById('usernameinput').value
-          let password = document.getElementById('passwordinput').value
-          let transtable = document.getElementById("transactions");
-          transtable.innerHTML += `<tr><td data-label="Date">No transactions yet</td></tr>`;
+            document.getElementById("loginstatus").innerHTML = "Connecting...";
+            let username = document.getElementById('usernameinput').value
+            let password = document.getElementById('passwordinput').value
+            let transtable = document.getElementById("transactions");
+            transtable.innerHTML += `<tr><td data-label="Date">No transactions yet</td></tr>`;
 
-          if (username != null && username != "" && username != undefined && password != null && password != "" && password != undefined) {
-            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+            if (username != null && username != "" && username != undefined && password != null && password != "" && password != undefined) {
+                let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
 
-            document.getElementById('send').onclick = function() {
-              document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
-              let recipient = document.getElementById('recipientinput').value
-              let amount = document.getElementById('amountinput').value
-              let memo = document.getElementById('memoinput').value
-              if (recipient != null && recipient != "" && recipient != undefined && amount != null && amount != "" && amount != undefined) {
-                sending = true;
-                setTimeout(() => {socket.send("SEND," + memo + "," + recipient + "," + amount)}, 1);
-                document.getElementById("sendinginfo").innerHTML = "Confirming transaction..."
-                
-              } else {
-                document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>"
-                setTimeout(() => {document.getElementById("sendinginfo").innerHTML = ""}, 5000);
-                setTimeout(() => {document.getElementById("sendingtxid").innerHTML = ""}, 5000);
-              }
-            }
+                document.getElementById('send').onclick = function() {
+                    document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
+                    let recipient = document.getElementById('recipientinput').value
+                    let amount = document.getElementById('amountinput').value
+                    let memo = document.getElementById('memoinput').value
+                    if (recipient != null && recipient != "" && recipient != undefined && amount != null && amount != "" && amount != undefined) {
+                        sending = true;
+                        setTimeout(() => { socket.send("SEND," + memo + "," + recipient + "," + amount) }, 1);
+                        document.getElementById("sendinginfo").innerHTML = "Confirming transaction..."
 
-            socket.onmessage = function(msg) {
-              serverMessage = msg.data;
-
-              if (versionReceived && loggedIn && sending && serverMessage.includes("OK") || serverMessage.includes("NO")) {
-                serverMessage = serverMessage.split(",");
-                if (serverMessage[0].includes("OK")) {
-                  document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" + serverMessage[1] + "</b></span>";
-                  document.getElementById("sendingtxid").innerHTML = "TXID: <a href='https://explorer.duinocoin.com?search=" + serverMessage[2] + "'>" + serverMessage[2] + "</a>";
-                } else if (serverMessage[0].includes("NO")) {
-                  document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
-                  document.getElementById("sendingtxid").innerHTML = "";
-                }
-                setTimeout(() => {sending = false}, 4000);
-                setTimeout(() => {document.getElementById("sendinginfo").innerHTML = ""}, 5000);
-                setTimeout(() => {document.getElementById("sendingtxid").innerHTML = ""}, 5000);
-                setTimeout(() => {socket.send("BALA")}, 5000);
-              }
-
-              if (loggedIn == false && versionReceived == false && serverMessage.includes("2.")) {
-                console.log("Version received: " + serverMessage);
-                versionReceived = true;
-              }
-
-              if (loggedIn == false && versionReceived) {
-                document.getElementById("loginstatus").innerHTML = "Authenticating...";
-                setTimeout(() => {socket.send("LOGI," + username + "," + password)}, 500);
-              }
-
-              if (loggedIn == false && sending == false && versionReceived && serverMessage === "OK") {
-                loggedIn = true;
-                MinerAPI(username);
-                window.setInterval(() => {
-                  MinerAPI(username);
-                }, 10000);
-                document.getElementById("loginstatus").innerHTML = "Logged in!";
-                document.getElementById("wallettext").innerHTML = "Duino-Coin Web Wallet: " + username;
-                socket.send("BALA");
-                window.setInterval(() => {
-                  ProfitCalculator();
-                }, 5000);
-
-                $("#login").hide("2000")
-                $("#wallet").show("2000")
-              }
-
-              else if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("NO")) {
-                document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>" + serverMessage + "</span>";
-                setTimeout(() => {document.getElementById("loginstatus").innerHTML = ""}, 5000);
-              }
-
-              else if (sending == false && loggedIn && versionReceived && parseFloat(serverMessage)) {
-                console.log("Balance retrieved: " + serverMessage);
-                balance = parseFloat(serverMessage);
-                balanceusd = balance * ducoUsdPrice;
-                document.getElementById("balance").innerHTML = balance.toFixed(8) + " ᕲ";
-                document.getElementById("balanceusd").innerHTML = "≈$" + balanceusd.toFixed(4);
-                setTimeout(() => {socket.send("GTXL," + username + ",7")}, 900);
-              }
-
-              else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
-                try {
-                  jsonD = eval('(' + serverMessage + ')');
-                  transtable.innerHTML = "";
-                  for (let i in jsonD) {
-                    let classD = "positive";
-                    let symbolD = "+";
-                    if (jsonD[i].Sender == username) {
-                      classD = "negative";
-                      symbolD = "-";
+                    } else {
+                        document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>"
+                        setTimeout(() => { document.getElementById("sendinginfo").innerHTML = "" }, 5000);
+                        setTimeout(() => { document.getElementById("sendingtxid").innerHTML = "" }, 5000);
                     }
-                    transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td><td data-label="Sender">${jsonD[i].Sender}</td><td data-label="Recipient">${jsonD[i].Recipient}</td></tr>`;
-                  }
                 }
-                catch (e) {
-                  console.log(e);
+
+                socket.onmessage = function(msg) {
+                    serverMessage = msg.data;
+
+                    if (versionReceived && loggedIn && sending && serverMessage.includes("OK") || serverMessage.includes("NO")) {
+                        serverMessage = serverMessage.split(",");
+                        if (serverMessage[0].includes("OK")) {
+                            document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" + serverMessage[1] + "</b></span>";
+                            document.getElementById("sendingtxid").innerHTML = "TXID: <a href='https://explorer.duinocoin.com?search=" + serverMessage[2] + "'>" + serverMessage[2] + "</a>";
+                        } else if (serverMessage[0].includes("NO")) {
+                            document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
+                            document.getElementById("sendingtxid").innerHTML = "";
+                        }
+                        setTimeout(() => { sending = false }, 4000);
+                        setTimeout(() => { document.getElementById("sendinginfo").innerHTML = "" }, 5000);
+                        setTimeout(() => { document.getElementById("sendingtxid").innerHTML = "" }, 5000);
+                        setTimeout(() => { socket.send("BALA") }, 5000);
+                    }
+
+                    if (loggedIn == false && versionReceived == false && serverMessage.includes("2.")) {
+                        console.log("Version received: " + serverMessage);
+                        versionReceived = true;
+                    }
+
+                    if (loggedIn == false && versionReceived) {
+                        document.getElementById("loginstatus").innerHTML = "Authenticating...";
+                        setTimeout(() => { socket.send("LOGI," + username + "," + password) }, 500);
+                    }
+
+                    if (loggedIn == false && sending == false && versionReceived && serverMessage === "OK") {
+                        loggedIn = true;
+                        MinerAPI(username);
+                        window.setInterval(() => {
+                            MinerAPI(username);
+                        }, 10000);
+                        document.getElementById("loginstatus").innerHTML = "Logged in!";
+                        document.getElementById("wallettext").innerHTML = "Duino-Coin Web Wallet: " + username;
+                        socket.send("BALA");
+                        window.setInterval(() => {
+                            ProfitCalculator();
+                        }, 5000);
+
+                        $("#login").hide("2000")
+                        $("#wallet").show("2000")
+                    } else if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("NO")) {
+                        document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>" + serverMessage + "</span>";
+                        setTimeout(() => { document.getElementById("loginstatus").innerHTML = "" }, 5000);
+                    } else if (sending == false && loggedIn && versionReceived && parseFloat(serverMessage)) {
+                        console.log("Balance retrieved: " + serverMessage);
+                        balance = parseFloat(serverMessage);
+                        balanceusd = balance * ducoUsdPrice;
+                        document.getElementById("balance").innerHTML = balance.toFixed(8) + " ᕲ";
+                        document.getElementById("balanceusd").innerHTML = "≈$" + balanceusd.toFixed(4);
+                        setTimeout(() => { socket.send("GTXL," + username + ",7") }, 900);
+                    } else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
+                        try {
+                            jsonD = eval('(' + serverMessage + ')');
+                            transtable.innerHTML = "";
+                            for (let i in jsonD) {
+                                let classD = "positive";
+                                let symbolD = "+";
+                                if (jsonD[i].Sender == username) {
+                                    classD = "negative";
+                                    symbolD = "-";
+                                }
+                                transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td><td data-label="Sender">${jsonD[i].Sender}</td><td data-label="Recipient">${jsonD[i].Recipient}</td></tr>`;
+                            }
+                        } catch (e) {
+                            console.log(e);
+                        }
+                        setTimeout(() => { socket.send("BALA") }, 100);
+                    }
                 }
-                setTimeout(() => {socket.send("BALA")}, 100);
-              }
+            } else {
+                document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>Fill in the blanks first</span>";
+                setTimeout(() => { document.getElementById("loginstatus").innerHTML = "" }, 5000);
             }
-          } else {
-              document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>Fill in the blanks first</span>";
-              setTimeout(() => {document.getElementById("loginstatus").innerHTML = ""}, 5000);
-          }
         }
-      });
+    });
     </script>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
-      <span class="title">Duino-Coin Web Wallet</span>
+        <span class="title">Duino-Coin Web Wallet</span>
     </div>
     <div class="containers">
-      <section class="hero is-fullheight">
-        <div class="hero-body is-align-self-center">
-          <div class="box">
-            <p class="title">
-              <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
-              <span id="wallettext">
-                Duino-Coin Web Wallet
-                <span class="subtitle">
-                  v2.3
-                </span>
-              </span>
-              <p class="subtitle has-text-grey-dark">
-                by
-                <a href="https://github.com/revoxhere/">revox</a>
-                ,
-                <a href="https://www.instagram.com/vlegle/">Yennefer</a>
-                 &
-                <a href="https://github.com/LDarki">LDarki</a>
-                <span class="is-size-7 has-text-grey">
-                  2020-2021
-                </span>
-              </p>
-            </p>
-
-            <section id="login">
-              <div class="column">
-               <!-- <p style="color:red">Warning: server is under maintenance<br>There may be some access issues.</p>-->
-                <div class="field">
-                  <label for="" class="label">Username</label>
-                  <div class="control has-icons-left">
-                    <input type="text" id="usernameinput" placeholder="e.g. revox" class="input" required>
-                    <span class="icon is-small is-left">
-                      <i class="fa fa-user"></i>
-                    </span>
-                  </div>
-                </div>
-                <div class="field">
-                  <label for="" class="label">Password</label>
-                  <div class="control has-icons-left">
-                    <input type="password" id="passwordinput" placeholder="*******" class="input" required>
-                    <span class="icon is-small is-left">
-                      <i class="fa fa-lock"></i>
-                    </span>
-                  </div>
-                </div>
-                <br>
-                <div class="field">
-                  <div class="buttons">
-                    <button class="button is-success" id="loginbutton">
-                      <i class="fa fa-fw fa-check"></i>&nbsp;
-                      Login
-                    </button>
-                    <a href="https://wallet.duinocoin.com/register" class="button is-link" id="loginbutton">
-                      <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
-                      Register
-                    </a>
-                    <span class="subtitle mb-2 has-text-grey is-size-7" id="loginstatus"></span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section id="wallet" style="display: none;">
-              <div class="container">
-                <div class="columns">
-                  <div class="column is-one-third">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-wallet fa-fw" style="color:#f39c12;"></i>
-                        DUCO BALANCE
-                      </p>
-                      <p class="title">
-                        <span id="balance">
-                          0.0 ᕲ
+        <section class="hero is-fullheight">
+            <div class="hero-body is-align-self-center">
+                <div class="box">
+                    <p class="title">
+                        <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
+                        <span id="wallettext">
+                            Duino-Coin Web Wallet
+                            <span class="subtitle">
+                                v2.3
+                            </span>
                         </span>
-                        <span class="subtitle" id="balanceusd">
-                          $0.0
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="column is-one-third">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-coins fa-fw" style="color:#ff6b6b;"></i>
-                        ESTIMATED DAILY PROFIT
-                      </p>
-                      <p class="title">
-                        <span id="estimatedprofit">
-                          Please wait...
-                        </span>
-                        <span class="subtitle" id="estimatedprofitusd">
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="column is-one-third">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
-                        DUCO PRICE
-                      </p>
-                      <p class="title">
-                        <span id="ducousd">
-                          1 ᕲ ≈ $0.0
-                        </span>
-                        <span class="subtitle" id="estimatedprofitusd">
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="columns">
-                  <div class="column is-one-third is-mobile">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-list-ul fa-fw" style="color:#2ecc71;"></i>
-                        LAST TRANSACTIONS
-                      </p>
-                      <div class="balanceT">
-                        <table>
-                          <thead>
-                            <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">Amount</th>
-                              <th scope="col">Sender</th>
-                              <th scope="col">Recipient</th>
-                            </tr>
-                          </thead>
-                          <tbody id="transactions">
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="column is-one-third">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-share fa-fw" style="color:#17c0eb;"></i>
-                        SEND FUNDS
-                      </p>
-                      <label class="label">Recipient</label>
-                      <div class="control has-icons-left is-expanded">
-                        <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
-                        <span class="icon is-small is-left">
-                          <i class="fa fa-user"></i>
-                        </span>
-                        <label class="label mt-2">Amount</label>
-                        <div class="control has-icons-left is-expanded">
-                          <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
-                          <span class="icon is-small is-left">
-                            <i class="fa fa-coins"></i>
-                          </span>
+                        <p class="subtitle has-text-grey-dark">
+                            by
+                            <a href="https://github.com/revoxhere/">revox</a>
+                            ,
+                            <a href="https://www.instagram.com/vlegle/">Yennefer</a>
+                            &
+                            <a href="https://github.com/LDarki">LDarki</a>
+                            <span class="is-size-7 has-text-grey">
+                                2020-2021
+                            </span>
+                        </p>
+                    </p>
+                    <section id="login">
+                        <div class="column">
+                            <!-- <p style="color:red">Warning: server is under maintenance<br>There may be some access issues.</p>-->
+                            <div class="field">
+                                <label for="" class="label">Username</label>
+                                <div class="control has-icons-left">
+                                    <input type="text" id="usernameinput" placeholder="e.g. revox" class="input" required>
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="" class="label">Password</label>
+                                <div class="control has-icons-left">
+                                    <input type="password" id="passwordinput" placeholder="*******" class="input" required>
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="field">
+                                <div class="buttons">
+                                    <button class="button is-success" id="loginbutton">
+                                        <i class="fa fa-fw fa-check"></i>&nbsp;
+                                        Login
+                                    </button>
+                                    <a href="https://wallet.duinocoin.com/register" class="button is-link" id="loginbutton">
+                                        <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
+                                        Register
+                                    </a>
+                                    <span class="subtitle mb-2 has-text-grey is-size-7" id="loginstatus"></span>
+                                </div>
+                            </div>
                         </div>
-                        <label class="label mt-2">Message (optional)</label>
-                        <div class="control has-icons-left is-expanded">
-                          <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
-                          <span class="icon is-small is-left">
-                            <i class="fa fa-envelope"></i>
-                          </span>
+                    </section>
+                    <section id="wallet" style="display: none;">
+                        <div class="container">
+                            <div class="columns">
+                                <div class="column is-one-third">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-wallet fa-fw" style="color:#f39c12;"></i>
+                                            DUCO BALANCE
+                                        </p>
+                                        <p class="title">
+                                            <span id="balance">
+                                                0.0 ᕲ
+                                            </span>
+                                            <span class="subtitle" id="balanceusd">
+                                                $0.0
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="column is-one-third">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-coins fa-fw" style="color:#ff6b6b;"></i>
+                                            ESTIMATED DAILY PROFIT
+                                        </p>
+                                        <p class="title">
+                                            <span id="estimatedprofit">
+                                                Please wait...
+                                            </span>
+                                            <span class="subtitle" id="estimatedprofitusd">
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="column is-one-third">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
+                                            DUCO PRICE
+                                        </p>
+                                        <p class="title">
+                                            <span id="ducousd">
+                                                1 ᕲ ≈ $0.0
+                                            </span>
+                                            <span class="subtitle" id="estimatedprofitusd">
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-one-third is-mobile">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-list-ul fa-fw" style="color:#2ecc71;"></i>
+                                            LAST TRANSACTIONS
+                                        </p>
+                                        <div class="balanceT">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Sender</th>
+                                                        <th scope="col">Recipient</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="transactions">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-one-third">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-share fa-fw" style="color:#17c0eb;"></i>
+                                            SEND FUNDS
+                                        </p>
+                                        <label class="label">Recipient</label>
+                                        <div class="control has-icons-left is-expanded">
+                                            <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                        </div>
+                                        <label class="label mt-2">Amount</label>
+                                        <div class="control has-icons-left is-expanded">
+                                            <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-coins"></i>
+                                            </span>
+                                        </div>
+                                        <label class="label mt-2">Message (optional)</label>
+                                        <div class="control has-icons-left is-expanded">
+                                            <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-envelope"></i>
+                                            </span>
+                                        </div>
+                                        <br>
+                                        <div class="buttons">
+                                            <button class="button is-warning" id="send">
+                                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
+                                                Send
+                                            </button>
+                                            <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
+                                            <span class="subtitle mt-2 has-text-grey is-size-7" id="sendingtxid"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-one-third">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-chart-bar fa-fw" style="color:#e17055;"></i>
+                                            YOUR MINERS
+                                        </p>
+                                        <div style="height:12em;overflow:auto;">
+                                            <span id="miners">No miners detected</span>
+                                        </div>
+                                        <p class="title is-size-6 mt-3">
+                                            <i class="fa fa-tachometer-alt fa-fw" style="color:#badc58;"></i>&nbsp;
+                                            <span id="minerHR">Total hashrate: 0 H/s</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="buttons">
+                                        <button id="darkmode" class="button is-secondary">
+                                            <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
+                                            <span>Switch theme</span>
+                                        </button>
+                                        <a href="http://51.15.127.80/webminer.html" class="button is-secondary">
+                                            <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWebMiner.png">
+                                            <span>Web Miner</span>
+                                        </a>
+                                        <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
+                                            <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
+                                            <span>GitHub</span>
+                                        </a>
+                                        <a href="https://discord.gg/kvBkccy" class="button is-secondary">
+                                            <i class="fab fa-fw fa-discord icon is-small"></i>&nbsp;
+                                            <span>Discord</span>
+                                        </a>
+                                        <a href="https://duinocoin.com" class="button is-secondary">
+                                            <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+                                            <span>Duino-Coin</span>
+                                        </a>
+                                        <a href="https://revoxhere.github.io/duco-exchange/" class="button is-secondary">
+                                            <span>DUCO Exchange</span>
+                                        </a>
+                                        <a href="http://www.node-s.co.za/duco_exchange/home" class="button is-secondary">
+                                            <span>Node-S Exchange</span>
+                                        </a>
+                                        <a href="https://siunus.github.io/duco-monitor/" class="button is-secondary">
+                                            <span>DUCO Monitor</span>
+                                        </a>
+                                        <a href="https://duinocoin.com/donate" class="button is-secondary">
+                                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
+                                            <span>Donate</span>
+                                        </a>
+                                        <a href="https://bulma.io" class="button is-secondary">
+                                            <span>Made with</span>&nbsp;&nbsp;
+                                            <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
+                                            <span><b>BULMA</b></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <br>
-                        <div class="buttons">
-                          <button class="button is-warning" id="send">
-                          <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
-                            Send
-                          </button>
-                          <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
-                          <span class="subtitle mt-2 has-text-grey is-size-7" id="sendingtxid"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="column is-one-third">
-                    <div class="box">
-                      <p class="subtitle">
-                        <i class="fa fa-chart-bar fa-fw" style="color:#e17055;"></i>
-                        YOUR MINERS
-                      </p>
-                      <div style="height:12em;overflow:auto;">
-                        <span id="miners">No miners detected</span>
-                      </div>
-                      <p class="title is-size-6 mt-3">
-                        <i class="fa fa-tachometer-alt fa-fw" style="color:#badc58;"></i>&nbsp;
-                        <span id="minerHR">Total hashrate: 0 H/s</span>
-                      </p>
-                    </div>
-                  </div>
+                    </section>
                 </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <div class="buttons">
-                      <button id="darkmode" class="button is-secondary">
-                        <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
-                        <span>Switch theme</span>
-                      </button>
-                      <a href="http://51.15.127.80/webminer.html" class="button is-secondary">
-                        <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWebMiner.png">
-                        <span>Web Miner</span>
-                      </a>
-                      <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
-                        <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
-                        <span>GitHub</span>
-                      </a>
-                      <a href="https://discord.gg/kvBkccy" class="button is-secondary">
-                        <i class="fab fa-fw fa-discord icon is-small"></i>&nbsp;
-                        <span>Discord</span>
-                      </a>
-                      <a href="https://duinocoin.com" class="button is-secondary">
-                        <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
-                        <span>Duino-Coin</span>
-                      </a>
-                      <a href="https://revoxhere.github.io/duco-exchange/" class="button is-secondary">
-                        <span>DUCO Exchange</span>
-                      </a>
-                      <a href="http://www.node-s.co.za/duco_exchange/home" class="button is-secondary">
-                        <span>Node-S Exchange</span>
-                      </a>
-                      <a href="https://siunus.github.io/duco-monitor/" class="button is-secondary">
-                        <span>DUCO Monitor</span>
-                      </a>
-                      <a href="https://duinocoin.com/donate" class="button is-secondary">
-                        <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
-                        <span>Donate</span>
-                      </a>
-                      <a href="https://bulma.io" class="button is-secondary">
-                        <span>Made with</span>&nbsp;&nbsp;
-                        <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
-                        <span><b>BULMA</b></span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-      </section>
+            </div>
+        </section>
     </div>
-  </body>
-</html>
+</body>
 
+</html>
 <script>
-  let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
-  pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
-  window.addEventListener('load', function() {
+let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
+pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
+window.addEventListener('load', function() {
     pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
-  });
+});
 </script>
