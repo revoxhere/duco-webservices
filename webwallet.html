@@ -153,7 +153,7 @@
         GetData();
         window.setInterval(() => {
             GetData();
-        }, 10000);
+        }, 15000);
 
         // HASHRATE PREFIX CALCULATOR
         let totalHashes = 0;
@@ -178,7 +178,7 @@
 
         // MINER DATA FROM API
         const MinerAPI = (username) => {
-            $.getJSON('https://server.duinocoin.com/api.json', function(data) {
+            $.getJSON('https://server.duinocoin.com/miners.json', function(data) {
                 let myMiners = [];
                 let contentjson = {};
                 miners = document.getElementById("miners");
