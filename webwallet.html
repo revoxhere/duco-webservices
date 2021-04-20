@@ -278,7 +278,7 @@
               document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
               let recipient = document.getElementById('recipientinput').value
               let amount = document.getElementById('amountinput').value
-              let memo = "-"; // Coming soon
+              let memo = document.getElementById('memoinput').value
               if (recipient != null && recipient != "" && recipient != undefined && amount != null && amount != "" && amount != undefined) {
                 sending = true;
                 setTimeout(() => {socket.send("SEND," + memo + "," + recipient + "," + amount)}, 1);
@@ -533,6 +533,12 @@
                       <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
                       <span class="icon is-small is-left">
                         <i class="fa fa-user"></i>
+                      </span>
+                      <label class="label">Message (optional)</label>
+                      <div class="control has-icons-left is-expanded">
+                      <input type="text" id="memoinput" placeholder="e.g. Sunglasses payment" class="input" required>
+                      <span class="icon is-small is-left">
+                        <i class="fa fa-envelope"></i>
                       </span>
                       <label class="label mt-2">Amount</label>
                         <div class="control has-icons-left is-expanded">
