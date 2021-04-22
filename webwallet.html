@@ -253,6 +253,7 @@
         // MAIN WALLET SCRIPT
         document.getElementById('loginbutton').onclick = function() {
             document.getElementById("loginstatus").innerHTML = "Connecting...";
+            document.getElementById("loginstatus").classList.add("is-loading");
             let username = document.getElementById('usernameinput').value
             let password = document.getElementById('passwordinput').value
             let transtable = document.getElementById("transactions");
