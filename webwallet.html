@@ -253,7 +253,8 @@
         // MAIN WALLET SCRIPT
         document.getElementById('loginbutton').onclick = function() {
             document.getElementById("loginstatus").innerHTML = "Connecting...";
-            document.getElementById("loginstatus").classList.add("is-loading");
+            document.getElementById("loginbutton").classList.add("is-loading");
+
             let username = document.getElementById('usernameinput').value
             let password = document.getElementById('passwordinput').value
             let transtable = document.getElementById("transactions");
@@ -264,6 +265,7 @@
 
                 document.getElementById('send').onclick = function() {
                     document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
+                    document.getElementById("send").classList.add("is-loading");
                     let recipient = document.getElementById('recipientinput').value
                     let amount = document.getElementById('amountinput').value
                     let memo = document.getElementById('memoinput').value
@@ -291,6 +293,7 @@
                             document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
                             document.getElementById("sendingtxid").innerHTML = "";
                         }
+                        document.getElementById("send").classList.remove("is-loading");
                         setTimeout(() => { sending = false }, 4000);
                         setTimeout(() => { document.getElementById("sendinginfo").innerHTML = "" }, 5000);
                         setTimeout(() => { document.getElementById("sendingtxid").innerHTML = "" }, 5000);
@@ -304,7 +307,7 @@
 
                     if (loggedIn == false && versionReceived) {
                         document.getElementById("loginstatus").innerHTML = "Authenticating...";
-                        setTimeout(() => { socket.send("LOGI," + username + "," + password) }, 500);
+                        setTimeout(() => { socket.send("LOGI," + username + "," + password) }, 100);
                     }
 
                     if (loggedIn == false && sending == false && versionReceived && serverMessage === "OK") {
@@ -314,24 +317,29 @@
                             MinerAPI(username);
                         }, 10000);
                         document.getElementById("loginstatus").innerHTML = "Logged in!";
+                        document.getElementById("loginbutton").classList.remove("is-loading");
                         document.getElementById("wallettext").innerHTML = "Duino-Coin Web Wallet: " + username;
                         socket.send("BALA");
                         window.setInterval(() => {
                             ProfitCalculator();
                         }, 5000);
 
-                        $("#login").hide("2000")
-                        $("#wallet").show("2000")
+                        $("#login").hide("200")
+                        $("#wallet").show("200")
+
                     } else if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("NO")) {
                         document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>" + serverMessage + "</span>";
+                        document.getElementById("loginbutton").classList.remove("is-loading");
                         setTimeout(() => { document.getElementById("loginstatus").innerHTML = "" }, 5000);
+
                     } else if (sending == false && loggedIn && versionReceived && parseFloat(serverMessage)) {
                         console.log("Balance retrieved: " + serverMessage);
                         balance = parseFloat(serverMessage);
                         balanceusd = balance * ducoUsdPrice;
                         document.getElementById("balance").innerHTML = balance.toFixed(8) + " ᕲ";
                         document.getElementById("balanceusd").innerHTML = "≈$" + balanceusd.toFixed(4);
-                        setTimeout(() => { socket.send("GTXL," + username + ",7") }, 900);
+                        setTimeout(() => { socket.send("GTXL," + username + ",7") }, 700);
+
                     } else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
                         try {
                             jsonD = eval('(' + serverMessage + ')');
@@ -343,16 +351,23 @@
                                     classD = "negative";
                                     symbolD = "-";
                                 }
-                                transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td><td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td><td data-label="Sender">${jsonD[i].Sender}</td><td data-label="Recipient">${jsonD[i].Recipient}</td></tr>`;
+                                transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td>` +
+                                    `<td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td>` +
+                                    `<td data-label="Sender">${jsonD[i].Sender}</td>` +
+                                    `<td data-label="Recipient">${jsonD[i].Recipient}</td>` +
+                                    `<td data-label="Hash">` +
+                                    `<a href="https://explorer.duinocoin.com/?search=${jsonD[i].Hash}">` +
+                                    `${jsonD[i].Hash.substr(jsonD[i].Hash.length - 5)}</a></td></tr>`;
                             }
                         } catch (e) {
                             console.log(e);
                         }
-                        setTimeout(() => { socket.send("BALA") }, 100);
+                        setTimeout(() => { socket.send("BALA") }, 300);
                     }
                 }
             } else {
                 document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>Fill in the blanks first</span>";
+                document.getElementById("loginbutton").classList.remove("is-loading");
                 setTimeout(() => { document.getElementById("loginstatus").innerHTML = "" }, 5000);
             }
         }
@@ -372,11 +387,11 @@
                         <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
                         <span id="wallettext">
                             Duino-Coin Web Wallet
-                            <span class="subtitle">
-                                v2.3
+                            <span class="subtitle has-text-grey-dark is-size-7">
+                                v2.5
                             </span>
                         </span>
-                        <p class="subtitle has-text-grey-dark">
+                        <p class="subtitle is-size-7 has-text-grey-dark">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>
                             ,
@@ -490,6 +505,7 @@
                                                         <th scope="col">Amount</th>
                                                         <th scope="col">Sender</th>
                                                         <th scope="col">Recipient</th>
+                                                        <th scope="col">Hash</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="transactions">
