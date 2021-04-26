@@ -199,29 +199,53 @@
                     } else {
                         minerId = myMiners[miner]["Identifier"];
                     }
-                    miners.innerHTML +=
-                        "<b>#" +
-                        miner +
-                        "</b>: " +
-                        minerId +
-                        " (" +
-                        myMiners[miner]["Software"] +
-                        ") <b>" +
-                        calculateHashrate(myMiners[miner]["Hashrate"]) +
-                        IsEstimated +
-                        "</b> @ diff " +
-                        myMiners[miner]["Diff"] +
-                        ", " +
-                        myMiners[miner]["Accepted"] +
-                        "/" +
-                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
-                        " <b>(" +
-                        Math.round(
-                            (myMiners[miner]["Accepted"] /
-                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
-                            100
-                        ) +
-                        "%)</b><br>";
+                    if (minerId != "") {
+                        miners.innerHTML +=
+                            "<b class='has-text-grey-light'>#" +
+                            miner +
+                            ":</b><b class='has-text-primary'> " +
+                            minerId +
+                            "</b> (" +
+                            myMiners[miner]["Software"] +
+                            ") <b><span class='has-text-success'>" +
+                            calculateHashrate(myMiners[miner]["Hashrate"]) +
+                            IsEstimated +
+                            "</b></span><span class='has-text-info'> @ diff " +
+                            myMiners[miner]["Diff"] +
+                            "</span>, " +
+                            myMiners[miner]["Accepted"] +
+                            "/" +
+                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                            " <b class='has-text-success-dark'>(" +
+                            Math.round(
+                                (myMiners[miner]["Accepted"] /
+                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                100
+                            ) +
+                            "%)</b><br>";
+                    } else {
+                        miners.innerHTML +=
+                            "<b class='has-text-grey-light'>#" +
+                            miner +
+                            ":</b> " +
+                            myMiners[miner]["Software"] +
+                            " <b><span class='has-text-success'>" +
+                            calculateHashrate(myMiners[miner]["Hashrate"]) +
+                            IsEstimated +
+                            "</b></span><span class='has-text-info'> @ diff " +
+                            myMiners[miner]["Diff"] +
+                            "</span>, " +
+                            myMiners[miner]["Accepted"] +
+                            "/" +
+                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                            " <b class='has-text-success-dark'>(" +
+                            Math.round(
+                                (myMiners[miner]["Accepted"] /
+                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                100
+                            ) +
+                            "%)</b><br>";
+                    }
                     totalHashes = totalHashes + myMiners[miner]["Hashrate"];
                 }
                 minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
@@ -236,8 +260,11 @@
             let daily = (((curr_bal - prev_bal) * 12) * 60) * 24;
             profitcheck++;
             if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
-                document.getElementById("estimatedprofit").innerHTML = daily.toFixed(2) + " ᕲ";
-                document.getElementById("estimatedprofitusd").innerHTML = "≈$" + (daily * ducoUsdPrice).toFixed(2);
+                // High daily profit means a transaction or big block - that value should be ignored
+                if (daily < 500) {
+                    document.getElementById("estimatedprofit").innerHTML = daily.toFixed(2) + " ᕲ";
+                    document.getElementById("estimatedprofitusd").innerHTML = "≈$" + (daily * ducoUsdPrice).toFixed(2);
+                }
             }
         };
 
@@ -261,7 +288,7 @@
             transtable.innerHTML += `<tr><td data-label="Date">No transactions yet</td></tr>`;
 
             if (username != null && username != "" && username != undefined && password != null && password != "" && password != undefined) {
-                let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+                let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 15000, 5);
 
                 document.getElementById('send').onclick = function() {
                     document.getElementById("sendinginfo").innerHTML = "Requesting transfer..."
@@ -271,11 +298,12 @@
                     let memo = document.getElementById('memoinput').value
                     if (recipient != null && recipient != "" && recipient != undefined && amount != null && amount != "" && amount != undefined) {
                         sending = true;
-                        setTimeout(() => { socket.send("SEND," + memo + "," + recipient + "," + amount) }, 1);
+                        setTimeout(() => { socket.send("SEND," + memo + "," + recipient + "," + amount + ",") }, 1);
                         document.getElementById("sendinginfo").innerHTML = "Confirming transaction..."
 
                     } else {
                         document.getElementById("sendinginfo").innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>"
+                        document.getElementById("send").classList.remove("is-loading");
                         setTimeout(() => { document.getElementById("sendinginfo").innerHTML = "" }, 5000);
                         setTimeout(() => { document.getElementById("sendingtxid").innerHTML = "" }, 5000);
                     }
@@ -297,7 +325,7 @@
                         setTimeout(() => { sending = false }, 4000);
                         setTimeout(() => { document.getElementById("sendinginfo").innerHTML = "" }, 5000);
                         setTimeout(() => { document.getElementById("sendingtxid").innerHTML = "" }, 5000);
-                        setTimeout(() => { socket.send("BALA") }, 5000);
+                        setTimeout(() => { socket.send("BALA,") }, 5000);
                     }
 
                     if (loggedIn == false && versionReceived == false && serverMessage.includes("2.")) {
@@ -307,10 +335,10 @@
 
                     if (loggedIn == false && versionReceived) {
                         document.getElementById("loginstatus").innerHTML = "Authenticating...";
-                        setTimeout(() => { socket.send("LOGI," + username + "," + password) }, 100);
+                        socket.send("LOGI," + username + "," + password + ",");
                     }
 
-                    if (loggedIn == false && sending == false && versionReceived && serverMessage === "OK") {
+                    if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("OK")) {
                         loggedIn = true;
                         MinerAPI(username);
                         window.setInterval(() => {
@@ -319,13 +347,17 @@
                         document.getElementById("loginstatus").innerHTML = "Logged in!";
                         document.getElementById("loginbutton").classList.remove("is-loading");
                         document.getElementById("wallettext").innerHTML = "Duino-Coin Web Wallet: " + username;
-                        socket.send("BALA");
+
+                        setTimeout(() => {
+                            socket.send("BALA,");
+                        }, 500);
+
                         window.setInterval(() => {
                             ProfitCalculator();
                         }, 5000);
 
-                        $("#login").hide("200")
-                        $("#wallet").show("200")
+                        $("#login").hide("slow")
+                        $("#wallet").show("slow")
 
                     } else if (loggedIn == false && sending == false && versionReceived && serverMessage.includes("NO")) {
                         document.getElementById("loginstatus").innerHTML = "<span class='has-text-danger'>" + serverMessage + "</span>";
@@ -338,7 +370,7 @@
                         balanceusd = balance * ducoUsdPrice;
                         document.getElementById("balance").innerHTML = balance.toFixed(8) + " ᕲ";
                         document.getElementById("balanceusd").innerHTML = "≈$" + balanceusd.toFixed(4);
-                        setTimeout(() => { socket.send("GTXL," + username + ",7") }, 700);
+                        setTimeout(() => { socket.send("GTXL," + username + ",7,") }, 1000);
 
                     } else if (sending == false && loggedIn && versionReceived && canEval('(' + serverMessage + ')')) {
                         try {
@@ -362,7 +394,7 @@
                         } catch (e) {
                             console.log(e);
                         }
-                        setTimeout(() => { socket.send("BALA") }, 300);
+                        setTimeout(() => { socket.send("BALA,") }, 1000);
                     }
                 }
             } else {
@@ -451,10 +483,9 @@
                                         </p>
                                         <p class="title">
                                             <span id="balance">
-                                                0.0 ᕲ
+                                                Please wait...
                                             </span>
                                             <span class="subtitle" id="balanceusd">
-                                                $0.0
                                             </span>
                                         </p>
                                     </div>
