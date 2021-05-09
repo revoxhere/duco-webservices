@@ -36,79 +36,67 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
     <style>
-        .is-primary { 
-        /* Override Bulmas primary color to Duco-Colored gradient*/
-        background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
-      }
-      body {
-        background-size: cover !important;
-        background-attachment: fixed !important;
-        width: 100% !important;
-        min-height: -webkit-fill-available;
-        overflow-x: hidden !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background-repeat: no-repeat !important;
-      }
-      @media only screen and (max-width: 500px) {
+        .is-primary {
+            /* Override Bulmas primary color to Duco-Colored gradient*/
+            background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
+        }
+        .is-duco {
+            color: #fafafa !important;
+            background: #ffb412 !important;
+        }
+        body {
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            width: 100% !important;
+            min-height: -webkit-fill-available;
+            overflow-x: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background-repeat: no-repeat !important;
+        }
         .balanceT {
-            max-width: 16em;
+            max-width: 80vw;
             max-height: 45vh;
             overflow-x: scroll !important;
             overflow-y: scroll !important;
         }
-     }
-      @media only screen and (min-width: 500px) {
-        .balanceT {
-            max-width: 26em;
-            max-height: 45vh;
-            overflow-x: scroll !important;
-            overflow-y: scroll !important;
+        .balanceT table {
+            margin: 0;
+            padding: 0;
+            border: 1px solid var(--light-bg);
+            border-collapse: collapse;
         }
-     }
-      .balanceT table {
-        margin: 0;
-        padding: 0;
-        border: 1px solid var(--light-bg);
-        border-collapse: collapse;
-      }
-      .balanceTC .caption {
-        font-size: 1.5em !important;
-        margin: .5em 0 .5em;
-      }
-      .balanceT table tr {
-        background-color: var(--hover) !important;
-        border: 1px solid var(--light-bg) !important;
-        padding: .35em !important;
-      }
-      .balanceT table th,
-      .balanceT table td {
-        padding: .5em !important;
-        text-align: left !important;
-      }
-      .balanceT table th {
-        letter-spacing: .1em !important;
-        text-transform: uppercase !important;
-      }
-      .positive {
-        color: #009432 !important;
-      }
-      .negative {
-        color: #EA2027 !important;
-      }
-      ::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f1f1f1;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #888;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #555;
-      }
+        .balanceTC .caption {
+            font-size: 1.5em !important;
+            margin: .5em 0 .5em;
+        }
+        .balanceT table tr {
+            background-color: var(--hover) !important;
+            border: 1px solid var(--light-bg) !important;
+            padding: .35em !important;
+        }
+        .balanceT table th,
+        .balanceT table td {
+            padding: .5em !important;
+            text-align: left !important;
+        }
+        .balanceT table th {
+            letter-spacing: .1em !important;
+            text-transform: uppercase !important;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
     </style>
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
@@ -175,8 +163,12 @@
 
         // IF CAN EVAL
         const canEval = (str) => {
-            try { eval(str); } catch (e) { return false; }
-            return true;
+            try {
+                eval(str);
+                return true;
+            } catch (e) {
+                return false;
+            }
         }
 
         // MINER DATA FROM API
@@ -185,75 +177,82 @@
                 let myMiners = [];
                 let contentjson = {};
                 miners = document.getElementById("miners");
+                miners.innerHTML = "";
                 minerHashrate = document.getElementById("minerHR"),
                     contentjson = data;
-                for (process in contentjson) {
-                    if (contentjson[process]["User"].includes(username)) {
+
+                for (process in contentjson)
+                    if (contentjson[process]["User"] == username)
                         myMiners.push(contentjson[process]);
+
+                if (myMiners.length > 0) {
+                    console.log("not empty");
+                    for (miner in myMiners) {
+                        let IsEstimated = "";
+                        if (myMiners[miner]["Is estimated"] == "True") {
+                            IsEstimated = " (Estimated)";
+                        }
+                        if (myMiners[miner]["Identifier"] == "None") {
+                            minerId = "";
+                        } else {
+                            minerId = myMiners[miner]["Identifier"];
+                        }
+                        if (minerId != "") {
+                            miners.innerHTML +=
+                                "<b class='has-text-grey-light'>#" +
+                                miner +
+                                ":</b><b class='has-text-primary'> " +
+                                minerId +
+                                "</b> (" +
+                                myMiners[miner]["Software"] +
+                                ") <b><span class='has-text-success'>" +
+                                calculateHashrate(myMiners[miner]["Hashrate"]) +
+                                IsEstimated +
+                                "</b></span><span class='has-text-info'> @ diff " +
+                                myMiners[miner]["Diff"] +
+                                "</span>, " +
+                                myMiners[miner]["Accepted"] +
+                                "/" +
+                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                                " <b class='has-text-success-dark'>(" +
+                                Math.round(
+                                    (myMiners[miner]["Accepted"] /
+                                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                    100
+                                ) +
+                                "%)</b><br>";
+                        } else {
+                            miners.innerHTML +=
+                                "<b class='has-text-grey-light'>#" +
+                                miner +
+                                ":</b> " +
+                                myMiners[miner]["Software"] +
+                                " <b><span class='has-text-success'>" +
+                                calculateHashrate(myMiners[miner]["Hashrate"]) +
+                                IsEstimated +
+                                "</b></span><span class='has-text-info'> @ diff " +
+                                myMiners[miner]["Diff"] +
+                                "</span>, " +
+                                myMiners[miner]["Accepted"] +
+                                "/" +
+                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                                " <b class='has-text-success-dark'>(" +
+                                Math.round(
+                                    (myMiners[miner]["Accepted"] /
+                                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                    100
+                                ) +
+                                "%)</b><br>";
+                        }
+                        totalHashes = totalHashes + myMiners[miner]["Hashrate"];
                     }
+                    minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
+                    totalHashes = 0;
+                } else {
+                    console.log("empty");
+                    miners.innerHTML = "<b class='subtitle is-size-6'>No miners detected</b>" +
+                        "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
                 }
-                miners.innerHTML = "";
-                for (miner in myMiners) {
-                    let IsEstimated = "";
-                    if (myMiners[miner]["Is estimated"] == "True") {
-                        IsEstimated = " (Estimated)";
-                    }
-                    if (myMiners[miner]["Identifier"] == "None") {
-                        minerId = "";
-                    } else {
-                        minerId = myMiners[miner]["Identifier"];
-                    }
-                    if (minerId != "") {
-                        miners.innerHTML +=
-                            "<b class='has-text-grey-light'>#" +
-                            miner +
-                            ":</b><b class='has-text-primary'> " +
-                            minerId +
-                            "</b> (" +
-                            myMiners[miner]["Software"] +
-                            ") <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["Hashrate"]) +
-                            IsEstimated +
-                            "</b></span><span class='has-text-info'> @ diff " +
-                            myMiners[miner]["Diff"] +
-                            "</span>, " +
-                            myMiners[miner]["Accepted"] +
-                            "/" +
-                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
-                            " <b class='has-text-success-dark'>(" +
-                            Math.round(
-                                (myMiners[miner]["Accepted"] /
-                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
-                                100
-                            ) +
-                            "%)</b><br>";
-                    } else {
-                        miners.innerHTML +=
-                            "<b class='has-text-grey-light'>#" +
-                            miner +
-                            ":</b> " +
-                            myMiners[miner]["Software"] +
-                            " <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["Hashrate"]) +
-                            IsEstimated +
-                            "</b></span><span class='has-text-info'> @ diff " +
-                            myMiners[miner]["Diff"] +
-                            "</span>, " +
-                            myMiners[miner]["Accepted"] +
-                            "/" +
-                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
-                            " <b class='has-text-success-dark'>(" +
-                            Math.round(
-                                (myMiners[miner]["Accepted"] /
-                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
-                                100
-                            ) +
-                            "%)</b><br>";
-                    }
-                    totalHashes = totalHashes + myMiners[miner]["Hashrate"];
-                }
-                minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
-                totalHashes = 0;
             });
         }
 
@@ -298,7 +297,7 @@
             let username = document.getElementById('usernameinput').value
             let password = document.getElementById('passwordinput').value
             let transtable = document.getElementById("transactions");
-            transtable.innerHTML += `<tr><td data-label="Date">No transactions yet</td></tr>`;
+            transtable.innerHTML += `<tr><td data-label="Date">Please wait...</td></tr>`;
 
             if (username != null &&
                 username != "" &&
@@ -394,12 +393,33 @@
                             .innerHTML = "Logged in!";
                         document.getElementById("loginbutton").classList.remove("is-loading");
                         document.getElementById("wallettext")
-                            .innerHTML = "Duino-Coin Web Wallet: " + username;
+                            .innerHTML = "Welcome back, <b>" + username + "!</b>";
+                        document.getElementById("copyright")
+                            .innerHTML = `<p class="subtitle is-size-7 has-text-grey">` +
+                            `Duino-Coin Web Wallet developed by ` +
+                            `<a href="https://github.com/revoxhere/">revox</a>` +
+                            `, ` +
+                            `<a href="https://www.instagram.com/vlegle/">Yennefer</a>` +
+                            ` & ` +
+                            `<a href="https://github.com/LDarki">LDarki</a>` +
+                            `<br><span class="is-size-7 has-text-grey">` +
+                            `2020-2021 the <a href="https://duinocoin.com">Duino-Coin</a> project` +
+                            `</span>` +
+                            `<span class="is-size-7 has-text-grey">` +
+                            `<br>` +
+                            `distributed under the ` +
+                            `<a href="https://opensource.org/licenses/MIT">` +
+                            `MIT license` +
+                            `</a>` +
+                            `</span>` +
+                            `</p>`
 
-                        MinerAPI(username);
+                        window.setTimeout(() => {
+                            MinerAPI(username);
+                        }, 2000);
                         window.setInterval(() => {
                             MinerAPI(username);
-                        }, 10000);
+                        }, 15000);
 
                         window.setInterval(() => {
                             if (sending == false) {
@@ -454,18 +474,19 @@
                             jsonD = eval('(' + serverMessage + ')');
                             transtable.innerHTML = "";
                             for (let i in jsonD) {
-                                let classD = "positive";
+                                let classD = "has-text-success-dark";
                                 let symbolD = "+";
                                 if (jsonD[i].Sender == username) {
-                                    classD = "negative";
+                                    classD = "has-text-danger";
                                     symbolD = "-";
                                 }
-                                transtable.innerHTML += `<tr><td data-label="Date">${jsonD[i].Date}</td>` +
-                                    `<td data-label="Amount" class="${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td>` +
-                                    `<td data-label="Sender">${jsonD[i].Sender}</td>` +
-                                    `<td data-label="Recipient">${jsonD[i].Recipient}</td>` +
+                                transtable.innerHTML +=
+                                    `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i].Date.substr(0, jsonD[i].Date.length - 5)}</td>` +
+                                    `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td>` +
+                                    `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i].Sender}</td>` +
+                                    `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i].Recipient}</td>` +
                                     `<td data-label="Hash">` +
-                                    `<a href="https://explorer.duinocoin.com/?search=${jsonD[i].Hash}">` +
+                                    `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i].Hash}">` +
                                     `${jsonD[i].Hash.substr(jsonD[i].Hash.length - 5)}</a></td></tr>`;
                             }
                         } catch (e) {
@@ -499,11 +520,11 @@
                         <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
                         <span id="wallettext">
                             Duino-Coin Web Wallet
-                            <span class="subtitle has-text-grey-dark is-size-7">
-                                v2.5.2
+                            <span class="subtitle is-size-7">
+                                v2.5.3
                             </span>
                         </span>
-                        <p class="subtitle is-size-7 has-text-grey-dark">
+                        <p class="subtitle is-size-7 has-text-grey-dark" id="copyright">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>
                             ,
@@ -512,6 +533,13 @@
                             <a href="https://github.com/LDarki">LDarki</a>
                             <span class="is-size-7 has-text-grey">
                                 2020-2021
+                            </span>
+                            <span>
+                                &middot;
+                                distributed under the
+                                <a href="https://opensource.org/licenses/MIT">
+                                    MIT license
+                                </a>
                             </span>
                         </p>
                     </p>
@@ -593,36 +621,23 @@
                                         </p>
                                         <p class="title">
                                             <span id="ducousd">
-                                                1 ᕲ ≈ $0.0
-                                            </span>
-                                            <span class="subtitle" id="estimatedprofitusd">
+                                                Please wait...
                                             </span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="columns">
-                                <div class="column is-one-third is-mobile">
+                                <div class="column is-one-third">
                                     <div class="box">
                                         <p class="subtitle">
-                                            <i class="fa fa-list-ul fa-fw" style="color:#2ecc71;"></i>
-                                            LAST TRANSACTIONS
+                                            <i class="fa fa-newspaper fa-fw" style="color:#6ab04c;"></i>
+                                            NEWS
+                                            <span class="tag is-success is-light">
+                                                BETA
+                                            </span>
                                         </p>
-                                        <div class="balanceT">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Amount</th>
-                                                        <th scope="col">Sender</th>
-                                                        <th scope="col">Recipient</th>
-                                                        <th scope="col">Hash</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="transactions">
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;height:100%;width:100%;overflow:auto;max-width:90vw"></iframe>
                                     </div>
                                 </div>
                                 <div class="column is-one-third">
@@ -654,7 +669,7 @@
                                         </div>
                                         <br>
                                         <div class="buttons">
-                                            <button class="button is-warning" id="send">
+                                            <button class="button is-info" id="send">
                                                 <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
                                                 Send
                                             </button>
@@ -670,11 +685,122 @@
                                             YOUR MINERS
                                         </p>
                                         <div style="height:12em;overflow:auto;">
-                                            <span id="miners">No miners detected</span>
+                                            <span id="miners">Please wait...</span>
                                         </div>
                                         <p class="title is-size-6 mt-3">
-                                            <i class="fa fa-tachometer-alt fa-fw" style="color:#badc58;"></i>&nbsp;
-                                            <span id="minerHR">Total hashrate: 0 H/s</span>
+                                            <i class="fa fa-tachometer-alt fa-fw" style="color:#ff9f43;"></i>&nbsp;
+                                            <span id="minerHR">Please wait...</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-half">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-list-ul fa-fw" style="color:#8e44ad;"></i>
+                                            LAST TRANSACTIONS
+                                        </p>
+                                        <div class="balanceT">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Amount</th>
+                                                        <th scope="col">Sender</th>
+                                                        <th scope="col">Recipient</th>
+                                                        <th scope="col">Hash</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="transactions">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="box">
+                                        <p class="subtitle">
+                                            <i class="fa fa-calculator fa-fw" style="color:#2ecc71;"></i>
+                                            EARNINGS CALCULATOR
+                                            <span class="tag is-success is-light">
+                                                BETA
+                                            </span>
+                                        </p>
+                                        <div class="columns">
+                                            <div class="column is-half">
+                                                <div class="field">
+                                                    <label class="label">Hashrate (DUCO-S1)</label>
+                                                    <div class="control">
+                                                        <div class="field has-addons">
+                                                            <div class="control">
+                                                                <input class="input" id="input-hashrate" type="number" max="1000" min="1" value="1.2">
+                                                            </div>
+                                                            <p class="control">
+                                                                <span class="select">
+                                                                    <select id="multiplier">
+                                                                        <option value="1000">MH/s</option>
+                                                                        <option value="1">kH/s</option>
+                                                                    </select>
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <label class="label">Estimated profit</label>
+                                                    <div class="control">
+                                                        <div class="field has-addons">
+                                                            <div class="control">
+                                                                <div class="control">
+                                                                    <p class="tag is-success is-medium" id="values">
+                                                                        5.82 ᕲ/day
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="column is-half">
+                                                <div class="field">
+                                                    <label class="label">Devices</label>
+                                                    <div class="control">
+                                                        <div class="field has-addons">
+                                                            <div class="control">
+                                                                <input class="input" id="input-devices" type="number" max="25" min="1" value="1">
+                                                            </div>
+                                                            <p class="control">
+                                                                <span class="select">
+                                                                    <select id="device-type">
+                                                                        <option value="AVR">Arduino(s)</option>
+                                                                        <option value="ESP8266">ESP8266(s)</option>
+                                                                        <option value="ESP32">ESP32(s)</option>
+                                                                    </select>
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field">
+                                                    <label class="label">Estimated profit</label>
+                                                    <div class="control">
+                                                        <div class="field has-addons">
+                                                            <div class="control">
+                                                                <p class="tag is-success is-medium" id="values-devices">
+                                                                    7.68 ᕲ/day
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <b class="subtitle is-size-6">
+                                            DUCO earnings depend on many factors.
+                                        </b>
+                                        <p class="subtitle is-size-6 has-text-grey">
+                                            Estimations will be more accurate when more data will be gathered.
                                         </p>
                                     </div>
                                 </div>
@@ -703,13 +829,24 @@
                                             <span>Duino-Coin</span>
                                         </a>
                                         <a href="https://revoxhere.github.io/duco-exchange/" class="button is-secondary">
+                                            <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duco-exchange/master/ducoexchangev3logo.png">
                                             <span>DUCO Exchange</span>
                                         </a>
                                         <a href="http://www.node-s.co.za/duco_exchange/home" class="button is-secondary">
+                                            <img src="http://www.node-s.co.za/static/media/Logo-01.jpg" class="icon is-small">
                                             <span>Node-S Exchange</span>
                                         </a>
+                                        <a href="https://explorer.duinocoin.com" class="button is-secondary">
+                                            <img src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/explorer.png" class="icon is-small">
+                                            <span>Network stats</span>
+                                        </a>
+                                        <a href="https://lulaschkas.github.io/duco-mining-dashboard/" class="button is-secondary">
+                                            <img src="https://lulaschkas.github.io/duco-mining-dashboard/img/ducominingdashboarddark.png" class="icon is-small">
+                                            <span>Lulaschkas' Mining Dashboard</span>
+                                        </a>
                                         <a href="https://siunus.github.io/duco-monitor/" class="button is-secondary">
-                                            <span>DUCO Monitor</span>
+                                            <img class="icon is-small" src="https://siunus.github.io/duco-monitor/favicon.ico">
+                                            <span>Siunus' DUCO Monitor</span>
                                         </a>
                                         <a href="https://duinocoin.com/donate" class="button is-secondary">
                                             <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
@@ -738,4 +875,42 @@ pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-t
 window.addEventListener('load', function() {
     pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
 });
+</script>
+<script>
+let multiplier = document.getElementById('multiplier');
+let input = document.getElementById('input-hashrate');
+let log = document.getElementById('values');
+
+multiplier.addEventListener('input', updateValue);
+input.addEventListener('input', updateValue);
+
+function updateValue(e) {
+    hashrate = e.target.value * multiplier.value;
+
+    /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
+    result = (0.0026 * hashrate) + 2.7;
+
+    if (hashrate < 1) log.textContent = "0 ᕲ/day";
+    else log.textContent = result.toFixed(2) + " ᕲ/day";
+}
+</script>
+<script>
+let device = document.getElementById('device-type');
+let input_devices = document.getElementById('input-devices');
+let log_devices = document.getElementById('values-devices');
+
+device.addEventListener('input', updateValue);
+input_devices.addEventListener('input', updateValue);
+
+function updateValue(e) {
+    if (device.value == "AVR") basereward = 8
+    if (device.value == "ESP8266") basereward = 6
+    if (device.value == "ESP32") basereward = 7
+
+    /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
+    kolka_drop = (0.96 ** input_devices.value);
+    result = basereward * input_devices.value * kolka_drop;
+
+    log_devices.textContent = result.toFixed(2) + " ᕲ/day";
+}
 </script>
