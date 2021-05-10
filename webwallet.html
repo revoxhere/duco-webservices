@@ -41,9 +41,26 @@
             background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
         }
         .is-duco {
-            color: #fafafa !important;
-            background: #ffb412 !important;
+            background: #fdcb6e !important;
         }
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 50%;
+            background: lightgrey;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid red;
+        }
+
         body {
             background-size: cover !important;
             background-attachment: fixed !important;
@@ -55,8 +72,8 @@
             background-repeat: no-repeat !important;
         }
         .balanceT {
-            max-width: 80vw;
-            max-height: 45vh;
+            max-width: 80vw !important;
+            max-height: 45vh !important;
             overflow-x: scroll !important;
             overflow-y: scroll !important;
         }
@@ -121,6 +138,8 @@
         if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
         if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
         if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+
+        document.getElementById("loginstatus").innerHTML = "";
 
         // THEME SWITCHER
         document.getElementById('darkmode').onclick = function() {
@@ -251,6 +270,38 @@
             });
         }
 
+        // TRANSACTION DATA FROM API
+        const TransactionAPI = (username) => {
+            const transtable = document.getElementById("transactions");
+            $.getJSON('https://server.duinocoin.com:5000/transactions/' + username, function(data) {
+                console.log("Transaction list received");
+                //for (transaction in data) console.log(data[transaction]);
+                jsonD = data.reverse();
+                if (jsonD.length > 0) {
+                    let transactions = "";
+                    for (i in jsonD) {
+                        let classD = "has-text-success-dark";
+                        let symbolD = "+";
+                        if (jsonD[i].sender == username) {
+                            classD = "has-text-danger";
+                            symbolD = "-";
+                        }
+                        transactions +=
+                            `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i].datetime.substr(0, jsonD[i].datetime.length - 8)}</td>` +
+                            `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i].amount.toFixed(2)} ᕲ</td>` +
+                            `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i].sender}</td>` +
+                            `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i].recipient}</td>` +
+                            `<td data-label="Hash">` +
+                            `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i].hash}">` +
+                            `${jsonD[i].hash.substr(jsonD[i].hash.length - 5)}</a></td></tr>`;
+                        if (i >= 10) break
+                    }
+                    transtable.innerHTML = transactions;
+                } 
+                else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
+            });
+        }
+
         // PROFIT CALCULATOR
         const ProfitCalculator = () => {
             let prev_bal = curr_bal;
@@ -264,12 +315,27 @@
                     daily_average.push(daily);
                     let sum = daily_average.reduce((a, b) => a + b, 0);
                     let avg = (sum / daily_average.length) || 0;
-                    console.log("Estimated profit sum: " + sum + ", average: " + avg);
+                    avgusd = avg * ducoUsdPrice;
+                    //console.log("Estimated profit sum: " + sum + ", average: " + avg);
+
+                    avg_list = avg.toFixed(2).split(".")
+                    avg_before_dot = avg_list[0]
+                    avg_after_dot = avg_list[1]
+
 
                     document.getElementById("estimatedprofit")
-                        .innerHTML = avg.toFixed(2) + " ᕲ";
+                        .innerHTML = avg_before_dot +
+                        "<span class='has-text-weight-normal'>." +
+                        avg_after_dot + " ᕲ";
+
+                    avgusd_list = avgusd.toFixed(2).split(".")
+                    avgusd_before_dot = avgusd_list[0]
+                    avgusd_after_dot = avgusd_list[1]
+
                     document.getElementById("estimatedprofitusd")
-                        .innerHTML = "≈$" + (avg * ducoUsdPrice).toFixed(2);
+                        .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + avgusd_before_dot +
+                        "." +
+                        avgusd_after_dot;
                 }
             }
         };
@@ -291,8 +357,6 @@
 
             let username = document.getElementById('usernameinput').value
             let password = document.getElementById('passwordinput').value
-            let transtable = document.getElementById("transactions");
-            transtable.innerHTML += `<tr><td data-label="Date">Please wait...</td></tr>`;
 
             if (username != null &&
                 username != "" &&
@@ -317,12 +381,8 @@
                         amount != undefined) {
                         sending = true;
 
-                        setTimeout(() => {
-                            socket.send("SEND," + memo + "," + recipient + "," + amount + ",");
-                            document.getElementById("sendinginfo")
-                                .innerHTML = "Confirming transaction..."
-                        }, 100);
-
+                        socket.send("SEND," + memo + "," + recipient + "," + amount + ",");
+                        document.getElementById("sendinginfo").innerHTML = "Confirming transaction..."
                     } else {
                         document.getElementById("sendinginfo")
                             .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>"
@@ -352,33 +412,6 @@
                             .innerHTML = "Authenticating...";
                         socket.send("LOGI," + username + "," + password + ",");
                     }
-                    if (sending == true) {
-                        serverMessage = serverMessage.split(",");
-                        if (serverMessage[0].includes("OK")) {
-                            document.getElementById("sendinginfo")
-                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" + serverMessage[1] + "</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "TXID: <a href='https://explorer.duinocoin.com?search=" + serverMessage[2] + "'>" + serverMessage[2] + "</a>";
-                        } else if (serverMessage[0].includes("NO")) {
-                            document.getElementById("sendinginfo")
-                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
-                        } else {
-                            document.getElementById("sendinginfo")
-                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-warning'><b>Error sending request, please try again</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
-                        }
-                        document.getElementById("send").classList.remove("is-loading");
-                        setTimeout(() => {
-                            sending = false;
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
-                            document.getElementById("sendinginfo")
-                                .innerHTML = "";
-                        }, 5000);
-                    }
                     if (loggedIn == false &&
                         versionReceived &&
                         serverMessage.includes("OK")) {
@@ -388,49 +421,52 @@
                             .innerHTML = "Logged in!";
                         document.getElementById("loginbutton").classList.remove("is-loading");
                         document.getElementById("wallettext")
-                            .innerHTML = "Welcome back, <b>" + username + "!</b>";
+                            .innerHTML = "<span class='has-text-weight-light'>Welcome back, <b>" + username + "!</b>";
                         document.getElementById("copyright")
-                            .innerHTML = `<p class="subtitle is-size-7 has-text-grey">` +
-                            `Duino-Coin Web Wallet developed by ` +
-                            `<a href="https://github.com/revoxhere/">revox</a>` +
-                            `, ` +
-                            `<a href="https://www.instagram.com/vlegle/">Yennefer</a>` +
-                            ` & ` +
-                            `<a href="https://github.com/LDarki">LDarki</a>` +
+                            .innerHTML = `<p class="subtitle is-size-7 has-text-grey has-text-weight-light">` +
+                            `<span class="has-text-weight-normal">Duino-Coin Web Wallet</span> is developed by ` +
+                            `<a href="https://github.com/revoxhere/">revox</a>, ` +
+                            `<a href="https://www.instagram.com/vlegle/">Yennefer</a> & ` +
+                            `<a href="https://github.com/LDarki">LDarki</a>, ` +
+                            `hosted by <a href="https://kristian-kramer.com">Kristian</a>` +
                             `<br><span class="is-size-7 has-text-grey">` +
                             `2020-2021 the <a href="https://duinocoin.com">Duino-Coin</a> project` +
                             `</span>` +
                             `<span class="is-size-7 has-text-grey">` +
-                            `<br>` +
-                            `distributed under the ` +
+                            `, distributed under the ` +
                             `<a href="https://opensource.org/licenses/MIT">` +
                             `MIT license` +
-                            `</a>` +
-                            `</span>` +
-                            `</p>`
+                            `</a></span></p>`
 
-                        MinerAPI(username);
+                        window.setTimeout(() => {
+                            MinerAPI(username);
+                        }, 3000);
                         window.setInterval(() => {
                             MinerAPI(username);
                         }, 10000);
 
+                        const transtable = document.getElementById("transactions");
+                        transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
+                        window.setTimeout(() => {
+                            TransactionAPI(username);
+                        }, 3000);
                         window.setInterval(() => {
-                            if (sending == false) {
-                                if (counter % 2 == 0) {
-                                    socket.send("BALA,");
-                                } else {
-                                    socket.send("GTXL," + username + ",7,");
-                                }
-                                counter++;
-                            }
-                        }, 1000);
+                            TransactionAPI(username);
+                        }, 5000);
+
+                        window.setInterval(() => {
+                            if (sending == false)
+                                socket.send("BALA,");
+                            else
+                                console.log("not sending");
+                        }, 2000);
 
                         window.setInterval(() => {
                             ProfitCalculator();
                         }, 5000);
 
-                        $("#login").hide("slow")
-                        $("#wallet").show("slow")
+                        $("#login").hide("normal")
+                        $("#wallet").show("normal")
 
                         loggedIn = true;
                     }
@@ -452,39 +488,51 @@
                         console.log("Balance received: " + serverMessage);
                         balance = parseFloat(serverMessage);
                         balanceusd = balance * ducoUsdPrice;
-                        document.getElementById("balance")
-                            .innerHTML = balance.toFixed(8) + " ᕲ";
-                        document.getElementById("balanceusd")
-                            .innerHTML = "≈$" + balanceusd.toFixed(4);
 
+                        balance_list = balance.toFixed(8).split(".")
+                        balance_before_dot = balance_list[0]
+                        balance_after_dot = balance_list[1]
+
+                        document.getElementById("balance")
+                            .innerHTML = balance_before_dot +
+                            "<span class='has-text-weight-normal'>." +
+                            balance_after_dot + " ᕲ";
+
+                        balanceusd_list = balanceusd.toFixed(4).split(".")
+                        balanceusd_before_dot = balanceusd_list[0]
+                        balanceusd_after_dot = balanceusd_list[1]
+
+                        document.getElementById("balanceusd")
+                            .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
+                            "." +
+                            balanceusd_after_dot;
                     }
-                    if (loggedIn &&
-                        versionReceived &&
-                        canEval('(' + serverMessage + ')') &&
-                        serverMessage.includes("{")) {
-                        try {
-                            console.log("Transaction list received");
-                            jsonD = eval('(' + serverMessage + ')');
-                            transtable.innerHTML = "";
-                            for (let i in jsonD) {
-                                let classD = "has-text-success-dark";
-                                let symbolD = "+";
-                                if (jsonD[i].Sender == username) {
-                                    classD = "has-text-danger";
-                                    symbolD = "-";
-                                }
-                                transtable.innerHTML +=
-                                    `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i].Date.substr(0, jsonD[i].Date.length - 5)}</td>` +
-                                    `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i].Amount.toFixed(2)} ᕲ</td>` +
-                                    `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i].Sender}</td>` +
-                                    `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i].Recipient}</td>` +
-                                    `<td data-label="Hash">` +
-                                    `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i].Hash}">` +
-                                    `${jsonD[i].Hash.substr(jsonD[i].Hash.length - 5)}</a></td></tr>`;
-                            }
-                        } catch (e) {
-                            console.log(e);
+                    if (sending == true) {
+                        serverMessage = serverMessage.split(",");
+                        if (serverMessage[0].includes("OK")) {
+                            document.getElementById("sendinginfo")
+                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" + serverMessage[1] + "</b></span>";
+                            document.getElementById("sendingtxid")
+                                .innerHTML = "TXID: <a href='https://explorer.duinocoin.com?search=" + serverMessage[2] + "'>" + serverMessage[2] + "</a>";
+                        } else if (serverMessage[0].includes("NO")) {
+                            document.getElementById("sendinginfo")
+                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
+                            document.getElementById("sendingtxid")
+                                .innerHTML = "";
+                        } else {
+                            document.getElementById("sendinginfo")
+                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-warning-dark'><b>Error sending request, please try again</b></span>";
+                            document.getElementById("sendingtxid")
+                                .innerHTML = "";
                         }
+                        document.getElementById("send").classList.remove("is-loading");
+                        setTimeout(() => {
+                            sending = false;
+                            document.getElementById("sendingtxid")
+                                .innerHTML = "";
+                            document.getElementById("sendinginfo")
+                                .innerHTML = "";
+                        }, 5000);
                     }
                 }
             } else {
@@ -505,36 +553,36 @@
     <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
         <span class="title">Duino-Coin Web Wallet</span>
     </div>
-    <div class="containers">
+    <div class="container">
         <section class="hero is-fullheight">
             <div class="hero-body is-align-self-center">
                 <div class="box">
                     <p class="title">
                         <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
                         <span id="wallettext">
-                            Duino-Coin Web Wallet
-                            <span class="subtitle is-size-7">
+                            Duino-Coin
+                            <span class="has-text-weight-light">
+                                Web Wallet
+                            </span>
+                            <span class="subtitle is-size-7 has-text-weight-normal">
                                 v2.5.4
                             </span>
                         </span>
-                        <p class="subtitle is-size-7 has-text-grey-dark" id="copyright">
-                            by
-                            <a href="https://github.com/revoxhere/">revox</a>
-                            ,
-                            <a href="https://www.instagram.com/vlegle/">Yennefer</a>
-                            &
-                            <a href="https://github.com/LDarki">LDarki</a>
-                            <span class="is-size-7 has-text-grey">
-                                2020-2021
-                            </span>
-                            <span>
-                                &middot;
-                                distributed under the
-                                <a href="https://opensource.org/licenses/MIT">
-                                    MIT license
-                                </a>
-                            </span>
-                        </p>
+                    </p>
+                    <p class="subtitle is-size-7 has-text-grey-dark has-text-weight-light" id="copyright">
+                        ©
+                        <a href="https://github.com/revoxhere/">revox</a>,
+                        <a href="https://www.instagram.com/vlegle/">Yennefer</a>,
+                        <a href="https://github.com/LDarki">LDarki</a>
+                        &
+                        <a href="https://kristian-kramer.com">Kristian</a>
+                        <span>
+                            &middot;
+                            distributed under the
+                            <a href="https://opensource.org/licenses/MIT">
+                                MIT license
+                            </a>
+                        </span>
                     </p>
                     <section id="login">
                         <div class="column">
@@ -557,18 +605,17 @@
                                     </span>
                                 </div>
                             </div>
-                            <br>
-                            <div class="field">
+                            <div class="field mt-5">
                                 <div class="buttons">
-                                    <button class="button is-success" id="loginbutton">
+                                    <button class="button is-duco is-warning" id="loginbutton">
                                         <i class="fa fa-fw fa-check"></i>&nbsp;
                                         Login
                                     </button>
-                                    <a href="https://wallet.duinocoin.com/register" class="button is-link" id="loginbutton">
+                                    <a href="https://wallet.duinocoin.com/register" class="button is-secondary is-outlined" id="loginbutton">
                                         <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
                                         Register
                                     </a>
-                                    <span class="subtitle mb-2 has-text-grey is-size-7" id="loginstatus"></span>
+                                    <p class="subtitle has-text-grey is-size-7 mb-1" id="loginstatus">Please enable JavaScript!</p>
                                 </div>
                             </div>
                         </div>
@@ -576,26 +623,26 @@
                     <section id="wallet" style="display: none;">
                         <div class="container">
                             <div class="columns">
-                                <div class="column is-one-third">
+                                <div class="column">
                                     <div class="box">
-                                        <p class="subtitle">
-                                            <i class="fa fa-wallet fa-fw" style="color:#f39c12;"></i>
+                                        <p class="subtitle has-text-weight-light">
+                                            <i class="fa fa-wallet fa-fw" style="color:#fdcb6e;"></i>
                                             DUCO BALANCE
                                         </p>
                                         <p class="title">
                                             <span id="balance">
                                                 Please wait...
                                             </span>
-                                            <span class="subtitle" id="balanceusd">
+                                            <span class="subtitle is-size-6" id="balanceusd">
                                             </span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="column is-one-third">
+                                <div class="column">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-coins fa-fw" style="color:#ff6b6b;"></i>
-                                            ESTIMATED DAILY PROFIT
+                                            EST. DAILY PROFIT
                                         </p>
                                         <p class="title">
                                             <span id="estimatedprofit">
@@ -606,9 +653,9 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="column is-one-third">
+                                <div class="column">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
                                             DUCO PRICE
                                         </p>
@@ -623,21 +670,21 @@
                             <div class="columns">
                                 <div class="column is-one-third">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-newspaper fa-fw" style="color:#6ab04c;"></i>
                                             NEWS
                                             <span class="tag is-success is-light">
                                                 BETA
                                             </span>
                                         </p>
-                                        <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;max-width:90vw;height:18em;"></iframe>
+                                        <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:13em;" width="100%">Please wait...</iframe>
                                     </div>
                                 </div>
                                 <div class="column is-one-third">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-share fa-fw" style="color:#17c0eb;"></i>
-                                            SEND FUNDS
+                                            SEND MONEY
                                         </p>
                                         <label class="label">Recipient</label>
                                         <div class="control has-icons-left is-expanded">
@@ -646,38 +693,52 @@
                                                 <i class="fa fa-user"></i>
                                             </span>
                                         </div>
-                                        <label class="label mt-2">Amount</label>
-                                        <div class="control has-icons-left is-expanded">
-                                            <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-coins"></i>
-                                            </span>
+                                        <div class="columns">
+                                            <div class="column">
+                                                <label class="label mt-2">Amount</label>
+                                                <div class="control has-icons-left is-expanded">
+                                                    <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
+                                                    <span class="icon is-small is-left">
+                                                        <i class="fa fa-coins"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="column">
+                                                <label class="label mt-2">
+                                                    Message
+                                                    <span class="subtitle is-size-7">
+                                                        (optional)
+                                                    </span>
+                                                </label>
+                                                <div class="control has-icons-left is-expanded">
+                                                    <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
+                                                    <span class="icon is-small is-left">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <label class="label mt-2">Message (optional)</label>
-                                        <div class="control has-icons-left is-expanded">
-                                            <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-envelope"></i>
-                                            </span>
-                                        </div>
-                                        <br>
-                                        <div class="buttons">
-                                            <button class="button is-info" id="send">
-                                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
-                                                Send
-                                            </button>
-                                            <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
-                                            <span class="subtitle mt-2 has-text-grey is-size-7" id="sendingtxid"></span>
+                                        <button class="button is-info is-outlined is-fullwidth" id="send">
+                                            <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
+                                            Transfer funds
+                                        </button>
+                                        <div class="columns">
+                                            <div class="column">
+                                                <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
+                                            </div>
+                                            <div class="column">
+                                                <span class="subtitle mt-2 has-text-grey is-size-7" id="sendingtxid"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="column is-one-third">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-chart-bar fa-fw" style="color:#e17055;"></i>
                                             YOUR MINERS
                                         </p>
-                                        <div style="height:16.6em;overflow:auto;">
+                                        <div style="height:11.6em;overflow:auto;">
                                             <span id="miners">Please wait...</span>
                                         </div>
                                         <p class="title is-size-6 mt-3">
@@ -690,7 +751,7 @@
                             <div class="columns">
                                 <div class="column is-half">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-list-ul fa-fw" style="color:#8e44ad;"></i>
                                             LAST TRANSACTIONS
                                         </p>
@@ -713,7 +774,7 @@
                                 </div>
                                 <div class="column is-half">
                                     <div class="box">
-                                        <p class="subtitle">
+                                        <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-calculator fa-fw" style="color:#2ecc71;"></i>
                                             EARNINGS CALCULATOR
                                             <span class="tag is-success is-light">
