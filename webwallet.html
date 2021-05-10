@@ -173,30 +173,28 @@
 
         // MINER DATA FROM API
         const MinerAPI = (username) => {
-            $.getJSON('https://server.duinocoin.com/miners.json', function(data) {
-                let myMiners = [];
-                let contentjson = {};
+            $.getJSON('https://server.duinocoin.com:5000/miners/' + username, function(data) {
+                let myMiners = data;
                 miners = document.getElementById("miners");
                 miners.innerHTML = "";
-                minerHashrate = document.getElementById("minerHR"),
-                    contentjson = data;
-
-                for (process in contentjson)
-                    if (contentjson[process]["User"] == username)
-                        myMiners.push(contentjson[process]);
+                minerHashrate = document.getElementById("minerHR");
 
                 if (myMiners.length > 0) {
-                    console.log("not empty");
                     for (miner in myMiners) {
-                        let IsEstimated = "";
-                        if (myMiners[miner]["Is estimated"] == "True") {
-                            IsEstimated = " (Estimated)";
-                        }
-                        if (myMiners[miner]["Identifier"] == "None") {
+                        if (myMiners[miner]["identifier"] == "None")
                             minerId = "";
-                        } else {
-                            minerId = myMiners[miner]["Identifier"];
-                        }
+                        else
+                            minerId = myMiners[miner]["identifier"];
+
+                        if (myMiners[miner]["diff"] >= 1000000000)
+                            diffString = Math.round(myMiners[miner]["diff"] / 1000000000) + "G";
+                        else if (myMiners[miner]["diff"] >= 1000000)
+                            diffString = Math.round(myMiners[miner]["diff"] / 1000000) + "M";
+                        else if (myMiners[miner]["diff"] >= 1000)
+                            diffString = Math.round(myMiners[miner]["diff"] / 1000) + "k";
+                        else
+                            diffString = myMiners[miner]["diff"];
+
                         if (minerId != "") {
                             miners.innerHTML +=
                                 "<b class='has-text-grey-light'>#" +
@@ -204,20 +202,19 @@
                                 ":</b><b class='has-text-primary'> " +
                                 minerId +
                                 "</b> (" +
-                                myMiners[miner]["Software"] +
+                                myMiners[miner]["software"] +
                                 ") <b><span class='has-text-success'>" +
-                                calculateHashrate(myMiners[miner]["Hashrate"]) +
-                                IsEstimated +
+                                calculateHashrate(myMiners[miner]["hashrate"]) +
                                 "</b></span><span class='has-text-info'> @ diff " +
-                                myMiners[miner]["Diff"] +
+                                diffString +
                                 "</span>, " +
-                                myMiners[miner]["Accepted"] +
+                                myMiners[miner]["accepted"] +
                                 "/" +
-                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                                (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
                                 " <b class='has-text-success-dark'>(" +
                                 Math.round(
-                                    (myMiners[miner]["Accepted"] /
-                                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                    (myMiners[miner]["accepted"] /
+                                        (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
                                     100
                                 ) +
                                 "%)</b><br>";
@@ -226,30 +223,28 @@
                                 "<b class='has-text-grey-light'>#" +
                                 miner +
                                 ":</b> " +
-                                myMiners[miner]["Software"] +
+                                myMiners[miner]["software"] +
                                 " <b><span class='has-text-success'>" +
-                                calculateHashrate(myMiners[miner]["Hashrate"]) +
-                                IsEstimated +
+                                calculateHashrate(myMiners[miner]["hashrate"]) +
                                 "</b></span><span class='has-text-info'> @ diff " +
-                                myMiners[miner]["Diff"] +
+                                diffString +
                                 "</span>, " +
-                                myMiners[miner]["Accepted"] +
+                                myMiners[miner]["accepted"] +
                                 "/" +
-                                (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                                (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
                                 " <b class='has-text-success-dark'>(" +
                                 Math.round(
-                                    (myMiners[miner]["Accepted"] /
-                                        (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                    (myMiners[miner]["accepted"] /
+                                        (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
                                     100
                                 ) +
                                 "%)</b><br>";
                         }
-                        totalHashes = totalHashes + myMiners[miner]["Hashrate"];
+                        totalHashes = totalHashes + myMiners[miner]["hashrate"];
                     }
                     minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
                     totalHashes = 0;
                 } else {
-                    console.log("empty");
                     miners.innerHTML = "<b class='subtitle is-size-6'>No miners detected</b>" +
                         "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
                 }
@@ -414,12 +409,10 @@
                             `</span>` +
                             `</p>`
 
-                        window.setTimeout(() => {
-                            MinerAPI(username);
-                        }, 2000);
+                        MinerAPI(username);
                         window.setInterval(() => {
                             MinerAPI(username);
-                        }, 15000);
+                        }, 10000);
 
                         window.setInterval(() => {
                             if (sending == false) {
@@ -521,7 +514,7 @@
                         <span id="wallettext">
                             Duino-Coin Web Wallet
                             <span class="subtitle is-size-7">
-                                v2.5.3
+                                v2.5.4
                             </span>
                         </span>
                         <p class="subtitle is-size-7 has-text-grey-dark" id="copyright">
@@ -637,7 +630,7 @@
                                                 BETA
                                             </span>
                                         </p>
-                                        <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;height:100%;width:100%;overflow:auto;max-width:90vw"></iframe>
+                                        <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;max-width:90vw;height:18em;"></iframe>
                                     </div>
                                 </div>
                                 <div class="column is-one-third">
@@ -684,7 +677,7 @@
                                             <i class="fa fa-chart-bar fa-fw" style="color:#e17055;"></i>
                                             YOUR MINERS
                                         </p>
-                                        <div style="height:12em;overflow:auto;">
+                                        <div style="height:16.6em;overflow:auto;">
                                             <span id="miners">Please wait...</span>
                                         </div>
                                         <p class="title is-size-6 mt-3">
