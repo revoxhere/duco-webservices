@@ -177,7 +177,7 @@
             $.getJSON('https://server.duinocoin.com/api.json', function(data) {
                 ducoUsdPrice = data["Duco price"];
                 document.getElementById("ducousd")
-                    .innerHTML = "1 ᕲ ≈ $" + (ducoUsdPrice).toFixed(4);
+                    .innerHTML = "$" + (ducoUsdPrice).toFixed(4);
             });
         };
         GetData();
@@ -668,15 +668,22 @@
                                 </div>
                                 <div class="column">
                                     <div class="box">
-                                        <p class="subtitle has-text-weight-light">
-                                            <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
-                                            DUCO PRICE
-                                        </p>
-                                        <p class="title">
-                                            <span id="ducousd">
-                                                Please wait...
-                                            </span>
-                                        </p>
+                                        <div class="columns">
+                                            <div class="column">
+                                                <p class="subtitle has-text-weight-light">
+                                                    <i class="fa fa-money-bill-wave fa-fw" style="color:#0abde3;"></i>
+                                                    DUCO PRICE
+                                                </p>
+                                                <p class="title">
+                                                    <span id="ducousd">
+                                                        Please wait...
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="is-hidden-mobile">
+                                                <img style="width:7em" src="https://server.duinocoin.com/mini_prices.png">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
