@@ -33,8 +33,11 @@
     <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
     <link rel="preload" as="image" href="https://i.imgur.com/oYEEfLG.png">
     <!-- Bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
+    <link rel="stylesheet" id="dark" disabled="true" type="text/css" href="https://unpkg.com/bulma-prefers-dark">
+    <link rel="stylesheet" id="radiate" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
+    <link rel="stylesheet" id="alt" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/materia/bulmaswatch.min.css">
     <style>
         .is-primary {
             /* Override Bulmas primary color to Duco-Colored gradient*/
@@ -73,7 +76,7 @@
         }
         .balanceT {
             max-width: 80vw !important;
-            max-height: 45vh !important;
+            max-height: 15em !important;
             overflow-x: scroll !important;
             overflow-y: scroll !important;
         }
@@ -144,13 +147,30 @@
         // THEME SWITCHER
         document.getElementById('darkmode').onclick = function() {
             clickcount++;
-            if (clickcount % 2 == 1) {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+
+            if (clickcount == 1) {
+                $('#dark').attr('disabled', false);
+                $('#radiate').attr('disabled', true);
+                $('#alt').attr('disabled', true);
             }
-            if (clickcount % 2 == 0) {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
+            if (clickcount == 2) {
+                $('#dark').attr('disabled', true);
+                $('#radiate').attr('disabled', false);
+                $('#alt').attr('disabled', true);
+            }
+            if (clickcount == 3) {
+                $('#dark').attr('disabled', true);
+                $('#radiate').attr('disabled', true);
+                $('#alt').attr('disabled', false);
+            }
+            if (clickcount == 4) {
+                $('#dark').attr('disabled', true);
+                $('#radiate').attr('disabled', true);
+                $('#alt').attr('disabled', true);
+                clickcount = 0;
             }
         }
+
 
         // PRICE FROM API
         const GetData = () => {
@@ -297,8 +317,35 @@
                         if (i >= 10) break
                     }
                     transtable.innerHTML = transactions;
-                } 
-                else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
+                } else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
+            });
+        }
+
+        //BALANCE DATA FROM API
+        const BalanceAPI = (username) => {
+            $.getJSON('https://server.duinocoin.com:5000/balances/' + username, function(data) {
+                balance = parseFloat(data["balance"]);
+                balanceusd = balance * ducoUsdPrice;
+
+                console.log("Balance received: " + balance + "($" + balanceusd + ")");
+
+                balance_list = balance.toFixed(8).split(".")
+                balance_before_dot = balance_list[0]
+                balance_after_dot = balance_list[1]
+
+                document.getElementById("balance")
+                    .innerHTML = balance_before_dot +
+                    "<span class='has-text-weight-normal'>." +
+                    balance_after_dot + " ᕲ";
+
+                balanceusd_list = balanceusd.toFixed(4).split(".")
+                balanceusd_before_dot = balanceusd_list[0]
+                balanceusd_after_dot = balanceusd_list[1]
+
+                document.getElementById("balanceusd")
+                    .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
+                    "." +
+                    balanceusd_after_dot;
             });
         }
 
@@ -391,8 +438,6 @@
                         setTimeout(() => {
                             document.getElementById("sendinginfo")
                                 .innerHTML = "";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
                         }, 5000);
                     }
                 }
@@ -455,18 +500,15 @@
                         }, 5000);
 
                         window.setInterval(() => {
-                            if (sending == false)
-                                socket.send("BALA,");
-                            else
-                                console.log("not sending");
+                            BalanceAPI(username);
                         }, 2000);
 
                         window.setInterval(() => {
                             ProfitCalculator();
                         }, 5000);
 
-                        $("#login").hide("normal")
-                        $("#wallet").show("normal")
+                        $("#login").hide("slow")
+                        $("#wallet").show("slow")
 
                         loggedIn = true;
                     }
@@ -480,56 +522,27 @@
                             document.getElementById("loginstatus")
                                 .innerHTML = ""
                         }, 5000);
-
-                    }
-                    if (loggedIn &&
-                        versionReceived &&
-                        parseFloat(serverMessage)) {
-                        console.log("Balance received: " + serverMessage);
-                        balance = parseFloat(serverMessage);
-                        balanceusd = balance * ducoUsdPrice;
-
-                        balance_list = balance.toFixed(8).split(".")
-                        balance_before_dot = balance_list[0]
-                        balance_after_dot = balance_list[1]
-
-                        document.getElementById("balance")
-                            .innerHTML = balance_before_dot +
-                            "<span class='has-text-weight-normal'>." +
-                            balance_after_dot + " ᕲ";
-
-                        balanceusd_list = balanceusd.toFixed(4).split(".")
-                        balanceusd_before_dot = balanceusd_list[0]
-                        balanceusd_after_dot = balanceusd_list[1]
-
-                        document.getElementById("balanceusd")
-                            .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
-                            "." +
-                            balanceusd_after_dot;
                     }
                     if (sending == true) {
                         serverMessage = serverMessage.split(",");
                         if (serverMessage[0].includes("OK")) {
                             document.getElementById("sendinginfo")
-                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" + serverMessage[1] + "</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "TXID: <a href='https://explorer.duinocoin.com?search=" + serverMessage[2] + "'>" + serverMessage[2] + "</a>";
+                                .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" +
+                                serverMessage[1] +
+                                "</b></span> TXID: <a href='https://explorer.duinocoin.com?search=" +
+                                serverMessage[2] + "'>" +
+                                serverMessage[2] +
+                                "</a>";
                         } else if (serverMessage[0].includes("NO")) {
                             document.getElementById("sendinginfo")
                                 .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
                         } else {
                             document.getElementById("sendinginfo")
                                 .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-warning-dark'><b>Error sending request, please try again</b></span>";
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
                         }
                         document.getElementById("send").classList.remove("is-loading");
                         setTimeout(() => {
                             sending = false;
-                            document.getElementById("sendingtxid")
-                                .innerHTML = "";
                             document.getElementById("sendinginfo")
                                 .innerHTML = "";
                         }, 5000);
@@ -630,10 +643,10 @@
                                             DUCO BALANCE
                                         </p>
                                         <p class="title">
-                                            <span id="balance">
+                                            <span id="balance" style="white-space: nowrap">
                                                 Please wait...
                                             </span>
-                                            <span class="subtitle is-size-6" id="balanceusd">
+                                            <span class="subtitle is-size-6" id="balanceusd" style="white-space: nowrap">
                                             </span>
                                         </p>
                                     </div>
@@ -722,14 +735,7 @@
                                             <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
                                             Transfer funds
                                         </button>
-                                        <div class="columns">
-                                            <div class="column">
-                                                <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
-                                            </div>
-                                            <div class="column">
-                                                <span class="subtitle mt-2 has-text-grey is-size-7" id="sendingtxid"></span>
-                                            </div>
-                                        </div>
+                                        <span class="subtitle mb-2 has-text-grey is-size-7" id="sendinginfo"></span>
                                     </div>
                                 </div>
                                 <div class="column is-one-third">
@@ -864,23 +870,22 @@
                                     <div class="buttons">
                                         <button id="darkmode" class="button is-secondary">
                                             <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
-                                            <span>Switch theme</span>
+                                            <span>
+                                                Switch theme
+                                                <span class="tag is-success is-light">
+                                                    BETA
+                                                </span>
+                                            </span>
                                         </button>
                                         <a href="http://51.15.127.80/webminer.html" class="button is-secondary">
                                             <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/NewWebMiner.png">
                                             <span>Web Miner</span>
                                         </a>
                                         <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
-                                            <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
-                                            <span>GitHub</span>
+                                            <i class="fab fa-fw fa-github icon is-small"></i>
                                         </a>
                                         <a href="https://discord.gg/kvBkccy" class="button is-secondary">
-                                            <i class="fab fa-fw fa-discord icon is-small"></i>&nbsp;
-                                            <span>Discord</span>
-                                        </a>
-                                        <a href="https://duinocoin.com" class="button is-secondary">
-                                            <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
-                                            <span>Duino-Coin</span>
+                                            <i class="fab fa-fw fa-discord icon is-small"></i>
                                         </a>
                                         <a href="https://revoxhere.github.io/duco-exchange/" class="button is-secondary">
                                             <img class="icon is-small" src="https://raw.githubusercontent.com/revoxhere/duco-exchange/master/ducoexchangev3logo.png">
