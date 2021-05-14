@@ -293,7 +293,7 @@
         // TRANSACTION DATA FROM API
         const TransactionAPI = (username) => {
             const transtable = document.getElementById("transactions");
-            $.getJSON('https://server.duinocoin.com:5000/transactions?username=' + username + '?sort=datetime&limit=10', function(data) {
+            $.getJSON('https://server.duinocoin.com:5000/transactions?username=' + username + '&sort=datetime&limit=10', function(data) {
                 console.log("Transaction list received");
                 //for (transaction in data) console.log(data[transaction]);
                 jsonD = data.result.reverse();
