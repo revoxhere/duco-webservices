@@ -212,7 +212,7 @@
 
         // MINER DATA FROM API
         const MinerAPI = (username) => {
-            $.getJSON('https://server.duinocoin.com:5000/miners?username=' + username, function(data) {
+            $.getJSON('https://server.duinocoin.com/miners?username=' + username, function(data) {
                 let myMiners = data.result;
                 miners = document.getElementById("miners");
                 miners.innerHTML = "";
@@ -293,7 +293,7 @@
         // TRANSACTION DATA FROM API
         const TransactionAPI = (username) => {
             const transtable = document.getElementById("transactions");
-            $.getJSON('https://server.duinocoin.com:5000/transactions?username=' + username + '&sort=datetime&limit=10', function(data) {
+            $.getJSON('https://server.duinocoin.com/transactions?username=' + username, function(data) {
                 console.log("Transaction list received");
                 //for (transaction in data) console.log(data[transaction]);
                 jsonD = data.result.reverse();
@@ -322,7 +322,7 @@
 
         //BALANCE DATA FROM API
         const BalanceAPI = (username) => {
-            $.getJSON('https://server.duinocoin.com:5000/balances?username=' + username, function(data) {
+            $.getJSON('https://server.duinocoin.com/balances?username=' + username, function(data) {
                 balance = parseFloat(data["result"][0]["balance"]);
                 balanceusd = balance * ducoUsdPrice;
 
