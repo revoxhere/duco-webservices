@@ -244,7 +244,19 @@
     let diff = "LOW";
     let SHA1 = new Hashes.SHA1();
     let timeDiff;
-    let clickcount = 0;
+
+    function getTime() {
+        let date = new Date();
+        let h = date.getHours();
+        let m = date.getMinutes();
+        let s = date.getSeconds();
+
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+
+        return h + ":" + m + ":" + s;
+    }
 
     let minerlog = ["Awaiting input..."];
 
@@ -270,8 +282,8 @@
             }
 
             if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                console.log("Share accepted:" + result);
-                minerlog.push("Share accepted: " + result);
+                console.log(`[${getTime()}]` + "Share accepted:" + result);
+                minerlog.push(`[${getTime()}]` + "Share accepted: " + result);
                 acceptedShares++;
                 allShares++;
                 postMessage("Update,"+allShares+","+acceptedShares)
@@ -291,8 +303,8 @@
                 postMessage("Error");
             }
             if (versionReceived && serverMessage.length > 40) {
-                console.log("Job received: " + serverMessage);
-                minerlog.push("Job received: " + serverMessage);
+                console.log(`[${getTime()}]` + "Job received: " + serverMessage);
+                minerlog.push(`[${getTime()}]` + "Job received: " + serverMessage);
                 job = serverMessage.split(",");
                 difficulty = job[2];
 
@@ -311,8 +323,9 @@
                         endTime = new Date();
                         timeDiff = (endTime - startTime) / 1000;
                         hashrate = (result / timeDiff).toFixed(2);
-                        console.log("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                        minerlog.push("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+
+                        console.log(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                        minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                         postMessage("UpdateHashrate,"+timeDiff+","+hashrate)
 
                         socket.send(result + "," + hashrate + ",Official Webminer v2.3.6," + rigid); // send the result to the server
@@ -325,7 +338,7 @@
     });
     let finalstring = "";
 
-    var intervalId = setInterval(function () {
+    let intervalId = setInterval(function () {
         finalstring = "";
         for (miner in minerlog) {
             if (minerlog[miner - 2] != undefined) {
@@ -349,7 +362,7 @@
         pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
     });
 
-    if (typeof(Worker) !== "undefined") {
+    if (typeof (Worker) !== "undefined") {
         console.info("[Info]: WebWorkers supported.");
 
         window.addEventListener('load', function () {
@@ -359,7 +372,7 @@
             if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
             if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
             if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
-            
+
             let clickcount = 0;
 
             document.getElementById('darkmode').onclick = function () {
@@ -392,58 +405,52 @@
                 let blobURL = window.URL.createObjectURL(blob);
                 const socketWorker = new Worker(blobURL);
 
-                socketWorker.postMessage('Start,'+username+","+rigid); // Send the Start action to the worker.
+                socketWorker.postMessage('Start,' + username + "," + rigid); // Send the Start action to the worker.
 
                 let hours = `00`,
-                minutes = `00`,
-                seconds = `00`;
+                    minutes = `00`,
+                    seconds = `00`;
 
-                var chronometer = setInterval(function () {
-                    seconds ++
+                let chronometer = setInterval(function () {
+                    seconds++
                     if (seconds < 10) seconds = `0` + seconds
                     if (seconds > 59) {
                         seconds = `00`
-                        minutes ++
+                        minutes++
                         if (minutes < 10) minutes = `0` + minutes
                     }
                     if (minutes > 59) {
                         minutes = `00`
-                        hours ++
+                        hours++
                         if (hours < 10) hours = `0` + hours
                     }
 
                     document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`;
                 }, 1000);
 
-                socketWorker.addEventListener('message', function(evt) {
+                socketWorker.addEventListener('message', function (evt) {
                     let msg = String(evt.data);
                     const data = msg.split(",");
-                    if (data[0] == "UpdateLog")
-                    {
+                    if (data[0] == "UpdateLog") {
                         document.getElementById("minerlog").innerHTML = msg.replace("UpdateLog", "");
                     }
-                    else if (data[0] == "UpdateDiff")
-                    {
+                    else if (data[0] == "UpdateDiff") {
                         document.getElementById("difficulty").innerHTML = data[1];
                     }
-                    else if (data[0] == "UpdateDiff2")
-                    {
+                    else if (data[0] == "UpdateDiff2") {
                         document.getElementById("difficultytext").innerHTML = data[1];
                     }
-                    else if (data[0] == "UpdateHashrate")
-                    {
+                    else if (data[0] == "UpdateHashrate") {
                         document.getElementById("time").innerHTML = parseInt(data[1]).toFixed(2) + " s";
                         document.getElementById("hashrate").innerHTML = parseFloat(data[2] / 1000).toFixed(0) + " kH/s";
                     }
-                    else if (data[0] == "Update")
-                    {
+                    else if (data[0] == "Update") {
                         let acceptedShares = parseFloat(data[2]),
                             allShares = parseFloat(data[1]);
                         document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
                         document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
                     }
-                    else if (data[0] == "Error")
-                    {
+                    else if (data[0] == "Error") {
                         document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
                         document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
                     }
@@ -455,20 +462,37 @@
 
         window.addEventListener('load', function () {
             let hours = `00`,
-            minutes = `00`,
-            seconds = `00`;
+                minutes = `00`,
+                seconds = `00`;
+
+            function getTime() {
+                let date = new Date();
+                let h = date.getHours();
+                let m = date.getMinutes();
+                let s = date.getSeconds();
+
+                if (h == 0) {
+                    h = 12;
+                }
+
+                h = (h < 10) ? "0" + h : h;
+                m = (m < 10) ? "0" + m : m;
+                s = (s < 10) ? "0" + s : s;
+
+                return h + ":" + m + ":" + s;
+            }
 
             function chronometer() {
-                seconds ++
+                seconds++
                 if (seconds < 10) seconds = `0` + seconds
                 if (seconds > 59) {
                     seconds = `00`
-                    minutes ++
+                    minutes++
                     if (minutes < 10) minutes = `0` + minutes
                 }
                 if (minutes > 59) {
                     minutes = `00`
-                    hours ++
+                    hours++
                     if (hours < 10) hours = `0` + hours
                 }
                 document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`
@@ -520,7 +544,7 @@
 
                 let minerlog = ["Awaiting input..."];
                 let finalstring = "";
-                var intervalId = window.setInterval(function () {
+                let intervalId = window.setInterval(function () {
                     for (miner in minerlog) {
                         finalstring = "";
                         if (minerlog[miner - 2] != undefined) {
@@ -539,7 +563,7 @@
 
                 document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
                 document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
-                
+
                 setInterval(chronometer, 1000)
                 document.getElementById("usernameinput").value = username;
                 document.getElementById("riginput").value = rigid;
@@ -555,8 +579,8 @@
                     }
 
                     if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                        console.log("Share accepted:" + result);
-                        minerlog.push("Share accepted: " + result);
+                        console.log(`[${getTime()}]` + "Share accepted:" + result);
+                        minerlog.push(`[${getTime()}]` + "Share accepted: " + result);
                         acceptedShares++;
                         allShares++;
                         document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
@@ -584,8 +608,8 @@
                     }
 
                     if (versionReceived && serverMessage.length > 40) {
-                        console.log("Job received: " + serverMessage);
-                        minerlog.push("Job received: " + serverMessage);
+                        console.log(`[${getTime()}]` + "Job received: " + serverMessage);
+                        minerlog.push(`[${getTime()}]` + "Job received: " + serverMessage);
                         job = serverMessage.split(",");
                         difficulty = job[2];
 
@@ -604,8 +628,10 @@
                                 endTime = new Date();
                                 timeDiff = (endTime - startTime) / 1000;
                                 hashrate = (result / timeDiff).toFixed(2);
-                                console.log("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                                minerlog.push("Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+
+                                console.log(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                                minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+
                                 socket.send(result + "," + hashrate + ",Official Webminer v2.3.6," + rigid); // send the result to the server
                                 break;
                             }
