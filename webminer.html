@@ -63,6 +63,31 @@
         integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 
+<script>
+/* GLOBAL JS */
+window.addEventListener('load', function () {
+
+    let clickcount = 0;
+
+    // RANDOM BACKGROUND
+    let num = Math.ceil(Math.random() * 4);
+    if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
+    if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
+    if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
+    if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+
+    document.getElementById('darkmode').onclick = function () {
+        clickcount++;
+        if (clickcount % 2 == 1) {
+            $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+        }
+        if (clickcount % 2 == 0) {
+            $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
+        }
+    }
+});
+</script>
+
 <body>
     <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
         <span class="title">Duino-Coin Web Miner</span>
@@ -272,7 +297,19 @@
             rigid = "None"
         }
 
-        let socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+        let socket;
+
+        console.info("Trying to use WSS");
+
+        try {
+            socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+            /* If is http this sends error */
+        } catch(e)
+        {
+            console.info("WSS error, using insecure websocket");
+            socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+        }
+
         socket.onmessage = async function (msg) {
             serverMessage = msg.data.replace("\n", "");
             if (serverMessage.includes("2.")) {
@@ -366,25 +403,6 @@
         console.info("[Info]: WebWorkers supported.");
 
         window.addEventListener('load', function () {
-            // RANDOM BACKGROUND
-            let num = Math.ceil(Math.random() * 4);
-            if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
-            if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
-            if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
-            if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
-
-            let clickcount = 0;
-
-            document.getElementById('darkmode').onclick = function () {
-                clickcount++;
-                if (clickcount % 2 == 1) {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
-                }
-                if (clickcount % 2 == 0) {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-                }
-            }
-
             let url_string = window.location;
             let url = new URL(url_string);
             let username = url.searchParams.get("username");
@@ -506,30 +524,6 @@
             let diff = "LOW";
             let SHA1 = new Hashes.SHA1();
             let timeDiff;
-            let clickcount = 0;
-            if (window.location.href === "https://server.duinocoin.com/webminer.html") {
-                window.location.replace("http://51.15.127.80/webminer.html");
-            }
-            if (window.location.href === "https://51.15.127.80/webminer.html") {
-                window.location.replace("http://51.15.127.80/webminer.html");
-            }
-
-            // RANDOM BACKGROUND
-            let num = Math.ceil(Math.random() * 4);
-            if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
-            if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
-            if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
-            if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
-
-            document.getElementById('darkmode').onclick = function () {
-                clickcount++;
-                if (clickcount % 2 == 1) {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
-                }
-                if (clickcount % 2 == 0) {
-                    $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-                }
-            }
 
             let url_string = window.location;
             let url = new URL(url_string);
@@ -568,7 +562,19 @@
                 document.getElementById("usernameinput").value = username;
                 document.getElementById("riginput").value = rigid;
 
-                let socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+                let socket;
+
+                console.info("Trying to use WSS");
+
+                try {
+                    socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+                    /* If is http this sends error */
+                } catch(e)
+                {
+                    console.info("WSS error, using insecure websocket");
+                    socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+                }
+
                 socket.onmessage = async function (msg) {
                     serverMessage = msg.data.replace("\n", "");
                     if (serverMessage.includes("2.")) {
