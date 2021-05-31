@@ -32,6 +32,7 @@
     <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
     <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
     <link rel="preload" as="image" href="https://i.imgur.com/oYEEfLG.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/7d11Dyg.png">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
@@ -140,15 +141,18 @@
     let daily_average = [];
 
     window.addEventListener('load', function() {
-        // RANDOM BACKGROUND
-        let num = Math.ceil(Math.random() * 4);
-        if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
-        if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
-        if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
-        if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
-
         document.getElementById("loginstatus").innerHTML = "";
 
+        // RANDOM BACKGROUND
+        bg_list = ['https://i.imgur.com/trNkG47.png',
+            'https://i.imgur.com/MWknhr6.png',
+            'https://i.imgur.com/oYEEfLG.png',
+            'https://i.imgur.com/7d11Dyg.png',
+            'https://i.imgur.com/K1qr6tC.png'
+        ]
+
+        let num = Math.ceil(Math.random() * bg_list.length);
+        document.body.background = bg_list[num];
 
         // THEME SWITCHER
         var themesel = document.getElementById('themesel');
@@ -703,9 +707,6 @@
                                         <p class="subtitle has-text-weight-light">
                                             <i class="fa fa-newspaper fa-fw" style="color:#6ab04c;"></i>
                                             NEWS
-                                            <span class="tag is-success is-light">
-                                                BETA
-                                            </span>
                                         </p>
                                         <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:13em;" width="100%" allowtransparency="true">Please wait...</iframe>
                                     </div>
@@ -967,12 +968,19 @@ let log = document.getElementById('values');
 multiplier.addEventListener('input', updateValue);
 input.addEventListener('input', updateValue);
 
+
+function floatmap(x, in_min, in_max, out_min, out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+}
+
 function updateValue(e) {
     hashrate = e.target.value * multiplier.value;
 
     /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
-    result = (0.0026 * hashrate) + 2.7;
+    result = (0.0026 * hashrate) + 2.7
+    if (hashrate > 8000) result = floatmap(result, 25, 1000, 25, 40); // extreme diff tier, TODO
 
+    if (hashrate < 1) log.textContent = "0 ᕲ/day";
     if (hashrate < 1) log.textContent = "0 ᕲ/day";
     else log.textContent = result.toFixed(2) + " ᕲ/day";
 }
