@@ -44,7 +44,7 @@
     <style>
         .is-primary {
             /* Override Bulmas primary color to Duco-Colored gradient*/
-            background: linear-gradient(160deg, #0984e3, #6c5ce7, #e84393) !important;
+            background: linear-gradient(145deg, #fd746c, #ff9068) !important;
         }
         .is-duco {
             background: #fdcb6e !important;
@@ -144,7 +144,8 @@
         document.getElementById("loginstatus").innerHTML = "";
 
         // RANDOM BACKGROUND
-        bg_list = ['https://i.imgur.com/trNkG47.png',
+        const bg_list = [
+            'https://i.imgur.com/trNkG47.png',
             'https://i.imgur.com/MWknhr6.png',
             'https://i.imgur.com/oYEEfLG.png',
             'https://i.imgur.com/7d11Dyg.png',
@@ -152,7 +153,7 @@
         ]
 
         let num = Math.ceil(Math.random() * bg_list.length);
-        document.body.background = bg_list[num];
+        document.body.background = bg_list[num - 1];
 
         // THEME SWITCHER
         var themesel = document.getElementById('themesel');
@@ -208,16 +209,12 @@
 
         // PRICE FROM API
         const GetData = () => {
-            $.getJSON('https://server.duinocoin.com/api.json', function(data) {
+            $.getJSON('https://server.duinocoin.com/statistics', function(data) {
                 ducoUsdPrice = data["Duco price"];
                 document.getElementById("ducousd")
                     .innerHTML = "$" + (ducoUsdPrice).toFixed(4);
             });
         };
-        GetData();
-        window.setInterval(() => {
-            GetData();
-        }, 15000);
 
         // HASHRATE PREFIX CALCULATOR
         let totalHashes = 0;
@@ -233,16 +230,6 @@
 
             return hashrate;
         };
-
-        // IF CAN EVAL
-        const canEval = (str) => {
-            try {
-                eval(str);
-                return true;
-            } catch (e) {
-                return false;
-            }
-        }
 
         //USER DATA FROM API
         const UserData = (username) => {
@@ -511,18 +498,24 @@
                         const transtable = document.getElementById("transactions");
                         transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
-                        window.setInterval(() => {
-                            UserData(username);
-                        }, 2500);
+                        $("#login").hide('fast', function() {
+                            $("#wallet").show('normal', function() {
+                                window.setInterval(() => {
+                                    UserData(username);
+                                }, 12500);
 
-                        window.setInterval(() => {
-                            ProfitCalculator();
-                        }, 5000);
+                                window.setInterval(() => {
+                                    ProfitCalculator();
+                                }, 7510);
 
-                        $("#login").hide("slow")
-                        $("#wallet").show("slow")
+                                GetData();
+                                window.setInterval(() => {
+                                    GetData();
+                                }, 30000);
 
-                        loggedIn = true;
+                                loggedIn = true;
+                            });
+                        });
                     }
                     if (loggedIn == false &&
                         versionReceived &&
@@ -575,8 +568,9 @@
 </head>
 
 <body>
-    <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
-        <span class="title">Duino-Coin Web Wallet</span>
+    <div id="pageloader" class="pageloader is-active is-primary is-right-to-left">
+        <p class="title">Duino-Coin Web Wallet</p>
+        <p class="title">Duino-Coin Web Wallet</p>
     </div>
     <div class="container">
         <section class="hero is-fullheight">
@@ -955,9 +949,8 @@
 </html>
 <script>
 let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
-pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
 window.addEventListener('load', function() {
-    pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
+    pageloader.setAttribute('class', "pageloader is-primary is-left-to-right"); // After page is loaded
 });
 </script>
 <script>
