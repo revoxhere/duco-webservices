@@ -38,6 +38,8 @@
     <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
     <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
     <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/oYEEfLG.png">
+    <link rel="preload" as="image" href="https://i.imgur.com/7d11Dyg.png">
 
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -67,25 +69,16 @@
     <script>
       window.onload = function() {
         // RANDOM BACKGROUND
-        let num = Math.ceil(Math.random() * 3);
-        if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
-        if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
-        if (num >= 3) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+        bg_list = ['https://i.imgur.com/trNkG47.png',
+            'https://i.imgur.com/MWknhr6.png',
+            'https://i.imgur.com/oYEEfLG.png',
+            'https://i.imgur.com/7d11Dyg.png',
+            'https://i.imgur.com/K1qr6tC.png'
+        ]
 
-        var speed = "normal";
-        $("html, body").hide();
-        $(document).ready(function() {
-          $("html, body").fadeIn(speed, function() {
-            $("a[href], button[href]").click(function(event) {
-              var url = $(this).attr("href");
-              if (url.indexOf("#") == 0 || url.indexOf("javascript:") == 0) return;
-              event.preventDefault();
-              $("html, body").fadeOut(speed, function() {
-                window.location = url;
-              });
-            });
-          });
-        });
+        let num = Math.ceil(Math.random() * bg_list.length);
+        document.body.background = bg_list[num];
+        
         let message;
         let version_received;
 
@@ -104,12 +97,12 @@
           } else if (server_message.includes("OK")) {
             document.getElementById("loginstatus").innerHTML = "Registered new account successfully!";
             if (confirm("Successfully registered new account! Go back to login page?")) {
-              location.replace("/webwallet.html");
+              location.replace("/");
             }
 
           } else if (server_message.includes("NO")) {
             console.log(server_message);
-            document.getElementById("loginstatus").innerHTML = "Error registering new account, refresh the page and try again";
+            document.getElementById("loginstatus").innerHTML = "Error registering new account: "+server_message+", refresh the page and try again";
             if (confirm("Error registering new account, refresh the page to try again?")) {
               location.reload();
             }
