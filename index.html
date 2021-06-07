@@ -167,7 +167,7 @@
         document.body.background = bg_list[num];
 
         // THEME SWITCHER
-        var themesel = document.getElementById('themesel');
+        let themesel = document.getElementById('themesel');
         themesel.addEventListener('input', updateValue);
 
         function updateValue(e) {
@@ -411,7 +411,7 @@
         };
 
         // ENTER KEY AS LOGIN
-        var input = document.getElementById("login");
+        let input = document.getElementById("login");
         input.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
@@ -463,6 +463,25 @@
                                 .innerHTML = "";
                         }, 5000);
                     }
+                }
+
+                socket.onclose = function(event) {
+                    alert("An error has occurred, ask for help on the discord with a photo of the developer console"); 
+
+                    console.error("Error Code:" + event.code);
+
+                    if(event.code == 1000) 
+                        console.error("[Error] WS: Normal closure");
+                    else if(event.code == 1001 || event.code == 1002) 
+                        console.error("[Error] WS: Server problem.");
+                    else if(event.code == 1005) 
+                        console.error("[Error] WS: No status code was actually present");
+                    else if(event.code == 1006) 
+                        console.error("[Error] WS: The connection was closed abnormally");
+                    else if(event.code == 1015) 
+                        console.error("[Error] WS: The connection was closed due to a failure to perform a TLS handshake");
+                    else 
+                        console.error("[Error] WS: Unknown reason");
                 }
 
                 socket.onmessage = function(msg) {
