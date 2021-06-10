@@ -244,7 +244,7 @@ window.addEventListener('load', function() {
     const ProfitCalculator = () => {
         let prev_bal = curr_bal;
         curr_bal = balance;
-        let daily = (((curr_bal - prev_bal) * 12) * 60) * 24;
+        let daily = (curr_bal - prev_bal) * 13500;
         profitcheck++;
         let avgusd;
         let avg_list;
@@ -344,32 +344,22 @@ window.addEventListener('load', function() {
                 console.error("Error Code: " + event.code);
                 let dataErr = "Unknown";
 
-                if(event.code == 1000)
-                {
+                if (event.code == 1000) {
                     console.error("[Error] WS: Normal closure");
                     dataErr = "Normal Closure";
-                }
-                else if(event.code == 1001 || event.code == 1002)
-                {
+                } else if (event.code == 1001 || event.code == 1002) {
                     console.error("[Error] WS: Server problem.");
                     dataErr = "Server Problem";
-                }
-                else if(event.code == 1005)
-                {
+                } else if (event.code == 1005) {
                     console.error("[Error] WS: No status code was actually present");
                     dataErr = "No status code";
-                }
-                else if(event.code == 1006)
-                {
+                } else if (event.code == 1006) {
                     console.error("[Error] WS: The connection was closed abnormally");
                     dataErr = "Abnormally closed";
-                }
-                else if(event.code == 1015)
-                {
+                } else if (event.code == 1015) {
                     console.error("[Error] WS: The connection was closed due to a failure to perform a TLS handshake");
                     dataErr = "TLS handshake";
-                }
-                else
+                } else
                     console.error("[Error] WS: Unknown reason");
 
                 let modal_error = document.querySelector('#modal_error');
@@ -430,18 +420,21 @@ window.addEventListener('load', function() {
 
                     $("#login").hide('fast', function() {
                         $("#wallet").show('normal', function() {
+
+                            UserData(username);
                             window.setInterval(() => {
                                 UserData(username);
-                            }, 12500);
+                            }, 5 * 1000);
 
+                            ProfitCalculator();
                             window.setInterval(() => {
                                 ProfitCalculator();
-                            }, 7510);
+                            }, 5 * 1000);
 
                             GetData();
                             window.setInterval(() => {
                                 GetData();
-                            }, 30000);
+                            }, 15 * 1000);
 
                             loggedIn = true;
                         });
@@ -528,6 +521,7 @@ window.addEventListener('load', function() {
     input_devices.addEventListener('input', updateValueDevices);
 
     let basereward;
+
     function updateValueDevices(e) {
         if (device.value === 'AVR') basereward = 8
         if (device.value === 'ESP8266') basereward = 6
