@@ -392,20 +392,39 @@ window.addEventListener('load', function() {
                 if (loggedIn == false &&
                     versionReceived &&
                     serverMessage.includes("OK")) {
+
                     console.log("User logged-in");
+
+                    let time = new Date().getHours();
+                    let greeting = "Welcome back";
+                    if (time < 12) {
+                        greeting = "Have a wonderful morning";
+                    }
+                    if (time == 12) {
+                        greeting = "Have a tasty noon";
+                    }
+                    if (time > 12 && time < 18) {
+                        greeting = "Have a peaceful afternoon";
+                    }
+                    if (time >= 18) {
+                        greeting = "Have a cozy evening";
+                    }
 
                     document.getElementById("loginstatus")
                         .innerHTML = "Logged in!";
                     document.getElementById("loginbutton").classList.remove("is-loading");
                     document.getElementById("wallettext")
-                        .innerHTML = "<span class='has-text-weight-light'>Welcome back, <b>" + username + "!</b>";
+                        .innerHTML = "<p class='has-text-weight-light mb-1'>" +
+                        "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true' class='icon'>" +
+                        " " + greeting + ", <b>" + username + "!</b></p>";
                     document.getElementById("copyright")
-                        .innerHTML = `<p class="subtitle is-size-7 has-text-grey has-text-weight-light">` +
+                        .innerHTML = `<p class="subtitle is-size-7 has-text-grey has-text-weight-light mb-3">` +
                         `<span class="has-text-weight-normal">Duino-Coin Web Wallet</span> is developed by ` +
                         `<a href="https://github.com/revoxhere/">revox</a>, ` +
                         `<a href="https://www.instagram.com/vlegle/">Yennefer</a> & ` +
                         `<a href="https://github.com/LDarki">LDarki</a>, ` +
-                        `hosted by <a href="https://kristian-kramer.com">Kristian</a>` +
+                        `hosted by <a href="https://kristian-kramer.com">Kristian</a> ` +
+                        `and <a href="https://pages.github.com">GH Pages</a>` +
                         `<br><span class="is-size-7 has-text-grey">` +
                         `2020-2021 the <a href="https://duinocoin.com">Duino-Coin</a> project` +
                         `</span>` +

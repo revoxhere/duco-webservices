@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,6 +54,7 @@
     <!-- WebWallet -->
     <script type="text/javascript" src="js/main.js"></script>
 </head>
+
 <body>
     <div id="pageloader" class="pageloader is-active is-primary is-right-to-left">
         <p class="title">Duino-Coin Web Wallet</p>
@@ -62,33 +64,21 @@
         <section class="hero is-fullheight">
             <div class="hero-body is-align-self-center">
                 <div class="box">
-                    <p class="title">
-                        <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon">
+                    <span class="title">
                         <span id="wallettext">
-                            Duino-Coin
-                            <span class="has-text-weight-light">
+                            <p style="font-size:1.5em; border: 0px solid red;text-align:center">
+                                <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" class="icon is-medium">
+                                Duino-Coin<br>
+                            </p>
+                            <p class="has-text-weight-light" style="text-align:center">
                                 Web Wallet
-                            </span>
-                            <span class="subtitle is-size-7 has-text-weight-normal">
-                                v2.5.6
-                            </span>
+                                <span class="subtitle is-size-7 has-text-weight-normal">
+                                    v2.5.7
+                                </span>
+                            </p>
                         </span>
-                    </p>
-                    <p class="subtitle is-size-7 has-text-grey-dark has-text-weight-light" id="copyright">
-                        ©
-                        <a href="https://github.com/revoxhere/">revox</a>,
-                        <a href="https://www.instagram.com/vlegle/">Yennefer</a>,
-                        <a href="https://github.com/LDarki">LDarki</a>
-                        &
-                        <a href="https://kristian-kramer.com">Kristian</a>
-                        <span>
-                            &middot;
-                            distributed under the
-                            <a href="https://opensource.org/licenses/MIT">
-                                MIT license
-                            </a>
-                        </span>
-                    </p>
+                        <span id="copyright"></span>
+                    </span>
                     <section id="login">
                         <div class="column">
                             <!-- <p style="color:red">Warning: server is under maintenance<br>There may be some access issues.</p>-->
@@ -112,17 +102,32 @@
                             </div>
                             <div class="field mt-5">
                                 <div class="buttons">
-                                    <button class="button is-duco is-warning" id="loginbutton">
+                                    <button class="button is-duco is-warning is-fullwidth" id="loginbutton">
                                         <i class="fa fa-fw fa-check"></i>&nbsp;
                                         Login
                                     </button>
-                                    <a href="https://wallet.duinocoin.com/register" class="button is-secondary is-outlined" id="loginbutton">
+                                    <a href="https://wallet.duinocoin.com/register" class="button is-secondary is-outlined is-fullwidth" id="loginbutton">
                                         <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
                                         Register
                                     </a>
-                                    <p class="subtitle has-text-grey is-size-7 mb-1" id="loginstatus">Please enable JavaScript!</p>
+                                    <p class="subtitle has-text-grey is-size-7 mb-1 has-text-centered" id="loginstatus">Please enable JavaScript!</p>
                                 </div>
                             </div>
+                            <p class="subtitle is-size-7 has-text-grey-dark has-text-weight-light" id="copyright">
+                                Official Duino-Coin Web Wallet ©
+                                <a href="https://github.com/revoxhere/">revox</a> &middot;
+                                <a href="https://www.instagram.com/vlegle/">Yennefer</a> &middot;
+                                <a href="https://github.com/LDarki">LDarki</a>
+                                <br>Hosted by
+                                <a href="https://kristian-kramer.com">Kristian</a>
+                                and
+                                <a href="https://pages.github.com">GH Pages</a>
+                                &middot;
+                                distributed under the
+                                <a href="https://opensource.org/licenses/MIT">
+                                    MIT license
+                                </a>
+                            </p>
                         </div>
                     </section>
                     <section id="wallet" style="display: none;">
@@ -445,4 +450,5 @@
         </div>
     </div>
 </body>
+
 </html>
