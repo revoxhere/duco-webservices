@@ -7,7 +7,6 @@ let ducoUsdPrice = 0.0065;
 let sending = false;
 let daily_average = [];
 window.addEventListener('load', function() {
-    document.getElementById("loginstatus").innerHTML = "";
 
     // RANDOM BACKGROUND
     const bg_list = [
@@ -17,9 +16,7 @@ window.addEventListener('load', function() {
         'https://i.imgur.com/7d11Dyg.png',
         'https://i.imgur.com/K1qr6tC.png',
         'https://i.imgur.com/g7fqQbn.png',
-        'https://i.imgur.com/F8yZquq.png',
         'https://i.imgur.com/PsUqgsD.png',
-        'https://i.imgur.com/tS7AgjN.png',
         'https://i.imgur.com/HzPgf7J.jpg'
     ]
 
@@ -296,9 +293,9 @@ window.addEventListener('load', function() {
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
-        document.getElementById("loginstatus")
-            .innerHTML = "Connecting...";
-        document.getElementById("loginbutton").classList.add("is-loading");
+        $("#logincheck").hide('fast')
+        $("#loginload").show('fast')
+        document.getElementById("logintext").innerText = "Connecting...";
 
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
@@ -385,8 +382,8 @@ window.addEventListener('load', function() {
                 }
                 if (loggedIn == false &&
                     versionReceived) {
-                    document.getElementById("loginstatus")
-                        .innerHTML = "Authenticating...";
+                    document.getElementById("logintext")
+                        .innerText = "Authenticating...";
                     socket.send("LOGI," + username + "," + password + ",");
                 }
                 if (loggedIn == false &&
@@ -410,9 +407,7 @@ window.addEventListener('load', function() {
                         greeting = "Have a cozy evening";
                     }
 
-                    document.getElementById("loginstatus")
-                        .innerHTML = "Logged in!";
-                    document.getElementById("loginbutton").classList.remove("is-loading");
+                    document.getElementById("logintext").innerText = "Logged in";
                     document.getElementById("wallettext")
                         .innerHTML = "<p class='has-text-weight-light mb-1'>" +
                         "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true' class='icon'>" +
@@ -438,7 +433,7 @@ window.addEventListener('load', function() {
                     transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
                     $("#login").hide('fast', function() {
-                        $("#wallet").show('normal', function() {
+                        $("#wallet").show('fast', function() {
 
                             UserData(username);
                             window.setInterval(() => {
@@ -462,12 +457,18 @@ window.addEventListener('load', function() {
                 if (loggedIn == false &&
                     versionReceived &&
                     serverMessage.includes("NO")) {
-                    document.getElementById("loginstatus")
-                        .innerHTML = "<span class='has-text-danger'>" + serverMessage + "</span>";
-                    document.getElementById("loginbutton").classList.remove("is-loading");
+
+                    serverMessage = serverMessage.split(",")
+
+                    document.getElementById("logintext")
+                        .innerText = serverMessage[1];
+
+                    $("#logincheck").show('fast')
+                    $("#loginload").hide('fast')
+
                     setTimeout(() => {
-                        document.getElementById("loginstatus")
-                            .innerHTML = ""
+                        document.getElementById("logintext")
+                            .innerHTML = "Login"
                     }, 5000);
                 }
                 if (sending == true) {
@@ -496,12 +497,15 @@ window.addEventListener('load', function() {
                 }
             }
         } else {
-            document.getElementById("loginstatus")
-                .innerHTML = "<span class='has-text-danger'>Fill in the blanks first</span>";
-            document.getElementById("loginbutton").classList.remove("is-loading");
+            $("#logincheck").show('fast')
+            $("#loginload").hide('fast')
+
+            document.getElementById("logintext")
+                .innerText = "Please fill in the blanks first";
+
             setTimeout(() => {
-                document.getElementById("loginstatus")
-                    .innerHTML = ""
+                document.getElementById("logintext")
+                    .innerHTML = "Login"
             }, 5000);
         }
     }
