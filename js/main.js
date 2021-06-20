@@ -306,7 +306,7 @@ window.addEventListener('load', function() {
             password != null &&
             password !== "" &&
             password !== undefined) {
-            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 15000, 5);
+            let socket = new WebSocket("wss://server.duinocoin.com:15808");
 
             document.getElementById('send').onclick = function() {
                 document.getElementById("sendinginfo")
