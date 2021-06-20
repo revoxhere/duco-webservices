@@ -103,14 +103,21 @@
                             <div class="field mt-5">
                                 <div class="buttons">
                                     <button class="button is-duco is-warning is-fullwidth" id="loginbutton">
-                                        <i class="fa fa-fw fa-check"></i>&nbsp;
-                                        Login
+                                        <span id="logincheck">
+                                            <i class="fa fa-fw fa-check" id="logincheck"></i>
+                                        </span>
+                                        <span id="loginload" style="display:none">
+                                            <i class="fas fa-cog fa-spin"></i>
+                                        </span>
+                                        &nbsp;
+                                        <span id="logintext">
+                                            Login
+                                        </span>
                                     </button>
                                     <a href="https://wallet.duinocoin.com/register" class="button is-secondary is-outlined is-fullwidth" id="loginbutton">
                                         <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
                                         Register
                                     </a>
-                                    <p class="subtitle has-text-grey is-size-7 mb-1 has-text-centered" id="loginstatus">Please enable JavaScript!</p>
                                 </div>
                             </div>
                             <p class="subtitle is-size-7 has-text-grey-dark has-text-weight-light" id="copyright">
