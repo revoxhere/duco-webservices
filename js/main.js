@@ -364,7 +364,7 @@ window.addEventListener('load', function() {
                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                     `<b>An error has occurred</b>, please try again later and if the problem persists ` +
                     `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
-                    `with this code:` + event.code + `: <b>` + dataErr + `</b><br>` +
+                    `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br>` +
                     `Please be aware we're currently hard working on resolving these issues. Thanks for patience</p>`;
                 document.querySelector('html').classList.add('is-clipped');
                 modal_error.classList.add('is-active');
