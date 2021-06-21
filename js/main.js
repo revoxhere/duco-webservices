@@ -342,26 +342,30 @@ window.addEventListener('load', function() {
                 let dataErr = "Unknown";
 
                 if (event.code == 1000) {
-                    console.error("[Error] WS: Normal closure");
-                    dataErr = "Normal Closure";
+                    console.error("[Error] Normal closure");
+                    dataErr = "Connection closed";
                 } else if (event.code == 1001 || event.code == 1002) {
-                    console.error("[Error] WS: Server problem.");
-                    dataErr = "Server Problem";
+                    console.error("[Error] Server problem.");
+                    dataErr = "Server closed the connection";
                 } else if (event.code == 1005) {
-                    console.error("[Error] WS: No status code was actually present");
+                    console.error("[Error] No status code was actually present");
                     dataErr = "No status code";
                 } else if (event.code == 1006) {
-                    console.error("[Error] WS: The connection was closed abnormally");
-                    dataErr = "Abnormally closed";
+                    console.error("[Error] Connection was closed abnormally");
+                    dataErr = "Connection closed abnormally";
                 } else if (event.code == 1015) {
-                    console.error("[Error] WS: The connection was closed due to a failure to perform a TLS handshake");
-                    dataErr = "TLS handshake";
-                } else
-                    console.error("[Error] WS: Unknown reason");
+                    console.error("[Error] Failure to perform a TLS handshake");
+                    dataErr = "TLS handshake error";
+                } else {
+                    console.error("[Error] Unknown reason");
+                }
 
                 let modal_error = document.querySelector('#modal_error');
                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                    'An error has occurred, ask for help on the discord with this code: <br><b>' + event.code + ' (' + dataErr + ')</b></p>';
+                    `<b>An error has occurred</b>, please try again later and if the problem persists ` +
+                    `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
+                    `with this code:` + event.code + `: <b>` + dataErr + `</b><br>` +
+                    `Please be aware we're currently hard working on resolving these issues. Thanks for patience</p>`;
                 document.querySelector('html').classList.add('is-clipped');
                 modal_error.classList.add('is-active');
 
