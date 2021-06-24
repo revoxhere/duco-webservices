@@ -453,6 +453,8 @@ window.addEventListener('load', function() {
                             window.setInterval(() => {
                                 GetData();
                             }, 15 * 1000);
+                            
+                            (adsbygoogle = window.adsbygoogle || []).push({});
 
                             loggedIn = true;
                         });
