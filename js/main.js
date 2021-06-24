@@ -454,7 +454,9 @@ window.addEventListener('load', function() {
                                 GetData();
                             }, 15 * 1000);
                             
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            window.setTimeout(() => {
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            }, 1000);
 
                             loggedIn = true;
                         });
