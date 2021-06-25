@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
         'https://i.imgur.com/HzPgf7J.jpg'
     ]
 
-    let num = Math.ceil(Math.random() * bg_list.length);
+    let num = Math.floor(Math.random()*bg_list.length)
     document.body.background = bg_list[num];
 
     // THEME SWITCHER
