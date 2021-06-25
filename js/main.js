@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
         'https://i.imgur.com/HzPgf7J.jpg'
     ]
 
-    let num = Math.floor(Math.random()*bg_list.length)
+    let num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
     // THEME SWITCHER
@@ -293,8 +293,8 @@ window.addEventListener('load', function() {
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
-        $("#logincheck").hide('fast')
-        $("#loginload").show('fast')
+        $("#logincheck").hide(1)
+        $("#loginload").show(1)
         document.getElementById("logintext").innerText = "Connecting...";
 
         let username = document.getElementById('usernameinput').value
@@ -306,7 +306,7 @@ window.addEventListener('load', function() {
             password != null &&
             password !== "" &&
             password !== undefined) {
-            let socket = new WebSocket("wss://server.duinocoin.com:15808");
+            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 100, 10);
 
             document.getElementById('send').onclick = function() {
                 document.getElementById("sendinginfo")
@@ -364,8 +364,7 @@ window.addEventListener('load', function() {
                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                     `<b>An error has occurred</b>, please try again later and if the problem persists ` +
                     `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
-                    `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br>` +
-                    `Please be aware we're currently hard working on resolving these issues. Thanks for patience</p>`;
+                    `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
                 document.querySelector('html').classList.add('is-clipped');
                 modal_error.classList.add('is-active');
 
@@ -436,29 +435,29 @@ window.addEventListener('load', function() {
                     const transtable = document.getElementById("transactions");
                     transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
-                    $("#login").hide('fast', function() {
-                        $("#wallet").show('fast', function() {
-
-                            UserData(username);
-                            window.setInterval(() => {
-                                UserData(username);
-                            }, 5 * 1000);
-
-                            ProfitCalculator();
-                            window.setInterval(() => {
-                                ProfitCalculator();
-                            }, 5 * 1000);
-
-                            GetData();
-                            window.setInterval(() => {
-                                GetData();
-                            }, 15 * 1000);
-                            
+                    $("#login").hide(100, function() {
+                        $("#wallet").show(200, function() {
                             window.setTimeout(() => {
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            }, 1000);
+                                UserData(username);
+                                window.setInterval(() => {
+                                    UserData(username);
+                                }, 5 * 1000);
 
-                            loggedIn = true;
+                                window.setInterval(() => {
+                                    ProfitCalculator();
+                                }, 5 * 1000);
+
+                                GetData();
+                                window.setInterval(() => {
+                                    GetData();
+                                }, 15 * 1000);
+
+                                window.setTimeout(() => {
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                }, 1000);
+
+                                loggedIn = true;
+                            }, 200);
                         });
                     });
                 }

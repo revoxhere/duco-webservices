@@ -2,9 +2,15 @@
     /* Override Bulmas primary color to Duco-Colored gradient*/
     background: linear-gradient(145deg, #fd746c, #ff9068) !important;
 }
+
 .is-duco {
-    background: #fdcb6e !important;
+    background: #FF9312 !important;
 }
+
+.is-duco-alt {
+    background: #feca57 !important;
+}
+
 .iframe-container {
     position: relative;
     width: 100%;
@@ -20,7 +26,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    border: 1px solid red;
 }
 
 body {
@@ -33,81 +38,118 @@ body {
     padding: 0 !important;
     background-repeat: no-repeat !important;
 }
+
 .balanceT {
     max-width: 80vw !important;
     max-height: 15em !important;
     overflow-x: scroll !important;
     overflow-y: scroll !important;
 }
+
 .balanceT table {
     margin: 0;
     padding: 0;
     border: 1px solid var(--light-bg);
     border-collapse: collapse;
 }
+
 .balanceTC .caption {
     font-size: 1.5em !important;
     margin: .5em 0 .5em;
 }
+
 .balanceT table tr {
     background-color: var(--hover) !important;
     border: 1px solid var(--light-bg) !important;
     padding: .35em !important;
 }
+
 .balanceT table th,
 .balanceT table td {
     padding: .5em !important;
     text-align: left !important;
 }
+
 .balanceT table th {
     letter-spacing: .1em !important;
     text-transform: uppercase !important;
 }
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
 }
+
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #888;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
 select {
     background: inherit !important;
 }
 
 #modal_error {
-  animation: fadeIn 1s;
-  -webkit-animation: fadeIn 1s;
-  -moz-animation: fadeIn 1s;
-  -o-animation: fadeIn 1s;
-  -ms-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+    -webkit-animation: fadeIn 1s;
+    -moz-animation: fadeIn 1s;
+    -o-animation: fadeIn 1s;
+    -ms-animation: fadeIn 1s;
 }
+
 @keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @-moz-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @-webkit-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @-o-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @-ms-keyframes fadeIn {
-  0% {opacity:0;}
-  100% {opacity:1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
