@@ -8,6 +8,20 @@ let sending = false;
 let daily_average = [];
 window.addEventListener('load', function() {
 
+    const usernameinput = document.getElementById('usernameinput');
+    usernameinput.addEventListener('input', color);
+
+    function color(e) {
+        usernameinput.classList.add("is-info");
+    }
+
+    const passwordinput = document.getElementById('passwordinput');
+    usernameinput.addEventListener('input', color_p);
+
+    function color_p(e) {
+        passwordinput.classList.add("is-info");
+    }
+
     // RANDOM BACKGROUND
     const bg_list = [
         'https://i.imgur.com/trNkG47.png',
@@ -343,7 +357,7 @@ window.addEventListener('load', function() {
 
                 if (event.code == 1000) {
                     console.error("[Error] Normal closure");
-                    dataErr = "Connection closed";
+                    dataErr = "Connection closed from inactivity";
                 } else if (event.code == 1001 || event.code == 1002) {
                     console.error("[Error] Server problem.");
                     dataErr = "Server closed the connection";
@@ -352,7 +366,7 @@ window.addEventListener('load', function() {
                     dataErr = "No status code";
                 } else if (event.code == 1006) {
                     console.error("[Error] Connection was closed abnormally");
-                    dataErr = "Connection closed abnormally";
+                    dataErr = "Connection closed abnormally (most likely a timeout)";
                 } else if (event.code == 1015) {
                     console.error("[Error] Failure to perform a TLS handshake");
                     dataErr = "TLS handshake error";
@@ -374,8 +388,19 @@ window.addEventListener('load', function() {
                 }
             }
 
+            function Ping() {
+                if (sending == false) {
+                    console.log("Sending keepalive ping")
+                    socket.send("PING");
+                }
+            }
+
             socket.onmessage = function(msg) {
                 serverMessage = msg.data;
+
+                if (serverMessage.includes("Pong")) {
+                    console.log("Keepalive pong received");
+                }
 
                 if (loggedIn == false &&
                     versionReceived == false &&
@@ -435,22 +460,26 @@ window.addEventListener('load', function() {
                     const transtable = document.getElementById("transactions");
                     transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
-                    $("#login").hide(100, function() {
-                        $("#wallet").show(200, function() {
+                    $("#login").hide(300, function() {
+                        $("#wallet").show(300, function() {
                             window.setTimeout(() => {
                                 UserData(username);
                                 window.setInterval(() => {
                                     UserData(username);
-                                }, 5 * 1000);
+                                }, 7 * 1000);
 
                                 window.setInterval(() => {
                                     ProfitCalculator();
-                                }, 5 * 1000);
+                                }, 10 * 1000);
 
                                 GetData();
                                 window.setInterval(() => {
                                     GetData();
-                                }, 15 * 1000);
+                                }, 30 * 1000);
+
+                                window.setInterval(() => {
+                                    Ping();
+                                }, 20 * 1000);
 
                                 window.setTimeout(() => {
                                     (adsbygoogle = window.adsbygoogle || []).push({});
