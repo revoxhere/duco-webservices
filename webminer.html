@@ -94,7 +94,7 @@ window.addEventListener('load', function () {
                         Duino-Coin Web Miner
                     </p>
                     <p class="subtitle">
-                        Official JavaScript miner v2.3.6
+                        Official JavaScript miner v2.5.1
                         <span class="subtitle is-size-6">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>
@@ -357,7 +357,7 @@ window.addEventListener('load', function () {
                         minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                         postMessage("UpdateHashrate,"+timeDiff+","+hashrate)
 
-                        socket.send(result + "," + hashrate + ",Official Webminer v2.3.6," + rigid); // send the result to the server
+                        socket.send(result + "," + hashrate + ",Official Webminer v2.5.1," + rigid); // send the result to the server
                         break;
                     }
                 }
@@ -631,7 +631,7 @@ if (typeof(Worker) !== "undefined") {
                             console.log(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                             minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
 
-                            socket.send(result + "," + hashrate + ",Official Webminer v2.3.6," + rigid); // send the result to the server
+                            socket.send(result + "," + hashrate + ",Official Webminer v2.5.1," + rigid); // send the result to the server
                             break;
                         }
                     }
