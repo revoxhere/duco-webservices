@@ -363,11 +363,11 @@ window.addEventListener('load', function () {
                 }
             }
         }
-        webSocket.onerror = function(event) {
+        socket.onerror = function(event) {
           console.error("WebSocket error observed:", event);
           window.location.reload(false);
         };
-        webSocket.onclose = function (event) {
+        socket.onclose = function (event) {
           console.error("WebSocket close observed:", event);
           window.location.reload(false);
         };
@@ -637,6 +637,14 @@ if (typeof(Worker) !== "undefined") {
                     }
                 }
             }
+            socket.onerror = function(event) {
+                console.error("WebSocket error observed:", event);
+                window.location.reload(false);
+            };
+            socket.onclose = function(event) {
+                console.error("WebSocket close observed:", event);
+                window.location.reload(false);
+            };
         }
     });
 }
