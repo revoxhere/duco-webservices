@@ -255,7 +255,7 @@ window.addEventListener('load', function() {
     const ProfitCalculator = () => {
         let prev_bal = curr_bal;
         curr_bal = balance;
-        let daily = (curr_bal - prev_bal) * 13500;
+        let daily = (curr_bal - prev_bal) * 1400;
         profitcheck++;
         let avgusd;
         let avg_list;
