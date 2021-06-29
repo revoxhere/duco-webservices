@@ -387,20 +387,9 @@ window.addEventListener('load', function() {
                     modal_error.classList.remove('is-active');
                 }
             }
-
-            function Ping() {
-                if (sending == false) {
-                    console.log("Sending keepalive ping")
-                    socket.send("PING");
-                }
-            }
-
+            
             socket.onmessage = function(msg) {
                 serverMessage = msg.data;
-
-                if (serverMessage.includes("Pong")) {
-                    console.log("Keepalive pong received");
-                }
 
                 if (loggedIn == false &&
                     versionReceived == false &&
@@ -476,10 +465,6 @@ window.addEventListener('load', function() {
                                 window.setInterval(() => {
                                     GetData();
                                 }, 30 * 1000);
-
-                                window.setInterval(() => {
-                                    Ping();
-                                }, 20 * 1000);
 
                                 window.setTimeout(() => {
                                     (adsbygoogle = window.adsbygoogle || []).push({});
