@@ -24,14 +24,14 @@ window.addEventListener('load', function() {
 
     // RANDOM BACKGROUND
     const bg_list = [
-        'https://i.imgur.com/trNkG47.png',
-        'https://i.imgur.com/MWknhr6.png',
-        'https://i.imgur.com/oYEEfLG.png',
-        'https://i.imgur.com/7d11Dyg.png',
-        'https://i.imgur.com/K1qr6tC.png',
-        'https://i.imgur.com/g7fqQbn.png',
-        'https://i.imgur.com/PsUqgsD.png',
-        'https://i.imgur.com/HzPgf7J.jpg'
+        'backgrounds/1-min.png',
+        'backgrounds/2-min.png',
+        'backgrounds/3-min.png',
+        'backgrounds/4-min.png',
+        'backgrounds/5-min.png',
+        'backgrounds/6-min.jpg',
+        'backgrounds/7-min.png',
+        'backgrounds/8-min.png'
     ]
 
     let num = Math.floor(Math.random() * bg_list.length)
