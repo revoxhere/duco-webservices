@@ -28,10 +28,14 @@
     <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png" />
     <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png" />
     <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="https://i.imgur.com/trNkG47.png">
-    <link rel="preload" as="image" href="https://i.imgur.com/MWknhr6.png">
-    <link rel="preload" as="image" href="https://i.imgur.com/K1qr6tC.png">
-    <link rel="preload" as="image" href="https://i.imgur.com/oYEEfLG.png">
+    <link rel="preload" as="image" href="backgrounds/1-min.png">
+    <link rel="preload" as="image" href="backgrounds/2-min.png">
+    <link rel="preload" as="image" href="backgrounds/3-min.png">
+    <link rel="preload" as="image" href="backgrounds/4-min.png">
+    <link rel="preload" as="image" href="backgrounds/5-min.png">
+    <link rel="preload" as="image" href="backgrounds/6-min.jpg">
+    <link rel="preload" as="image" href="backgrounds/7-min.png">
+    <link rel="preload" as="image" href="backgrounds/8-min.png">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
@@ -63,11 +67,19 @@ window.addEventListener('load', function () {
     let clickcount = 0;
 
     // RANDOM BACKGROUND
-    let num = Math.ceil(Math.random() * 4);
-    if (num <= 1) document.body.background = 'https://i.imgur.com/trNkG47.png';
-    if (num == 2) document.body.background = 'https://i.imgur.com/MWknhr6.png';
-    if (num == 3) document.body.background = 'https://i.imgur.com/oYEEfLG.png';
-    if (num >= 4) document.body.background = 'https://i.imgur.com/K1qr6tC.png';
+    const bg_list = [
+        'backgrounds/1-min.png',
+        'backgrounds/2-min.png',
+        'backgrounds/3-min.png',
+        'backgrounds/4-min.png',
+        'backgrounds/5-min.png',
+        'backgrounds/6-min.jpg',
+        'backgrounds/7-min.png',
+        'backgrounds/8-min.png'
+    ]
+
+    let num = Math.floor(Math.random() * bg_list.length)
+    document.body.background = bg_list[num];
 
     document.getElementById('darkmode').onclick = function () {
         clickcount++;
@@ -94,23 +106,28 @@ window.addEventListener('load', function () {
                         Duino-Coin Web Miner
                     </p>
                     <p class="subtitle">
-                        Official JavaScript miner v2.5.1
+                        Official JavaScript miner v2.5.2
                         <span class="subtitle is-size-6">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>
                             &
                             <a href="https://github.com/LDarki">LDarki</a>
-                            <br>2020-2021 Duino-Coin Community
+                            <span class="has-text-grey">
+                                <br>2020-2021 the Duino-Coin project, distributed under the 
+                                <a href="https://opensource.org/licenses/MIT">
+                                    MIT license
+                                </a>
+                                <br>This page is open-source - you can improve it 
+                                <a href="https://github.com/revoxhere/playground">
+                                    here
+                                </a>
+                            </span>
                         </span>
                     </p>
                     <p class="subtitle has-text-info is-size-6">
                         <i class="fa fa-info-circle"></i>
                         Make sure you stay on the website during mining - most browsers suspend execution of JavaScript
                         when tab isn't active
-                    </p>
-                    <p class="subtitle has-text-info is-size-6">
-                        <i class="fa fa-info-circle"></i>
-                        The use of Web Workers has been implemented.
                     </p>
                     <form>
                         <div class="columns">
@@ -206,7 +223,7 @@ window.addEventListener('load', function () {
                                     <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
                                     MINER LOG
                                 </p>
-                                <span style="color:#57606f;" id="minerlog">Awaiting input...</span>
+                                <span class="has-text-grey" id="minerlog">Awaiting input...</span>
                             </div>
                         </div>
                     </div>
@@ -215,7 +232,7 @@ window.addEventListener('load', function () {
                             <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
                             <span>Switch theme</span>
                         </button>
-                        <a href="http://51.15.127.80/webwallet.html" class="button is-secondary">
+                        <a href="https://wallet.duinocoin.com" class="button is-secondary">
                             <i class="icon is-small fa fa-wallet" style="color:#f39c12"></i>
                             <span>Web Wallet</span>
                         </a>
@@ -275,7 +292,7 @@ window.addEventListener('load', function () {
         return h + ":" + m + ":" + s;
     }
 
-    let minerlog = ["Awaiting input..."];
+    let minerlog = [];
 
     self.addEventListener('message', function(event) {
       if (String(event.data).startsWith("Start")) { // Create websocket connection
@@ -294,12 +311,14 @@ window.addEventListener('load', function () {
         console.info("Trying to use WSS");
 
         try {
-            socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+            socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
+            minerlog.push(`${getTime()} | ` + "Connected to master node");
             /* If is http this sends error */
         } catch(e)
         {
             console.info("WSS error, using insecure websocket");
             socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+            minerlog.push(`${getTime()} | ` + "Connected to master node");
         }
 
         socket.onmessage = async function (msg) {
@@ -307,16 +326,16 @@ window.addEventListener('load', function () {
             if (serverMessage.includes("2.")) {
                 self.postMessage("[WebWorker] Version received: " + serverMessage);
                 versionReceived = true;
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
             }
 
             if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                console.log(`[${getTime()}]` + "Share accepted:" + result);
-                minerlog.push(`[${getTime()}]` + "Share accepted: " + result);
+                console.log(`${getTime()} | ` + "Share accepted:" + result);
+                minerlog.push(`${getTime()} | ` + "Share accepted: " + result);
                 acceptedShares++;
                 allShares++;
                 postMessage("Update,"+allShares+","+acceptedShares)
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
             }
 
             if (versionReceived && serverMessage === "BAD") {
@@ -324,7 +343,7 @@ window.addEventListener('load', function () {
                 minerlog.push("Share rejected: " + result);
                 allShares++;
                 postMessage("Update,"+allShares+","+acceptedShares)
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
             }
 
             if (versionReceived && serverMessage.includes("This user doesn't exist")) {
@@ -332,8 +351,8 @@ window.addEventListener('load', function () {
                 postMessage("Error");
             }
             if (versionReceived && serverMessage.length > 40) {
-                console.log(`[${getTime()}]` + "Job received: " + serverMessage);
-                minerlog.push(`[${getTime()}]` + "Job received: " + serverMessage);
+                console.log(`${getTime()} | ` + " Job received: " + serverMessage);
+                minerlog.push(`${getTime()} | ` + " Job received: " + serverMessage);
                 job = serverMessage.split(",");
                 difficulty = job[2];
 
@@ -353,11 +372,11 @@ window.addEventListener('load', function () {
                         timeDiff = (endTime - startTime) / 1000;
                         hashrate = (result / timeDiff).toFixed(2);
 
-                        console.log(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                        minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                        console.log(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                        minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                         postMessage("UpdateHashrate,"+timeDiff+","+hashrate)
 
-                        socket.send(result + "," + hashrate + ",Official Webminer v2.5.1," + rigid); // send the result to the server
+                        socket.send(result + "," + hashrate + ",Official Webminer v2.5.2," + rigid); // send the result to the server
                         break;
                     }
                 }
@@ -449,7 +468,7 @@ if (typeof(Worker) !== "undefined") {
                 let msg = String(evt.data);
                 const data = msg.split(",");
                 if (data[0] == "UpdateLog") {
-                    document.getElementById("minerlog").innerHTML = msg.replace("UpdateLog", "");
+                    document.getElementById("minerlog").innerHTML = msg.replace("UpdateLog,", "");
                 } else if (data[0] == "UpdateDiff") {
                     document.getElementById("difficulty").innerHTML = data[1];
                 } else if (data[0] == "UpdateDiff2") {
@@ -530,7 +549,7 @@ if (typeof(Worker) !== "undefined") {
 
         if (username != null && username != "" && username != undefined) {
 
-            let minerlog = ["Awaiting input..."];
+            let minerlog = [];
             let finalstring = "";
             let intervalId = window.setInterval(function() {
                 for (miner in minerlog) {
@@ -559,34 +578,35 @@ if (typeof(Worker) !== "undefined") {
             let socket;
 
             console.info("Trying to use WSS");
-
             try {
-                socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+                socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
+                minerlog.push(`${getTime()} | ` + "Connected to master node");
                 /* If is http this sends error */
             } catch (e) {
                 console.info("WSS error, using insecure websocket");
                 socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
+                minerlog.push(`${getTime()} | ` + "Connected to master node");
             }
 
             socket.onmessage = async function(msg) {
                 serverMessage = msg.data.replace("\n", "");
                 if (serverMessage.includes("2.")) {
                     console.log("Version received: " + serverMessage);
-                    minerlog.push("Version received: " + serverMessage);
+                    minerlog.push(`${getTime()} | ` + "Version received: " + serverMessage);
                     versionReceived = true;
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
                 }
 
                 if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                    console.log(`[${getTime()}]` + "Share accepted:" + result);
-                    minerlog.push(`[${getTime()}]` + "Share accepted: " + result);
+                    console.log(`${getTime()} | ` + "Share accepted:" + result);
+                    minerlog.push(`${getTime()} | ` + "Share accepted: " + result);
                     acceptedShares++;
                     allShares++;
                     document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
                     document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
                     document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
                     document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
                 }
 
                 if (versionReceived && serverMessage === "BAD") {
@@ -597,7 +617,7 @@ if (typeof(Worker) !== "undefined") {
                     document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
                     document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
                     document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 500);
+                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
                 }
 
                 if (versionReceived && serverMessage.includes("This user doesn't exist")) {
@@ -607,8 +627,8 @@ if (typeof(Worker) !== "undefined") {
                 }
 
                 if (versionReceived && serverMessage.length > 40) {
-                    console.log(`[${getTime()}]` + "Job received: " + serverMessage);
-                    minerlog.push(`[${getTime()}]` + "Job received: " + serverMessage);
+                    console.log(`${getTime()} | ` + " Job received: " + serverMessage);
+                    minerlog.push(`${getTime()} | ` + " Job received: " + serverMessage);
                     job = serverMessage.split(",");
                     difficulty = job[2];
 
@@ -628,10 +648,10 @@ if (typeof(Worker) !== "undefined") {
                             timeDiff = (endTime - startTime) / 1000;
                             hashrate = (result / timeDiff).toFixed(2);
 
-                            console.log(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                            minerlog.push(`[${getTime()}]` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                            console.log(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
+                            minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
 
-                            socket.send(result + "," + hashrate + ",Official Webminer v2.5.1," + rigid); // send the result to the server
+                            socket.send(result + "," + hashrate + ",Official Webminer v2.5.2," + rigid); // send the result to the server
                             break;
                         }
                     }
