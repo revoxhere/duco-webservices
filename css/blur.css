@@ -1,0 +1,10 @@
+.box {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(50px);
+    background-blend-mode: lighten;
+}
+
+input, .button, .tag, .select {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(50px) !important;
+}

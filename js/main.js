@@ -49,9 +49,19 @@ window.addEventListener('load', function() {
         let alt = $('#alt');
         let crisp = $('#crisp');
         let material = $('#material');
+        let frosted = $('#frosted');
         switch (theme) {
             case 'dark':
                 dark.attr('disabled', false);
+                radiate.attr('disabled', true);
+                alt.attr('disabled', true);
+                crisp.attr('disabled', true);
+                material.attr('disabled', true);
+                frosted.attr('disabled', true);
+                break;
+            case 'frosted':
+                frosted.attr('disabled', false);
+                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
@@ -63,6 +73,7 @@ window.addEventListener('load', function() {
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
                 material.attr('disabled', true);
+                frosted.attr('disabled', true);
                 break;
             case 'altlight':
                 dark.attr('disabled', true);
@@ -70,6 +81,7 @@ window.addEventListener('load', function() {
                 alt.attr('disabled', false);
                 crisp.attr('disabled', true);
                 material.attr('disabled', true);
+                frosted.attr('disabled', true);
                 break;
             case 'light':
                 dark.attr('disabled', true);
@@ -77,6 +89,7 @@ window.addEventListener('load', function() {
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
                 material.attr('disabled', true);
+                frosted.attr('disabled', true);
                 break;
             case 'crisp':
                 dark.attr('disabled', true);
@@ -84,6 +97,7 @@ window.addEventListener('load', function() {
                 alt.attr('disabled', true);
                 crisp.attr('disabled', false);
                 material.attr('disabled', true);
+                frosted.attr('disabled', true);
                 break;
             case 'material':
             default:
@@ -92,6 +106,7 @@ window.addEventListener('load', function() {
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
                 material.attr('disabled', false);
+                frosted.attr('disabled', true);
                 break;
         }
     }
