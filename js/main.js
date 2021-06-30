@@ -31,7 +31,8 @@ window.addEventListener('load', function() {
         'backgrounds/5-min.png',
         'backgrounds/6-min.jpg',
         'backgrounds/7-min.png',
-        'backgrounds/8-min.png'
+        'backgrounds/8-min.png',
+        'backgrounds/9-min.png'
     ]
 
     let num = Math.floor(Math.random() * bg_list.length)
