@@ -443,7 +443,7 @@ window.addEventListener('load', function() {
                     document.getElementById("logintext").innerText = "Logged in";
                     document.getElementById("wallettext")
                         .innerHTML = "<p class='has-text-weight-light mb-1'>" +
-                        "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true' class='icon'>" +
+                        "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/wave.png?raw=true' class='icon'>" +
                         " " + greeting + ", <b>" + username + "!</b></p>";
                     document.getElementById("copyright")
                         .innerHTML = `<p class="subtitle is-size-7 has-text-grey has-text-weight-light mb-3">` +
