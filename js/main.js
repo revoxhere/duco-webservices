@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
 
     // PRICE FROM API
     const GetData = () => {
-        $.getJSON('https://server.duinocoin.com/statistics', function(data) {
+        $.getJSON('https://server.duinocoin.com/api.json', function(data) {
             ducoUsdPrice = data["Duco price"];
             document.getElementById("ducousd")
                 .innerHTML = "$" + (ducoUsdPrice).toFixed(4);
@@ -135,6 +135,34 @@ window.addEventListener('load', function() {
 
         return hashrate;
     };
+
+    //FAST BALANCE FROM BALANCES.JSON
+    const FastUserData = (username) => {
+        $.getJSON('https://server.duinocoin.com/balances.json', function(data) {
+            balance = parseFloat(data[username]);
+            console.log(balance)
+            let balanceusd = balance * ducoUsdPrice;
+            console.log("Fast Balance received: " + balance + "($" + balanceusd + ")");
+
+            let balance_list = balance.toFixed(8).split(".")
+            let balance_before_dot = balance_list[0]
+            let balance_after_dot = balance_list[1]
+
+            document.getElementById("balance")
+                .innerHTML = balance_before_dot +
+                "<span class='has-text-weight-normal'>." +
+                balance_after_dot + " ᕲ";
+
+            let balanceusd_list = balanceusd.toFixed(4).split(".")
+            let balanceusd_before_dot = balanceusd_list[0]
+            let balanceusd_after_dot = balanceusd_list[1]
+
+            document.getElementById("balanceusd")
+                .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
+                "." +
+                balanceusd_after_dot;
+        });
+    }
 
     //USER DATA FROM API
     const UserData = (username) => {
@@ -468,10 +496,10 @@ window.addEventListener('load', function() {
                     $("#login").hide(300, function() {
                         $("#wallet").show(300, function() {
                             window.setTimeout(() => {
-                                UserData(username);
+                                FastUserData(username);
                                 window.setInterval(() => {
                                     UserData(username);
-                                }, 7 * 1000);
+                                },5 * 1000);
 
                                 window.setInterval(() => {
                                     ProfitCalculator();
