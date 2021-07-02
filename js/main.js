@@ -166,7 +166,7 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const UserData = (username) => {
-        $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
+        $.getJSON('https://server.duinocoin.com:5000/users/' + username, function(data) {
             balance = parseFloat(data.result.balance.balance);
             let balanceusd = balance * ducoUsdPrice;
             console.log("Balance received: " + balance + "($" + balanceusd + ")");
