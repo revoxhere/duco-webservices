@@ -7,7 +7,6 @@ let ducoUsdPrice = 0.0065;
 let sending = false;
 let daily_average = [];
 window.addEventListener('load', function() {
-
     const usernameinput = document.getElementById('usernameinput');
     usernameinput.addEventListener('input', color);
 
@@ -136,13 +135,12 @@ window.addEventListener('load', function() {
         return hashrate;
     };
 
-    //FAST BALANCE FROM BALANCES.JSON
-    const FastUserData = (username) => {
+    //USER DATA FROM API
+    const UserData = (username) => {
         $.getJSON('https://server.duinocoin.com/balances.json', function(data) {
             balance = parseFloat(data[username]);
-            console.log(balance)
             let balanceusd = balance * ducoUsdPrice;
-            console.log("Fast Balance received: " + balance + "($" + balanceusd + ")");
+            console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
             let balance_list = balance.toFixed(8).split(".")
             let balance_before_dot = balance_list[0]
@@ -162,82 +160,36 @@ window.addEventListener('load', function() {
                 "." +
                 balanceusd_after_dot;
         });
-    }
 
-    //USER DATA FROM API
-    const UserData = (username) => {
-        $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
-            balance = parseFloat(data.result.balance.balance);
-            let balanceusd = balance * ducoUsdPrice;
-            console.log("Balance received: " + balance + "($" + balanceusd + ")");
-
-            let balance_list = balance.toFixed(8).split(".")
-            let balance_before_dot = balance_list[0]
-            let balance_after_dot = balance_list[1]
-
-            document.getElementById("balance")
-                .innerHTML = balance_before_dot +
-                "<span class='has-text-weight-normal'>." +
-                balance_after_dot + " ᕲ";
-
-            let balanceusd_list = balanceusd.toFixed(4).split(".")
-            let balanceusd_before_dot = balanceusd_list[0]
-            let balanceusd_after_dot = balanceusd_list[1]
-
-            document.getElementById("balanceusd")
-                .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
-                "." +
-                balanceusd_after_dot;
-
-            let jsonD = data.result.transactions.reverse();
-
-            const transtable = document.getElementById("transactions");
-            console.log("Transaction list received");
-            if (jsonD.length > 0) {
-                let transactions = "";
-                for (let i in jsonD) {
-                    let classD = "has-text-success-dark";
-                    let symbolD = "+";
-                    if (jsonD[i].sender == username) {
-                        classD = "has-text-danger";
-                        symbolD = "-";
-                    }
-                    transactions +=
-                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i].datetime.substr(0, jsonD[i].datetime.length - 14)}</td>` +
-                        `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i].amount.toFixed(2)} ᕲ</td>` +
-                        `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i].sender}</td>` +
-                        `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i].recipient}</td>` +
-                        `<td data-label="Hash">` +
-                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i].hash}">` +
-                        `${jsonD[i].hash.substr(jsonD[i].hash.length - 5)}</a>` +
-                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${jsonD[i].memo}</td></tr>`;
-                    if (i >= 10) break
+        $.getJSON('https://server.duinocoin.com/miners.json', function(data) {
+            myMiners = [];
+            for (miner in data) {
+                if (data[miner]["User"] == username) {
+                    console.log(miner)
+                    myMiners.push(data[miner])
                 }
-                transtable.innerHTML = transactions;
-            } else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
-
-            let myMiners = data.result.miners;
+            }
             console.log("Miner data received");
             let miners = document.getElementById("miners");
             miners.innerHTML = "";
             let minerHashrate = document.getElementById("minerHR");
             let minerId = '';
             let diffString = '';
-            if (myMiners.length > 0) {
+            if (myMiners) {
                 for (let miner in myMiners) {
-                    if (myMiners[miner]["identifier"] === "None")
+                    if (myMiners[miner]["Identifier"] === "None")
                         minerId = "";
                     else
-                        minerId = myMiners[miner]["identifier"];
+                        minerId = myMiners[miner]["Identifier"];
 
                     if (myMiners[miner]["diff"] >= 1000000000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000000000) + "G";
+                        diffString = Math.round(myMiners[miner]["Diff"] / 1000000000) + "G";
                     else if (myMiners[miner]["diff"] >= 1000000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000000) + "M";
+                        diffString = Math.round(myMiners[miner]["Diff"] / 1000000) + "M";
                     else if (myMiners[miner]["diff"] >= 1000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000) + "k";
+                        diffString = Math.round(myMiners[miner]["Diff"] / 1000) + "k";
                     else
-                        diffString = myMiners[miner]["diff"];
+                        diffString = myMiners[miner]["Diff"];
 
                     if (minerId !== '') {
                         miners.innerHTML +=
@@ -246,19 +198,19 @@ window.addEventListener('load', function() {
                             ":</b><b class='has-text-primary'> " +
                             minerId +
                             "</b> (" +
-                            myMiners[miner]["software"] +
+                            myMiners[miner]["Software"] +
                             ") <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["hashrate"]) +
+                            calculateHashrate(myMiners[miner]["Hashrate"]) +
                             "</b></span><span class='has-text-info'> @ diff " +
                             diffString +
                             "</span>, " +
-                            myMiners[miner]["accepted"] +
+                            myMiners[miner]["Accepted"] +
                             "/" +
-                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
+                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
                             " <b class='has-text-success-dark'>(" +
                             Math.round(
-                                (myMiners[miner]["accepted"] /
-                                    (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
+                                (myMiners[miner]["Accepted"] /
+                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
                                 100
                             ) +
                             "%)</b><br>";
@@ -267,24 +219,24 @@ window.addEventListener('load', function() {
                             "<b class='has-text-grey-light'>#" +
                             miner +
                             ":</b> " +
-                            myMiners[miner]["software"] +
+                            myMiners[miner]["Software"] +
                             " <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["hashrate"]) +
+                            calculateHashrate(myMiners[miner]["Hashrate"]) +
                             "</b></span><span class='has-text-info'> @ diff " +
                             diffString +
                             "</span>, " +
-                            myMiners[miner]["accepted"] +
+                            myMiners[miner]["Accepted"] +
                             "/" +
-                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
+                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
                             " <b class='has-text-success-dark'>(" +
                             Math.round(
-                                (myMiners[miner]["accepted"] /
-                                    (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
+                                (myMiners[miner]["Accepted"] /
+                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
                                 100
                             ) +
                             "%)</b><br>";
                     }
-                    totalHashes = totalHashes + myMiners[miner]["hashrate"];
+                    totalHashes = totalHashes + myMiners[miner]["Hashrate"];
                 }
                 minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
                 totalHashes = 0;
@@ -292,6 +244,41 @@ window.addEventListener('load', function() {
                 miners.innerHTML = "<b class='subtitle is-size-6'>No miners detected</b>" +
                     "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
             }
+        });
+
+
+        $.getJSON('https://server.duinocoin.com/transactions.json', function(data) {
+            const transtable = document.getElementById("transactions");
+            myTransactions = [];
+            for (transaction in data) {
+                if (data[transaction]["Sender"] == username || data[transaction]["Recipient"] == username) {
+                    myTransactions.push(data[transaction])
+                }
+            }
+            jsonD = myTransactions.reverse();
+            console.log("Transaction list received");
+            if (jsonD) {
+                let transactions = "";
+                for (let i in jsonD) {
+                    let classD = "has-text-success-dark";
+                    let symbolD = "+";
+                    if (jsonD[i]["Sender"] == username) {
+                        classD = "has-text-danger";
+                        symbolD = "-";
+                    }
+                    transactions +=
+                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i]["Date"]}</td>` +
+                        `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i]["Amount"].toFixed(2)} ᕲ</td>` +
+                        `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i]["Sender"]}</td>` +
+                        `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i]["Recipient"]}</td>` +
+                        `<td data-label="Hash">` +
+                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i]["Hash"]}">` +
+                        `${jsonD[i]["Hash"].substr(jsonD[i]["Hash"].length - 5)}</a>` +
+                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${jsonD[i]["Memo"]}</td></tr>`;
+                    if (i >= 10) break
+                }
+                transtable.innerHTML = transactions;
+            } else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
         });
     }
 
@@ -364,7 +351,7 @@ window.addEventListener('load', function() {
             password != null &&
             password !== "" &&
             password !== undefined) {
-            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
+            let socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
 
             document.getElementById('send').onclick = function() {
                 document.getElementById("sendinginfo")
@@ -396,29 +383,29 @@ window.addEventListener('load', function() {
             }
 
             socket.onclose = function(event) {
-                console.error("Error Code: " + event.code);
-                let dataErr = "Unknown";
-            
-                if (event.code == 1000) {
-                    console.error("[Error] Normal closure");
-                    dataErr = "Connection closed from inactivity";
-                } else if (event.code == 1001 || event.code == 1002) {
-                    console.error("[Error] Server problem.");
-                    dataErr = "Server closed the connection";
-                } else if (event.code == 1005) {
-                    console.error("[Error] No status code was actually present");
-                    dataErr = "No status code";
-                } else if (event.code == 1006) {
-                    console.error("[Error] Connection was closed abnormally");
-                    dataErr = "Connection closed abnormally (most likely a timeout)";
-                } else if (event.code == 1015) {
-                    console.error("[Error] Failure to perform a TLS handshake");
-                    dataErr = "TLS handshake error";
-                } else {
-                    console.error("[Error] Unknown reason");
-                }
-                
                 if (loggedIn) {
+                    console.error("Error Code: " + event.code);
+                    let dataErr = "Unknown";
+
+                    if (event.code == 1000) {
+                        console.error("[Error] Normal closure");
+                        dataErr = "Connection closed from inactivity";
+                    } else if (event.code == 1001 || event.code == 1002) {
+                        console.error("[Error] Server problem.");
+                        dataErr = "Server closed the connection";
+                    } else if (event.code == 1005) {
+                        console.error("[Error] No status code was actually present");
+                        dataErr = "No status code";
+                    } else if (event.code == 1006) {
+                        console.error("[Error] Connection was closed abnormally");
+                        dataErr = "Connection closed abnormally (most likely a timeout)";
+                    } else if (event.code == 1015) {
+                        console.error("[Error] Failure to perform a TLS handshake");
+                        dataErr = "TLS handshake error";
+                    } else {
+                        console.error("[Error] Unknown reason");
+                    }
+
                     let modal_error = document.querySelector('#modal_error');
                     document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                         `<b>An error has occurred</b>, please try again later and if the problem persists ` +
@@ -433,25 +420,23 @@ window.addEventListener('load', function() {
                     }
                 }
             }
-            
+            let awaiting_login = false;
+            let awaiting_data = false;
+            let awaiting_version = true;
             socket.onmessage = function(msg) {
                 serverMessage = msg.data;
 
-                if (loggedIn == false &&
-                    versionReceived == false &&
-                    serverMessage.includes("2.")) {
+                if (awaiting_version) {
                     console.log("Version received: " + serverMessage);
-                    versionReceived = true;
+                    awaiting_version = false;
                 }
-                if (loggedIn == false &&
-                    versionReceived) {
+                if (awaiting_login == false && awaiting_version == false) {
                     document.getElementById("logintext")
                         .innerText = "Authenticating...";
                     socket.send("LOGI," + username + "," + password + ",");
+                    awaiting_login = true;
                 }
-                if (loggedIn == false &&
-                    versionReceived &&
-                    serverMessage.includes("OK")) {
+                if (awaiting_login == true && awaiting_version == false && serverMessage.includes("OK")) {
 
                     console.log("User logged-in");
 
@@ -492,39 +477,37 @@ window.addEventListener('load', function() {
                         `MIT license` +
                         `</a></span></p>`
 
+
+                    awaiting_login = false;
+                    loggedIn = true;
+
                     const transtable = document.getElementById("transactions");
                     transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
                     $("#login").hide(300, function() {
                         $("#wallet").show(300, function() {
-                            window.setTimeout(() => {
-                                FastUserData(username);
-                                window.setInterval(() => {
-                                    UserData(username);
-                                },5 * 1000);
+                            UserData(username);
+                            window.setInterval(() => {
+                                UserData(username);
+                            }, 5 * 1000);
 
-                                window.setInterval(() => {
-                                    ProfitCalculator();
-                                }, 10 * 1000);
+                            window.setInterval(() => {
+                                ProfitCalculator();
+                            }, 10 * 1000);
 
+                            GetData();
+                            window.setInterval(() => {
                                 GetData();
-                                window.setInterval(() => {
-                                    GetData();
-                                }, 30 * 1000);
+                            }, 30 * 1000);
 
-                                window.setTimeout(() => {
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                }, 1000);
-
-                                loggedIn = true;
-                            }, 200);
+                            window.setTimeout(() => {
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            }, 1000);
                         });
                     });
                 }
-                if (loggedIn == false &&
-                    versionReceived &&
-                    serverMessage.includes("NO")) {
-
+                if (awaiting_login == true && awaiting_version == false && serverMessage.includes("NO")) {
+                    awaiting_login = false;
                     serverMessage = serverMessage.split(",")
 
                     document.getElementById("logintext")
@@ -538,7 +521,8 @@ window.addEventListener('load', function() {
                             .innerHTML = "Login"
                     }, 5000);
                 }
-                if (sending == true) {
+
+                if (awaiting_login == false && awaiting_version == false && sending == true && awaiting_data == false) {
                     serverMessage = serverMessage.split(",");
                     if (serverMessage[0].includes("OK")) {
                         document.getElementById("sendinginfo")
