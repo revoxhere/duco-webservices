@@ -398,7 +398,7 @@ window.addEventListener('load', function() {
             socket.onclose = function(event) {
                 console.error("Error Code: " + event.code);
                 let dataErr = "Unknown";
-
+            
                 if (event.code == 1000) {
                     console.error("[Error] Normal closure");
                     dataErr = "Connection closed from inactivity";
@@ -417,18 +417,20 @@ window.addEventListener('load', function() {
                 } else {
                     console.error("[Error] Unknown reason");
                 }
+                
+                if (loggedIn) {
+                    let modal_error = document.querySelector('#modal_error');
+                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                        `<b>An error has occurred</b>, please try again later and if the problem persists ` +
+                        `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
+                        `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
+                    document.querySelector('html').classList.add('is-clipped');
+                    modal_error.classList.add('is-active');
 
-                let modal_error = document.querySelector('#modal_error');
-                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                    `<b>An error has occurred</b>, please try again later and if the problem persists ` +
-                    `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
-                    `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
-                document.querySelector('html').classList.add('is-clipped');
-                modal_error.classList.add('is-active');
-
-                document.querySelector('#modal_error .delete').onclick = function() {
-                    document.querySelector('html').classList.remove('is-clipped');
-                    modal_error.classList.remove('is-active');
+                    document.querySelector('#modal_error .delete').onclick = function() {
+                        document.querySelector('html').classList.remove('is-clipped');
+                        modal_error.classList.remove('is-active');
+                    }
                 }
             }
             
