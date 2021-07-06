@@ -108,7 +108,7 @@ window.addEventListener('load', function () {
                         Duino-Coin Web Miner
                     </p>
                     <p class="subtitle">
-                        Official JavaScript miner v2.5.2
+                        Official JavaScript miner v2.5.5
                         <span class="subtitle is-size-6">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>
@@ -258,7 +258,7 @@ window.addEventListener('load', function () {
                         </a>
                     </div>
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+                    <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
                     <script>
                         (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
@@ -314,13 +314,13 @@ window.addEventListener('load', function () {
 
         try {
             socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
-            minerlog.push(`${getTime()} | ` + "Connected to master node");
+            minerlog.push(`${getTime()} | ` + "Connected to node");
             /* If is http this sends error */
         } catch(e)
         {
             console.info("WSS error, using insecure websocket");
             socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
-            minerlog.push(`${getTime()} | ` + "Connected to master node");
+            minerlog.push(`${getTime()} | ` + "Connected to node");
         }
 
         socket.onmessage = async function (msg) {
@@ -378,7 +378,7 @@ window.addEventListener('load', function () {
                         minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                         postMessage("UpdateHashrate,"+timeDiff+","+hashrate)
 
-                        socket.send(result + "," + hashrate + ",Official Webminer v2.5.2," + rigid); // send the result to the server
+                        socket.send(result + "," + hashrate + ",Official Webminer v2.55," + rigid); // send the result to the server
                         break;
                     }
                 }
@@ -582,12 +582,12 @@ if (typeof(Worker) !== "undefined") {
             console.info("Trying to use WSS");
             try {
                 socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
-                minerlog.push(`${getTime()} | ` + "Connected to master node");
+                minerlog.push(`${getTime()} | ` + "Connected to node");
                 /* If is http this sends error */
             } catch (e) {
                 console.info("WSS error, using insecure websocket");
                 socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
-                minerlog.push(`${getTime()} | ` + "Connected to master node");
+                minerlog.push(`${getTime()} | ` + "Connected to node");
             }
 
             socket.onmessage = async function(msg) {
@@ -653,7 +653,7 @@ if (typeof(Worker) !== "undefined") {
                             console.log(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
                             minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
 
-                            socket.send(result + "," + hashrate + ",Official Webminer v2.5.2," + rigid); // send the result to the server
+                            socket.send(result + "," + hashrate + ",Official Webminer v2.55," + rigid); // send the result to the server
                             break;
                         }
                     }
