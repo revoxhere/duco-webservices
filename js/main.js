@@ -268,9 +268,6 @@ window.addEventListener('load', function() {
         });
     }
 
-    UserData("revox");
-
-
     // PROFIT CALCULATOR
     const ProfitCalculator = () => {
         let prev_bal = curr_bal;
