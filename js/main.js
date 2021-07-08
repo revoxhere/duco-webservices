@@ -137,8 +137,9 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const UserData = (username) => {
-        $.getJSON('https://server.duinocoin.com/balances.json', function(data) {
-            balance = parseFloat(data[username]);
+        $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
+            data = data.result;
+            balance = parseFloat(data.balance.balance);
             let balanceusd = balance * ducoUsdPrice;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
@@ -159,16 +160,8 @@ window.addEventListener('load', function() {
                 .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
                 "." +
                 balanceusd_after_dot;
-        });
 
-        $.getJSON('https://server.duinocoin.com/miners.json', function(data) {
-            myMiners = [];
-            for (miner in data) {
-                if (data[miner]["User"] == username) {
-                    console.log(miner)
-                    myMiners.push(data[miner])
-                }
-            }
+            myMiners = data.miners;
             console.log("Miner data received");
             let miners = document.getElementById("miners");
             miners.innerHTML = "";
@@ -177,19 +170,19 @@ window.addEventListener('load', function() {
             let diffString = '';
             if (myMiners) {
                 for (let miner in myMiners) {
-                    if (myMiners[miner]["Identifier"] === "None")
+                    if (myMiners[miner]["identifier"] === "None")
                         minerId = "";
                     else
-                        minerId = myMiners[miner]["Identifier"];
+                        minerId = myMiners[miner]["identifier"];
 
                     if (myMiners[miner]["diff"] >= 1000000000)
-                        diffString = Math.round(myMiners[miner]["Diff"] / 1000000000) + "G";
+                        diffString = Math.round(myMiners[miner]["diff"] / 1000000000) + "G";
                     else if (myMiners[miner]["diff"] >= 1000000)
-                        diffString = Math.round(myMiners[miner]["Diff"] / 1000000) + "M";
+                        diffString = Math.round(myMiners[miner]["diff"] / 1000000) + "M";
                     else if (myMiners[miner]["diff"] >= 1000)
-                        diffString = Math.round(myMiners[miner]["Diff"] / 1000) + "k";
+                        diffString = Math.round(myMiners[miner]["diff"] / 1000) + "k";
                     else
-                        diffString = myMiners[miner]["Diff"];
+                        diffString = myMiners[miner]["diff"];
 
                     if (minerId !== '') {
                         miners.innerHTML +=
@@ -197,20 +190,20 @@ window.addEventListener('load', function() {
                             miner +
                             ":</b><b class='has-text-primary'> " +
                             minerId +
-                            "</b> (" +
-                            myMiners[miner]["Software"] +
-                            ") <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["Hashrate"]) +
+                            "</b> <span class='has-text-grey'>(" +
+                            myMiners[miner]["software"] +
+                            ")</span> <b><span class='has-text-success'>" +
+                            calculateHashrate(myMiners[miner]["hashrate"]) +
                             "</b></span><span class='has-text-info'> @ diff " +
                             diffString +
                             "</span>, " +
-                            myMiners[miner]["Accepted"] +
+                            myMiners[miner]["accepted"] +
                             "/" +
-                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
                             " <b class='has-text-success-dark'>(" +
                             Math.round(
-                                (myMiners[miner]["Accepted"] /
-                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                (myMiners[miner]["accepted"] /
+                                    (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
                                 100
                             ) +
                             "%)</b><br>";
@@ -219,19 +212,19 @@ window.addEventListener('load', function() {
                             "<b class='has-text-grey-light'>#" +
                             miner +
                             ":</b> " +
-                            myMiners[miner]["Software"] +
+                            myMiners[miner]["software"] +
                             " <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["Hashrate"]) +
+                            calculateHashrate(myMiners[miner]["hashrate"]) +
                             "</b></span><span class='has-text-info'> @ diff " +
                             diffString +
                             "</span>, " +
-                            myMiners[miner]["Accepted"] +
+                            myMiners[miner]["accepted"] +
                             "/" +
-                            (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"]) +
+                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
                             " <b class='has-text-success-dark'>(" +
                             Math.round(
-                                (myMiners[miner]["Accepted"] /
-                                    (myMiners[miner]["Accepted"] + myMiners[miner]["Rejected"])) *
+                                (myMiners[miner]["rccepted"] /
+                                    (myMiners[miner]["rccepted"] + myMiners[miner]["rejected"])) *
                                 100
                             ) +
                             "%)</b><br>";
@@ -244,17 +237,10 @@ window.addEventListener('load', function() {
                 miners.innerHTML = "<b class='subtitle is-size-6'>No miners detected</b>" +
                     "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
             }
-        });
 
 
-        $.getJSON('https://server.duinocoin.com/transactions.json', function(data) {
             const transtable = document.getElementById("transactions");
-            myTransactions = [];
-            for (transaction in data) {
-                if (data[transaction]["Sender"] == username || data[transaction]["Recipient"] == username) {
-                    myTransactions.push(data[transaction])
-                }
-            }
+            myTransactions = data.transactions;
             jsonD = myTransactions.reverse();
             console.log("Transaction list received");
             if (jsonD) {
@@ -267,14 +253,14 @@ window.addEventListener('load', function() {
                         symbolD = "-";
                     }
                     transactions +=
-                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i]["Date"]}</td>` +
-                        `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i]["Amount"].toFixed(2)} ᕲ</td>` +
-                        `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i]["Sender"]}</td>` +
-                        `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i]["Recipient"]}</td>` +
+                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i]["datetime"].substring(0,5)}</td>` +
+                        `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i]["amount"].toFixed(2)} ᕲ</td>` +
+                        `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i]["sender"]}</td>` +
+                        `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i]["recipient"]}</td>` +
                         `<td data-label="Hash">` +
-                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i]["Hash"]}">` +
-                        `${jsonD[i]["Hash"].substr(jsonD[i]["Hash"].length - 5)}</a>` +
-                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${jsonD[i]["Memo"]}</td></tr>`;
+                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i]["hash"]}">` +
+                        `${jsonD[i]["hash"].substr(jsonD[i]["hash"].length - 5)}</a>` +
+                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${jsonD[i]["memo"]}</td></tr>`;
                     if (i >= 10) break
                 }
                 transtable.innerHTML = transactions;
@@ -282,11 +268,12 @@ window.addEventListener('load', function() {
         });
     }
 
+
     // PROFIT CALCULATOR
     const ProfitCalculator = () => {
         let prev_bal = curr_bal;
         curr_bal = balance;
-        let daily = (curr_bal - prev_bal) * 2800;
+        let daily = (curr_bal - prev_bal) * 864;
         profitcheck++;
         let avgusd;
         let avg_list;
@@ -309,7 +296,6 @@ window.addEventListener('load', function() {
                 avg_before_dot = avg_list[0]
                 avg_after_dot = avg_list[1]
 
-
                 document.getElementById("estimatedprofit")
                     .innerHTML = avg_before_dot +
                     "<span class='has-text-weight-normal'>." +
@@ -326,6 +312,8 @@ window.addEventListener('load', function() {
             }
         }
     };
+
+
 
     // ENTER KEY AS LOGIN
     let input_login = document.getElementById("login");
@@ -489,9 +477,6 @@ window.addEventListener('load', function() {
                             UserData(username);
                             window.setInterval(() => {
                                 UserData(username);
-                            }, 5 * 1000);
-
-                            window.setInterval(() => {
                                 ProfitCalculator();
                             }, 10 * 1000);
 
