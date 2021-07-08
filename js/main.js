@@ -163,73 +163,63 @@ window.addEventListener('load', function() {
 
             myMiners = data.miners;
             console.log("Miner data received");
-            let miners = document.getElementById("miners");
-            miners.innerHTML = "";
-            let minerHashrate = document.getElementById("minerHR");
+            const miners = document.getElementById("miners");
+            const minerHashrate = document.getElementById("minerHR");
             let minerId = '';
             let diffString = '';
+            miners.innerHTML = "";
             if (myMiners) {
                 for (let miner in myMiners) {
-                    if (myMiners[miner]["identifier"] === "None")
-                        minerId = "";
-                    else
-                        minerId = myMiners[miner]["identifier"];
+                    miner_hashrate = myMiners[miner]["hashrate"];
+                    miner_identifier = myMiners[miner]["identifier"];
+                    miner_software = myMiners[miner]["software"];
+                    miner_diff = myMiners[miner]["diff"];
+                    miner_rejected = myMiners[miner]["rejected"];
+                    miner_accepted = myMiners[miner]["accepted"];
 
-                    if (myMiners[miner]["diff"] >= 1000000000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000000000) + "G";
-                    else if (myMiners[miner]["diff"] >= 1000000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000000) + "M";
-                    else if (myMiners[miner]["diff"] >= 1000)
-                        diffString = Math.round(myMiners[miner]["diff"] / 1000) + "k";
+                    if (miner_identifier === "None")
+                        minerId = miner_software;
                     else
-                        diffString = myMiners[miner]["diff"];
+                        minerId = miner_identifier +
+                        "</b><span class='has-text-grey'> (" +
+                        miner_software +
+                        ")</span>";
 
-                    if (minerId !== '') {
-                        miners.innerHTML +=
-                            "<b class='has-text-grey-light'>#" +
-                            miner +
-                            ":</b><b class='has-text-primary'> " +
-                            minerId +
-                            "</b> <span class='has-text-grey'>(" +
-                            myMiners[miner]["software"] +
-                            ")</span> <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["hashrate"]) +
-                            "</b></span><span class='has-text-info'> @ diff " +
-                            diffString +
-                            "</span>, " +
-                            myMiners[miner]["accepted"] +
-                            "/" +
-                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
-                            " <b class='has-text-success-dark'>(" +
-                            Math.round(
-                                (myMiners[miner]["accepted"] /
-                                    (myMiners[miner]["accepted"] + myMiners[miner]["rejected"])) *
-                                100
-                            ) +
-                            "%)</b><br>";
-                    } else {
-                        miners.innerHTML +=
-                            "<b class='has-text-grey-light'>#" +
-                            miner +
-                            ":</b> " +
-                            myMiners[miner]["software"] +
-                            " <b><span class='has-text-success'>" +
-                            calculateHashrate(myMiners[miner]["hashrate"]) +
-                            "</b></span><span class='has-text-info'> @ diff " +
-                            diffString +
-                            "</span>, " +
-                            myMiners[miner]["accepted"] +
-                            "/" +
-                            (myMiners[miner]["accepted"] + myMiners[miner]["rejected"]) +
-                            " <b class='has-text-success-dark'>(" +
-                            Math.round(
-                                (myMiners[miner]["rccepted"] /
-                                    (myMiners[miner]["rccepted"] + myMiners[miner]["rejected"])) *
-                                100
-                            ) +
-                            "%)</b><br>";
-                    }
-                    totalHashes = totalHashes + myMiners[miner]["Hashrate"];
+                    if (miner_diff >= 1000000000)
+                        diffString = Math.round(miner_diff / 100000000) / 10 + "G";
+                    else if (miner_diff >= 1000000)
+                        diffString = Math.round(miner_diff / 100000) / 10 + "M";
+                    else if (miner_diff >= 1000)
+                        diffString = Math.round(miner_diff / 100) / 10 + "k";
+                    else
+                        diffString = miner_diff;
+
+                    miners.innerHTML +=
+                        "<span class='has-text-grey-light'>#" +
+                        miner +
+                        ":</span> " +
+                        "<b class='has-text-primary'>" +
+                        minerId +
+                        "</b>, " +
+                        "<b><span class='has-text-success'>" +
+                        calculateHashrate(miner_hashrate) +
+                        "</b></span>" +
+                        "<span class='has-text-info'>" +
+                        " @ diff " +
+                        diffString +
+                        "</span>, " +
+                        miner_accepted +
+                        "/" +
+                        (miner_accepted + miner_rejected) +
+                        " <b class='has-text-success-dark'>(" +
+                        Math.round(
+                            (miner_accepted /
+                                (miner_accepted + miner_rejected)) *
+                            100
+                        ) +
+                        "%)</b><br>";
+
+                    totalHashes = totalHashes + miner_hashrate;
                 }
                 minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
                 totalHashes = 0;
@@ -240,33 +230,45 @@ window.addEventListener('load', function() {
 
 
             const transtable = document.getElementById("transactions");
-            myTransactions = data.transactions;
-            jsonD = myTransactions.reverse();
+            user_transactions = data.transactions.reverse();
             console.log("Transaction list received");
-            if (jsonD) {
+            if (user_transactions < 100) {
                 let transactions = "";
-                for (let i in jsonD) {
-                    let classD = "has-text-success-dark";
-                    let symbolD = "+";
-                    if (jsonD[i]["Sender"] == username) {
-                        classD = "has-text-danger";
-                        symbolD = "-";
+                for (let i in user_transactions) {
+                    console.log(user_transactions[i]["sender"])
+                    transaction_date = user_transactions[i]["datetime"].substring(0,5);
+                    transaction_amount = user_transactions[i]["amount"].toFixed(2);
+                    transaction_hash_full = user_transactions[i]["hash"].substr(user_transactions[i]["hash"].length - 5);
+                    transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 5);
+                    transaction_memo = user_transactions[i]["memo"];
+                    transaction_recipient = user_transactions[i]["recipient"];
+                    transaction_sender = user_transactions[i]["sender"];
+
+                    let transaction_color = "has-text-success-dark";
+                    let transaction_symbol = "+";
+
+                    if (transaction_sender == username) {
+                        transaction_color = "has-text-danger";
+                        transaction_symbol = "-";
                     }
+
                     transactions +=
-                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${jsonD[i]["datetime"].substring(0,5)}</td>` +
-                        `<td data-label="Amount" class="subtitle is-size-6  ${classD}"> ${symbolD} ${jsonD[i]["amount"].toFixed(2)} ᕲ</td>` +
-                        `<td data-label="Sender" class="subtitle is-size-6">${jsonD[i]["sender"]}</td>` +
-                        `<td data-label="Recipient" class="subtitle is-size-6">${jsonD[i]["recipient"]}</td>` +
+                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${transaction_date}</td>` +
+                        `<td data-label="Amount" class="subtitle is-size-6  ${transaction_color}"> ${transaction_symbol} ${transaction_amount} ᕲ</td>` +
+                        `<td data-label="Sender" class="subtitle is-size-6">${transaction_sender}</td>` +
+                        `<td data-label="Recipient" class="subtitle is-size-6">${transaction_recipient}</td>` +
                         `<td data-label="Hash">` +
-                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${jsonD[i]["hash"]}">` +
-                        `${jsonD[i]["hash"].substr(jsonD[i]["hash"].length - 5)}</a>` +
-                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${jsonD[i]["memo"]}</td></tr>`;
-                    if (i >= 10) break
+                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">` +
+                        `${transaction_hash}</a>` +
+                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${transaction_memo}</td></tr>`;
+                    if (i >= 15) break
                 }
                 transtable.innerHTML = transactions;
-            } else transtable.innerHTML = `<tr><td data-label="Date">No transactions yet</td></tr>`;
+            } else transtable.innerHTML = `<tr><td data-label="Date">Transactions temporarily unavailable</td></tr>`;
         });
     }
+
+    UserData("revox");
 
 
     // PROFIT CALCULATOR
