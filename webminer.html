@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+    <!-- Browser standards -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Duino-Coin | Web Miner</title>
@@ -56,45 +56,47 @@
             background-repeat: no-repeat !important;
         }
     </style>
-    <!-- JS -->
-    <script type="text/javascript" src="https://cdn.rawgit.com/h2non/jsHashes/master/hashes.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <!-- Font Awesome and jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 <script>
     /* GLOBAL JS */
-window.addEventListener('load', function () {
+    window.addEventListener('load', function ()
+    {
+        let clickcount = 0;
 
-    let clickcount = 0;
+        // RANDOM BACKGROUND
+        const bg_list = [
+            'backgrounds/1-min.png',
+            'backgrounds/2-min.png',
+            'backgrounds/3-min.png',
+            'backgrounds/4-min.png',
+            'backgrounds/5-min.png',
+            'backgrounds/6-min.jpg',
+            'backgrounds/7-min.png',
+            'backgrounds/8-min.png',
+            'backgrounds/9-min.png'
+        ]
 
-    // RANDOM BACKGROUND
-    const bg_list = [
-        'backgrounds/1-min.png',
-        'backgrounds/2-min.png',
-        'backgrounds/3-min.png',
-        'backgrounds/4-min.png',
-        'backgrounds/5-min.png',
-        'backgrounds/6-min.jpg',
-        'backgrounds/7-min.png',
-        'backgrounds/8-min.png',
-        'backgrounds/9-min.png'
-    ]
+        let num = Math.floor(Math.random() * bg_list.length)
+        document.body.background = bg_list[num];
 
-    let num = Math.floor(Math.random() * bg_list.length)
-    document.body.background = bg_list[num];
-
-    document.getElementById('darkmode').onclick = function () {
-        clickcount++;
-        if (clickcount % 2 == 1) {
-            $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+        document.getElementById('darkmode').onclick = function()
+        {
+            console.log("clicked the dark mode button")
+            clickcount++;
+            if (clickcount % 2 == 1)
+            {
+                $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
+            }
+            if (clickcount % 2 == 0)
+            {
+                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
+            }
         }
-        if (clickcount % 2 == 0) {
-            $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-        }
-    }
-});
+    });
 </script>
-
 <body>
     <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
         <span class="title">Duino-Coin Web Miner</span>
@@ -111,9 +113,10 @@ window.addEventListener('load', function () {
                         Official JavaScript miner v2.5.5
                         <span class="subtitle is-size-6">
                             by
-                            <a href="https://github.com/revoxhere/">revox</a>
-                            &
+                            <a href="https://github.com/revoxhere/">revox</a>,
                             <a href="https://github.com/LDarki">LDarki</a>
+                            &
+                            <a href="https://github.com/sys-256">sys-256</a>
                             <span class="has-text-grey">
                                 <br>2020-2021 the Duino-Coin project, distributed under the 
                                 <a href="https://opensource.org/licenses/MIT">
@@ -138,6 +141,14 @@ window.addEventListener('load', function () {
                                     <input class="input has-icons" type="text" id="usernameinput" placeholder="DUCO Username" name="username">
                                     <span class="icon is-left">
                                         <i class="fa fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="control has-icons-left">
+                                    <input class="input has-icons" type="text" id="threadsinput" placeholder="Amount of threads" name="threads">
+                                    <span class="icon is-left">
+                                        <i class="fa fa-microchip"></i>
                                     </span>
                                 </div>
                             </div>
@@ -177,30 +188,16 @@ window.addEventListener('load', function () {
                             <div class="box">
                                 <p class="subtitle">
                                     <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
-                                    HASHRATE
+                                    HASHRATE (of last share)
                                 </p>
                                 <p class="title">
                                     <span id="hashrate">
-                                        0 H/s
+                                        0 kH/s
                                     </span>
                                     <span class="subtitle" id="time">
                                         0 s
                                     </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="fa fa-cogs fa-fw" style="color:#2980b9;"></i>
-                                    DIFFICULTY
-                                </p>
-                                <p class="title">
-                                    <span id="difficulty">
-                                        0
-                                    </span>
-                                    <span class="subtitle" id="difficultytext">
-                                    </span>
+                                    
                                 </p>
                             </div>
                         </div>
@@ -220,7 +217,7 @@ window.addEventListener('load', function () {
                     </div>
                     <div class="columns">
                         <div class="column">
-                            <div class="box">
+                            <div class="box" id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 10rem;">
                                 <p class="subtitle">
                                     <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
                                     MINER LOG
@@ -251,11 +248,6 @@ window.addEventListener('load', function () {
                             <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
                             <span><b>BULMA</b></span>
                         </a>
-                        <a href="https://github.com/h2non/jshashes" class="button is-secondary">
-                            <i class="fa fa-fw fa-code icon is-small" style="color:#78e08f;"></i>&nbsp;
-                            <span>Hashing with</span>&nbsp;
-                            <span><b>jsHashes</b></span>
-                        </a>
                     </div>
                     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
@@ -267,407 +259,130 @@ window.addEventListener('load', function () {
         </section>
     </div>
 </body>
-
 </html>
-<script type="text/plain" id="socketThread">
-    importScripts("https://cdn.rawgit.com/h2non/jsHashes/master/hashes.js");  
+<script>
+    let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
+    pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
+    window.addEventListener('load', function()
+    {
+        pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
+    });
 
-    let versionReceived = false;
-    let allShares = 0;
-    let acceptedShares = 0;
-    let inProgress = false;
-    let hashrate = 0;
-    let diff = "LOW";
-    let SHA1 = new Hashes.SHA1();
-    let timeDiff;
+    //gets the username, rigid and amount of threads from the url parameters
+    var url = new URL(window.location);
+    var username = url.searchParams.get("username");
+    var rigid = url.searchParams.get("rigid");
+    let threads = url.searchParams.get("threads")
 
-    function getTime() {
-        let date = new Date();
-        let h = date.getHours();
-        let m = date.getMinutes();
-        let s = date.getSeconds();
-
-        h = (h < 10) ? "0" + h : h;
-        m = (m < 10) ? "0" + m : m;
-        s = (s < 10) ? "0" + s : s;
-
-        return h + ":" + m + ":" + s;
+    if (rigid === "")
+    {
+        rigid = "None"; //sets the rigid variable to "None", if the user didn't specify one
+    }
+    
+    let userThreads = navigator.hardwareConcurrency; //lets userThreads be the amount of threads the user has
+    if (threads === "")
+    {
+        threads = userThreads; //sets the threads variable to the threads the user has if it didn't gave a number
     }
 
-    let minerlog = [];
+    if (username != null && username != "" && username != undefined)
+    {
+        document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
+        document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
+        document.getElementById("usernameinput").value = username;
+        document.getElementById("riginput").value = rigid;
+        document.getElementById("threadsinput").value = threads;
 
-    self.addEventListener('message', function(event) {
-      if (String(event.data).startsWith("Start")) { // Create websocket connection
-
-        let getData = String(event.data).split(",")
-
-        let username = getData[1];
-        let rigid = getData[2];
-    
-        if (rigid === "") {
-            rigid = "None"
-        }
-
-        let socket;
-
-        console.info("Trying to use WSS");
-
-        try {
-            socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
-            minerlog.push(`${getTime()} | ` + "Connected to node");
-            /* If is http this sends error */
-        } catch(e)
-        {
-            console.info("WSS error, using insecure websocket");
-            socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
-            minerlog.push(`${getTime()} | ` + "Connected to node");
-        }
-
-        socket.onmessage = async function (msg) {
-            serverMessage = msg.data.replace("\n", "");
-            if (serverMessage.includes("2.")) {
-                self.postMessage("[WebWorker] Version received: " + serverMessage);
-                versionReceived = true;
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-            }
-
-            if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                console.log(`${getTime()} | ` + "Share accepted:" + result);
-                minerlog.push(`${getTime()} | ` + "Share accepted: " + result);
-                acceptedShares++;
-                allShares++;
-                postMessage("Update,"+allShares+","+acceptedShares)
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-            }
-
-            if (versionReceived && serverMessage === "BAD") {
-                console.log("Share rejected");
-                minerlog.push("Share rejected: " + result);
-                allShares++;
-                postMessage("Update,"+allShares+","+acceptedShares)
-                setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-            }
-
-            if (versionReceived && serverMessage.includes("This user doesn't exist")) {
-                console.log("User not found!");
-                postMessage("Error");
-            }
-            if (versionReceived && serverMessage.length > 40) {
-                console.log(`${getTime()} | ` + " Job received: " + serverMessage);
-                minerlog.push(`${getTime()} | ` + " Job received: " + serverMessage);
-                job = serverMessage.split(",");
-                difficulty = job[2];
-
-                if (difficulty > 15000) {
-                    postMessage("UpdateDiff2,MEDIUM");
-                } else {
-                    postMessage("UpdateDiff2,LOW")
-                }
-
-                postMessage("UpdateDiff,"+difficulty);
-
-                startTime = new Date();
-                for (result = 0; result < 100 * difficulty + 1; result++) {
-                    ducos1 = SHA1.hex(job[0] + result)
-                    if (job[1] === ducos1) {
-                        endTime = new Date();
-                        timeDiff = (endTime - startTime) / 1000;
-                        hashrate = (result / timeDiff).toFixed(2);
-
-                        console.log(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                        minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                        postMessage("UpdateHashrate,"+timeDiff+","+hashrate)
-
-                        socket.send(result + "," + hashrate + ",Official Webminer v2.55," + rigid); // send the result to the server
-                        break;
-                    }
-                }
-            }
-        }
-        socket.onerror = function(event) {
-          console.error("WebSocket error observed:", event);
-          window.location.reload(false);
+        //borrowed from waynegraham (https://gist.github.com/waynegraham/5766565), and modified it a bit
+        console.minerlog = function(message) {
+            $('#minerlog').append(message);
         };
-        socket.onclose = function (event) {
-          console.error("WebSocket close observed:", event);
-          window.location.reload(false);
-        };
-      }
-    });
-    let finalstring = "";
 
-    let intervalId = setInterval(function () {
-        finalstring = "";
-        for (miner in minerlog) {
-            if (minerlog[miner - 2] != undefined) {
-                finalstring = minerlog[miner - 2] + "<br>";
-            }
-            if (minerlog[miner - 1] != undefined) {
-                finalstring += minerlog[miner - 1] + "<br>";
-            }
-            if (minerlog[miner] != undefined) {
-                finalstring += minerlog[miner];
-            }
-        }
-        postMessage("UpdateLog,"+finalstring);
-    }, 1000);
-</script>
-<script>
-let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
-pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
-window.addEventListener('load', function() {
-    pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
-});
+        let workerVer = 0;
+        let sharesCorrect = 0;
+        let totalShares = 0;
 
-if (typeof(Worker) !== "undefined") {
-    console.info("[Info]: WebWorkers supported.");
-
-    window.addEventListener('load', function() {
-        let url_string = window.location;
-        let url = new URL(url_string);
-        let username = url.searchParams.get("username");
-        let rigid = url.searchParams.get("rigid");
-
-        if (rigid === "") {
-            rigid = "None"
-        }
-
-        if (username != null && username != "" && username != undefined) {
-            document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
-            document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
-            document.getElementById("usernameinput").value = username;
-            document.getElementById("riginput").value = rigid;
-
-            let socketT = document.getElementById('socketThread').innerText;
-            let blob = new Blob([socketT]);
-            let blobURL = window.URL.createObjectURL(blob);
-            const socketWorker = new Worker(blobURL);
-
-            socketWorker.postMessage('Start,' + username + "," + rigid); // Send the Start action to the worker.
-
-            let hours = `00`,
-                minutes = `00`,
-                seconds = `00`;
-
-            let chronometer = setInterval(function() {
-                seconds++
-                if (seconds < 10) seconds = `0` + seconds
-                if (seconds > 59) {
-                    seconds = `00`
-                    minutes++
-                    if (minutes < 10) minutes = `0` + minutes
-                }
-                if (minutes > 59) {
-                    minutes = `00`
-                    hours++
-                    if (hours < 10) hours = `0` + hours
-                }
-
-                document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`;
-            }, 1000);
-
-            socketWorker.addEventListener('message', function(evt) {
-                let msg = String(evt.data);
-                const data = msg.split(",");
-                if (data[0] == "UpdateLog") {
-                    document.getElementById("minerlog").innerHTML = msg.replace("UpdateLog,", "");
-                } else if (data[0] == "UpdateDiff") {
-                    document.getElementById("difficulty").innerHTML = data[1];
-                } else if (data[0] == "UpdateDiff2") {
-                    document.getElementById("difficultytext").innerHTML = data[1];
-                } else if (data[0] == "UpdateHashrate") {
-                    document.getElementById("time").innerHTML = parseInt(data[1]).toFixed(2) + " s";
-                    document.getElementById("hashrate").innerHTML = parseFloat(data[2] / 1000).toFixed(0) + " kH/s";
-                } else if (data[0] == "Update") {
-                    let acceptedShares = parseFloat(data[2]),
-                        allShares = parseFloat(data[1]);
-                    document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
-                    document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
-                } else if (data[0] == "Error") {
-                    document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
-                    document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
-                }
-            });
-        }
-    });
-} else {
-    console.info("[Info]: WebWorkers not supported.");
-
-    window.addEventListener('load', function() {
         let hours = `00`,
             minutes = `00`,
             seconds = `00`;
 
-        function getTime() {
-            let date = new Date();
-            let h = date.getHours();
-            let m = date.getMinutes();
-            let s = date.getSeconds();
-
-            if (h == 0) {
-                h = 12;
-            }
-
-            h = (h < 10) ? "0" + h : h;
-            m = (m < 10) ? "0" + m : m;
-            s = (s < 10) ? "0" + s : s;
-
-            return h + ":" + m + ":" + s;
-        }
-
-        function chronometer() {
+        let chronometer = setInterval(function()
+        {
             seconds++
-            if (seconds < 10) seconds = `0` + seconds
+            if (seconds < 10){seconds = `0` + seconds}
             if (seconds > 59) {
                 seconds = `00`
                 minutes++
-                if (minutes < 10) minutes = `0` + minutes
+                if (minutes < 10){minutes = `0` + minutes}
             }
             if (minutes > 59) {
                 minutes = `00`
                 hours++
-                if (hours < 10) hours = `0` + hours
-            }
-            document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`
-        }
-
-        let versionReceived = false;
-        let allShares = 0;
-        let acceptedShares = 0;
-        let inProgress = false;
-        let hashrate = 0;
-        let diff = "LOW";
-        let SHA1 = new Hashes.SHA1();
-        let timeDiff;
-
-        let url_string = window.location;
-        let url = new URL(url_string);
-        let username = url.searchParams.get("username");
-        let rigid = url.searchParams.get("rigid");
-
-        if (rigid === "") {
-            rigid = "None"
-        }
-
-        if (username != null && username != "" && username != undefined) {
-
-            let minerlog = [];
-            let finalstring = "";
-            let intervalId = window.setInterval(function() {
-                for (miner in minerlog) {
-                    finalstring = "";
-                    if (minerlog[miner - 2] != undefined) {
-                        finalstring = minerlog[miner - 2] + "<br>";
-                    }
-                    if (minerlog[miner - 1] != undefined) {
-                        finalstring += minerlog[miner - 1] + "<br>";
-                    }
-                    if (minerlog[miner] != undefined) {
-                        finalstring += minerlog[miner];
-                    }
-                }
-                document.getElementById("minerlog").innerHTML = finalstring;
-            }, 100);
-
-
-            document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
-            document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
-
-            setInterval(chronometer, 1000)
-            document.getElementById("usernameinput").value = username;
-            document.getElementById("riginput").value = rigid;
-
-            let socket;
-
-            console.info("Trying to use WSS");
-            try {
-                socket = new WebSocket("wss://server.duinocoin.com:14808", null, 5000, 5);
-                minerlog.push(`${getTime()} | ` + "Connected to node");
-                /* If is http this sends error */
-            } catch (e) {
-                console.info("WSS error, using insecure websocket");
-                socket = new WebSocket("ws://51.15.127.80:14808", null, 5000, 5);
-                minerlog.push(`${getTime()} | ` + "Connected to node");
+                if (hours < 10){hours = `0` + hours}
             }
 
-            socket.onmessage = async function(msg) {
-                serverMessage = msg.data.replace("\n", "");
-                if (serverMessage.includes("2.")) {
-                    console.log("Version received: " + serverMessage);
-                    minerlog.push(`${getTime()} | ` + "Version received: " + serverMessage);
-                    versionReceived = true;
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-                }
+            document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`;
+        }, 1000);
 
-                if (versionReceived && serverMessage === "GOOD" || serverMessage === "BLOCK") {
-                    console.log(`${getTime()} | ` + "Share accepted:" + result);
-                    minerlog.push(`${getTime()} | ` + "Share accepted: " + result);
-                    acceptedShares++;
-                    allShares++;
-                    document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
-                    document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
-                    document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
-                    document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-                }
+        //makes sure the user gives a valid number
+        if (threads < 1)
+        {
+            threads = 1;    
+        }
 
-                if (versionReceived && serverMessage === "BAD") {
-                    console.log("Share rejected");
-                    minerlog.push("Share rejected: " + result);
-                    allShares++;
-                    document.getElementById("shares").innerHTML = acceptedShares + "/" + allShares;
-                    document.getElementById("sharesperc").innerHTML = " (" + (acceptedShares / allShares * 100).toFixed(2) + "%)";
-                    document.getElementById("hashrate").innerHTML = (hashrate / 1000).toFixed(0) + " kH/s";
-                    document.getElementById("time").innerHTML = (timeDiff).toFixed(2) + " s";
-                    setTimeout(() => { socket.send("JOB," + username + "," + diff) }, 10);
-                }
+        //makes sure the user doesn't make more then 50 workers
+        if (threads > 50)
+        {
+            threads = 50;
+        }
 
-                if (versionReceived && serverMessage.includes("This user doesn't exist")) {
-                    console.log("User not found!");
+        //makes sure the user doesn't give the miner more threads then it actually has
+        if (threads > userThreads)
+        {
+            threads = userThreads;
+        }
+
+        //makes threads amount of workers (so if threads is 6, it will make 6 workers)
+        for (let workersAmount = 0; workersAmount < threads; workersAmount++)
+        {
+            var socketWorker = new Worker("js/webminer/worker.js"); //makes the worker
+            socketWorker.postMessage('Start,' + username + "," + rigid + ","+ workerVer); //passes the start command, username, rigid and worker version to the worker
+            workerVer++; //adds one to workerVer, so you will get CPU0, CPU1, CPU2 etc.
+
+            //executes when the worker sends a message
+            socketWorker.onmessage = function(event)
+            {
+                const data = event.data.split(","); //splits the data so you can use data[1] etc.
+                if (data[0] == "UpdateLog")
+                {
+                    console.minerlog(data[1])
+                    document.getElementById("minerlog-scroll-down").scrollTop = document.getElementById("minerlog-scroll-down").scrollHeight;
+
+                }
+                else if (data[0] == "UpdateHashrate")
+                {
+                    document.getElementById("time").innerHTML = parseInt(data[1]) + " s";
+                    document.getElementById("hashrate").innerHTML = parseFloat(data[2] / 1000).toFixed(2) + " kH/s";
+                }
+                else if (data[0] == "GoodShare")
+                {
+                    totalShares++;
+                    sharesCorrect++;
+                    document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
+                    document.getElementById("sharesperc").innerHTML = " (" + (sharesCorrect / totalShares * 100).toFixed(2) + "%)";
+                }
+                else if (data[0] == "BadShare")
+                {
+                    totalShares++;
+                    document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
+                    document.getElementById("sharesperc").innerHTML = " (" + (sharesCorrect / totalShares * 100).toFixed(2) + "%)";
+                }
+                else if (data[0] == "Error")
+                {
                     document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
                     document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
                 }
-
-                if (versionReceived && serverMessage.length > 40) {
-                    console.log(`${getTime()} | ` + " Job received: " + serverMessage);
-                    minerlog.push(`${getTime()} | ` + " Job received: " + serverMessage);
-                    job = serverMessage.split(",");
-                    difficulty = job[2];
-
-                    if (difficulty > 15000) {
-                        document.getElementById("difficultytext").innerHTML = "MEDIUM";
-                    } else {
-                        document.getElementById("difficultytext").innerHTML = "LOW";
-                    }
-
-                    document.getElementById("difficulty").innerHTML = difficulty;
-
-                    startTime = new Date();
-                    for (result = 0; result < 100 * difficulty + 1; result++) {
-                        ducos1 = SHA1.hex(job[0] + result)
-                        if (job[1] === ducos1) {
-                            endTime = new Date();
-                            timeDiff = (endTime - startTime) / 1000;
-                            hashrate = (result / timeDiff).toFixed(2);
-
-                            console.log(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-                            minerlog.push(`${getTime()} | ` + "Share found: " + result + " Time: " + timeDiff + " Hashrate: " + hashrate);
-
-                            socket.send(result + "," + hashrate + ",Official Webminer v2.55," + rigid); // send the result to the server
-                            break;
-                        }
-                    }
-                }
-            }
-            socket.onerror = function(event) {
-                console.error("WebSocket error observed:", event);
-                window.location.reload(false);
-            };
-            socket.onclose = function(event) {
-                console.error("WebSocket close observed:", event);
-                window.location.reload(false);
-            };
-        }
-    });
-}
+            } //ends the socketWorker.onmessage
+        } //ends the for loop
+    }
 </script>
