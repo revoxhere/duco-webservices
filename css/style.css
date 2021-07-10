@@ -28,6 +28,11 @@
     bottom: 0;
 }
 
+.monospace {
+    /* Monospace font for TXIDs */
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
 body {
     background-size: cover !important;
     background-attachment: fixed !important;
@@ -49,19 +54,7 @@ body {
 .balanceT table {
     margin: 0;
     padding: 0;
-    border: 1px solid var(--light-bg);
     border-collapse: collapse;
-}
-
-.balanceTC .caption {
-    font-size: 1.5em !important;
-    margin: .5em 0 .5em;
-}
-
-.balanceT table tr {
-    background-color: var(--hover) !important;
-    border: 1px solid var(--light-bg) !important;
-    padding: .35em !important;
 }
 
 .balanceT table th,
@@ -71,8 +64,8 @@ body {
 }
 
 .balanceT table th {
-    letter-spacing: .1em !important;
     text-transform: uppercase !important;
+    width: 4em;
 }
 
 ::-webkit-scrollbar {
