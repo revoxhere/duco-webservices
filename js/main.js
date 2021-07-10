@@ -136,6 +136,7 @@ window.addEventListener('load', function() {
     };
 
     //USER DATA FROM API
+    let success_once = false;
     const UserData = (username) => {
         $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
             data = data.result;
@@ -168,7 +169,8 @@ window.addEventListener('load', function() {
             let minerId = '';
             let diffString = '';
             miners.innerHTML = "";
-            if (myMiners) {
+            if (myMiners || success_once) {
+                success_once = true;
                 for (let miner in myMiners) {
                     miner_hashrate = myMiners[miner]["hashrate"];
                     miner_identifier = myMiners[miner]["identifier"];
@@ -232,13 +234,13 @@ window.addEventListener('load', function() {
             const transtable = document.getElementById("transactions");
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received");
-            if (user_transactions < 100) {
+            if (user_transactions) {
                 let transactions = "";
                 for (let i in user_transactions) {
                     console.log(user_transactions[i]["sender"])
                     transaction_date = user_transactions[i]["datetime"].substring(0,5);
-                    transaction_amount = user_transactions[i]["amount"].toFixed(2);
-                    transaction_hash_full = user_transactions[i]["hash"].substr(user_transactions[i]["hash"].length - 5);
+                    transaction_amount = parseFloat(user_transactions[i]["amount"].toFixed(4));
+                    transaction_hash_full = user_transactions[i]["hash"];
                     transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 5);
                     transaction_memo = user_transactions[i]["memo"];
                     transaction_recipient = user_transactions[i]["recipient"];
@@ -252,19 +254,20 @@ window.addEventListener('load', function() {
                         transaction_symbol = "-";
                     }
 
+                    hash_html = `<a class="subtitle is-size-6 monospace"`
+                                +` style="color:#8e44ad" target="_blank"`
+                                +` href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">`
+                                +`${transaction_hash}</a>`
+
                     transactions +=
-                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey">${transaction_date}</td>` +
-                        `<td data-label="Amount" class="subtitle is-size-6  ${transaction_color}"> ${transaction_symbol} ${transaction_amount} ᕲ</td>` +
+                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey monospace">${transaction_date}<br>${hash_html}</td>` +
+                        `<td data-label="Amount" class="subtitle is-size-6 ${transaction_color}"> ${transaction_symbol} ${transaction_amount} ᕲ</td>` +
                         `<td data-label="Sender" class="subtitle is-size-6">${transaction_sender}</td>` +
                         `<td data-label="Recipient" class="subtitle is-size-6">${transaction_recipient}</td>` +
-                        `<td data-label="Hash">` +
-                        `<a class="subtitle is-size-6" style="color:#8e44ad" href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">` +
-                        `${transaction_hash}</a>` +
                         `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${transaction_memo}</td></tr>`;
-                    if (i >= 15) break
                 }
                 transtable.innerHTML = transactions;
-            } else transtable.innerHTML = `<tr><td data-label="Date">Transactions temporarily unavailable</td></tr>`;
+            } else transtable.innerHTML = `<td colspan="4">No transactions yet or they're temporarily unavailable</td>`;
         });
     }
 
