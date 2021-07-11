@@ -230,15 +230,13 @@ window.addEventListener('load', function() {
                     "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
             }
 
-
             const transtable = document.getElementById("transactions");
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received");
             if (user_transactions) {
-                let transactions = "";
+                transactions_html = "";
                 for (let i in user_transactions) {
-                    console.log(user_transactions[i]["sender"])
-                    transaction_date = user_transactions[i]["datetime"].substring(0,5);
+                    transaction_date = user_transactions[i]["datetime"].substring(0, 5);
                     transaction_amount = parseFloat(user_transactions[i]["amount"].toFixed(4));
                     transaction_hash_full = user_transactions[i]["hash"];
                     transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 5);
@@ -254,19 +252,19 @@ window.addEventListener('load', function() {
                         transaction_symbol = "-";
                     }
 
-                    hash_html = `<a class="subtitle is-size-6 monospace"`
-                                +` style="color:#8e44ad" target="_blank"`
-                                +` href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">`
-                                +`${transaction_hash}</a>`
+                    hash_html = `<a class="subtitle is-size-6 monospace"` +
+                        ` style="color:#8e44ad" target="_blank"` +
+                        ` href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">` +
+                        `${transaction_hash}</a>`
 
-                    transactions +=
+                    transactions_html +=
                         `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey monospace">${transaction_date}<br>${hash_html}</td>` +
                         `<td data-label="Amount" class="subtitle is-size-6 ${transaction_color}"> ${transaction_symbol} ${transaction_amount} ᕲ</td>` +
                         `<td data-label="Sender" class="subtitle is-size-6">${transaction_sender}</td>` +
                         `<td data-label="Recipient" class="subtitle is-size-6">${transaction_recipient}</td>` +
                         `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${transaction_memo}</td></tr>`;
                 }
-                transtable.innerHTML = transactions;
+                transtable.innerHTML = transactions_html;
             } else transtable.innerHTML = `<td colspan="4">No transactions yet or they're temporarily unavailable</td>`;
         });
     }
