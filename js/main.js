@@ -3,9 +3,14 @@ let loggedIn = false;
 let balance = 0;
 let curr_bal = 0;
 let profitcheck = 0;
-let ducoUsdPrice = 0.0065;
+let duco_price = 0.0065;
 let sending = false;
 let daily_average = [];
+let start = Date.now();
+let oldb = 0;
+let success_once = false;
+let alreadyreset = false;
+
 window.addEventListener('load', function() {
     const usernameinput = document.getElementById('usernameinput');
     usernameinput.addEventListener('input', color);
@@ -114,9 +119,9 @@ window.addEventListener('load', function() {
     // PRICE FROM API
     const GetData = () => {
         $.getJSON('https://server.duinocoin.com/api.json', function(data) {
-            ducoUsdPrice = data["Duco price"];
+            duco_price = data["Duco price"];
             document.getElementById("ducousd")
-                .innerHTML = "$" + (ducoUsdPrice).toFixed(4);
+                .innerHTML = "$" + (duco_price).toFixed(4);
         });
     };
 
@@ -136,17 +141,21 @@ window.addEventListener('load', function() {
     };
 
     //USER DATA FROM API
-    let success_once = false;
-    const UserData = (username) => {
+    const user_data = (username) => {
         $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
             data = data.result;
             balance = parseFloat(data.balance.balance);
-            let balanceusd = balance * ducoUsdPrice;
+            let balanceusd = balance * duco_price;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
+            if (oldb != balance) {
+                calculdaily(balance, oldb)
+                oldb = balance;
+            }
+
             let balance_list = balance.toFixed(8).split(".")
-            let balance_before_dot = balance_list[0]
-            let balance_after_dot = balance_list[1]
+            balance_before_dot = balance_list[0]
+            balance_after_dot = balance_list[1]
 
             document.getElementById("balance")
                 .innerHTML = balance_before_dot +
@@ -154,8 +163,8 @@ window.addEventListener('load', function() {
                 balance_after_dot + " ᕲ";
 
             let balanceusd_list = balanceusd.toFixed(4).split(".")
-            let balanceusd_before_dot = balanceusd_list[0]
-            let balanceusd_after_dot = balanceusd_list[1]
+            balanceusd_before_dot = balanceusd_list[0]
+            balanceusd_after_dot = balanceusd_list[1]
 
             document.getElementById("balanceusd")
                 .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
@@ -269,51 +278,56 @@ window.addEventListener('load', function() {
         });
     }
 
-    // PROFIT CALCULATOR
-    const ProfitCalculator = () => {
-        let prev_bal = curr_bal;
-        curr_bal = balance;
-        let daily = (curr_bal - prev_bal) * 864;
-        profitcheck++;
-        let avgusd;
-        let avg_list;
-        let avg_before_dot;
-        let avg_after_dot;
-        let avgusd_list;
-        let avgusd_before_dot;
-        let avgusd_after_dot;
-        if ((curr_bal - prev_bal) > 0 && profitcheck > 1) {
-            // High daily profit means a transaction or big block - that value should be ignored
-            if (daily < 500) {
-                // Get the average from profit calculations to not make it fluctuate as much
-                daily_average.push(daily);
-                let sum = daily_average.reduce((a, b) => a + b, 0);
-                let avg = (sum / daily_average.length) || 0;
-                avgusd = avg * ducoUsdPrice;
-                //console.log("Estimated profit sum: " + sum + ", average: " + avg);
+    /* Accurate daily calculator by Lukas */
+    function calculdaily(newb, oldb) {
+        //Duco made in last seconds
+        let ducomadein = newb - oldb;
 
-                avg_list = avg.toFixed(2).split(".")
-                avg_before_dot = avg_list[0]
-                avg_after_dot = avg_list[1]
+        let daily = Math.round(ducomadein * 2400);
 
-                document.getElementById("estimatedprofit")
-                    .innerHTML = avg_before_dot +
-                    "<span class='has-text-weight-normal'>." +
-                    avg_after_dot + " ᕲ";
-
-                avgusd_list = avgusd.toFixed(2).split(".")
-                avgusd_before_dot = avgusd_list[0]
-                avgusd_after_dot = avgusd_list[1]
-
-                document.getElementById("estimatedprofitusd")
-                    .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + avgusd_before_dot +
-                    "." +
-                    avgusd_after_dot;
+        // Large values mean transaction or big block - ignore this value
+        if (daily < 500) {
+            //Get duco since start of the page
+            let ducomadesincestart = newb - balance;
+            //Milliseconds since sart of the page
+            let secondssincestart = (Date.now() - start) / 1000;
+            //smaller average time span 
+            if ((Date.now() - start) > 120000 && alreadyreset == false) {
+                //If last date compared to date now is bigger than 1 min
+                console.log("[DEBUG] reset avg (1/2)");
+                alreadyreset = true;
+                let start1 = Date.now();
+                let balance1 = balance;
+                setTimeout(() => {
+                    //Smooth dimm off and on from login to server check
+                    console.log("[DEBUG] reset avg (2/2)");
+                    start = start1;
+                    balance = balance1;
+                    alreadyreset = false;
+                }, 119900);
             }
+
+            avg_list = daily.toFixed(1).split(".")
+            avg_before_dot = avg_list[0]
+            avg_after_dot = avg_list[1]
+
+            document.getElementById("estimatedprofit")
+                .innerHTML = avg_before_dot +
+                "<span class='has-text-weight-normal'>." +
+                avg_after_dot + " ᕲ";
+
+            avgusd = daily * duco_price;
+            avgusd_list = avgusd.toFixed(2).split(".")
+            avgusd_before_dot = avgusd_list[0]
+            avgusd_after_dot = avgusd_list[1]
+
+            document.getElementById("estimatedprofitusd")
+                .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" +
+                avgusd_before_dot +
+                "." +
+                avgusd_after_dot;
         }
-    };
-
-
+    }
 
     // ENTER KEY AS LOGIN
     let input_login = document.getElementById("login");
@@ -474,10 +488,9 @@ window.addEventListener('load', function() {
 
                     $("#login").hide(300, function() {
                         $("#wallet").show(300, function() {
-                            UserData(username);
+                            user_data(username);
                             window.setInterval(() => {
-                                UserData(username);
-                                ProfitCalculator();
+                                user_data(username);
                             }, 10 * 1000);
 
                             GetData();
