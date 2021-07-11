@@ -24,18 +24,18 @@ onmessage = function (event)
         let rigid = getData[2];
         let workerVer = getData[3];
     
-        if (rigid == "")
+        if (rigid === "")
         {
             rigid = "None";
         }
 
         function connect()
         {
-            socket = new WebSocket("wss://server.duinocoin.com:14808");
+            var socket = new WebSocket("wss://server.duinocoin.com:14808");
 
             socket.onmessage = function(event)
             {
-                serverMessage = event.data;
+                var serverMessage = event.data;
                 if (serverMessage.includes("2."))
                 {
                     console.log(`${getTime()} | ` + "CPU" + workerVer + ": Connected to node. Server is on version " + serverMessage);
@@ -67,14 +67,14 @@ onmessage = function (event)
                     startingTime = performance.now();
                     for (result = 0; result < 100 * difficulty + 1; result++)
                     {
-                        ducos1 = new Hashes.SHA1().hex(job[0] + result);
+                        var ducos1 = new Hashes.SHA1().hex(job[0] + result);
                         if (job[1] === ducos1)
                         {
                             endingTime = performance.now();
                             timeDifference = (endingTime - startingTime) / 1000;
                             hashrate = (result / timeDifference).toFixed(2);
 
-                            postMessage("UpdateLog," + `${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate + "<br>")
+                            postMessage("UpdateLog," + `${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate + "<br>");
                             console.log(`${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate);
                             postMessage("UpdateHashrate," + timeDifference + "," + hashrate);
 
@@ -83,22 +83,22 @@ onmessage = function (event)
                     }
                 }
             }
+
+            socket.onerror = function(event)
+            {
+                console.error("CPU" + workerVer + "WebSocket error observed, trying to reconnect: ", event);
+                socket.close("Reason: Error occured in WebWorker.");
+            }
+
+            socket.onclose = function(event)
+            {
+                console.error("CPU" + workerVer + ": WebSocket close observed, trying to reconnect: ", event);
+                setTimeout(function()
+                {
+                    connect();
+                }, 1000);
+            }
         }
         connect();
-
-        socket.onerror = function(event)
-        {
-            console.error("CPU" + workerVer + "WebSocket error observed, trying to reconnect: ", event);
-            socket.close("Reason: Error occured in WebWorker.");
-        }
-
-        socket.onclose = function(event)
-        {
-            console.error("CPU" + workerVer + ": WebSocket close observed, trying to reconnect: ", event);
-            setTimeout(function()
-            {
-                connect();
-            }, 1000);
-        }
     }
 }
