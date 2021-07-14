@@ -1,14 +1,122 @@
+.card-orange {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #f2d50f 0%, #da0641 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-purple {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #C56CD6 0%, #3425AF 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-turquoise {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #42e695 0%, #3bb2b8 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-red {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #F5515F 0%, #A1051D 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-green {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #b1ea4d 0%, #459522 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-pink {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #f54848 0%, #ef95ff 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-blue {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #13f1fc 0%, #0470dc 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
+.card-pomegrante {
+    top: 0.15em;
+    position: relative;
+    padding: 0.3em;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5em;
+    background: linear-gradient(135deg, #F36265 0%, #961276 100%);
+    height: 1.75em !important;
+    width: 1.75em !important;
+    color: white;
+}
+
 .is-primary {
     /* Override Bulmas primary color to Duco-Colored gradient*/
     background: linear-gradient(145deg, #fd746c, #ff9068) !important;
 }
 
 .is-duco {
-    background: #FF9312 !important;
+    background: linear-gradient(160deg, #fccf30 0%, #f55555 100%);
+    border: none;
+    color: white !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.fa-check,
+.fa-circle-notch,
+.fa-sign-in-alt {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
 }
 
 .is-duco-alt {
-    background: #feca57 !important;
+    background: linear-gradient(160deg, #fe9c88 0%, #f5d961 100%);
+    border: none;
+    color: white !important;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 .iframe-container {
@@ -68,21 +176,42 @@ body {
     width: 4em;
 }
 
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+@media (prefers-color-scheme: light) {
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
 
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
+    ::-webkit-scrollbar-track {
+        background: #636e72;
+    }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    ::-webkit-scrollbar-thumb {
+        background: #2d3436;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }
 
 select {

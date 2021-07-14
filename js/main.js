@@ -12,20 +12,6 @@ let success_once = false;
 let alreadyreset = false;
 
 window.addEventListener('load', function() {
-    const usernameinput = document.getElementById('usernameinput');
-    usernameinput.addEventListener('input', color);
-
-    function color(e) {
-        usernameinput.classList.add("is-info");
-    }
-
-    const passwordinput = document.getElementById('passwordinput');
-    usernameinput.addEventListener('input', color_p);
-
-    function color_p(e) {
-        passwordinput.classList.add("is-info");
-    }
-
     // RANDOM BACKGROUND
     const bg_list = [
         'backgrounds/1-min.png',
@@ -48,31 +34,20 @@ window.addEventListener('load', function() {
 
     function updateValue(e) {
         let theme = e.target.value;
-        let dark = $('#dark');
         let radiate = $('#radiate');
         let alt = $('#alt');
         let crisp = $('#crisp');
         let material = $('#material');
         let frosted = $('#frosted');
         switch (theme) {
-            case 'dark':
-                dark.attr('disabled', false);
-                radiate.attr('disabled', true);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', true);
-                material.attr('disabled', true);
-                frosted.attr('disabled', true);
-                break;
             case 'frosted':
                 frosted.attr('disabled', false);
-                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
                 material.attr('disabled', true);
                 break;
             case 'radiance':
-                dark.attr('disabled', true);
                 radiate.attr('disabled', false);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
@@ -80,7 +55,6 @@ window.addEventListener('load', function() {
                 frosted.attr('disabled', true);
                 break;
             case 'altlight':
-                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', false);
                 crisp.attr('disabled', true);
@@ -88,7 +62,6 @@ window.addEventListener('load', function() {
                 frosted.attr('disabled', true);
                 break;
             case 'light':
-                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
@@ -96,7 +69,6 @@ window.addEventListener('load', function() {
                 frosted.attr('disabled', true);
                 break;
             case 'crisp':
-                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', false);
@@ -105,7 +77,6 @@ window.addEventListener('load', function() {
                 break;
             case 'material':
             default:
-                dark.attr('disabled', true);
                 radiate.attr('disabled', true);
                 alt.attr('disabled', true);
                 crisp.attr('disabled', true);
@@ -117,17 +88,18 @@ window.addEventListener('load', function() {
 
 
     // PRICE FROM API
-    const GetData = () => {
-        $.getJSON('https://server.duinocoin.com/api.json', function(data) {
-            duco_price = data["Duco price"];
-            document.getElementById("ducousd")
-                .innerHTML = "$" + (duco_price).toFixed(4);
-        });
-    };
+    const get_duco_price = () => {
+        fetch("https://server.duinocoin.com/api.json")
+            .then(response => response.json())
+            .then(data => {
+                duco_price = data["Duco price"];
+                update_element("ducousd", "$" + round_to(5, duco_price));
+            })
+    }
 
     // HASHRATE PREFIX CALCULATOR
     let totalHashes = 0;
-    const calculateHashrate = (hashes) => {
+    const hashrate_prefix = (hashes) => {
         hashes = parseFloat(hashes);
         let hashrate = hashes.toFixed(2) + " H/s";
 
@@ -157,29 +129,28 @@ window.addEventListener('load', function() {
             balance_before_dot = balance_list[0]
             balance_after_dot = balance_list[1]
 
-            document.getElementById("balance")
-                .innerHTML = balance_before_dot +
-                "<span class='has-text-weight-normal'>." +
-                balance_after_dot + " ᕲ";
+            update_element("balance", balance_before_dot +
+                "<span class='has-text-weight-light'>." +
+                balance_after_dot + "</span> ᕲ");
 
             let balanceusd_list = balanceusd.toFixed(4).split(".")
             balanceusd_before_dot = balanceusd_list[0]
             balanceusd_after_dot = balanceusd_list[1]
 
-            document.getElementById("balanceusd")
-                .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" + balanceusd_before_dot +
-                "." +
-                balanceusd_after_dot;
+            update_element("balanceusd", "<span>≈ $</span>" +
+                balanceusd_before_dot +
+                "<span class='has-text-weight-light'>." +
+                balanceusd_after_dot);
 
             myMiners = data.miners;
             console.log("Miner data received");
-            const miners = document.getElementById("miners");
-            const minerHashrate = document.getElementById("minerHR");
-            let minerId = '';
-            let diffString = '';
-            miners.innerHTML = "";
-            if (myMiners || success_once) {
-                success_once = true;
+
+            if (myMiners.length > 0 || success_once) {
+                let success_once = true;
+                let user_miners_html = '';
+                let minerId = '';
+                let diffString = '';
+
                 for (let miner in myMiners) {
                     miner_hashrate = myMiners[miner]["hashrate"];
                     miner_identifier = myMiners[miner]["identifier"];
@@ -196,24 +167,16 @@ window.addEventListener('load', function() {
                         miner_software +
                         ")</span>";
 
-                    if (miner_diff >= 1000000000)
-                        diffString = Math.round(miner_diff / 100000000) / 10 + "G";
-                    else if (miner_diff >= 1000000)
-                        diffString = Math.round(miner_diff / 100000) / 10 + "M";
-                    else if (miner_diff >= 1000)
-                        diffString = Math.round(miner_diff / 100) / 10 + "k";
-                    else
-                        diffString = miner_diff;
+                    diffString = hashrate_prefix(miner_diff)
 
-                    miners.innerHTML +=
-                        "<span class='has-text-grey-light'>#" +
+                    user_miners_html += "<span class='has-text-grey-light'>#" +
                         miner +
                         ":</span> " +
                         "<b class='has-text-primary'>" +
                         minerId +
                         "</b>, " +
                         "<b><span class='has-text-success'>" +
-                        calculateHashrate(miner_hashrate) +
+                        hashrate_prefix(miner_hashrate) +
                         "</b></span>" +
                         "<span class='has-text-info'>" +
                         " @ diff " +
@@ -232,11 +195,12 @@ window.addEventListener('load', function() {
 
                     totalHashes = totalHashes + miner_hashrate;
                 }
-                minerHashrate.innerHTML = "Total hashrate: " + calculateHashrate(totalHashes);
+                update_element("miners", user_miners_html);
+                update_element("minerHR", "Total hashrate: " + hashrate_prefix(totalHashes));
                 totalHashes = 0;
             } else {
-                miners.innerHTML = "<b class='subtitle is-size-6'>No miners detected</b>" +
-                    "<p class=' subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>";
+                update_element("miners", "<b class='subtitle is-size-6'>No miners detected</b>" +
+                    "<p class='subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>");
             }
 
             const transtable = document.getElementById("transactions");
@@ -278,6 +242,25 @@ window.addEventListener('load', function() {
         });
     }
 
+
+    function round_to(precision, value) {
+        power_of_ten = 10 ** precision;
+        return Math.round(value * power_of_ten) / power_of_ten;
+    }
+
+    function update_element(element, value) {
+        // Nicely fade in the new value if it changed
+        element = "#" + element;
+        old_value = $(element).html()
+
+        if (value != old_value) {
+            $(element).fadeOut('fast', function() {
+                $(element).html(value);
+                $(element).fadeIn('fast');
+            });
+        }
+    }
+
     /* Accurate daily calculator by Lukas */
     function calculdaily(newb, oldb) {
         //Duco made in last seconds
@@ -311,21 +294,19 @@ window.addEventListener('load', function() {
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
 
-            document.getElementById("estimatedprofit")
-                .innerHTML = avg_before_dot +
-                "<span class='has-text-weight-normal'>." +
-                avg_after_dot + " ᕲ";
+            update_element("estimatedprofit", avg_before_dot +
+                "<span'>." +
+                avg_after_dot + " ᕲ");
 
             avgusd = daily * duco_price;
             avgusd_list = avgusd.toFixed(2).split(".")
             avgusd_before_dot = avgusd_list[0]
             avgusd_after_dot = avgusd_list[1]
 
-            document.getElementById("estimatedprofitusd")
-                .innerHTML = "<span class='has-text-weight-normal'>≈ $</span>" +
+            update_element("estimatedprofitusd", "<span>≈ $</span>" +
                 avgusd_before_dot +
                 "." +
-                avgusd_after_dot;
+                avgusd_after_dot);
         }
     }
 
@@ -340,9 +321,11 @@ window.addEventListener('load', function() {
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
-        $("#logincheck").hide(1)
-        $("#loginload").show(1)
-        document.getElementById("logintext").innerText = "Connecting...";
+        $("#logincheck").fadeOut('fast', function() {
+            $("#loginload").fadeIn('fast');
+        });
+
+        update_element("logintext", "Connecting...");
 
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
@@ -433,8 +416,7 @@ window.addEventListener('load', function() {
                     awaiting_version = false;
                 }
                 if (awaiting_login == false && awaiting_version == false) {
-                    document.getElementById("logintext")
-                        .innerText = "Authenticating...";
+                    update_element("logintext", "Authenticating...");
                     socket.send("LOGI," + username + "," + password + ",");
                     awaiting_login = true;
                 }
@@ -457,28 +439,9 @@ window.addEventListener('load', function() {
                         greeting = "Have a cozy evening";
                     }
 
-                    document.getElementById("logintext").innerText = "Logged in";
-                    document.getElementById("wallettext")
-                        .innerHTML = "<p class='has-text-weight-light mb-1'>" +
+                    $("#wallettext").html("<p class='subtitle is-size-3 mb-3'>" +
                         "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/wave.png?raw=true' class='icon'>" +
-                        " " + greeting + ", <b>" + username + "!</b></p>";
-                    document.getElementById("copyright")
-                        .innerHTML = `<p class="subtitle is-size-7 has-text-grey has-text-weight-light mb-3">` +
-                        `<span class="has-text-weight-normal">Duino-Coin Web Wallet</span> is developed by ` +
-                        `<a href="https://github.com/revoxhere/">revox</a>, ` +
-                        `<a href="https://www.instagram.com/vlegle/">Yennefer</a> & ` +
-                        `<a href="https://github.com/LDarki">LDarki</a>, ` +
-                        `hosted by <a href="https://kristian-kramer.com">Kristian</a> ` +
-                        `and <a href="https://pages.github.com">GH Pages</a>` +
-                        `<br><span class="is-size-7 has-text-grey">` +
-                        `2020-2021 the <a href="https://duinocoin.com">Duino-Coin</a> project` +
-                        `</span>` +
-                        `<span class="is-size-7 has-text-grey">` +
-                        `, distributed under the ` +
-                        `<a href="https://opensource.org/licenses/MIT">` +
-                        `MIT license` +
-                        `</a></span></p>`
-
+                        " " + greeting + ", <b>" + username + "!</b></p>");
 
                     awaiting_login = false;
                     loggedIn = true;
@@ -486,16 +449,16 @@ window.addEventListener('load', function() {
                     const transtable = document.getElementById("transactions");
                     transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
-                    $("#login").hide(300, function() {
-                        $("#wallet").show(300, function() {
+                    $("#login").hide('fast', function() {
+                        user_data(username);
+                        window.setInterval(() => {
                             user_data(username);
-                            window.setInterval(() => {
-                                user_data(username);
-                            }, 10 * 1000);
+                        }, 10 * 1000);
 
-                            GetData();
+                        $("#wallet").show('fast', function() {
+                            get_duco_price();
                             window.setInterval(() => {
-                                GetData();
+                                get_duco_price();
                             }, 30 * 1000);
 
                             window.setTimeout(() => {
@@ -511,8 +474,8 @@ window.addEventListener('load', function() {
                     document.getElementById("logintext")
                         .innerText = serverMessage[1];
 
-                    $("#logincheck").show('fast')
-                    $("#loginload").hide('fast')
+                    $("#logincheck").fadeIn(1)
+                    $("#loginload").fadeOut(1)
 
                     setTimeout(() => {
                         document.getElementById("logintext")
@@ -546,15 +509,13 @@ window.addEventListener('load', function() {
                 }
             }
         } else {
-            $("#logincheck").show('fast')
-            $("#loginload").hide('fast')
+            $("#logincheck").fadeIn(1)
+            $("#loginload").fadeOut(1)
 
-            document.getElementById("logintext")
-                .innerText = "Please fill in the blanks first";
+            update_element("logintext", "Please fill in the blanks first");
 
             setTimeout(() => {
-                document.getElementById("logintext")
-                    .innerHTML = "Login"
+                update_element("logintext", "Login");
             }, 5000);
         }
     }
@@ -564,7 +525,6 @@ window.addEventListener('load', function() {
 
     let multiplier = document.getElementById('multiplier');
     let inputHashrate = document.getElementById('input-hashrate');
-    let log = document.getElementById('values');
 
     multiplier.addEventListener('input', updateValueHashrate);
     inputHashrate.addEventListener('input', updateValueHashrate);
@@ -580,19 +540,16 @@ window.addEventListener('load', function() {
         result = (0.0026 * hashrate) + 2.7
         if (hashrate > 8000) result = floatmap(result, 25, 1000, 25, 40); // extreme diff tier, TODO
 
-        if (hashrate < 1) log.textContent = "0 ᕲ/day";
-        if (hashrate < 1) log.textContent = "0 ᕲ/day";
-        else log.textContent = result.toFixed(2) + " ᕲ/day";
+        if (hashrate < 1) update_element("values", "0 ᕲ/day");
+        if (hashrate >= 0) update_element("values", "0 ᕲ/day");
+        else log.textContent = update_element("values", round_to(2, result) + " ᕲ/day");
     }
 
     let device = document.getElementById('device-type');
     let input_devices = document.getElementById('input-devices');
-    let log_devices = document.getElementById('values-devices');
 
     device.addEventListener('input', updateValueDevices);
     input_devices.addEventListener('input', updateValueDevices);
-
-    let basereward;
 
     function updateValueDevices(e) {
         if (device.value === 'AVR') basereward = 8
@@ -604,7 +561,7 @@ window.addEventListener('load', function() {
             result += basereward;
             basereward *= 0.96;
         }
-        log_devices.textContent = result.toFixed(2) + " ᕲ/day";
+        update_element("values-devices", round_to(2, result) + " ᕲ/day");
     }
 
 });
