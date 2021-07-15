@@ -8,25 +8,25 @@
     <!-- SEO Stuff -->
     <meta name="description" content="Duino-Coin Web Miner">
     <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
-    <link rel="canonical" href="http://51.15.127.80/webminer.html" />
+    <link rel="canonical" href="http://51.15.127.80/webminer.html">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#f0932b">
     <!-- Open Graph Metadata -->
-    <meta property="og:site_name" content="Duino-Coin Web Miner" />
-    <meta property="og:site" content="http://51.15.127.80/webminer.html" />
-    <meta property="og:title" content="Duino-Coin Web Miner" />
-    <meta property="og:description" content="Duino-Coin Web Miner" />
-    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" />
-    <meta property="og:url" content="http://51.15.127.80/webminer.html" />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Duino-Coin Web Miner">
+    <meta property="og:site" content="http://51.15.127.80/webminer.html">
+    <meta property="og:title" content="Duino-Coin Web Miner">
+    <meta property="og:description" content="Duino-Coin Web Miner">
+    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
+    <meta property="og:url" content="http://51.15.127.80/webminer.html">
+    <meta property="og:type" content="website">
     <!-- Twitter Metadata -->
     <meta name="twitter:title" content="Duino-Coin Web Miner">
     <meta name="twitter:description" content="Duino-Coin Web Miner">
     <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
     <meta name="twitter:site" content="@CoinDuino">
     <meta name="twitter:creator" content="@CoinDuino">
-    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png" />
-    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png" />
+    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
+    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
     <!-- Preload Background Images -->
     <link rel="preload" as="image" href="backgrounds/1-min.png">
     <link rel="preload" as="image" href="backgrounds/2-min.png">
@@ -56,9 +56,10 @@
             background-repeat: no-repeat !important;
         }
     </style>
+
     <!-- Font Awesome and jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js" integrity="sha512-6ORWJX/LrnSjBzwefdNUyLCMTIsGoNP6NftMy2UAm1JBm6PRZCO1d7OHBStWpVFZLO+RerTvqX/Z9mBFfCJZ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <script>
     /* GLOBAL JS */
@@ -84,7 +85,6 @@
 
         document.getElementById('darkmode').onclick = function()
         {
-            console.log("clicked the dark mode button")
             clickcount++;
             if (clickcount % 2 == 1)
             {
@@ -110,7 +110,7 @@
                         Duino-Coin Web Miner
                     </p>
                     <p class="subtitle">
-                        Official JavaScript miner v2.5.5
+                        Official JavaScript miner v2.6.1
                         <span class="subtitle is-size-6">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>,
@@ -217,16 +217,18 @@
                     </div>
                     <div class="columns">
                         <div class="column">
-                            <div class="box" id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 10rem;">
+                            <div class="box">
                                 <p class="subtitle">
                                     <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
                                     MINER LOG
                                 </p>
-                                <span class="has-text-grey" id="minerlog">Awaiting input...</span>
+                                <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 9rem;">
+                                    <span class="has-text-grey" id="minerlog">Awaiting input...<br><br></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="buttons">
+                    <div class="buttons is-centered">
                         <button id="darkmode" class="button is-secondary">
                             <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
                             <span>Switch theme</span>
@@ -272,7 +274,7 @@
     var url = new URL(window.location);
     var username = url.searchParams.get("username");
     var rigid = url.searchParams.get("rigid");
-    let threads = url.searchParams.get("threads")
+    let threads = url.searchParams.get("threads");
 
     if (rigid === "")
     {
@@ -296,9 +298,24 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
 
         //borrowed from waynegraham (https://gist.github.com/waynegraham/5766565), and modified it a bit
-        console.minerlog = function(message) {
+        minerlog = function(message)
+        {
             $('#minerlog').append(message);
-        };
+        }
+
+        function getTime()
+        {
+            let date = new Date();
+            let h = date.getHours();
+            let m = date.getMinutes();
+            let s = date.getSeconds();
+
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+
+            return h + ":" + m + ":" + s;
+        }
 
         let workerVer = 0;
         let sharesCorrect = 0;
@@ -312,14 +329,16 @@
         {
             seconds++
             if (seconds < 10){seconds = `0` + seconds}
-            if (seconds > 59) {
-                seconds = `00`
-                minutes++
+            if (seconds > 59)
+            {
+                seconds = `00`;
+                minutes++;
                 if (minutes < 10){minutes = `0` + minutes}
             }
-            if (minutes > 59) {
-                minutes = `00`
-                hours++
+            if (minutes > 59)
+            {
+                minutes = `00`;
+                hours++;
                 if (hours < 10){hours = `0` + hours}
             }
 
@@ -341,13 +360,15 @@
         //makes sure the user doesn't give the miner more threads then it actually has
         if (threads > userThreads)
         {
+            minerlog(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + userThreads + " threads instead of " + threads + ".<br><br>");
+            console.log(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + userThreads + " threads instead of " + threads + ".");
             threads = userThreads;
         }
 
         //makes threads amount of workers (so if threads is 6, it will make 6 workers)
         for (let workersAmount = 0; workersAmount < threads; workersAmount++)
         {
-            var socketWorker = new Worker("js/webminer/worker.js"); //makes the worker
+            var socketWorker = new Worker("js/webminer/worker.js"); //creates the worker
             socketWorker.postMessage('Start,' + username + "," + rigid + ","+ workerVer); //passes the start command, username, rigid and worker version to the worker
             workerVer++; //adds one to workerVer, so you will get CPU0, CPU1, CPU2 etc.
 
@@ -357,7 +378,7 @@
                 const data = event.data.split(","); //splits the data so you can use data[1] etc.
                 if (data[0] == "UpdateLog")
                 {
-                    console.minerlog(data[1])
+                    minerlog(data[1]);
                     document.getElementById("minerlog-scroll-down").scrollTop = document.getElementById("minerlog-scroll-down").scrollHeight;
 
                 }
@@ -384,7 +405,7 @@
                     document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
                     document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
                 }
-            } //ends the socketWorker.onmessage
-        } //ends the for loop
+            }
+        }
     }
 </script>
