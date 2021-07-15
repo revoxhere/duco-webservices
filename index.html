@@ -16,17 +16,17 @@
     <meta property="og:site" content="https://wallet.duinocoin.com" />
     <meta property="og:title" content="Duino-Coin Web Wallet" />
     <meta property="og:description" content="Duino-Coin Web Wallet" />
-    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" />
+    <meta property="og:image" content="assets/duco.svg" />
     <meta property="og:url" content="https://wallet.duinocoin.com" />
     <meta property="og:type" content="website" />
     <!-- Twitter Metadata -->
     <meta name="twitter:title" content="Duino-Coin Web Wallet">
     <meta name="twitter:description" content="Duino-Coin Web Wallet">
-    <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+    <meta name="twitter:image" content="assets/duco.svg">
     <meta name="twitter:site" content="@CoinDuino">
     <meta name="twitter:creator" content="@CoinDuino">
-    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png" />
-    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" type="image/png" />
+    <link rel="icon" href="assets/duco.svg" type="image/png" />
+    <link rel="shortcut icon" href="assets/duco.svg" type="image/png" />
     <!-- Preload Background Images -->
     <link rel="preload" as="image" href="backgrounds/1-min.png">
     <link rel="preload" as="image" href="backgrounds/2-min.png">
@@ -37,6 +37,8 @@
     <link rel="preload" as="image" href="backgrounds/7-min.png">
     <link rel="preload" as="image" href="backgrounds/8-min.png">
     <link rel="preload" as="image" href="backgrounds/9-min.png">
+    <link rel="preload" as="image" href="backgrounds/balkanac-1.png">
+    <link rel="preload" as="image" href="backgrounds/balkanac-2.png">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
@@ -74,7 +76,7 @@
                                     <p class="has-text-weight-normal" style="text-align:center">
                                         Web Wallet
                                         <span class="subtitle is-size-7">
-                                            v2.6.3
+                                            v2.6.4
                                         </span>
                                     </p>
                                 </span>
@@ -152,6 +154,10 @@
                                                     <span class="subtitle" id="estimatedprofitusd">
                                                     </span>
                                                 </p>
+                                                <span class="subtitle is-size-7">
+                                                    Please note that the estimates may be inaccurate, 
+                                                    I'll try to fix it and make more precise tomorrow
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="column">
@@ -430,7 +436,7 @@
                                 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
                             </section>
                             <br>
-                            <p class="subtitle is-size-7 has-text-grey-dark mx-3 mb-2" id="copyright">
+                            <p class="subtitle is-size-7 has-text-grey-dark mx-3 my-2" id="copyright">
                                 <b>Official</b> Duino-Coin Web Wallet ©
                                 <a href="https://github.com/revoxhere/">revox</a> &middot;
                                 <a href="https://www.instagram.com/vlegle/">Yennefer</a> &middot;
@@ -444,7 +450,7 @@
                                     <b>MIT</b> licensed
                                 </a>
                                 <br>This page is <b>open source</b>. You can improve it 
-                                <a href="https://github.com/revoxhere/playground">
+                                <a href="https://github.com/revoxhere/duco-webservices">
                                     here
                                 </a>
                             </p>
@@ -453,6 +459,20 @@
                 </div>
             </div>
         </section>
+        <div id="modal_success" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-success">
+                    <p class="modal-card-title"><b style="color: white">Info</b></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <p></p>
+                    </div>
+                </section>
+            </div>
+        </div>
         <div id="modal_error" class="modal">
             <div class="modal-background"></div>
             <div class="modal-card">

@@ -22,7 +22,9 @@ window.addEventListener('load', function() {
         'backgrounds/6-min.jpg',
         'backgrounds/7-min.png',
         'backgrounds/8-min.png',
-        'backgrounds/9-min.png'
+        'backgrounds/9-min.png',
+        'backgrounds/balkanac-1.png',
+        'backgrounds/balkanac-2.png'
     ]
 
     let num = Math.floor(Math.random() * bg_list.length)
@@ -93,23 +95,27 @@ window.addEventListener('load', function() {
             .then(response => response.json())
             .then(data => {
                 duco_price = data["Duco price"];
-                update_element("ducousd", "$" + round_to(5, duco_price));
+                duco_price_list = round_to(5, duco_price).toString().split(".")
+                duco_price_before_dot = duco_price_list[0]
+                duco_after_dot = duco_price_list[1]
+
+                update_element("ducousd", "≈ $" + duco_price_before_dot +
+                    "<span class='has-text-weight-light'>." +
+                    duco_after_dot + "</span>");
             })
     }
 
     // HASHRATE PREFIX CALCULATOR
     let totalHashes = 0;
-    const hashrate_prefix = (hashes) => {
-        hashes = parseFloat(hashes);
-        let hashrate = hashes.toFixed(2) + " H/s";
-
-        if (hashes / 1000 > 0.5) hashrate = (hashes / 1000).toFixed(2) + " kH/s";
-        if (hashes / 1000000 > 0.5)
-            hashrate = (hashes / 1000000).toFixed(2) + " MH/s";
-        if (hashes / 1000000000 > 0.5)
-            hashrate = (hashes / 1000000000).toFixed(2) + " GH/s";
-
-        return hashrate;
+    const scientific_prefix = (value) => {
+        value = parseFloat(value);
+        if (value / 1000000000 > 0.5)
+            value = round_to(2, value / 1000000000) + " G";
+        else if (value / 1000000 > 0.5)
+            value = round_to(2, value / 1000000) + " M";
+        else if (value / 1000 > 0.5)
+            value = round_to(2, value / 1000) + " k";
+        return value;
     };
 
     //USER DATA FROM API
@@ -125,7 +131,7 @@ window.addEventListener('load', function() {
                 oldb = balance;
             }
 
-            let balance_list = balance.toFixed(8).split(".")
+            let balance_list = round_to(8, balance).toString().split(".")
             balance_before_dot = balance_list[0]
             balance_after_dot = balance_list[1]
 
@@ -133,7 +139,7 @@ window.addEventListener('load', function() {
                 "<span class='has-text-weight-light'>." +
                 balance_after_dot + "</span> ᕲ");
 
-            let balanceusd_list = balanceusd.toFixed(4).split(".")
+            let balanceusd_list = round_to(4, balanceusd).toString().split(".")
             balanceusd_before_dot = balanceusd_list[0]
             balanceusd_after_dot = balanceusd_list[1]
 
@@ -167,7 +173,7 @@ window.addEventListener('load', function() {
                         miner_software +
                         ")</span>";
 
-                    diffString = hashrate_prefix(miner_diff)
+                    diffString = scientific_prefix(miner_diff)
 
                     user_miners_html += "<span class='has-text-grey-light'>#" +
                         miner +
@@ -176,8 +182,8 @@ window.addEventListener('load', function() {
                         minerId +
                         "</b>, " +
                         "<b><span class='has-text-success'>" +
-                        hashrate_prefix(miner_hashrate) +
-                        "</b></span>" +
+                        scientific_prefix(miner_hashrate) +
+                        "H/s</b></span>" +
                         "<span class='has-text-info'>" +
                         " @ diff " +
                         diffString +
@@ -196,7 +202,7 @@ window.addEventListener('load', function() {
                     totalHashes = totalHashes + miner_hashrate;
                 }
                 update_element("miners", user_miners_html);
-                update_element("minerHR", "Total hashrate: " + hashrate_prefix(totalHashes));
+                update_element("minerHR", "Total hashrate: " + scientific_prefix(totalHashes) + "H/s");
                 totalHashes = 0;
             } else {
                 update_element("miners", "<b class='subtitle is-size-6'>No miners detected</b>" +
@@ -210,7 +216,7 @@ window.addEventListener('load', function() {
                 transactions_html = "";
                 for (let i in user_transactions) {
                     transaction_date = user_transactions[i]["datetime"].substring(0, 5);
-                    transaction_amount = parseFloat(user_transactions[i]["amount"].toFixed(4));
+                    transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
                     transaction_hash_full = user_transactions[i]["hash"];
                     transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 5);
                     transaction_memo = user_transactions[i]["memo"];
@@ -266,10 +272,10 @@ window.addEventListener('load', function() {
         //Duco made in last seconds
         let ducomadein = newb - oldb;
 
-        let daily = Math.round(ducomadein * 2400);
+        let daily = ducomadein * 2400;
 
         // Large values mean transaction or big block - ignore this value
-        if (daily < 500) {
+        if (daily > 0 && daily < 500) {
             //Get duco since start of the page
             let ducomadesincestart = newb - balance;
             //Milliseconds since sart of the page
@@ -290,23 +296,24 @@ window.addEventListener('load', function() {
                 }, 119900);
             }
 
-            avg_list = daily.toFixed(1).split(".")
+            avg_list = round_to(2, daily).toString().split(".")
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
 
             update_element("estimatedprofit", avg_before_dot +
-                "<span'>." +
-                avg_after_dot + " ᕲ");
+                "<span class='has-text-weight-light'>." +
+                avg_after_dot + "</span> ᕲ");
 
             avgusd = daily * duco_price;
-            avgusd_list = avgusd.toFixed(2).split(".")
+            avgusd_list = round_to(2, avgusd).toString().split(".")
             avgusd_before_dot = avgusd_list[0]
             avgusd_after_dot = avgusd_list[1]
 
             update_element("estimatedprofitusd", "<span>≈ $</span>" +
                 avgusd_before_dot +
-                "." +
-                avgusd_after_dot);
+                "<span class='has-text-weight-light'>." +
+                avgusd_after_dot +
+                "</span>");
         }
     }
 
@@ -374,7 +381,7 @@ window.addEventListener('load', function() {
 
                     if (event.code == 1000) {
                         console.error("[Error] Normal closure");
-                        dataErr = "Connection closed from inactivity";
+                        dataErr = "Due to five minutes of inactivity, the connection was closed from the server side.";
                     } else if (event.code == 1001 || event.code == 1002) {
                         console.error("[Error] Server problem.");
                         dataErr = "Server closed the connection";
@@ -391,17 +398,30 @@ window.addEventListener('load', function() {
                         console.error("[Error] Unknown reason");
                     }
 
-                    let modal_error = document.querySelector('#modal_error');
-                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                        `<b>An error has occurred</b>, please try again later and if the problem persists ` +
-                        `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
-                        `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
-                    document.querySelector('html').classList.add('is-clipped');
-                    modal_error.classList.add('is-active');
+                    if (event.code == 1000) {
+                        let modal_success = document.querySelector('#modal_success');
+                        document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
+                            `<b>` + dataErr + `</b><br><br><a href="/" class="button is-info">Refresh</a></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_success.classList.add('is-active');
 
-                    document.querySelector('#modal_error .delete').onclick = function() {
-                        document.querySelector('html').classList.remove('is-clipped');
-                        modal_error.classList.remove('is-active');
+                        document.querySelector('#modal_success .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_success.classList.remove('is-active');
+                        }
+                    } else {
+                        let modal_error = document.querySelector('#modal_error');
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `<b>An error has occurred</b>, please try again later and if the problem persists ` +
+                            `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
+                            `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
+
+                        document.querySelector('#modal_error .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_error.classList.remove('is-active');
+                        }
                     }
                 }
             }
@@ -538,11 +558,10 @@ window.addEventListener('load', function() {
 
         /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
         result = (0.0026 * hashrate) + 2.7
+
         if (hashrate > 8000) result = floatmap(result, 25, 1000, 25, 40); // extreme diff tier, TODO
 
-        if (hashrate < 1) update_element("values", "0 ᕲ/day");
-        if (hashrate >= 0) update_element("values", "0 ᕲ/day");
-        else log.textContent = update_element("values", round_to(2, result) + " ᕲ/day");
+        update_element("values", round_to(2, result) + " ᕲ/day");
     }
 
     let device = document.getElementById('device-type');
