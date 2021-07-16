@@ -7,6 +7,7 @@ let daily_average = [];
 let oldb = 0;
 let success_once = false;
 let alreadyreset = false;
+let start = Date.now()
 let totalHashes = 0;
 let sending = false;
 let awaiting_login = false;
