@@ -1,15 +1,17 @@
-let versionReceived = false;
 let loggedIn = false;
 let balance = 0;
 let curr_bal = 0;
 let profitcheck = 0;
 let duco_price = 0.0065;
-let sending = false;
 let daily_average = [];
-let start = Date.now();
 let oldb = 0;
 let success_once = false;
 let alreadyreset = false;
+let totalHashes = 0;
+let sending = false;
+let awaiting_login = false;
+let awaiting_data = false;
+let awaiting_version = true;
 
 window.addEventListener('load', function() {
     // RANDOM BACKGROUND
@@ -106,7 +108,6 @@ window.addEventListener('load', function() {
     }
 
     // HASHRATE PREFIX CALCULATOR
-    let totalHashes = 0;
     const scientific_prefix = (value) => {
         value = parseFloat(value);
         if (value / 1000000000 > 0.5)
@@ -271,31 +272,11 @@ window.addEventListener('load', function() {
     function calculdaily(newb, oldb) {
         //Duco made in last seconds
         let ducomadein = newb - oldb;
-
-        let daily = ducomadein * 2400;
+        let time_passed = (Date.now() - start) / 1000;
+        let daily = 86400 * ducomadein / time_passed;
 
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
-            //Get duco since start of the page
-            let ducomadesincestart = newb - balance;
-            //Milliseconds since sart of the page
-            let secondssincestart = (Date.now() - start) / 1000;
-            //smaller average time span 
-            if ((Date.now() - start) > 120000 && alreadyreset == false) {
-                //If last date compared to date now is bigger than 1 min
-                console.log("[DEBUG] reset avg (1/2)");
-                alreadyreset = true;
-                let start1 = Date.now();
-                let balance1 = balance;
-                setTimeout(() => {
-                    //Smooth dimm off and on from login to server check
-                    console.log("[DEBUG] reset avg (2/2)");
-                    start = start1;
-                    balance = balance1;
-                    alreadyreset = false;
-                }, 119900);
-            }
-
             avg_list = round_to(2, daily).toString().split(".")
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
@@ -315,6 +296,7 @@ window.addEventListener('load', function() {
                 avgusd_after_dot +
                 "</span>");
         }
+        start = Date.now()
     }
 
     // ENTER KEY AS LOGIN
@@ -337,42 +319,8 @@ window.addEventListener('load', function() {
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
 
-        if (username != null &&
-            username !== "" &&
-            username !== undefined &&
-            password != null &&
-            password !== "" &&
-            password !== undefined) {
+        if (username && password) {
             let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
-
-            document.getElementById('send').onclick = function() {
-                document.getElementById("sendinginfo")
-                    .innerHTML = "Requesting transfer..."
-                document.getElementById("send").classList.add("is-loading");
-                let recipient = document.getElementById('recipientinput').value
-                let amount = document.getElementById('amountinput').value
-                let memo = document.getElementById('memoinput').value
-                if (recipient != null &&
-                    recipient !== "" &&
-                    recipient !== undefined &&
-                    amount != null &&
-                    amount !== "" &&
-                    amount !== undefined) {
-                    sending = true;
-
-                    socket.send("SEND," + memo + "," + recipient + "," + amount + ",");
-                    document.getElementById("sendinginfo").innerHTML = "Confirming transaction..."
-                } else {
-                    document.getElementById("sendinginfo")
-                        .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>"
-                    document.getElementById("send").classList.remove("is-loading");
-                    sending = false;
-                    setTimeout(() => {
-                        document.getElementById("sendinginfo")
-                            .innerHTML = "";
-                    }, 5000);
-                }
-            }
 
             socket.onclose = function(event) {
                 if (loggedIn) {
@@ -381,7 +329,7 @@ window.addEventListener('load', function() {
 
                     if (event.code == 1000) {
                         console.error("[Error] Normal closure");
-                        dataErr = "Due to five minutes of inactivity, the connection was closed from the server side.";
+                        dataErr = "Due to five minutes of inactivity the connection was closed from the server side for security reasons.";
                     } else if (event.code == 1001 || event.code == 1002) {
                         console.error("[Error] Server problem.");
                         dataErr = "Server closed the connection";
@@ -400,8 +348,8 @@ window.addEventListener('load', function() {
 
                     if (event.code == 1000) {
                         let modal_success = document.querySelector('#modal_success');
-                        document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
-                            `<b>` + dataErr + `</b><br><br><a href="/" class="button is-info">Refresh</a></p>`;
+                        document.querySelector('#modal_success .modal-card-body .content p')
+                            .innerHTML = dataErr + `<br><br><a href="/" class="button is-info">Refresh</a></p>`;
                         document.querySelector('html').classList.add('is-clipped');
                         modal_success.classList.add('is-active');
 
@@ -425,22 +373,44 @@ window.addEventListener('load', function() {
                     }
                 }
             }
-            let awaiting_login = false;
-            let awaiting_data = false;
-            let awaiting_version = true;
+
+
+            document.getElementById('send').onclick = function() {
+                let recipient = document.getElementById('recipientinput').value
+                let amount = document.getElementById('amountinput').value
+                let memo = document.getElementById('memoinput').value
+
+                update_element("sendinginfo", "Requesting transfer...")
+                document.getElementById("send").classList.add("is-loading");
+
+                if (recipient && amount) {
+                    update_element("sendinginfo", "Requesting transaction...");
+                    socket.send("SEND," + memo + "," + recipient + "," + amount + ",");
+                    sending = true;
+                } else {
+                    update_element("sendinginfo",
+                        "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>");
+                    document.getElementById("send").classList.remove("is-loading");
+
+                    setTimeout(() => {
+                        update_element("sendinginfo", "");
+                    }, 5000);
+                }
+            }
+
             socket.onmessage = function(msg) {
                 serverMessage = msg.data;
 
-                if (awaiting_version) {
+                if (awaiting_version && sending == false) {
                     console.log("Version received: " + serverMessage);
                     awaiting_version = false;
                 }
-                if (awaiting_login == false && awaiting_version == false) {
+                if (awaiting_login == false && awaiting_version == false && sending == false) {
                     update_element("logintext", "Authenticating...");
                     socket.send("LOGI," + username + "," + password + ",");
                     awaiting_login = true;
                 }
-                if (awaiting_login == true && awaiting_version == false && serverMessage.includes("OK")) {
+                if (awaiting_login && serverMessage.includes("OK") && sending == false) {
 
                     console.log("User logged-in");
 
@@ -459,15 +429,12 @@ window.addEventListener('load', function() {
                         greeting = "Have a cozy evening";
                     }
 
-                    $("#wallettext").html("<p class='subtitle is-size-3 mb-3'>" +
+                    update_element("wallettext", "<p class='subtitle is-size-3 mb-3'>" +
                         "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/wave.png?raw=true' class='icon'>" +
                         " " + greeting + ", <b>" + username + "!</b></p>");
 
                     awaiting_login = false;
                     loggedIn = true;
-
-                    const transtable = document.getElementById("transactions");
-                    transtable.innerHTML = `<tr><td data-label="Date">Please wait...</td></tr>`;
 
                     $("#login").hide('fast', function() {
                         user_data(username);
@@ -487,45 +454,54 @@ window.addEventListener('load', function() {
                         });
                     });
                 }
-                if (awaiting_login == true && awaiting_version == false && serverMessage.includes("NO")) {
+                if (awaiting_login && serverMessage.includes("NO") && sending == false) {
                     awaiting_login = false;
                     serverMessage = serverMessage.split(",")
 
-                    document.getElementById("logintext")
-                        .innerText = serverMessage[1];
+                    update_element("logintext", serverMessage[1]);
 
                     $("#logincheck").fadeIn(1)
                     $("#loginload").fadeOut(1)
 
                     setTimeout(() => {
-                        document.getElementById("logintext")
-                            .innerHTML = "Login"
+                        update_element("logintext", "Login");
                     }, 5000);
                 }
+                if (sending) {
+                    serverMessage = serverMessage.toString().split(",");
 
-                if (awaiting_login == false && awaiting_version == false && sending == true && awaiting_data == false) {
-                    serverMessage = serverMessage.split(",");
-                    if (serverMessage[0].includes("OK")) {
-                        document.getElementById("sendinginfo")
-                            .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-success'><b>" +
+                    if (serverMessage[0] == "OK") {
+                        let modal_success = document.querySelector('#modal_success');
+                        document.querySelector('#modal_success .modal-card-body .content p')
+                            .innerHTML = `<span class='subtitle has-text-success'><b>` +
                             serverMessage[1] +
-                            "</b></span> TXID: <a href='https://explorer.duinocoin.com?search=" +
+                            `</b></span><br> Transaction hash: <a target="_blank" href='https://explorer.duinocoin.com?search=` +
                             serverMessage[2] + "'>" +
                             serverMessage[2] +
-                            "</a>";
-                    } else if (serverMessage[0].includes("NO")) {
-                        document.getElementById("sendinginfo")
-                            .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>" + serverMessage[1] + "</b></span>";
+                            `</a></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_success.classList.add('is-active');
+
+                        document.querySelector('#modal_success .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_success.classList.remove('is-active');
+                        }
+
                     } else {
-                        document.getElementById("sendinginfo")
-                            .innerHTML = "<span class='subtitle is-size-7 mb-2 has-text-warning-dark'><b>Error sending request, please try again</b></span>";
+                        let modal_error = document.querySelector('#modal_error');
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
+
+                        document.querySelector('#modal_error .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_error.classList.remove('is-active');
+                        }
                     }
                     document.getElementById("send").classList.remove("is-loading");
-                    setTimeout(() => {
-                        sending = false;
-                        document.getElementById("sendinginfo")
-                            .innerHTML = "";
-                    }, 5000);
+                    update_element("sendinginfo", "");
+                    sending = false;
                 }
             }
         } else {

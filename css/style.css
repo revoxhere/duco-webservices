@@ -173,7 +173,7 @@ body {
 
 .balanceT table th {
     text-transform: uppercase !important;
-    width: 4em;
+    width: 5em;
 }
 
 @media (prefers-color-scheme: light) {
