@@ -15,6 +15,12 @@ let awaiting_data = false;
 let awaiting_version = true;
 
 window.addEventListener('load', function() {
+    // CONSOLE WARNING
+    console.log("%c¡Stop!", "color: red; font-size: 10em");
+    console.log(`%cThis browser feature is intended for developers. 
+    If someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, 
+    it is a fraud. If you do, this person will be able to access your account.`, "font-size: 1.5em;");
+
     // RANDOM BACKGROUND
     const bg_list = [
         'backgrounds/1-min.png',
