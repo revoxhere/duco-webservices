@@ -196,6 +196,10 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
+    .box {
+        background-color: #17181c;
+    }
+
     ::-webkit-scrollbar {
         width: 5px;
         height: 5px;
@@ -212,10 +216,22 @@ body {
     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+    select {
+        background: #2d3436 !important;
+        color: #fafafa !important;
+    }
 }
 
-select {
-    background: inherit !important;
+/* Change Autocomplete styles in Chrome*/
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover, 
+.input:-webkit-autofill:focus,
+.input:valid {
+  border: 1px solid hsl(141, 53%, 53%) !important;
+  -webkit-text-fill-color: hsl(141, 53%, 53%);
+  -webkit-box-shadow: 0 0 0px 10px inherit inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 #modal_error {
