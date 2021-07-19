@@ -3,7 +3,7 @@ let balance = 0;
 let curr_bal = 0;
 let profitcheck = 0;
 let duco_price = 0.0065;
-let daily_average = [];
+let daily_average = 0.0;
 let oldb = 0;
 let success_once = false;
 let alreadyreset = false;
@@ -284,7 +284,14 @@ window.addEventListener('load', function() {
 
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
-            avg_list = round_to(2, daily).toString().split(".")
+            if (daily_average === 0){
+				daily_average = daily
+			}
+			
+			daily_average += daily
+			daily_average = daily_average/2
+            
+            avg_list = round_to(2, daily_average).toString().split(".")
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
 
@@ -292,7 +299,7 @@ window.addEventListener('load', function() {
                 "<span class='has-text-weight-light'>." +
                 avg_after_dot + "</span> ᕲ");
 
-            avgusd = daily * duco_price;
+            avgusd = daily_average * duco_price;
             avgusd_list = round_to(2, avgusd).toString().split(".")
             avgusd_before_dot = avgusd_list[0]
             avgusd_after_dot = avgusd_list[1]
