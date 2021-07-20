@@ -321,7 +321,7 @@ window.addEventListener('load', function() {
             $("#loginload").fadeIn('fast');
         });
 
-        update_element("logintext", "Connecting...");
+        update_element("logintext", "Logging in...");
 
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
@@ -413,7 +413,6 @@ window.addEventListener('load', function() {
                     awaiting_version = false;
                 }
                 if (awaiting_login == false && awaiting_version == false && sending == false) {
-                    update_element("logintext", "Authenticating...");
                     socket.send("LOGI," + username + "," + password + ",");
                     awaiting_login = true;
                 }
@@ -465,10 +464,40 @@ window.addEventListener('load', function() {
                     awaiting_login = false;
                     serverMessage = serverMessage.split(",")
 
-                    update_element("logintext", serverMessage[1]);
+                    update_element("loginInfo", `
+                        <div class="box">
+                            ${serverMessage[1]}
+                        </div>
+                    `);
 
                     $("#logincheck").fadeIn(1)
                     $("#loginload").fadeOut(1)
+
+                    let passInput = document.getElementById("passwordinput"),
+                        userInput = document.getElementById("usernameinput");
+
+                    if(serverMessage[1] == "Invalid password") {
+                        passInput.parentElement.querySelector(".login-error").classList.add("active");
+                        passInput.classList.add("input-error");
+                        setTimeout(() => {
+                            passInput.parentElement.querySelector(".login-error").classList.remove("active");
+                            passInput.classList.remove("input-error");
+                        }, 5000);
+                    }
+                    else if(serverMessage[1] == "This account doesn't exist")
+                    {
+                        passInput.parentElement.querySelector(".login-error").classList.add("active");
+                        userInput.parentElement.querySelector(".login-error").classList.add("active");
+                        passInput.classList.add("input-error");
+                        userInput.classList.add("input-error");
+
+                        setTimeout(() => {
+                            passInput.parentElement.querySelector(".login-error").classList.remove("active");
+                            userInput.parentElement.querySelector(".login-error").classList.remove("active");
+                            passInput.classList.remove("input-error");
+                            userInput.classList.remove("input-error");
+                        }, 5000);
+                    }
 
                     setTimeout(() => {
                         update_element("logintext", "Login");
