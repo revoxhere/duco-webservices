@@ -234,36 +234,6 @@ body {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-#loginInfo .box {
-    animation: fadeIn 1s;
-    -webkit-animation: fadeIn 1s;
-    -moz-animation: fadeIn 1s;
-    -o-animation: fadeIn 1s;
-    -ms-animation: fadeIn 1s;
-
-    border-radius: 0;
-    border-left: 5px solid #cc3939;
-}
-
-.input-error:-webkit-autofill,
-.input-error:-webkit-autofill:hover, 
-.input-error:-webkit-autofill:focus,
-.input-error:valid {
-  border: 1px solid #cc3939 !important;
-  -webkit-text-fill-color: #cc3939;
-  -webkit-box-shadow: 0 0 0px 10px inherit inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-.login-error svg {
-    color: #cc3939 !important;
-    opacity: 0;
-}
-
-.login-error.active svg {
-    opacity: 1 !important;
-}
-
 #modal_error {
     animation: fadeIn 1s;
     -webkit-animation: fadeIn 1s;

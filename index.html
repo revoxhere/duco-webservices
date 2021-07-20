@@ -64,9 +64,7 @@
     <div class="container">
         <section class="hero is-fullheight">
             <div class="hero-body is-align-self-center">
-                <div class="columns" style="flex-direction: column;">
-                    <div class="column" id="loginInfo">
-                    </div>
+                <div class="columns">
                     <div class="column">
                         <div class="box">
                             <span class="title">
@@ -87,25 +85,19 @@
                                 <div class="column">
                                     <div class="field">
                                         <label for="" class="label has-text-grey">Your username</label>
-                                        <div class="control has-icons-left has-icons-right">
+                                        <div class="control has-icons-left">
+                                            <input type="text" id="usernameinput" placeholder="e.g. revox" class="input" required>
                                             <span class="icon is-small is-left">
                                                 <i class="fa fa-user"></i>
-                                            </span>
-                                            <input type="text" id="usernameinput" placeholder="e.g. revox" class="input" required>
-                                            <span class="icon is-small is-right login-error">
-                                                <i class="fas fa-exclamation-circle fa-fw"></i>
                                             </span>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <label for="" class="label has-text-grey">Your password</label>
-                                        <div class="control has-icons-left has-icons-right">
+                                        <div class="control has-icons-left">
+                                            <input type="password" id="passwordinput" placeholder="*******" class="input" required>
                                             <span class="icon is-small is-left">
                                                 <i class="fa fa-lock"></i>
-                                            </span>
-                                            <input type="password" id="passwordinput" placeholder="*******" class="input" required>
-                                            <span class="icon is-small is-right login-error">
-                                                <i class="fas fa-exclamation-circle fa-fw"></i>
                                             </span>
                                         </div>
                                     </div>
@@ -123,7 +115,10 @@
                                                     Login
                                                 </span>
                                             </button>
-                                            Don´t have an account ?&nbsp;<a href="https://wallet.duinocoin.com/register">Sign Up</a>
+                                            <a href="https://wallet.duinocoin.com/register" class="button is-duco-alt is-warning is-fullwidth" id="loginbutton">
+                                                <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
+                                                Register
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

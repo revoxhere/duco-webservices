@@ -3,7 +3,7 @@ let balance = 0;
 let curr_bal = 0;
 let profitcheck = 0;
 let duco_price = 0.0065;
-let daily_average = 0.0;
+let daily_average = [];
 let oldb = 0;
 let success_once = false;
 let alreadyreset = false;
@@ -284,14 +284,7 @@ window.addEventListener('load', function() {
 
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
-            if (daily_average === 0){
-		daily_average = daily;
-	    }
-			
-	    daily_average += daily;
-	    daily_average = daily_average/2;
-            
-            avg_list = round_to(2, daily_average).toString().split(".")
+            avg_list = round_to(2, daily).toString().split(".")
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
 
@@ -299,7 +292,7 @@ window.addEventListener('load', function() {
                 "<span class='has-text-weight-light'>." +
                 avg_after_dot + "</span> ᕲ");
 
-            avgusd = daily_average * duco_price;
+            avgusd = daily * duco_price;
             avgusd_list = round_to(2, avgusd).toString().split(".")
             avgusd_before_dot = avgusd_list[0]
             avgusd_after_dot = avgusd_list[1]
@@ -328,7 +321,7 @@ window.addEventListener('load', function() {
             $("#loginload").fadeIn('fast');
         });
 
-        update_element("logintext", "Logging in...");
+        update_element("logintext", "Connecting...");
 
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
@@ -420,6 +413,7 @@ window.addEventListener('load', function() {
                     awaiting_version = false;
                 }
                 if (awaiting_login == false && awaiting_version == false && sending == false) {
+                    update_element("logintext", "Authenticating...");
                     socket.send("LOGI," + username + "," + password + ",");
                     awaiting_login = true;
                 }
@@ -471,40 +465,10 @@ window.addEventListener('load', function() {
                     awaiting_login = false;
                     serverMessage = serverMessage.split(",")
 
-                    update_element("loginInfo", `
-                        <div class="box">
-                            ${serverMessage[1]}
-                        </div>
-                    `);
+                    update_element("logintext", serverMessage[1]);
 
                     $("#logincheck").fadeIn(1)
                     $("#loginload").fadeOut(1)
-
-                    let passInput = document.getElementById("passwordinput"),
-                        userInput = document.getElementById("usernameinput");
-
-                    if(serverMessage[1] == "Invalid password") {
-                        passInput.parentElement.querySelector(".login-error").classList.add("active");
-                        passInput.classList.add("input-error");
-                        setTimeout(() => {
-                            passInput.parentElement.querySelector(".login-error").classList.remove("active");
-                            passInput.classList.remove("input-error");
-                        }, 5000);
-                    }
-                    else if(serverMessage[1] == "This account doesn't exist")
-                    {
-                        passInput.parentElement.querySelector(".login-error").classList.add("active");
-                        userInput.parentElement.querySelector(".login-error").classList.add("active");
-                        passInput.classList.add("input-error");
-                        userInput.classList.add("input-error");
-
-                        setTimeout(() => {
-                            passInput.parentElement.querySelector(".login-error").classList.remove("active");
-                            userInput.parentElement.querySelector(".login-error").classList.remove("active");
-                            passInput.classList.remove("input-error");
-                            userInput.classList.remove("input-error");
-                        }, 5000);
-                    }
 
                     setTimeout(() => {
                         update_element("logintext", "Login");
