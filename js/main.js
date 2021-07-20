@@ -285,11 +285,11 @@ window.addEventListener('load', function() {
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
             if (daily_average === 0){
-				daily_average = daily
-			}
+		daily_average = daily;
+	    }
 			
-			daily_average += daily
-			daily_average = daily_average/2
+	    daily_average += daily;
+	    daily_average = daily_average/2;
             
             avg_list = round_to(2, daily_average).toString().split(".")
             avg_before_dot = avg_list[0]
