@@ -1,1 +1,9 @@
-### Source of the official Duino-Coin fully static Web Wallet and Web Miner websites
+### Official Duino-Coin Web Wallet & Web Miner static sites
+
+|       Web Miner       |       Web Wallet       |
+|-----------------------|------------------------|
+| ![](assets/miner.png) | ![](assets/wallet.png) |
+
+
+
+
