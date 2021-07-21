@@ -53,6 +53,11 @@
         .is-duco-alt {
             background: #feca57 !important;
         }
+
+        .register-form{
+            max-width: 450px;
+        }
+
         body {
             background-size: cover !important;
             background-attachment: fixed !important;
@@ -189,7 +194,7 @@
                         if (server_message.includes("2.")) {
                             version_received = 1;
                             $("#logintext").text("Registering...");
-                            ws.send("REGI," + username + "," + password + "," + email);
+                            ws.send("REGI," + username.value.trim() + "," + password.value.trim() + "," + email.value.trim());
                         } 
 
                         else if (server_message.includes("OK")) {
@@ -206,7 +211,9 @@
                         }
 
                         else if (server_message.includes("NO")) {
-                            server_message = server_message.split(",")
+                            server_message = server_message.split(",");
+                            $("#logincheck").show(1);
+                            $("#loginload").hide(1);
                             $("#logintext").text("Register a new account");
                             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                                     `<b>` + server_message[1] + `. Please try again</b><br></p>`;
@@ -219,6 +226,7 @@
                             }
                         }
                     }
+                    console.log('Request sent');
                 }
                 else {
                     return false;
@@ -262,7 +270,7 @@
                     setErrorFor(passwordconfirm, 'Confirm password cannot be blank.');
                     isFormValid = false;
                 } else if(passwordValue !== passwordConfirmValue) {
-                    setErrorFor(passwordconfirm, 'Passwords does not match.');
+                    setErrorFor(passwordconfirm, 'The password and confirmation password do not match.');
                     isFormValid = false;
                 } else{
                     setSuccessFor(passwordconfirm);
@@ -272,12 +280,14 @@
             }
 
         function setErrorFor(input, message) {
+            input.classList.add('is-danger');
             const field = input.parentElement;
             const small = field.querySelector('small');
             small.innerText = message;
         }
 
         function setSuccessFor(input) {
+            input.classList.remove('is-danger');
             const field = input.parentElement;
             const small = field.querySelector('small');
             small.innerText = '';
@@ -297,7 +307,7 @@
     <section class="hero is-fullheight">
         <div class="hero-body is-align-self-center">
             <div class="container">
-                <div class="box">
+                <div class="box register-form">
                     <span class="title">
                         <span id="wallettext">
                             <p style="font-size:1.5em;text-align:center">
@@ -326,9 +336,7 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            The username will also be your wallet address.<br>
-                            It can consist of alphanumeric characters, numbers<br>
-                            and underscores or dashes.
+                            The username will also be your wallet address. It can consist of alphanumeric characters, numbers and underscores or dashes.
                         </p>
                     </div>
                     <div class="field">
@@ -344,9 +352,7 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            Choose a strong password and save it in a safe place.<br>
-                            There is no way to recover it if it gets lost<br>
-                            because we don't store them for security reasons.
+                            Choose a strong password and save it in a safe place. There is no way to recover it if it gets lost because we don't store them for security reasons.
                         </p>
                     </div>
                     <div class="field">
@@ -374,9 +380,7 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            Please provide a real e-mail as<br>
-                            it will be used to confirm exchanges<br>
-                            and receive updates about your account.
+                            Please provide a real e-mail as it will be used to confirm exchanges and receive updates about your account.
                         </p>
                     </div>
                     <div class="field">
