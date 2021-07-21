@@ -13,10 +13,13 @@ let start = Date.now();
 let awaiting_login = false;
 let awaiting_data = false;
 let awaiting_version = true;
+let timestamps = [];
+let balances = [];
+let first_launch = true;
 
 window.addEventListener('load', function() {
     // CONSOLE WARNING
-    console.log("%c¡Stop!", "color: red; font-size: 10em");
+    console.log("%cCaution!", "color: red; font-size: 10em");
     console.log(`%cThis browser feature is intended for developers. 
     If someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, 
     it is a fraud. If you do, this person will be able to access your account.`, "font-size: 1.5em;");
@@ -42,6 +45,50 @@ window.addEventListener('load', function() {
     // THEME SWITCHER
     let themesel = document.getElementById('themesel');
     themesel.addEventListener('input', updateValue);
+
+
+    const data = {
+        labels: timestamps,
+        datasets: [{
+            data: balances,
+        }]
+    };
+
+    const config = {
+        options: {
+            backgroundColor: '#ff9770',
+            borderColor: '#ff9770',
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        },
+        type: 'line',
+        data
+    };
+
+    const balance_chart = new Chart(
+        document.getElementById('balance_chart'),
+        config
+    );
+
+    function get_now() {
+        const today = new Date();
+        const time = today.getHours() +
+            ":" +
+            today.getMinutes() +
+            ":" +
+            today.getSeconds();
+        return time;
+    }
+
+    function push_to_graph(balance) {
+        timestamps.push(get_now());
+        balances.push(balance);
+        balance_chart.update();
+    };
+
 
     function updateValue(e) {
         let theme = e.target.value;
@@ -103,16 +150,20 @@ window.addEventListener('load', function() {
         fetch("https://server.duinocoin.com/api.json")
             .then(response => response.json())
             .then(data => {
-                duco_price = data["Duco price"];
-                duco_price_list = round_to(5, duco_price).toString().split(".")
-                duco_price_before_dot = duco_price_list[0]
-                duco_after_dot = duco_price_list[1]
+                duco_price = round_to(5, data["Duco price"]);
 
-                update_element("ducousd", "≈ $" + duco_price_before_dot +
-                    "<span class='has-text-weight-light'>." +
-                    duco_after_dot + "</span>");
+                update_element("ducousd", "≈ $" + duco_price);
+                update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
+                update_element("ducousd_trx", "≈ $" + round_to(5, data["Duco price TRX"]));
+
+                update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
+
+                update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
+
             })
     }
+
+    get_duco_price();
 
     // HASHRATE PREFIX CALCULATOR
     const scientific_prefix = (value) => {
@@ -133,6 +184,12 @@ window.addEventListener('load', function() {
             balance = parseFloat(data.balance.balance);
             let balanceusd = balance * duco_price;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
+
+            if (first_launch) {
+                push_to_graph(balance);
+                first_launch = false;
+            }
+            push_to_graph(balance);
 
             if (oldb != balance) {
                 calculdaily(balance, oldb)
@@ -265,9 +322,9 @@ window.addEventListener('load', function() {
     function update_element(element, value) {
         // Nicely fade in the new value if it changed
         element = "#" + element;
-        old_value = $(element).html()
+        old_value = $(element).text()
 
-        if (value != old_value) {
+        if ($("<div>" + value + "</div>").text() != old_value) {
             $(element).fadeOut('fast', function() {
                 $(element).html(value);
                 $(element).fadeIn('fast');
@@ -288,20 +345,14 @@ window.addEventListener('load', function() {
             avg_before_dot = avg_list[0]
             avg_after_dot = avg_list[1]
 
-            update_element("estimatedprofit", avg_before_dot +
+            update_element("estimatedprofit", "≈ " + avg_before_dot +
                 "<span class='has-text-weight-light'>." +
-                avg_after_dot + "</span> ᕲ");
+                avg_after_dot + "</span> ᕲ daily");
 
-            avgusd = daily * duco_price;
-            avgusd_list = round_to(2, avgusd).toString().split(".")
-            avgusd_before_dot = avgusd_list[0]
-            avgusd_after_dot = avgusd_list[1]
+            avgusd = round_to(2, daily * duco_price);
 
-            update_element("estimatedprofitusd", "<span>≈ $</span>" +
-                avgusd_before_dot +
-                "<span class='has-text-weight-light'>." +
-                avgusd_after_dot +
-                "</span>");
+            update_element("estimatedprofitusd", "(≈ $" +
+                avgusd + ")");
         }
         start = Date.now()
     }
