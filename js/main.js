@@ -196,9 +196,12 @@ window.addEventListener('load', function() {
                 oldb = balance;
             }
 
-            let balance_list = round_to(8, balance).toString().split(".")
-            balance_before_dot = balance_list[0]
-            balance_after_dot = balance_list[1]
+            let balance_list = round_to(8, balance).toString().split(".");
+            balance_before_dot = balance_list[0];
+            if (balance_list[1])
+                balance_after_dot = balance_list[1];
+            else
+                balance_after_dot = 0;
 
             update_element("balance", balance_before_dot +
                 "<span class='has-text-weight-light'>." +
