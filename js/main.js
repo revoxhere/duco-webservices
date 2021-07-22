@@ -163,9 +163,7 @@ window.addEventListener('load', function() {
             })
     }
 
-    get_duco_price();
-
-    // HASHRATE PREFIX CALCULATOR
+    // SCIENTIFIC PREFIX CALCULATOR
     const scientific_prefix = (value) => {
         value = parseFloat(value);
         if (value / 1000000000 > 0.5)
@@ -174,6 +172,8 @@ window.addEventListener('load', function() {
             value = round_to(2, value / 1000000) + " M";
         else if (value / 1000 > 0.5)
             value = round_to(2, value / 1000) + " k";
+        else
+            value = round_to(2, value) + " ";
         return value;
     };
 
@@ -325,9 +325,9 @@ window.addEventListener('load', function() {
         old_value = $(element).text()
 
         if ($("<div>" + value + "</div>").text() != old_value) {
-            $(element).fadeOut('fast', function() {
+            $(element).fadeOut(50, function() {
                 $(element).html(value);
-                $(element).fadeIn('fast');
+                $(element).fadeIn(450);
             });
         }
     }
