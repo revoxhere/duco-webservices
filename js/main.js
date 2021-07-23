@@ -198,10 +198,11 @@ window.addEventListener('load', function() {
 
             let balance_list = round_to(8, balance).toString().split(".");
             balance_before_dot = balance_list[0];
+
             if (balance_list[1])
                 balance_after_dot = balance_list[1];
             else
-                balance_after_dot = 0;
+                balance_after_dot = balance_list[0];
 
             update_element("balance", balance_before_dot +
                 "<span class='has-text-weight-light'>." +
@@ -209,7 +210,10 @@ window.addEventListener('load', function() {
 
             let balanceusd_list = round_to(4, balanceusd).toString().split(".")
             balanceusd_before_dot = balanceusd_list[0]
-            balanceusd_after_dot = balanceusd_list[1]
+            if (balanceusd_list[1])
+                balanceusd_after_dot = balanceusd_list[1];
+            else
+                balanceusd_after_dot = 0;
 
             update_element("balanceusd", "<span>≈ $</span>" +
                 balanceusd_before_dot +
@@ -233,39 +237,48 @@ window.addEventListener('load', function() {
                     miner_rejected = myMiners[miner]["rejected"];
                     miner_accepted = myMiners[miner]["accepted"];
 
-                    if (miner_identifier === "None")
-                        minerId = miner_software;
-                    else
-                        minerId = miner_identifier +
-                        "</b><span class='has-text-grey'> (" +
-                        miner_software +
-                        ")</span>";
+                    if (miner_software == "NODE") {
+                        user_miners_html += "<span class='has-text-grey-light'>#" +
+                            miner +
+                            ":</span> " +
+                            "<b class='has-text-link'>" +
+                            miner_identifier +
+                            "</b><br>";
+                    } else {
+                        if (miner_identifier === "None")
+                            minerId = miner_software;
+                        else
+                            minerId = miner_identifier +
+                            "</b><span class='has-text-grey'> (" +
+                            miner_software +
+                            ")</span>";
 
-                    diffString = scientific_prefix(miner_diff)
+                        diffString = scientific_prefix(miner_diff)
 
-                    user_miners_html += "<span class='has-text-grey-light'>#" +
-                        miner +
-                        ":</span> " +
-                        "<b class='has-text-primary'>" +
-                        minerId +
-                        "</b>, " +
-                        "<b><span class='has-text-success'>" +
-                        scientific_prefix(miner_hashrate) +
-                        "H/s</b></span>" +
-                        "<span class='has-text-info'>" +
-                        " @ diff " +
-                        diffString +
-                        "</span>, " +
-                        miner_accepted +
-                        "/" +
-                        (miner_accepted + miner_rejected) +
-                        " <b class='has-text-success-dark'>(" +
-                        Math.round(
-                            (miner_accepted /
-                                (miner_accepted + miner_rejected)) *
-                            100
-                        ) +
-                        "%)</b><br>";
+                        user_miners_html += "<span class='has-text-grey-light'>#" +
+                            miner +
+                            ":</span> " +
+                            "<b class='has-text-primary'>" +
+                            minerId +
+                            "</b>, " +
+                            "<b><span class='has-text-success'>" +
+                            scientific_prefix(miner_hashrate) +
+                            "H/s</b></span>" +
+                            "<span class='has-text-info'>" +
+                            " @ diff " +
+                            diffString +
+                            "</span>, " +
+                            miner_accepted +
+                            "/" +
+                            (miner_accepted + miner_rejected) +
+                            " <b class='has-text-success-dark'>(" +
+                            Math.round(
+                                (miner_accepted /
+                                    (miner_accepted + miner_rejected)) *
+                                100
+                            ) +
+                            "%)</b><br>";
+                    }
 
                     totalHashes = totalHashes + miner_hashrate;
                 }
@@ -328,9 +341,9 @@ window.addEventListener('load', function() {
         old_value = $(element).text()
 
         if ($("<div>" + value + "</div>").text() != old_value) {
-            $(element).fadeOut(50, function() {
+            $(element).fadeOut('fast', function() {
                 $(element).html(value);
-                $(element).fadeIn(450);
+                $(element).fadeIn('fast');
             });
         }
     }
@@ -371,16 +384,15 @@ window.addEventListener('load', function() {
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
-        $("#logincheck").fadeOut('fast', function() {
-            $("#loginload").fadeIn('fast');
-        });
-
-        update_element("logintext", "Connecting...");
-
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
 
         if (username && password) {
+            $("#logincheck").fadeOut('fast', function() {
+                $("#loginload").fadeIn('fast');
+            });
+
+            update_element("logintext", "Connecting...");
             let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
 
             socket.onclose = function(event) {
@@ -566,10 +578,7 @@ window.addEventListener('load', function() {
                 }
             }
         } else {
-            $("#logincheck").fadeIn(1)
-            $("#loginload").fadeOut(1)
-
-            update_element("logintext", "Please fill in the blanks first");
+            update_element("logintext", "Fill in the blanks first");
 
             setTimeout(() => {
                 update_element("logintext", "Login");
