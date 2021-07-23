@@ -194,7 +194,7 @@
                         if (server_message.includes("2.")) {
                             version_received = 1;
                             $("#logintext").text("Registering...");
-                            ws.send("REGI," + username.value.trim() + "," + password.value.trim() + "," + email.value.trim());
+                            ws.send("REGI," + username.value.trim() + "," + password.value + "," + email.value.trim());
                         } 
 
                         else if (server_message.includes("OK")) {
