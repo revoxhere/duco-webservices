@@ -63,6 +63,7 @@ onmessage = function (event)
                     console.log(`${getTime()} | ` + "CPU" + workerVer + ": Job received: " + serverMessage);
                     job = serverMessage.split(",");
                     difficulty = job[2];
+                    postMessage("UpdateDiff," + difficulty + "," + workerVer);
 
                     startingTime = performance.now();
                     for (result = 0; result < 100 * difficulty + 1; result++)
@@ -75,10 +76,10 @@ onmessage = function (event)
                             hashrate = (result / timeDifference).toFixed(2);
 
                             postMessage("UpdateLog," + `${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate + "<br>");
-                            console.log(`${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate);
-                            postMessage("UpdateHashrate," + timeDifference + "," + hashrate);
+                            console.log(`${getTime()} | ` + "CPU" + workerVer + ": Share found: " + result + " Time: " + timeDifference + " Hashrate: " + hashrate + "H/s");
+                            postMessage("UpdateHashrate," + timeDifference + "," + hashrate + "," + workerVer);
 
-                            socket.send(result + "," + hashrate + ",Official Webminer v2.6.1," + rigid);
+                            socket.send(result + "," + hashrate + ",Official Webminer v2.6.5," + rigid);
                         }
                     }
                 }
@@ -96,7 +97,7 @@ onmessage = function (event)
                 setTimeout(function()
                 {
                     connect();
-                }, 1000);
+                }, 5000);
             }
         }
         connect();

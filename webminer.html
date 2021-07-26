@@ -110,7 +110,7 @@
                         Duino-Coin Web Miner
                     </p>
                     <p class="subtitle">
-                        Official JavaScript miner v2.6.1
+                        Official JavaScript miner v2.6.5
                         <span class="subtitle is-size-6">
                             by
                             <a href="https://github.com/revoxhere/">revox</a>,
@@ -188,16 +188,12 @@
                             <div class="box">
                                 <p class="subtitle">
                                     <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
-                                    HASHRATE (of last share)
+                                    HASHRATE
                                 </p>
                                 <p class="title">
                                     <span id="hashrate">
-                                        0 kH/s
+                                        0 H/s
                                     </span>
-                                    <span class="subtitle" id="time">
-                                        0 s
-                                    </span>
-                                    
                                 </p>
                             </div>
                         </div>
@@ -222,9 +218,18 @@
                                     <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
                                     MINER LOG
                                 </p>
-                                <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 9rem;">
+                                <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 12rem;">
                                     <span class="has-text-grey" id="minerlog">Awaiting input...<br><br></span>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="column is-two-fifths">
+                            <div class="box">
+                                <p class="subtitle">
+                                    <i class="far fa-chart-bar" style="color:#2980b9;"></i>
+                                    STATS PER CPU
+                                </p>
+                                <div id="stats-per-cpu" style="overflow-y: scroll; word-wrap: break-word; max-height: 12rem;">Awaiting input...</div>
                             </div>
                         </div>
                     </div>
@@ -365,6 +370,22 @@
             threads = userThreads;
         }
 
+        //sets the hashrate to 0
+        var hashrates = []
+        for (let i = 0; i < threads; i++)
+        {
+            hashrates[i] = 0;
+        }
+
+        //inits the stats per cpu system
+        document.getElementById("stats-per-cpu").innerHTML = "";
+        for (let i = 0; i < threads; i++)
+        {
+            $("#stats-per-cpu").append(
+                "<p style='font-size: larger'>CPU" + i + ':</p> <span id=CPU'+ i + '-hashrate>Hashrate: 0 kH/s</span><span id=CPU'+ i + '-time> Time: 0s</span><span id=CPU'+ i + '-diff> Difficulty: 0</span><br>'
+            );
+        }
+
         //makes threads amount of workers (so if threads is 6, it will make 6 workers)
         for (let workersAmount = 0; workersAmount < threads; workersAmount++)
         {
@@ -384,8 +405,47 @@
                 }
                 else if (data[0] == "UpdateHashrate")
                 {
-                    document.getElementById("time").innerHTML = parseInt(data[1]) + " s";
-                    document.getElementById("hashrate").innerHTML = parseFloat(data[2] / 1000).toFixed(2) + " kH/s";
+                    //total hashrate
+                    hashrates[data[3]] = parseFloat(data[2]).toFixed(2);
+                    let finalHashrate = 0;
+                    for (let i = 0; i < hashrates.length; i++)
+                    {
+                        finalHashrate = finalHashrate + eval(hashrates[i]);
+                    }
+
+                    if (parseFloat(finalHashrate) < 1000)
+                    {
+                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate).toFixed(2) + " H/s";
+                    }
+                    if (parseFloat(finalHashrate) > 1000)
+                    {
+                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate / 1000).toFixed(2) + " kH/s";
+                    }
+                    if (parseFloat(finalHashrate) > 1000000)
+                    {
+                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate / 1000000).toFixed(2) + " MH/s";
+                    }
+
+                    //personal hashrate
+                    if (data[2] < 1000)
+                    {
+                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2]).toFixed(2) + " H/s";
+                    }
+                    if (data[2] > 1000)
+                    {
+                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2] / 1000).toFixed(2) + " kH/s";
+                    }
+                    if (data[2] > 1000000)
+                    {
+                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2] / 1000000).toFixed(2) + " MH/s";
+                    }
+
+                    //personal timedifference
+                    document.getElementById("CPU" + data[3] + "-time").innerHTML = " Time: " + parseFloat(data[1]).toFixed(2) + "s";
+                }
+                else if (data[0] == "UpdateDiff")
+                {
+                    document.getElementById("CPU" + data[2] + "-diff").innerHTML = " Difficulty: " + parseFloat(data[1]);
                 }
                 else if (data[0] == "GoodShare")
                 {
