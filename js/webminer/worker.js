@@ -97,7 +97,7 @@ onmessage = function (event)
                 setTimeout(function()
                 {
                     connect();
-                }, 1000);
+                }, 5000);
             }
         }
         connect();
