@@ -7,8 +7,8 @@
     <title>Duino-Coin | Web Wallet</title>
     <!-- SEO Stuff -->
     <meta name="description" content="Duino-Coin Web Wallet">
-    <meta name="keywords" content="Wallet, webWallet, duinocoin, duco, duco webWallet, web Wallet">
-    <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
+    <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco web wallet">
+    <link rel="canonical" href="https://wallet.duinocoin.com" />
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#f0932b">
     <!-- Open Graph Metadata -->
@@ -23,8 +23,8 @@
     <meta name="twitter:title" content="Duino-Coin Web Wallet">
     <meta name="twitter:description" content="Duino-Coin Web Wallet">
     <meta name="twitter:image" content="assets/duco.svg">
-    <meta name="twitter:site" content="@CoinDuino">
-    <meta name="twitter:creator" content="@CoinDuino">
+    <meta name="twitter:site" content="@DuinoCoin">
+    <meta name="twitter:creator" content="@DuinoCoin">
     <link rel="icon" href="assets/duco.svg" type="image/png" />
     <link rel="shortcut icon" href="assets/duco.svg" type="image/png" />
     <!-- Preload Background Images -->
@@ -37,479 +37,445 @@
     <link rel="preload" as="image" href="backgrounds/7-min.png">
     <link rel="preload" as="image" href="backgrounds/8-min.png">
     <link rel="preload" as="image" href="backgrounds/9-min.png">
-    <link rel="preload" as="image" href="backgrounds/balkanac-1.png">
-    <link rel="preload" as="image" href="backgrounds/balkanac-2.png">
-    <!-- Bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
-    <link rel="stylesheet" id="crisp" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/journal/bulmaswatch.min.css">
-    <link rel="stylesheet" id="radiate" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
-    <link rel="stylesheet" id="alt" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/materia/bulmaswatch.min.css">
-    <link rel="stylesheet" id="material" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/cosmo/bulmaswatch.min.css">
-    <link rel="stylesheet" id="frosted" disabled="true" type="text/css" href="css/blur.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-divider@1.1.0/dist/bulma-divider.min.css">
     <!-- JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-    <!-- WebWallet -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="js/fontawesome.js"></script>
+    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <!-- Wallet Scripts -->
+    <script type="text/javascript" src="js/chart.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <!-- Bulma -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preload" href="css/bulma.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
+    <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
+    <link rel="preload" href="css/bulma-pageloader.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma-pageloader.min.css" type="text/css">
+    <!-- Themes -->
+    <link rel="stylesheet" disabled id="crisp" type="text/css" href="https://jenil.github.io/bulmaswatch/journal/bulmaswatch.min.css">
+    <link rel="stylesheet" disabled id="radiate" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
+    <link rel="stylesheet" disabled id="alt" type="text/css" href="https://jenil.github.io/bulmaswatch/materia/bulmaswatch.min.css">
+    <link rel="stylesheet" disabled id="material" type="text/css" href="https://jenil.github.io/bulmaswatch/cosmo/bulmaswatch.min.css">
+    <link rel="stylesheet" disabled id="frosted" type="text/css" href="css/blur.css">
 </head>
 
 <body>
-    <div id="pageloader" class="pageloader is-active is-primary is-right-to-left">
+    <div id="pageloader" class="pageloader is-active is-primary">
         <p class="title">Duino-Coin Web Wallet</p>
     </div>
     <div class="container">
-        <section class="hero is-fullheight">
+        <section class="hero is-fullheight" id="login">
             <div class="hero-body is-align-self-center">
                 <div class="columns">
                     <div class="column">
                         <div class="box">
-                            <span class="title">
-                                <span id="wallettext">
-                                    <p style="font-size:1.4em;text-align:center">
-                                        <img src="assets/duco.svg" class="icon is-medium">
-                                        Duino-Coin<br>
-                                    </p>
-                                    <p class="has-text-weight-normal" style="text-align:center">
-                                        Web Wallet
-                                        <span class="subtitle is-size-7">
-                                            v2.6.9
+                            <section style="max-width: 20rem;">
+                                <p class="title">
+                                    <a href="https://duinocoin.com">
+                                        <img src="assets/ducobanner.png" width="200rem" class="image">
+                                    </a>
+                                </p>
+                                <p class="title">
+                                    Sign in
+                                </p>
+                                <p class="subtitle">
+                                    to your Duino-Coin Wallet
+                                </p>
+                                <div class="field mt-5">
+                                    <div class="control has-icons-left">
+                                        <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-user"></i>
                                         </span>
-                                    </p>
-                                </span>
-                            </span>
-                            <section id="login">
-                                <div class="column">
-                                    <div class="field">
-                                        <p class="has-text-danger">
-                                            There may be access issues but<br>
-                                            I don't have time to fix them for the next few days -<br>
-                                            I have to help my family with the harvest<br>
-                                            and some other farm work
-                                        </p>
                                     </div>
                                 </div>
-                                <div class="column">
-                                    <div class="field">
-                                        <label for="" class="label has-text-grey">Your username</label>
-                                        <div class="control has-icons-left">
-                                            <input type="text" id="usernameinput" placeholder="e.g. revox" class="input" required>
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-user"></i>
-                                            </span>
-                                        </div>
+                                <div class="field">
+                                    <div class="control has-icons-left">
+                                        <input type="password" id="passwordinput" placeholder="Password" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-lock"></i>
+                                        </span>
                                     </div>
-                                    <div class="field">
-                                        <label for="" class="label has-text-grey">Your password</label>
-                                        <div class="control has-icons-left">
-                                            <input type="password" id="passwordinput" placeholder="*******" class="input" required>
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-lock"></i>
+                                </div>
+                                <div class="field mt-5">
+                                    <div class="buttons">
+                                        <button class="button is-duco is-warning is-fullwidth" id="loginbutton">
+                                            <span id="logincheck">
+                                                <i class="fa fa-fw fa-check" id="logincheck"></i>
                                             </span>
-                                        </div>
-                                    </div>
-                                    <div class="field mt-5">
-                                        <div class="buttons">
-                                            <button class="button is-duco is-warning is-fullwidth" id="loginbutton">
-                                                <span id="logincheck">
-                                                    <i class="fa fa-fw fa-check" id="logincheck"></i>
-                                                </span>
-                                                <span id="loginload" style="display:none">
-                                                    <i class="fas fa-circle-notch fa-spin"></i>
-                                                </span>
-                                                &nbsp;
-                                                <span id="logintext">
-                                                    Login
-                                                </span>
-                                            </button>
-                                            <a href="https://wallet.duinocoin.com/register" class="button is-duco-alt is-warning is-fullwidth" id="loginbutton">
-                                                <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
-                                                Register
-                                            </a>
-                                        </div>
+                                            <span id="loginload" style="display:none">
+                                                <i class="fas fa-circle-notch fa-spin"></i>
+                                            </span>
+                                            &nbsp;
+                                            <span id="logintext">
+                                                Login
+                                            </span>
+                                        </button>
+                                        <a href="register.html" class="button is-fullwidth">
+                                            <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
+                                            Create a wallet
+                                        </a>
                                     </div>
                                 </div>
                             </section>
-                            <section id="wallet" style="display: none;">
-                                <div class="container">
-                                    <div class="columns is-multiline">
-                                        <div class="column is-full">
-                                            <div class="box">
-                                                <div class="columns">
-                                                    <div class="column">
-                                                        <p class="subtitle">
-                                                            <i class="fa fa-wallet is-size-7 card-orange fa-fw"></i>
-                                                            DUCO BALANCE
-                                                        </p>
-                                                        <p class="title">
-                                                            <span id="balance">
-                                                                Fetching data
-                                                            </span>
-                                                            <span class="subtitle is-size-6" id="balanceusd" style="white-space: nowrap">
-                                                            </span>
-                                                        </p>
-                                                        <p class="subtitle">
-                                                            <span id="estimatedprofit">
-                                                                Calculating est. daily profit
-                                                            </span>
-                                                            <span class="subtitle" id="estimatedprofitusd">
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="column">
-                                                        <canvas height="60em" id="balance_chart"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-chart-bar is-size-7 card-pomegrante fa-fw"></i>
-                                                    YOUR MINERS
-                                                </p>
-                                                <div style="height:11.25em;overflow:auto;">
-                                                    <span id="miners">Fetching data</span>
-                                                </div>
-                                                <p class="title is-size-6 mt-3">
-                                                    <i class="fa fa-tachometer-alt is-size-7 card-orange fa-fw"></i>&nbsp;
-                                                    <span id="minerHR">Fetching data</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-share is-size-7 card-blue fa-fw"></i>
-                                                    SEND MONEY
-                                                </p>
-                                                <label class="label">Recipient</label>
-                                                <div class="control has-icons-left is-expanded">
-                                                    <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
-                                                    <span class="icon is-small is-left">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="columns">
-                                                    <div class="column">
-                                                        <label class="label mt-2">Amount</label>
-                                                        <div class="control has-icons-left is-expanded">
-                                                            <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
-                                                            <span class="icon is-small is-left">
-                                                                <i class="fa fa-coins"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <label class="label mt-2">
-                                                            Message
-                                                            <span class="subtitle is-size-7">
-                                                                (optional)
-                                                            </span>
-                                                        </label>
-                                                        <div class="control has-icons-left is-expanded">
-                                                            <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
-                                                            <span class="icon is-small is-left">
-                                                                <i class="fa fa-envelope"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button class="button is-info is-outlined is-fullwidth" id="send">
-                                                    <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
-                                                    Transfer funds
-                                                </button>
-                                                <span class="subtitle my-2 is-size-7" id="sendinginfo"></span>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-money-bill-wave is-size-7 card-turquoise fa-fw"></i>
-                                                    DUCO PRICE
-                                                </p>
-                                                <div class="columns is-multiline">
-                                                    <div class="column is-full">
-                                                        <b style="color:#9381ff">DUCO Exchange</b>
-                                                        <div class="columns">
-                                                            <div class="column">
-                                                                &bull;
-                                                                DUCO - XMG
-                                                                <br>
-                                                                <span id="ducousd" class="has-text-weight-bold">
-                                                                    Fetching data
-                                                                </span>
-                                                            </div>
-                                                            <div class="column">
-                                                                &bull;
-                                                                DUCO - BCH
-                                                                <br>
-                                                                <span id="ducousd_bch" class="has-text-weight-bold">
-                                                                    Fetching data
-                                                                </span>
-                                                            </div>
-                                                            <div class="column">
-                                                                &bull;
-                                                                DUCO - TRX
-                                                                <br>
-                                                                <span id="ducousd_trx" class="has-text-weight-bold">
-                                                                    Fetching data
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <b style="color:#60d394">Node-S</b>
-                                                        <div class="columns">
-                                                            <div class="column">
-                                                                &bull;
-                                                                DUCO - USD
-                                                                <br>
-                                                                <span id="duco_nodes" class="has-text-weight-bold">
-                                                                    Fetching data
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <b style="color:#ff5d8f">JustSwap</b>
-                                                        <div class="columns">
-                                                            <div class="column">
-                                                                &bull;
-                                                                DUCO - TRX
-                                                                <br>
-                                                                <span id="duco_justswap" class="has-text-weight-bold">
-                                                                    Fetching data
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-newspaper is-size-7 card-green fa-fw"></i>
-                                                    NEWS
-                                                </p>
-                                                <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:13rem;" width="100%" allowtransparency="true">Please wait</iframe>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-list-ul is-size-7 card-pink fa-fw"></i>
-                                                    TRANSACTIONS
-                                                </p>
-                                                <div class="balanceT">
-                                                    <table>
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">Date</th>
-                                                                <th scope="col">Amount</th>
-                                                                <th scope="col">Sender</th>
-                                                                <th scope="col">Recipient</th>
-                                                                <th scope="col">Message</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="transactions">
-                                                            <td scope="date" colspan="4">
-                                                                Fetching data
-                                                            </td>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="box">
-                                                <p class="subtitle">
-                                                    <i class="fa fa-calculator is-size-7 card-red fa-fw"></i>
-                                                    EARNINGS CALCULATOR
-                                                    <span class="tag is-success is-light">
-                                                        BETA
-                                                    </span>
-                                                </p>
-                                                <div class="columns">
-                                                    <div class="column is-half">
-                                                        <div class="field">
-                                                            <label class="label">Hashrate (DUCO-S1)</label>
-                                                            <div class="control">
-                                                                <div class="field has-addons">
-                                                                    <div class="control">
-                                                                        <input class="input" id="input-hashrate" type="number" max="1000" min="1" value="1.2">
-                                                                    </div>
-                                                                    <p class="control">
-                                                                        <span class="select">
-                                                                            <select id="multiplier">
-                                                                                <option value="1000">MH/s</option>
-                                                                                <option value="1">kH/s</option>
-                                                                            </select>
-                                                                        </span>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="field">
-                                                            <label class="label">Estimated profit</label>
-                                                            <div class="control">
-                                                                <div class="field has-addons">
-                                                                    <div class="control">
-                                                                        <div class="control">
-                                                                            <p class="tag is-success is-medium" id="values">
-                                                                                5.82 ᕲ/day
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column is-half">
-                                                        <div class="field">
-                                                            <label class="label">Devices</label>
-                                                            <div class="control">
-                                                                <div class="field has-addons">
-                                                                    <div class="control">
-                                                                        <input class="input" id="input-devices" type="number" max="25" min="1" value="1">
-                                                                    </div>
-                                                                    <p class="control">
-                                                                        <span class="select">
-                                                                            <select id="device-type">
-                                                                                <option value="AVR">Arduino(s)</option>
-                                                                                <option value="ESP8266">ESP8266(s)</option>
-                                                                                <option value="ESP32">ESP32(s)</option>
-                                                                            </select>
-                                                                        </span>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="field">
-                                                            <label class="label">Estimated profit</label>
-                                                            <div class="control">
-                                                                <div class="field has-addons">
-                                                                    <div class="control">
-                                                                        <p class="tag is-outline is-success is-medium" id="values-devices">
-                                                                            7.68 ᕲ/day
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <b class="subtitle is-size-6">
-                                                    DUCO earnings depend on many factors.
-                                                </b>
-                                                <p class="subtitle is-size-6 has-text-grey">
-                                                    Estimations will be more accurate when more data will be gathered.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="columns">
-                                        <div class="column">
-                                            <div class="buttons">
-                                                <div class="control has-icons-left mb-2 mr-2">
-                                                    <div class="select is-normal">
-                                                        <select id="themesel">
-                                                            <option selected value="light">Adaptive (default)</option>
-                                                            <option value="material">Metro</option>
-                                                            <option value="frosted">Frosted glass</option>
-                                                            <option value="crisp">Crisp</option>
-                                                            <option value="radiance">Nuclear</option>
-                                                            <option value="altlight">Sleek</option>
-                                                        </select>
-                                                    </div>
-                                                    <span class="icon is-left">
-                                                        <i class="fas fa-sun" style="color:#f0932b"></i>
-                                                    </span>
-                                                </div>
-                                                <a href="https://server.duinocoin.com/webminer.html" class="button is-secondary">
-                                                    <img class="icon is-small" src="assets/webminer.png">
-                                                    <span>Web Miner</span>
-                                                </a>
-                                                <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button is-secondary">
-                                                    <i class="fab fa-fw fa-github icon is-small"></i>
-                                                </a>
-                                                <a href="https://discord.gg/kvBkccy" target="_blank" class="button is-secondary">
-                                                    <i class="fab fa-fw fa-discord icon is-small"></i>
-                                                </a>
-                                                <a href="https://revoxhere.github.io/duco-exchange/" target="_blank" class="button is-secondary">
-                                                    <img class="icon is-small" target="_blank" src="assets/ducoexchange.png">
-                                                    <span>DUCO Exchange</span>
-                                                </a>
-                                                <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank" class="button is-secondary">
-                                                    <img src="assets/nodes.jpg" class="icon is-small">
-                                                    <span>Node-S Exchange</span>
-                                                </a>
-                                                <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank" class="button is-secondary">
-                                                    <img src="assets/justswap.png" class="icon is-small">
-                                                    <span>JustSwap Exchange</span>
-                                                </a>
-                                                <a href="https://explorer.duinocoin.com" target="_blank" class="button is-secondary">
-                                                    <img src="assets/explorer.png" class="icon is-small">
-                                                    <span>Network stats</span>
-                                                </a>
-                                                <a href="https://lulaschkas.github.io/duco-mining-dashboard/" target="_blank" class="button is-secondary">
-                                                    <img src="assets/ducominingdashboarddark.png" class="icon is-small">
-                                                    <span>Lulaschkas' Mining Dashboard</span>
-                                                </a>
-                                                <a href="https://faucet.furim.xyz/" target="_blank" class="button is-secondary">
-                                                    <img src="assets/furim_faucet.png" class="icon is-small">
-                                                    <span>Furim's DUCO Faucet</span>
-                                                </a>
-                                                <a href="https://siunus.github.io/duco-monitor/" target="_blank" class="button is-secondary">
-                                                    <img class="icon is-small" src="assets/siunus.ico">
-                                                    <span>Siunus' DUCO Monitor</span>
-                                                </a>
-                                                <a href="https://duinocoin.com/donate" target="_blank" class="button is-secondary">
-                                                    <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
-                                                    <span>Donate</span>
-                                                </a>
-                                                <a href="https://bulma.io" target="_blank" class="button is-secondary">
-                                                    <span>Made with</span>&nbsp;&nbsp;
-                                                    <img class="image" width="16em" src="assets/bulma.png" alt="Bulma">&nbsp;
-                                                    <span><b>BULMA</b></span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
-                                <br>
-                            </section>
-                            <p class="subtitle is-size-7 has-text-grey-dark mx-3 my-2" id="copyright">
-                                <b>Official</b> Duino-Coin Web Wallet ©
-                                <a href="https://github.com/revoxhere/">revox</a> &middot;
-                                <a href="https://www.instagram.com/vlegle/">Yennefer</a> &middot;
-                                <a href="https://github.com/LDarki">LDarki</a>
-                                <br>Hosted by
-                                <a href="https://kristian-kramer.com">Kristian</a>
-                                and
-                                <a href="https://pages.github.com">GH Pages</a>
-                                &middot;
-                                <a href="https://opensource.org/licenses/MIT">
-                                    <b>MIT</b> licensed
-                                </a>
-                                <br>This page is <b>open source</b>. You can improve it
-                                <a href="https://github.com/revoxhere/duco-webservices">
-                                    here
-                                </a>
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        <section id="wallet" class="hero is-fullheight" style="display:none;">
+            <br>
+            <div class="container box box-grey">
+                <div class="columns is-multiline">
+                    <div class="column is-full">
+                        <div class="box">
+                            <div class="columns">
+                                <div class="column">
+                                    <p class="subtitle">
+                                        <i class="fa fa-wallet is-size-7 card-orange fa-fw"></i>
+                                        <span id="user"></span> BALANCE
+                                    </p>
+                                    <p class="title">
+                                        <span id="balance">
+                                            Fetching data
+                                        </span>
+                                    </p>
+                                    <p class="subtitle is-size-6">
+                                        <span id="balanceusd" style="white-space: nowrap"></span>
+                                    </p>
+                                    <p class="subtitle">
+                                        <span id="estimatedprofit">
+                                            <i class="fas fa-spinner fa-pulse"></i>
+                                            Calculating est. daily profit
+                                        </span>
+                                        <span class="subtitle" id="estimatedprofitusd">
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <canvas height="70em" id="balance_chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="box">
+                            <p class="subtitle">
+                                <i class="fa fa-chart-bar is-size-7 card-pomegrante fa-fw"></i>
+                                YOUR MINERS
+                                <span id="minercount"></span>
+                            </p>
+                            <div class="columns is-multiline" id="miners">
+                                <div class="column is-full">
+                                    <p class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                </div>
+                            </div>
+                            <p class="title is-size-6 mt-3">
+                                <i class="fa fa-tachometer-alt is-size-7 card-orange fa-fw"></i>&nbsp;
+                                <span id="total_hashrate">Total hashrate: 0 H/s</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="box">
+                            <p class="subtitle">
+                                <i class="fa fa-share is-size-7 card-blue fa-fw"></i>
+                                TRANSFER DUCO
+                            </p>
+                            <label class="label">Recipient</label>
+                            <div class="control has-icons-left is-expanded">
+                                <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <div class="columns">
+                                <div class="column">
+                                    <label class="label mt-2">Amount</label>
+                                    <div class="control has-icons-left is-expanded">
+                                        <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-coins"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <label class="label mt-2">
+                                        Message
+                                        <span class="subtitle is-size-6">
+                                            (optional)
+                                        </span>
+                                    </label>
+                                    <div class="control has-icons-left is-expanded">
+                                        <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button is-info is-outlined is-fullwidth" id="send">
+                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
+                                Send
+                            </button>
+                            <span class="subtitle my-2 is-size-7" id="sendinginfo"></span>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="box">
+                            <p class="subtitle">
+                                <i class="fa fa-list-ul is-size-7 card-pink fa-fw"></i>
+                                TRANSACTIONS
+                            </p>
+                            <div id="transactions_table" class="columns is-multiline">
+                                <div class="column is-full">
+                                    <p class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-half">
+                        <div class="box">
+                            <p class="subtitle">
+                                <i class="fa fa-money-bill-wave is-size-7 card-turquoise fa-fw"></i>
+                                DUCO PRICE
+                            </p>
+                            <div class="columns is-multiline">
+                                <div class="column is-full">
+                                    <span class="subtitle">
+                                        <a href="https://exchange.duinocoin.com" target="_blank">
+                                            <img class="icon icon-text" target="_blank" src="assets/ducoexchange.png">
+                                            <b>DUCO Exchange</b>
+                                        </a>
+                                        <span class="subtitle is-size-6">
+                                            (official)
+                                        </span>
+                                    </span>
+                                    <div class="columns is-multiline">
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> XMG
+                                            <br>
+                                            <span id="ducousd" class="has-text-weight-bold">
+                                                Fetching data
+                                            </span>
+                                        </div>
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> BCH
+                                            <br>
+                                            <span id="ducousd_bch" class="has-text-weight-bold">
+                                                Fetching data
+                                            </span>
+                                        </div>
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                                            <br>
+                                            <span id="ducousd_trx" class="has-text-weight-bold">
+                                                Fetching data
+                                            </span>
+                                        </div>
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> XRP
+                                            <br>
+                                            <span id="ducousd_xrp" class="has-text-weight-bold">
+                                                Coming soon
+                                            </span>
+                                        </div>
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> DGB
+                                            <br>
+                                            <span id="ducousd_dgb" class="has-text-weight-bold">
+                                                Coming soon
+                                            </span>
+                                        </div>
+                                        <div class="column is-one-third">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> NANO
+                                            <br>
+                                            <span id="ducousd_nano" class="has-text-weight-bold">
+                                                Coming soon
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <span class="subtitle">
+                                        <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank">
+                                            <img class="icon icon-text" target="_blank" src="assets/nodes.png">
+                                            <b>Node-S</b>
+                                        </a>
+                                        <span class="subtitle is-size-6">
+                                            (third-party)
+                                        </span>
+                                    </span>
+                                    <div class="columns">
+                                        <div class="column">
+                                            &bull;
+                                            DUCO <i class="fa fa-arrows-alt-h"></i> USD
+                                            <br>
+                                            <span id="duco_nodes" class="has-text-weight-bold">
+                                                Fetching data
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <span class="subtitle">
+                                        <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank">
+                                            <img class="icon icon-text" target="_blank" src="assets/justswap.png">
+                                            <b>JustSwap</b>
+                                        </a>
+                                        <span class="subtitle is-size-6">
+                                            (third-party)
+                                        </span>
+                                    </span>
+                                    <div class="columns">
+                                        <div class="column">
+                                            &bull;
+                                            wDUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                                            <br>
+                                            <span id="duco_justswap" class="has-text-weight-bold">
+                                                Fetching data
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-full">
+                        <div class="box">
+                            <p class="subtitle">
+                                <i class="fa fa-newspaper is-size-7 card-green fa-fw"></i>
+                                NEWS
+                            </p>
+                            <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:12rem" allowtransparency="true">Please wait</iframe>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="buttons">
+                            <div class="control has-icons-left mb-2 mr-2">
+                                <div class="select is-normal">
+                                    <select id="themesel">
+                                        <option selected value="light">Adaptive (default)</option>
+                                        <option value="material">Metro</option>
+                                        <option value="frosted">Frosted glass</option>
+                                        <option value="crisp">Crisp</option>
+                                        <option value="radiance">Nuclear</option>
+                                        <option value="altlight">Sleek</option>
+                                    </select>
+                                </div>
+                                <span class="icon is-left">
+                                    <i class="fas fa-sun" style="color:#f0932b"></i>
+                                </span>
+                            </div>
+                            <a href="https://server.duinocoin.com/webminer.html" class="button">
+                                <img class="icon is-small" src="assets/webminer.png">
+                                <span>Web Miner</span>
+                            </a>
+                            <a href="https://explorer.duinocoin.com" target="_blank" class="button">
+                                <img src="assets/explorer.png" class="icon is-small">
+                                <span>Network stats</span>
+                            </a>
+                            <a href="https://lulaschkas.github.io/duco-mining-dashboard/" target="_blank" class="button">
+                                <img src="assets/ducominingdashboarddark.png" class="icon is-small">
+                                <span>Lulaschkas' Mining Dashboard</span>
+                            </a>
+                            <a href="https://faucet.furim.xyz/" target="_blank" class="button">
+                                <img src="assets/furim_faucet.png" class="icon is-small">
+                                <span>Furim's DUCO Faucet</span>
+                            </a>
+                            <a href="https://duinocoin.com/donate" target="_blank" class="button">
+                                <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
+                                <span>Donate</span>
+                            </a>
+                            <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
+                                <i class="fab fa-fw fa-github icon is-small"></i>
+                            </a>
+                            <a href="https://discord.gg/duinocin" target="_blank" class="button">
+                                <i class="fab fa-fw fa-discord icon is-small"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle mb-2" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+            </div>
+            <br>
+        </section>
+    </div>
+    <div class="footer">
+        <p class="subtitle has-text-centered is-size-6">
+            The
+            <b>
+                Official Duino-Coin Web Wallet
+            </b>
+            is
+            <a href="https://opensource.org/licenses/MIT">
+                <b>MIT</b> licensed
+            </a>
+            <br>
+            and made by
+            <a href="https://github.com/revoxhere/">
+                revox
+            </a>
+            from the
+            <b>
+                Duino
+            </b>
+            team
+            <b>
+                2019-2021
+            </b>
+            <br><br>
+            Background photos shot by
+            <a href="https://www.instagram.com/vlegle/">
+                Yennefer
+            </a>
+            and
+            <a href="https://github.com/hgepro">
+                HGEpro
+            </a>
+            <br>
+            Some scripts are based on the original
+            <a href="https://github.com/LDarki">
+                LDarki's
+            </a>
+            version
+            <br>
+            Page is hosted by
+            <a href="https://kristian-kramer.com">
+                Kristian
+            </a>
+            and/or
+            <a href="https://pages.github.com">
+                GH Pages
+            </a>
+            <br>
+            and is fully
+            <b>
+                open source
+            </b>
+            - you can improve it
+            <a href="https://github.com/revoxhere/duco-webservices">
+                here
+            </a><br><br>
+            Created with the help of
+            <a href="https://bulma.io">
+                <b>BULMA</b>
+            </a>
+            CSS framework
+        </p>
     </div>
     <div id="modal_success" class="modal">
         <div class="modal-background"></div>

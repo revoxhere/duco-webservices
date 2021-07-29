@@ -38,116 +38,10 @@
     <link rel="preload" as="image" href="backgrounds/8-min.png">
     <link rel="preload" as="image" href="backgrounds/9-min.png">
     <!-- Bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
-    <style>
-        .is-primary {
-            /* Override Bulmas primary color to Duco-Colored gradient*/
-            background: linear-gradient(145deg, #fd746c, #ff9068) !important;
-        }
-
-        .is-duco {
-            background: #FF9312 !important;
-        }
-
-        .is-duco-alt {
-            background: #feca57 !important;
-        }
-
-        .register-form{
-            max-width: 450px;
-        }
-
-        body {
-            background-size: cover !important;
-            background-attachment: fixed !important;
-            width: 100% !important;
-            min-height: -webkit-fill-available;
-            overflow-x: hidden !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background-repeat: no-repeat !important;
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        select {
-            background: inherit !important;
-        }
-
-        #modal_error, #modal_success {
-            animation: fadeIn 1s;
-            -webkit-animation: fadeIn 1s;
-            -moz-animation: fadeIn 1s;
-            -o-animation: fadeIn 1s;
-            -ms-animation: fadeIn 1s;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-moz-keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-webkit-keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-o-keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @-ms-keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-      </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
@@ -294,7 +188,7 @@
         }
 
             function isEmail(email) {
-	            return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+                return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
             }
         }
     </script>
@@ -306,24 +200,22 @@
     </div>
     <section class="hero is-fullheight">
         <div class="hero-body is-align-self-center">
-            <div class="container">
+            <div class="container" style="max-width:30em">
                 <div class="box register-form">
-                    <span class="title">
-                        <span id="wallettext">
-                            <p style="font-size:1.5em;text-align:center">
-                                <img src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true" class="icon is-medium">
-                                Duino-Coin<br>
-                            </p>
-                            <p class="has-text-weight-light" style="text-align:center">
-                                Web Wallet
-                            </p>
-                            <p class="has-text-weight-normal my-5" style="text-align:center">
-                                Register a new account
-                            </p>
-                        </span>
-                        <span id="copyright"></span>
+                    <span id="wallettext">
+                        <p class="title">
+                            <a href="https://duinocoin.com">
+                                <img src="assets/ducobanner.png" width="200rem" class="image">
+                            </a>
+                        </p>
+                        <p class="title">
+                            Sign up
+                        </p>
+                        <p class="subtitle">
+                            Create a new Duino-Coin Wallet
+                        </p>
                     </span>
-                    <div class="field">
+                    <div class="field mt-5">
                         <label for="" class="label has-text-grey">Username</label>
                         <div id="usernameInput" class="field">
                             <p class="control has-icons-left">
@@ -386,9 +278,9 @@
                     <div class="field">
                         <p class="subtitle is-size-6 has-text-danger">
                             <i class="fa fa-exclamation-triangle"></i>
-                            By registering you agree to the Duino-Coin<br>
-                            <a href="https://github.com/revoxhere/duino-coin#terms-of-usage">
-                                terms of usage and privacy policy
+                            By registering you agree to the
+                            <a href="https://github.com/revoxhere/duino-coin#terms-of-service">
+                                <b>Duino-Coin terms of usage and privacy policy</b>
                             </a>
                         </p>
                         <div id="loginInput" class="buttons">
@@ -401,14 +293,32 @@
                                 </span>
                                 &nbsp;
                                 <span id="logintext">
-                                    Register a new account
+                                    Create a new wallet
                                 </span>
                             </button>
-                            <a href="https://wallet.duinocoin.com" class="button is-warning is-duco-alt is-fullwidth">
+                            <a href="index.html" class="button is-fullwidth">
                                 <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
-                                Go back to login
+                                Back to login
                             </a>
                         </div>
+                        <p class="subtitle is-size-7 has-text-grey-dark mt-5" id="copyright">
+                            <b>Official</b> Duino-Coin Web Wallet ©
+                            <a href="https://github.com/revoxhere/">revox</a> &middot;
+                            <a href="https://www.instagram.com/vlegle/">Yennefer</a> &middot;
+                            <a href="https://github.com/LDarki">LDarki</a>
+                            <br>Hosted by
+                            <a href="https://kristian-kramer.com">Kristian</a>
+                            and
+                            <a href="https://pages.github.com">GH Pages</a>
+                            &middot;
+                            <a href="https://opensource.org/licenses/MIT">
+                                <b>MIT</b> licensed
+                            </a>
+                            <br>This page is <b>open source</b>. You can improve it
+                            <a href="https://github.com/revoxhere/duco-webservices">
+                                here
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

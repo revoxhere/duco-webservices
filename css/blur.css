@@ -1,10 +1,14 @@
+.box-grey {
+    background-color: transparent !important;
+}
+
 @media (prefers-color-scheme: dark) {
 
     .box,
     input,
     .button,
     .tag,
-    .select {
+    select {
         /* Fallback for firefox that still doesn't support blur */
         background-color: rgba(0, 0, 0, .8);
         background-blend-mode: lighten;
@@ -21,7 +25,7 @@
         input,
         .button,
         .tag,
-        .select,
+        select,
         button {
             background-color: rgba(0, 0, 0, 0.25) !important;
             backdrop-filter: blur(1em) !important;
@@ -36,7 +40,7 @@
     input,
     .button,
     .tag,
-    .select {
+    select {
         /* Fallback for firefox that still doesn't support blur */
         background-color: rgba(255, 255, 255, .8);
         background-blend-mode: lighten;
@@ -44,7 +48,7 @@
 
     @supports ((-webkit-backdrop-filter: blur(1em)) or (backdrop-filter: blur(1em))) {
         .box {
-            background-color: rgba(255, 255, 255, .25);
+            background-color: rgba(255, 255, 255, .6);
             -webkit-backdrop-filter: blur(1em);
             backdrop-filter: blur(1em);
             background-blend-mode: lighten;
@@ -52,10 +56,11 @@
 
         input,
         .button,
-        .select,
+        select,
         button {
-            background-color: rgba(255, 255, 255, 0.25) !important;
+            background-color: rgba(255, 255, 255, 0.5) !important;
             backdrop-filter: blur(1em) !important;
+            background-blend-mode: lighten;
         }
     }
 

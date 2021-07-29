@@ -7,12 +7,9 @@ let daily_average = [];
 let oldb = 0;
 let success_once = false;
 let alreadyreset = false;
-let totalHashes = 0;
+let total_hashrate = 0;
 let sending = false;
 let start = Date.now();
-let awaiting_login = false;
-let awaiting_data = false;
-let awaiting_version = true;
 let timestamps = [];
 let balances = [];
 let first_launch = true;
@@ -34,18 +31,11 @@ window.addEventListener('load', function() {
         'backgrounds/6-min.jpg',
         'backgrounds/7-min.png',
         'backgrounds/8-min.png',
-        'backgrounds/9-min.png',
-        'backgrounds/balkanac-1.png',
-        'backgrounds/balkanac-2.png'
+        'backgrounds/9-min.png'
     ]
 
     let num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
-
-    // THEME SWITCHER
-    let themesel = document.getElementById('themesel');
-    themesel.addEventListener('input', updateValue);
-
 
     const data = {
         labels: timestamps,
@@ -156,11 +146,18 @@ window.addEventListener('load', function() {
                 update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
                 update_element("ducousd_trx", "≈ $" + round_to(5, data["Duco price TRX"]));
 
+                //update_element("ducousd_xrp", "≈ $" + round_to(5, data["Duco price XRP"]));
+                //update_element("ducousd_dgb", "≈ $" + round_to(5, data["Duco price DGB"]));
+                //update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
+
                 update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
 
                 update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
 
             })
+        window.setTimeout(() => {
+            get_duco_price();
+        }, 30 * 1000);
     }
 
     // SCIENTIFIC PREFIX CALCULATOR
@@ -185,6 +182,10 @@ window.addEventListener('load', function() {
             let balanceusd = balance * duco_price;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
+            window.setTimeout(() => {
+                user_data(username);
+            }, 10 * 1000);
+
             if (first_launch) {
                 push_to_graph(balance);
                 first_launch = false;
@@ -196,29 +197,11 @@ window.addEventListener('load', function() {
                 oldb = balance;
             }
 
-            let balance_list = round_to(8, balance).toString().split(".");
-            balance_before_dot = balance_list[0];
+            balance = round_to(8, balance);
+            update_element("balance", balance + " DUCO");
 
-            if (balance_list[1])
-                balance_after_dot = balance_list[1];
-            else
-                balance_after_dot = balance_list[0];
-
-            update_element("balance", balance_before_dot +
-                "<span class='has-text-weight-light'>." +
-                balance_after_dot + "</span> ᕲ");
-
-            let balanceusd_list = round_to(4, balanceusd).toString().split(".")
-            balanceusd_before_dot = balanceusd_list[0]
-            if (balanceusd_list[1])
-                balanceusd_after_dot = balanceusd_list[1];
-            else
-                balanceusd_after_dot = 0;
-
-            update_element("balanceusd", "<span>≈ $</span>" +
-                balanceusd_before_dot +
-                "<span class='has-text-weight-light'>." +
-                balanceusd_after_dot);
+            balanceusd = round_to(4, balanceusd);
+            update_element("balanceusd", "≈ $" + balanceusd);
 
             myMiners = data.miners;
             console.log("Miner data received");
@@ -226,7 +209,7 @@ window.addEventListener('load', function() {
             if (myMiners.length > 0 || success_once) {
                 let success_once = true;
                 let user_miners_html = '';
-                let minerId = '';
+                let miner_name = '';
                 let diffString = '';
 
                 for (let miner in myMiners) {
@@ -236,96 +219,157 @@ window.addEventListener('load', function() {
                     miner_diff = myMiners[miner]["diff"];
                     miner_rejected = myMiners[miner]["rejected"];
                     miner_accepted = myMiners[miner]["accepted"];
+                    miner_sharetime = myMiners[miner]["sharetime"];
 
-                    if (miner_software == "NODE") {
-                        user_miners_html += "<span class='has-text-grey-light'>#" +
-                            miner +
-                            ":</span> " +
-                            "<b class='has-text-link'>" +
-                            miner_identifier +
-                            "</b><br>";
-                    } else {
-                        if (miner_identifier === "None")
-                            minerId = miner_software;
-                        else
-                            minerId = miner_identifier +
-                            "</b><span class='has-text-grey'> (" +
-                            miner_software +
-                            ")</span>";
+                    if (miner_identifier === "None")
+                        miner_name = miner_software;
+                    else
+                        miner_name = miner_identifier +
+                        "<span class='has-text-grey'> (" +
+                        miner_software +
+                        ")</span>";
 
-                        diffString = scientific_prefix(miner_diff)
+                    diffString = scientific_prefix(miner_diff)
+                    accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
 
-                        user_miners_html += "<span class='has-text-grey-light'>#" +
-                            miner +
-                            ":</span> " +
-                            "<b class='has-text-primary'>" +
-                            minerId +
-                            "</b>, " +
-                            "<b><span class='has-text-success'>" +
-                            scientific_prefix(miner_hashrate) +
-                            "H/s</b></span>" +
-                            "<span class='has-text-info'>" +
-                            " @ diff " +
-                            diffString +
-                            "</span>, " +
-                            miner_accepted +
-                            "/" +
-                            (miner_accepted + miner_rejected) +
-                            " <b class='has-text-success-dark'>(" +
-                            Math.round(
-                                (miner_accepted /
-                                    (miner_accepted + miner_rejected)) *
-                                100
-                            ) +
-                            "%)</b><br>";
-                    }
+                    user_miners_html += `
+                            <div class="column is-full">
+                                <p class="title is-size-6">
+                                    <i class="fas fa-spin fa-cog fa-fw"></i>
+                                    <span class="has-text-primary">
+                                        ` + miner_name + `
+                                    </span>
+                                    -
+                                    <span>
+                                        ` + scientific_prefix(miner_hashrate) + `H/s
+                                    </span>
+                                    <span class="has-text-grey">
+                                        (` + miner_sharetime + `s)
+                                    </span>
+                                </p>
+                                <p class="subtitle is-size-7">
+                                    <span>
+                                        <b>` +
+                        miner_accepted +
+                        "/" +
+                        (miner_accepted + miner_rejected) + `
+                                            <span class="has-text-success-dark">
+                                                (` + accepted_rate + `)
+                                            </span>
+                                        </b> accepted shares,
+                                        difficulty <b>` + diffString + `</b>
+                                    </span>
+                                </p>
+                            </div>`;
 
-                    totalHashes = totalHashes + miner_hashrate;
+                    total_hashrate += miner_hashrate;
                 }
+                update_element("minercount", "(" + myMiners.length + ")");
                 update_element("miners", user_miners_html);
-                update_element("minerHR", "Total hashrate: " + scientific_prefix(totalHashes) + "H/s");
-                totalHashes = 0;
+                update_element("total_hashrate", "Total hashrate: " + scientific_prefix(total_hashrate) + "H/s");
+                total_hashrate = 0;
             } else {
-                update_element("miners", "<b class='subtitle is-size-6'>No miners detected</b>" +
-                    "<p class='subtitle is-size-6 has-text-grey'>If you have turned them on recently, it will take a minute or two until their stats will appear here.</p>");
+                update_element("miners", `
+                    <div class="column is-full">
+                        <p class='title is-size-6'>
+                            No miners detected
+                        </p>
+                        <p class='subtitle is-size-6 has-text-grey'>
+                            If you have turned them on recently, 
+                            it will take a minute or two until their stats will appear here.
+                        </p>
+                    </div>`);
             }
 
-            const transtable = document.getElementById("transactions");
+            let transactions_table = document.getElementById("transactions_table");
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received");
             if (user_transactions) {
                 transactions_html = "";
                 for (let i in user_transactions) {
-                    transaction_date = user_transactions[i]["datetime"].substring(0, 5);
+                    transaction_date = user_transactions[i]["datetime"];
                     transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
                     transaction_hash_full = user_transactions[i]["hash"];
-                    transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 5);
+                    transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 8);
                     transaction_memo = user_transactions[i]["memo"];
                     transaction_recipient = user_transactions[i]["recipient"];
                     transaction_sender = user_transactions[i]["sender"];
 
-                    let transaction_color = "has-text-success-dark";
-                    let transaction_symbol = "+";
+                    if (transaction_memo == "None") transaction_memo = "";
+                    else transaction_memo = "\"" + transaction_memo + "\""
 
                     if (transaction_sender == username) {
-                        transaction_color = "has-text-danger";
-                        transaction_symbol = "-";
+                        thtml = `
+                            <div class="column is-full">
+                                <p class="title is-size-6">
+                                    <i class="fa fa-arrow-right fa-fw"></i>
+                                    <span class="has-text-danger">
+                                        Sent
+                                        ` + transaction_amount + `
+                                        DUCO
+                                    </span>
+                                    <span>
+                                        to
+                                    </span>
+                                    <a href="https://explorer.duinocoin.com/?search=` +
+                            transaction_recipient + `" target="_blank">
+                                        ` + transaction_recipient + `
+                                    </a>
+                                    <span class="has-text-grey">
+                                        ` + transaction_memo + `
+                                    </span>
+                                </p>
+                                <p class="subtitle is-size-7">
+                                    <span>
+                                        ` + transaction_date + `
+                                    </span>
+                                    <a href="https://explorer.duinocoin.com/?search=` +
+                            transaction_hash_full + `" target="_blank">
+                                        (` + transaction_hash + `)
+                                    </a>
+                                </p>
+                            </div>`;
+                        transactions_html += thtml;
+                    } else {
+                        thtml = `
+                            <div class="column is-full">
+                                <p class="title is-size-6">
+                                    <i class="fa fa-arrow-left fa-fw"></i>
+                                    <span class="has-text-success-dark">
+                                        Received
+                                        ` + transaction_amount + `
+                                        DUCO
+                                    </span>
+                                    <span>
+                                        from
+                                    </span>
+                                    <a href="https://explorer.duinocoin.com/?search=` +
+                            transaction_sender + `" target="_blank">
+                                        ` + transaction_sender + `
+                                    </a>
+                                    <span class="has-text-grey">
+                                        ` + transaction_memo + `
+                                    </span>
+                                </p>
+                                <p class="subtitle is-size-7">
+                                    <span>
+                                        ` + transaction_date + `
+                                    </span>
+                                    <a href="https://explorer.duinocoin.com/?search=` +
+                            transaction_hash_full + `" target="_blank">
+                                        (` + transaction_hash + `)
+                                    </a>
+                                </p>
+                            </div>`;
+                        transactions_html += thtml;
                     }
-
-                    hash_html = `<a class="subtitle is-size-6 monospace"` +
-                        ` style="color:#8e44ad" target="_blank"` +
-                        ` href="https://explorer.duinocoin.com/?search=${transaction_hash_full}">` +
-                        `${transaction_hash}</a>`
-
-                    transactions_html +=
-                        `<tr><td data-label="Date" class="subtitle is-size-6 has-text-grey monospace">${transaction_date}<br>${hash_html}</td>` +
-                        `<td data-label="Amount" class="subtitle is-size-6 ${transaction_color}"> ${transaction_symbol} ${transaction_amount} ᕲ</td>` +
-                        `<td data-label="Sender" class="subtitle is-size-6">${transaction_sender}</td>` +
-                        `<td data-label="Recipient" class="subtitle is-size-6">${transaction_recipient}</td>` +
-                        `<td data-label="Message" class="subtitle is-size-6 has-text-grey">${transaction_memo}</td></tr>`;
                 }
-                transtable.innerHTML = transactions_html;
-            } else transtable.innerHTML = `<td colspan="4">No transactions yet or they're temporarily unavailable</td>`;
+                transactions_table.innerHTML = transactions_html;
+            } else transactions_table.innerHTML = `<div class="column is-full">
+                    <p class="title is-size-6">
+                        No transactions yet or they're temporarily unavailable
+                    </p>
+                </div>`;
         });
     }
 
@@ -357,18 +401,13 @@ window.addEventListener('load', function() {
 
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
-            avg_list = round_to(2, daily).toString().split(".")
-            avg_before_dot = avg_list[0]
-            avg_after_dot = avg_list[1]
-
-            update_element("estimatedprofit", "≈ " + avg_before_dot +
-                "<span class='has-text-weight-light'>." +
-                avg_after_dot + "</span> ᕲ daily");
+            daily = round_to(2, daily)
+            update_element("estimatedprofit", `
+                <i class="far fa-star"></i>
+                Earning about <b>` + daily + ` ᕲ</b> daily`);
 
             avgusd = round_to(2, daily * duco_price);
-
-            update_element("estimatedprofitusd", "(≈ $" +
-                avgusd + ")");
+            update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
         }
         start = Date.now()
     }
@@ -382,71 +421,17 @@ window.addEventListener('load', function() {
         }
     });
 
+
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
         let username = document.getElementById('usernameinput').value
         let password = document.getElementById('passwordinput').value
 
         if (username && password) {
+
             $("#logincheck").fadeOut('fast', function() {
                 $("#loginload").fadeIn('fast');
             });
-
-            update_element("logintext", "Connecting...");
-            let socket = new WebSocket("wss://server.duinocoin.com:15808", null, 5000, 5);
-
-            socket.onclose = function(event) {
-                if (loggedIn) {
-                    console.error("Error Code: " + event.code);
-                    let dataErr = "Unknown";
-
-                    if (event.code == 1000) {
-                        console.error("[Error] Normal closure");
-                        dataErr = "Due to five minutes of inactivity the connection was closed from the server side for security reasons.";
-                    } else if (event.code == 1001 || event.code == 1002) {
-                        console.error("[Error] Server problem.");
-                        dataErr = "Server closed the connection";
-                    } else if (event.code == 1005) {
-                        console.error("[Error] No status code was actually present");
-                        dataErr = "No status code";
-                    } else if (event.code == 1006) {
-                        console.error("[Error] Connection was closed abnormally");
-                        dataErr = "Connection closed abnormally (most likely a timeout)";
-                    } else if (event.code == 1015) {
-                        console.error("[Error] Failure to perform a TLS handshake");
-                        dataErr = "TLS handshake error";
-                    } else {
-                        console.error("[Error] Unknown reason");
-                    }
-
-                    if (event.code == 1000) {
-                        let modal_success = document.querySelector('#modal_success');
-                        document.querySelector('#modal_success .modal-card-body .content p')
-                            .innerHTML = dataErr + `<br><br><a href="/" class="button is-info">Refresh</a></p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_success.classList.add('is-active');
-
-                        document.querySelector('#modal_success .delete').onclick = function() {
-                            document.querySelector('html').classList.remove('is-clipped');
-                            modal_success.classList.remove('is-active');
-                        }
-                    } else {
-                        let modal_error = document.querySelector('#modal_error');
-                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                            `<b>An error has occurred</b>, please try again later and if the problem persists ` +
-                            `ask for help on our <a href="https://discord.gg/kvBkccy">Discord server</a> ` +
-                            `with this code: <b>` + event.code + `</b>: <b>` + dataErr + `</b><br></p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_error.classList.add('is-active');
-
-                        document.querySelector('#modal_error .delete').onclick = function() {
-                            document.querySelector('html').classList.remove('is-clipped');
-                            modal_error.classList.remove('is-active');
-                        }
-                    }
-                }
-            }
-
 
             document.getElementById('send').onclick = function() {
                 let recipient = document.getElementById('recipientinput').value
@@ -458,11 +443,57 @@ window.addEventListener('load', function() {
 
                 if (recipient && amount) {
                     update_element("sendinginfo", "Requesting transaction...");
-                    socket.send("SEND," + memo + "," + recipient + "," + amount + ",");
-                    sending = true;
+                    $.getJSON('https://server.duinocoin.com/transaction/' +
+                        '?username=' + username +
+                        "&password=" + password +
+                        "&recipient=" + recipient +
+                        "&amount=" + amount +
+                        "&memo=" + memo,
+                        function(data) {
+                            console.log(data);
+                            if (data.success == true) {
+                                serverMessage = data["result"].split(",");
+                                if (serverMessage[0] == "OK") {
+                                    let modal_success = document.querySelector('#modal_success');
+                                    document.querySelector('#modal_success .modal-card-body .content p')
+                                        .innerHTML = `<span class='subtitle has-text-success'><b>` +
+                                        serverMessage[1] +
+                                        `</b></span><br> Transaction hash: <a target="_blank" href='https://explorer.duinocoin.com?search=` +
+                                        serverMessage[2] + "'>" +
+                                        serverMessage[2] +
+                                        `</a></p>`;
+                                    document.querySelector('html').classList.add('is-clipped');
+                                    modal_success.classList.add('is-active');
+
+                                    document.querySelector('#modal_success .delete').onclick = function() {
+                                        document.querySelector('html').classList.remove('is-clipped');
+                                        modal_success.classList.remove('is-active');
+                                    }
+                                    document.getElementById("send").classList.remove("is-loading");
+                                    update_element("sendinginfo", "");
+                                    sending = false;
+                                }
+
+                            } else {
+                                serverMessage = data["message"].split(",");
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
+
+                                document.querySelector('#modal_error .delete').onclick = function() {
+                                    document.querySelector('html').classList.remove('is-clipped');
+                                    modal_error.classList.remove('is-active');
+                                }
+                                document.getElementById("send").classList.remove("is-loading");
+                                update_element("sendinginfo", "");
+                                sending = false;
+                            }
+                        })
                 } else {
                     update_element("sendinginfo",
-                        "<span class='subtitle is-size-7 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>");
+                        "<span class='subtitle is-size-6 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>");
                     document.getElementById("send").classList.remove("is-loading");
 
                     setTimeout(() => {
@@ -471,112 +502,51 @@ window.addEventListener('load', function() {
                 }
             }
 
-            socket.onmessage = function(msg) {
-                serverMessage = msg.data;
+            update_element("logintext", "Authenticating...");
+            $.getJSON('https://server.duinocoin.com/auth/?username=' +
+                username +
+                "&password=" +
+                password,
+                function(data) {
+                    if (data.success == true) {
+                        console.log("User logged-in");
 
-                if (awaiting_version && sending == false) {
-                    console.log("Version received: " + serverMessage);
-                    awaiting_version = false;
-                }
-                if (awaiting_login == false && awaiting_version == false && sending == false) {
-                    update_element("logintext", "Authenticating...");
-                    socket.send("LOGI," + username + "," + password + ",");
-                    awaiting_login = true;
-                }
-                if (awaiting_login && serverMessage.includes("OK") && sending == false) {
-
-                    console.log("User logged-in");
-
-                    let time = new Date().getHours();
-                    let greeting = "Welcome back";
-                    if (time < 12) {
-                        greeting = "Have a wonderful morning";
-                    }
-                    if (time == 12) {
-                        greeting = "Have a tasty noon";
-                    }
-                    if (time > 12 && time < 18) {
-                        greeting = "Have a peaceful afternoon";
-                    }
-                    if (time >= 18) {
-                        greeting = "Have a cozy evening";
-                    }
-
-                    update_element("wallettext", "<p class='subtitle is-size-3 mb-3'>" +
-                        "<img src='https://github.com/revoxhere/duino-coin/blob/master/Resources/wave.png?raw=true' class='icon'>" +
-                        " " + greeting + ", <b>" + username + "!</b></p>");
-
-                    awaiting_login = false;
-                    loggedIn = true;
-
-                    $("#login").hide('fast', function() {
-                        user_data(username);
-                        window.setInterval(() => {
+                        $("#login").hide('fast', function() {
+                            $("#user").html("<b>" + username.toUpperCase() + "'S</b>");
                             user_data(username);
-                        }, 10 * 1000);
-
-                        $("#wallet").show('fast', function() {
                             get_duco_price();
-                            window.setInterval(() => {
-                                get_duco_price();
-                            }, 30 * 1000);
 
                             window.setTimeout(() => {
                                 (adsbygoogle = window.adsbygoogle || []).push({});
                             }, 1000);
+                            $("#wallet").show('slow');
+
+                            // THEME SWITCHER
+                            let themesel = document.getElementById('themesel');
+                            themesel.addEventListener('input', updateValue);
                         });
-                    });
-                }
-                if (awaiting_login && serverMessage.includes("NO") && sending == false) {
-                    awaiting_login = false;
-                    serverMessage = serverMessage.split(",")
-
-                    update_element("logintext", serverMessage[1]);
-
-                    $("#logincheck").fadeIn(1)
-                    $("#loginload").fadeOut(1)
-
-                    setTimeout(() => {
-                        update_element("logintext", "Login");
-                    }, 5000);
-                }
-                if (sending) {
-                    serverMessage = serverMessage.toString().split(",");
-
-                    if (serverMessage[0] == "OK") {
-                        let modal_success = document.querySelector('#modal_success');
-                        document.querySelector('#modal_success .modal-card-body .content p')
-                            .innerHTML = `<span class='subtitle has-text-success'><b>` +
-                            serverMessage[1] +
-                            `</b></span><br> Transaction hash: <a target="_blank" href='https://explorer.duinocoin.com?search=` +
-                            serverMessage[2] + "'>" +
-                            serverMessage[2] +
-                            `</a></p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_success.classList.add('is-active');
-
-                        document.querySelector('#modal_success .delete').onclick = function() {
-                            document.querySelector('html').classList.remove('is-clipped');
-                            modal_success.classList.remove('is-active');
-                        }
-
                     } else {
-                        let modal_error = document.querySelector('#modal_error');
-                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                            `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_error.classList.add('is-active');
+                        update_element("logintext", data.message);
+                        $("#loginload").fadeOut('fast');
 
-                        document.querySelector('#modal_error .delete').onclick = function() {
-                            document.querySelector('html').classList.remove('is-clipped');
-                            modal_error.classList.remove('is-active');
-                        }
+                        setTimeout(() => {
+                            update_element("logintext", "Login");
+                            $("#logincheck").fadeIn('fast', function() {
+                                $("#loginload").fadeOut('fast');
+                            });
+                        }, 5000);
                     }
-                    document.getElementById("send").classList.remove("is-loading");
-                    update_element("sendinginfo", "");
-                    sending = false;
-                }
-            }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                update_element("logintext", "Incorrect password");
+                $("#loginload").fadeOut('fast');
+
+                setTimeout(() => {
+                    update_element("logintext", "Login");
+                    $("#logincheck").fadeIn('fast', function() {
+                        $("#loginload").fadeOut('fast');
+                    });
+                }, 5000);
+            })
         } else {
             update_element("logintext", "Fill in the blanks first");
 
@@ -584,49 +554,8 @@ window.addEventListener('load', function() {
                 update_element("logintext", "Login");
             }, 5000);
         }
+
     }
 
-    // Footer
-    document.getElementById("pageloader").setAttribute('class', "pageloader is-primary is-left-to-right"); // After page is loaded
-
-    let multiplier = document.getElementById('multiplier');
-    let inputHashrate = document.getElementById('input-hashrate');
-
-    multiplier.addEventListener('input', updateValueHashrate);
-    inputHashrate.addEventListener('input', updateValueHashrate);
-
-    function floatmap(x, in_min, in_max, out_min, out_max) {
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-    }
-
-    function updateValueHashrate(e) {
-        hashrate = e.target.value * multiplier.value;
-
-        /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
-        result = (0.0026 * hashrate) + 2.7
-
-        if (hashrate > 8000) result = floatmap(result, 25, 1000, 25, 40); // extreme diff tier, TODO
-
-        update_element("values", round_to(2, result) + " ᕲ/day");
-    }
-
-    let device = document.getElementById('device-type');
-    let input_devices = document.getElementById('input-devices');
-
-    device.addEventListener('input', updateValueDevices);
-    input_devices.addEventListener('input', updateValueDevices);
-
-    function updateValueDevices(e) {
-        if (device.value === 'AVR') basereward = 8
-        if (device.value === 'ESP8266') basereward = 6
-        if (device.value === 'ESP32') basereward = 7
-        /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
-        let result = 0;
-        for (i = 0; i < input_devices.value; i++) {
-            result += basereward;
-            basereward *= 0.96;
-        }
-        update_element("values-devices", round_to(2, result) + " ᕲ/day");
-    }
-
+    document.getElementById("pageloader").setAttribute('class', "pageloader is-primary"); // After page is loaded
 });

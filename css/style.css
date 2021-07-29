@@ -101,9 +101,20 @@
 
 .is-duco {
     background: linear-gradient(160deg, #fccf30 0%, #f55555 100%);
-    border: none;
+    border: none !important;
     color: white !important;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+
+#miners {
+    height: 12.5rem;
+    overflow-y: scroll;
+}
+
+#transactions_table {
+    max-height: 16.8rem;
+    overflow-y: scroll;
 }
 
 .fa-check,
@@ -152,31 +163,11 @@ body {
     background-repeat: no-repeat !important;
 }
 
-.balanceT {
-    max-width: 80vw !important;
-    max-height: 15em !important;
-    overflow-x: scroll !important;
-    overflow-y: scroll !important;
-}
-
-.balanceT table {
-    margin: 0;
-    padding: 0;
-    border-collapse: collapse;
-}
-
-.balanceT table th,
-.balanceT table td {
-    padding: .5em !important;
-    text-align: left !important;
-}
-
-.balanceT table th {
-    text-transform: uppercase !important;
-    width: 5em;
-}
-
 @media (prefers-color-scheme: light) {
+    .box-grey {
+        background-color: #F5F5F5 !important;
+    }
+
     ::-webkit-scrollbar {
         width: 5px;
         height: 5px;
@@ -197,7 +188,11 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .box {
-        background-color: #17181c;
+        background-color: #17181c !important;
+    }
+
+    .box-grey {
+        background-color: #202026 !important;
     }
 
     ::-webkit-scrollbar {
@@ -225,13 +220,13 @@ body {
 
 /* Change Autocomplete styles in Chrome*/
 .input:-webkit-autofill,
-.input:-webkit-autofill:hover, 
+.input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:valid {
-  border: 1px solid hsl(141, 53%, 53%) !important;
-  -webkit-text-fill-color: hsl(141, 53%, 53%);
-  -webkit-box-shadow: 0 0 0px 10px inherit inset;
-  transition: background-color 5000s ease-in-out 0s;
+    //border: 1px solid hsl(141, 53%, 53%) !important;
+    -webkit-text-fill-color: hsl(141, 53%, 53%);
+    -webkit-box-shadow: 0 0 0px 10px inherit inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 #modal_error {
