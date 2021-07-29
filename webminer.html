@@ -40,6 +40,13 @@
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
+    <!-- Themes -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
+    <link rel="stylesheet" id="crisp" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/journal/bulmaswatch.min.css">
+    <link rel="stylesheet" id="radiate" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
+    <link rel="stylesheet" id="alt" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/materia/bulmaswatch.min.css">
+    <link rel="stylesheet" id="material" disabled="true" type="text/css" href="https://jenil.github.io/bulmaswatch/cosmo/bulmaswatch.min.css">
+    <!-- Additional CSS-->
     <style>
         .is-primary {
             /* Override Bulmas primary color to Duco-Colored gradient*/
@@ -56,18 +63,14 @@
             background-repeat: no-repeat !important;
         }
     </style>
-
     <!-- Font Awesome and jQuery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js" integrity="sha512-6ORWJX/LrnSjBzwefdNUyLCMTIsGoNP6NftMy2UAm1JBm6PRZCO1d7OHBStWpVFZLO+RerTvqX/Z9mBFfCJZ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <script>
-    /* GLOBAL JS */
+    // Random background
     window.addEventListener('load', function ()
     {
-        let clickcount = 0;
-
-        // RANDOM BACKGROUND
         const bg_list = [
             'backgrounds/1-min.png',
             'backgrounds/2-min.png',
@@ -82,19 +85,6 @@
 
         let num = Math.floor(Math.random() * bg_list.length)
         document.body.background = bg_list[num];
-
-        document.getElementById('darkmode').onclick = function()
-        {
-            clickcount++;
-            if (clickcount % 2 == 1)
-            {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
-            }
-            if (clickcount % 2 == 0)
-            {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-            }
-        }
     });
 </script>
 <body>
@@ -234,10 +224,20 @@
                         </div>
                     </div>
                     <div class="buttons is-centered">
-                        <button id="darkmode" class="button is-secondary">
-                            <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
-                            <span>Switch theme</span>
-                        </button>
+                        <div class="control has-icons-left mb-2 mr-2">
+                            <div class="select is-normal">
+                                <select id="theme-select">
+                                    <option selected value="light">Adaptive (default)</option>
+                                    <option value="material">Metro</option>
+                                    <option value="crisp">Crisp</option>
+                                    <option value="radiance">Nuclear</option>
+                                    <option value="altlight">Sleek</option>
+                                </select>
+                            </div>
+                            <span class="icon is-left">
+                                <i class="fas fa-sun" style="color:#f0932b"></i>
+                            </span>
+                        </div>
                         <a href="https://wallet.duinocoin.com" class="button is-secondary">
                             <i class="icon is-small fa fa-wallet" style="color:#f39c12"></i>
                             <span>Web Wallet</span>
@@ -274,6 +274,50 @@
     {
         pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
     });
+
+    // Theme switcher
+    document.getElementById("theme-select").addEventListener('input', updateTheme);
+
+    function updateTheme (event) {
+        let theme = event.target.value;
+        let radiate = $('#radiate');
+        let alt = $('#alt');
+        let crisp = $('#crisp');
+        let material = $('#material');
+        switch (theme) {
+            case 'radiance':
+                radiate.attr('disabled', false);
+                alt.attr('disabled', true);
+                crisp.attr('disabled', true);
+                material.attr('disabled', true);
+                break;
+            case 'altlight':
+                radiate.attr('disabled', true);
+                alt.attr('disabled', false);
+                crisp.attr('disabled', true);
+                material.attr('disabled', true);
+                break;
+            case 'light':
+                radiate.attr('disabled', true);
+                alt.attr('disabled', true);
+                crisp.attr('disabled', true);
+                material.attr('disabled', true);
+                break;
+            case 'crisp':
+                radiate.attr('disabled', true);
+                alt.attr('disabled', true);
+                crisp.attr('disabled', false);
+                material.attr('disabled', true);
+                break;
+            case 'material':
+            default:
+                radiate.attr('disabled', true);
+                alt.attr('disabled', true);
+                crisp.attr('disabled', true);
+                material.attr('disabled', false);
+                break;
+        }
+    }
 
     //gets the username, rigid and amount of threads from the url parameters
     var url = new URL(window.location);
