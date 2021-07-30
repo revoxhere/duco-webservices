@@ -193,22 +193,23 @@ window.addEventListener('load', function() {
             balanceusd = round_to(4, balanceusd);
             update_element("balanceusd", "≈ $" + balanceusd);
 
-            myMiners = data.miners;
-            console.log("Miner data received");
+            user_miners = data.miners;
+            console.log(user_miners)
+            console.log("Miner data received " + user_miners.length);
 
-            if (myMiners.length > 0) {
+            if (user_miners.length > 0) {
                 let user_miners_html = '';
                 let miner_name = '';
                 let diffString = '';
 
-                for (let miner in myMiners) {
-                    miner_hashrate = myMiners[miner]["hashrate"];
-                    miner_identifier = myMiners[miner]["identifier"];
-                    miner_software = myMiners[miner]["software"];
-                    miner_diff = myMiners[miner]["diff"];
-                    miner_rejected = myMiners[miner]["rejected"];
-                    miner_accepted = myMiners[miner]["accepted"];
-                    miner_sharetime = myMiners[miner]["sharetime"];
+                for (let miner in user_miners) {
+                    miner_hashrate = user_miners[miner]["hashrate"];
+                    miner_identifier = user_miners[miner]["identifier"];
+                    miner_software = user_miners[miner]["software"];
+                    miner_diff = user_miners[miner]["diff"];
+                    miner_rejected = user_miners[miner]["rejected"];
+                    miner_accepted = user_miners[miner]["accepted"];
+                    miner_sharetime = user_miners[miner]["sharetime"];
 
                     if (miner_identifier === "None")
                         miner_name = miner_software;
@@ -253,7 +254,7 @@ window.addEventListener('load', function() {
 
                     total_hashrate += miner_hashrate;
                 }
-                update_element("minercount", "(" + myMiners.length + ")");
+                update_element("minercount", "(" + user_miners.length + ")");
                 update_element("miners", user_miners_html);
                 update_element("total_hashrate", "Total hashrate: " + scientific_prefix(total_hashrate) + "H/s");
                 total_hashrate = 0;
@@ -270,10 +271,11 @@ window.addEventListener('load', function() {
                     </div>`);
             }
 
-            let transactions_table = document.getElementById("transactions_table");
             user_transactions = data.transactions.reverse();
-            console.log("Transaction list received");
-            if (user_transactionsmy.length > 0) {
+            console.log("Transaction list received " + user_transactions.length);
+
+            let transactions_table = document.getElementById("transactions_table");
+            if (user_transactions.length > 0) {
                 transactions_html = "";
                 for (let i in user_transactions) {
                     transaction_date = user_transactions[i]["datetime"];
