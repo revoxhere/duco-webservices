@@ -196,7 +196,7 @@ window.addEventListener('load', function() {
             myMiners = data.miners;
             console.log("Miner data received");
 
-            if (myMiners) {
+            if (myMiners.length > 0) {
                 let user_miners_html = '';
                 let miner_name = '';
                 let diffString = '';
@@ -273,7 +273,7 @@ window.addEventListener('load', function() {
             let transactions_table = document.getElementById("transactions_table");
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received");
-            if (user_transactions) {
+            if (user_transactionsmy.length > 0) {
                 transactions_html = "";
                 for (let i in user_transactions) {
                     transaction_date = user_transactions[i]["datetime"];
