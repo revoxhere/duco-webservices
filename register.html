@@ -76,22 +76,17 @@
             let version_received;
             register.onclick = function(event) {
                 if(checkInputs()){
+                    $("#logintext").text("Please wait...");
                     $("#logincheck").hide(1);
                     $("#loginload").show(1);
-                    $("#logintext").text("Please wait...");
-                    let ws = new WebSocket("wss://server.duinocoin.com:15808");
 
-                    ws.onmessage = function(event) {
-                        server_message = event.data;
-                        console.log("Server: " + server_message);
-
-                        if (server_message.includes("2.")) {
-                            version_received = 1;
-                            $("#logintext").text("Registering...");
-                            ws.send("REGI," + username.value.trim() + "," + password.value + "," + email.value.trim());
-                        } 
-
-                        else if (server_message.includes("OK")) {
+                    $.getJSON('https://server.duinocoin.com/new_wallet/'
+                        + '?username=' + username.value.trim()
+                        + '&password=' + password.value
+                        + '&email=' + email.value.trim(), 
+                        function(data) {
+                        
+                        if (data.success == true) {
                             $("#logintext").text("Register a new account");
                             document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
                                     `<b>Sucessfully registered new account.<br>You can now go to the login page and authenticate with your credentials.<br>Soon you'll also receive an e-mail confirming the registration process.<br>Have fun using Duino-Coin!</b><br></p>`;
@@ -103,14 +98,13 @@
                                 modal_success.classList.remove('is-active');
                             }
                         }
-
-                        else if (server_message.includes("NO")) {
-                            server_message = server_message.split(",");
+                        else {
+                            server_message = data.message
                             $("#logincheck").show(1);
                             $("#loginload").hide(1);
                             $("#logintext").text("Register a new account");
                             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                    `<b>` + server_message[1] + `. Please try again</b><br></p>`;
+                                    `<b>` + server_message + `. Please try again</b><br></p>`;
                             document.querySelector('html').classList.add('is-clipped');
                             modal_error.classList.add('is-active');
 
@@ -119,8 +113,7 @@
                                 modal_error.classList.remove('is-active');
                             }
                         }
-                    }
-                    console.log('Request sent');
+                    });
                 }
                 else {
                     return false;
