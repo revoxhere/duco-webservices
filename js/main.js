@@ -434,7 +434,7 @@ window.addEventListener('load', function() {
                     update_element("sendinginfo", "Requesting transaction...");
                     $.getJSON('https://server.duinocoin.com/transaction/' +
                         '?username=' + username +
-                        "&password=" + password +
+                        "&password=" + encodeURIComponent(password) +
                         "&recipient=" + recipient +
                         "&amount=" + amount +
                         "&memo=" + memo,
@@ -493,7 +493,7 @@ window.addEventListener('load', function() {
             $.getJSON('https://server.duinocoin.com/auth/?username=' +
                 username +
                 "&password=" +
-                password,
+                encodeURIComponent(password),
                 function(data) {
                     if (data.success == true) {
                         console.log("User logged-in");
