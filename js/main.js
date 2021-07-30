@@ -5,10 +5,7 @@ let profitcheck = 0;
 let duco_price = 0.0065;
 let daily_average = [];
 let oldb = 0;
-let success_once = false;
-let alreadyreset = false;
 let total_hashrate = 0;
-let sending = false;
 let start = Date.now();
 let timestamps = [];
 let balances = [];
@@ -155,9 +152,6 @@ window.addEventListener('load', function() {
                 update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
 
             })
-        window.setTimeout(() => {
-            get_duco_price();
-        }, 30 * 1000);
     }
 
     // SCIENTIFIC PREFIX CALCULATOR
@@ -182,10 +176,6 @@ window.addEventListener('load', function() {
             let balanceusd = balance * duco_price;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
-            window.setTimeout(() => {
-                user_data(username);
-            }, 10 * 1000);
-
             if (first_launch) {
                 push_to_graph(balance);
                 first_launch = false;
@@ -206,8 +196,7 @@ window.addEventListener('load', function() {
             myMiners = data.miners;
             console.log("Miner data received");
 
-            if (myMiners.length > 0 || success_once) {
-                let success_once = true;
+            if (myMiners) {
                 let user_miners_html = '';
                 let miner_name = '';
                 let diffString = '';
@@ -471,7 +460,6 @@ window.addEventListener('load', function() {
                                     }
                                     document.getElementById("send").classList.remove("is-loading");
                                     update_element("sendinginfo", "");
-                                    sending = false;
                                 }
 
                             } else {
@@ -488,7 +476,6 @@ window.addEventListener('load', function() {
                                 }
                                 document.getElementById("send").classList.remove("is-loading");
                                 update_element("sendinginfo", "");
-                                sending = false;
                             }
                         })
                 } else {
@@ -514,7 +501,15 @@ window.addEventListener('load', function() {
                         $("#login").hide('fast', function() {
                             $("#user").html("<b>" + username.toUpperCase() + "'S</b>");
                             user_data(username);
+                            window.setInterval(() => {
+                                user_data(username);
+                            }, 10 * 1000);
+
                             get_duco_price();
+                            window.setInterval(() => {
+                                get_duco_price();
+                            }, 30 * 1000);
+
 
                             window.setTimeout(() => {
                                 (adsbygoogle = window.adsbygoogle || []).push({});
