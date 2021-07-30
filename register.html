@@ -82,8 +82,8 @@
 
                     $.getJSON('https://server.duinocoin.com/new_wallet/'
                         + '?username=' + username.value.trim()
-                        + '&password=' + password.value
-                        + '&email=' + email.value.trim(), 
+                        + '&password=' + encodeURIComponent(password.value)
+                        + '&email=' + encodeURIComponent(email.value.trim()), 
                         function(data) {
                         
                         if (data.success == true) {
