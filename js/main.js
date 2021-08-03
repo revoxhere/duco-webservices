@@ -234,21 +234,16 @@ window.addEventListener('load', function() {
                                         ` + scientific_prefix(miner_hashrate) + `H/s
                                     </span>
                                     <span class="has-text-grey">
-                                        (` + miner_sharetime + `s)
+                                        (` + miner_sharetime.toFixed(2) + `s)
                                     </span>
                                 </p>
                                 <p class="subtitle is-size-7">
-                                    <span>
-                                        <b>` +
-                        miner_accepted +
-                        "/" +
-                        (miner_accepted + miner_rejected) + `
-                                            <span class="has-text-success-dark">
-                                                (` + accepted_rate + `)
-                                            </span>
-                                        </b> accepted shares,
-                                        difficulty <b>` + diffString + `</b>
-                                    </span>
+                                    <b>` + miner_accepted + "/" + (miner_accepted + miner_rejected) + `
+                                        <span class="has-text-success-dark">
+                                            (` + accepted_rate + `)
+                                        </span>
+                                    </b> accepted shares,
+                                    difficulty <b>` + diffString + `</b>
                                 </p>
                             </div>`;
 
@@ -514,6 +509,7 @@ window.addEventListener('load', function() {
 
 
                             window.setTimeout(() => {
+                                $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
                                 (adsbygoogle = window.adsbygoogle || []).push({});
                             }, 1000);
                             $("#wallet").show('slow');
