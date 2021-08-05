@@ -151,6 +151,8 @@ window.addEventListener('load', function() {
 
                 update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
 
+                update_element("duco_pancake", "≈ $" + round_to(5, data["Duco PancakeSwap price"]));
+
             })
     }
 
@@ -530,7 +532,7 @@ window.addEventListener('load', function() {
                         }, 5000);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                update_element("logintext", "Incorrect password");
+                update_element("logintext", "Wallet API is unreachable");
                 $("#loginload").fadeOut('fast');
 
                 setTimeout(() => {
