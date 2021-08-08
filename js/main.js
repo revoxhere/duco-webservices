@@ -20,15 +20,10 @@ window.addEventListener('load', function() {
 
     // RANDOM BACKGROUND
     const bg_list = [
-        'backgrounds/1-min.png',
-        'backgrounds/2-min.png',
-        'backgrounds/3-min.png',
-        'backgrounds/4-min.png',
-        'backgrounds/5-min.png',
-        'backgrounds/6-min.jpg',
-        'backgrounds/7-min.png',
-        'backgrounds/8-min.png',
-        'backgrounds/9-min.png'
+        'backgrounds/wallet/yenn-sea-1.jpg',
+        'backgrounds/wallet/yenn-sea-2.jpg',
+        'backgrounds/wallet/yenn-mountains-1.jpg',
+        'backgrounds/wallet/hge-sea-1.jpg'
     ]
 
     let num = Math.floor(Math.random() * bg_list.length)
