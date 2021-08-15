@@ -140,7 +140,7 @@ window.addEventListener('load', function() {
 
                 update_element("ducousd_xrp", "≈ $" + round_to(5, data["Duco price XRP"]));
                 update_element("ducousd_dgb", "≈ $" + round_to(5, data["Duco price DGB"]));
-                //update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
+                update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
 
                 update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
 
