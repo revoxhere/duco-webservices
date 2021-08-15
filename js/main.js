@@ -484,9 +484,9 @@ window.addEventListener('load', function() {
             }
 
             update_element("logintext", "Authenticating...");
-            $.getJSON('https://server.duinocoin.com/auth/" +
-                username +
-                "?password=" +
+            $.getJSON('https://server.duinocoin.com/auth/' +
+                encodeURIComponent(username) +
+                '?password=' +
                 encodeURIComponent(password),
                 function(data) {
                     if (data.success == true) {
