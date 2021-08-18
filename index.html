@@ -33,6 +33,7 @@
     <link rel="preload" as="image" href="backgrounds/wallet/yenn-mountains-1.jpg">
     <link rel="preload" as="image" href="backgrounds/wallet/hge-sea-1.jpg">
     <!-- JS -->
+    <script type="text/javascript" src="js/prebid-ads.js"></script>
     <script type="text/javascript" src="js/fontawesome.js"></script>
     <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -321,10 +322,10 @@
                                     </div>
                                 </div>
                                 <div class="column">
-                                    <span class="subtitle">
+                                    <span class="title is-size-5">
+                                        <img class="icon icon-text" target="_blank" src="assets/justswap.png">
                                         <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank">
-                                            <img class="icon icon-text" target="_blank" src="assets/justswap.png">
-                                            <b>JustSwap</b>
+                                            JustSwap
                                         </a>
                                     </span>
                                     <div class="columns mt-1">
@@ -339,94 +340,93 @@
                                     </div>
                                 </div>
                                 <div class="column">
-                                    <span class="subtitle">
+                                    <span class="title is-size-5">
+                                        <img class="icon icon-text" target="_blank" src="assets/pancake.png">
                                         <a href="https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b" target="_blank">
-                                            <img class="icon icon-text" target="_blank" src="assets/pancake.png">
-                                            <b>PancakeSwap</b>
+                                            PancakeSwap
                                         </a>
                                     </span>
                                     <div class="column">
-                                            <p id="duco_pancake" class="title is-size-6">
-                                                Fetching data
-                                            </p>
-                                            <p class="subtitle is-size-7">
-                                                bscDUCO <i class="fa fa-arrows-alt-h"></i> BSC
-                                            </p>
-                                        </div>
+                                        <p id="duco_pancake" class="title is-size-6">
+                                            Fetching data
+                                        </p>
+                                        <p class="subtitle is-size-7">
+                                            bscDUCO <i class="fa fa-arrows-alt-h"></i> BSC
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="column mb-2">
-                    <div class="box">
-                        <div class="buttons">
-                            <div class="control has-icons-left mb-2 mr-2">
-                                <div class="select is-normal">
-                                    <select id="themesel">
-                                        <option value="light">Simple</option>
-                                        <option value="material">Metro</option>
-                                        <option selected value="frosted">Frosted glass (default)</option>
-                                        <option value="crisp">Crisp</option>
-                                        <option value="radiance">Nuclear</option>
-                                        <option value="altlight">Sleek</option>
-                                    </select>
-                                </div>
-                                <span class="icon is-left">
-                                    <i class="fas fa-sun" style="color:#f0932b"></i>
-                                </span>
+            </div>
+            <div class="column mb-2">
+                <div class="box">
+                    <div class="buttons">
+                        <div class="control has-icons-left mb-2 mr-2">
+                            <div class="select is-normal">
+                                <select id="themesel">
+                                    <option value="light">Simple</option>
+                                    <option value="material">Metro</option>
+                                    <option selected value="frosted">Frosted glass (default)</option>
+                                    <option value="crisp">Crisp</option>
+                                    <option value="radiance">Nuclear</option>
+                                    <option value="altlight">Sleek</option>
+                                </select>
                             </div>
-                            <a href="https://server.duinocoin.com/webminer.html" class="button">
-                                <img class="icon is-small" src="assets/webminer.png">
-                                <span>Web Miner</span>
-                            </a>
-                            <a href="https://explorer.duinocoin.com" target="_blank" class="button">
-                                <img src="assets/explorer.png" class="icon is-small">
-                                <span>Network</span>
-                            </a>
-                            <a href="https://duco.sytes.net/" target="_blank" class="button">
-                                <img src="assets/ducominingdashboarddark.png" class="icon is-small">
-                                <span>Lulaschkas' Dashboard</span>
-                            </a>
-                            <a href="https://faucet.furim.xyz/" target="_blank" class="button">
-                                <img src="assets/furim_faucet.png" class="icon is-small">
-                                <span>Furim's Faucet</span>
-                            </a>
-                            <a href="https://duinocoin.com/donate" target="_blank" class="button">
-                                <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
-                                <span>Donate</span>
-                            </a>
-                            <a href="https://store.duinocoin.com" target="_blank" class="button">
-                                <i class="fa fa-fw fa-tshirt icon is-small" style="color:turquoise;"></i>&nbsp;
-                                <span>Merch</span>
-                            </a>
-                            <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
-                                <i class="fab fa-fw fa-github icon is-small"></i>
-                            </a>
-                            <a href="https://discord.gg/duinocoin" target="_blank" class="button">
-                                <i class="fab fa-fw fa-discord icon is-small"></i>
-                            </a>
+                            <span class="icon is-left">
+                                <i class="fas fa-sun" style="color:#f0932b"></i>
+                            </span>
                         </div>
-                        <div class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false">
-                            <div class="box">
-                                <p class="title">
-                                    An ad should be here, but you're probably using an adblocker 😞
-                                </p>
-                                <p class="subtitle">
-                                    We host all the websites from our money and the <b>single ad</b> here helps to cover these costs.<br>
-                                    If you want, support the project directly by either buying our
-                                    <a href="https://store.duinocoin.com" target="_blank">merch</a>
-                                    or
-                                    <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
-                                    Thanks in advance 😎
-                                </p>
-                            </div>
-                        </div>
+                        <a href="https://server.duinocoin.com/webminer.html" class="button">
+                            <img class="icon is-small" src="assets/webminer.png">
+                            <span>Web Miner</span>
+                        </a>
+                        <a href="https://explorer.duinocoin.com" target="_blank" class="button">
+                            <img src="assets/explorer.png" class="icon is-small">
+                            <span>Network</span>
+                        </a>
+                        <a href="https://duco.sytes.net/" target="_blank" class="button">
+                            <img src="assets/ducominingdashboarddark.png" class="icon is-small">
+                            <span>Lulaschkas' Dashboard</span>
+                        </a>
+                        <a href="https://faucet.furim.xyz/" target="_blank" class="button">
+                            <img src="assets/furim_faucet.png" class="icon is-small">
+                            <span>Furim's Faucet</span>
+                        </a>
+                        <a href="https://duinocoin.com/donate" target="_blank" class="button">
+                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
+                            <span>Donate</span>
+                        </a>
+                        <a href="https://store.duinocoin.com" target="_blank" class="button">
+                            <i class="fa fa-fw fa-tshirt icon is-small" style="color:turquoise;"></i>&nbsp;
+                            <span>Merch</span>
+                        </a>
+                        <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-github icon is-small"></i>
+                        </a>
+                        <a href="https://discord.gg/duinocoin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-discord icon is-small"></i>
+                        </a>
+                    </div>
+                    <div class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></div>
+                    <div class="box" id="adblocker_detected" style="display:none">
+                        <p class="title">
+                            An ad should be here, but you're probably using an adblocker 😞
+                        </p>
+                        <p class="subtitle">
+                            We host all the websites from our money and the <b>single ad</b> here helps to cover these costs.<br>
+                            If you want, support the project directly by either buying our
+                            <a href="https://store.duinocoin.com" target="_blank">merch</a>
+                            or
+                            <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
+                            Thanks in advance 😎
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="footer">
         <p class="subtitle has-text-centered is-size-6">

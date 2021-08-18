@@ -523,7 +523,11 @@ window.addEventListener('load', function() {
 
                                 window.setTimeout(() => {
                                     $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    if (window.canRunAds === undefined) {
+                                        $("#adblocker_detected").show()
+                                    } else {
+                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                    }
                                 }, 1000);
                                 $("#wallet").fadeIn('fast');
 
