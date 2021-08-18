@@ -26,6 +26,13 @@ window.addEventListener('load', function() {
         'backgrounds/wallet/hge-sea-1.jpg'
     ]
 
+    const color_list = [
+        '#e67e22',
+        '#8e44ad',
+        '#1abc9c',
+        '#2ecc71'
+    ]
+
     let num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
@@ -38,8 +45,8 @@ window.addEventListener('load', function() {
 
     const config = {
         options: {
-            backgroundColor: '#ff9770',
-            borderColor: '#ff9770',
+            backgroundColor: color_list[num],
+            borderColor: color_list[num],
             plugins: {
                 legend: {
                     display: false
@@ -142,6 +149,8 @@ window.addEventListener('load', function() {
                 update_element("ducousd_dgb", "≈ $" + round_to(5, data["Duco price DGB"]));
                 update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
 
+                update_element("ducousd_fjc", "≈ $" + round_to(5, data["Duco price FJC"]));
+
                 update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
 
                 update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
@@ -208,29 +217,41 @@ window.addEventListener('load', function() {
                     miner_accepted = user_miners[miner]["accepted"];
                     miner_sharetime = user_miners[miner]["sharetime"];
 
-                    if (miner_identifier === "None")
+                    if (miner_identifier === "None") {
                         miner_name = miner_software;
-                    else
-                        miner_name = miner_identifier +
-                        "<span class='has-text-grey'> (" +
-                        miner_software +
-                        ")</span>";
+                        miner_soft = "";
+                    } else {
+                        miner_name = miner_identifier;
+                        miner_soft = "(" + miner_software + ")";
+                    }
 
                     diffString = scientific_prefix(miner_diff)
                     accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
 
+                    if (miner_software.includes("ESP8266")) {
+                        color = "#F5515F";
+                    } else if (miner_software.includes("ESP32")) {
+                        color = "#5f27cd";
+                    } else if (miner_software.includes("AVR")) {
+                        color = "#0984e3";
+                    } else if (miner_software.includes("PC")) {
+                        color = "#d35400";
+                    } else {
+                        color = "#16a085";
+                    }
+
                     user_miners_html += `
-                            <div class="column is-full">
+                            <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
                                     <i class="fas fa-spin fa-cog fa-fw"></i>
-                                    <span class="has-text-primary">
+                                    <span style="color:` + color + `">
                                         ` + miner_name + `
                                     </span>
                                     -
                                     <span>
                                         ` + scientific_prefix(miner_hashrate) + `H/s
                                     </span>
-                                    <span class="has-text-grey">
+                                    <span class="has-text-weight-normal">
                                         (` + miner_sharetime.toFixed(2) + `s)
                                     </span>
                                 </p>
@@ -241,6 +262,9 @@ window.addEventListener('load', function() {
                                         </span>
                                     </b> accepted shares,
                                     difficulty <b>` + diffString + `</b>
+                                    <span>
+                                        ` + miner_soft + `
+                                    </span>
                                 </p>
                             </div>`;
 
@@ -248,7 +272,7 @@ window.addEventListener('load', function() {
                 }
                 update_element("minercount", "(" + user_miners.length + ")");
                 update_element("miners", user_miners_html);
-                update_element("total_hashrate", "Total hashrate: " + scientific_prefix(total_hashrate) + "H/s");
+                update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
                 total_hashrate = 0;
             } else {
                 update_element("miners", `
@@ -256,7 +280,7 @@ window.addEventListener('load', function() {
                         <p class='title is-size-6'>
                             No miners detected
                         </p>
-                        <p class='subtitle is-size-6 has-text-grey'>
+                        <p class='subtitle is-size-6'>
                             If you have turned them on recently, 
                             it will take a minute or two until their stats will appear here.
                         </p>
@@ -298,7 +322,7 @@ window.addEventListener('load', function() {
                             transaction_recipient + `" target="_blank">
                                         ` + transaction_recipient + `
                                     </a>
-                                    <span class="has-text-grey">
+                                    <span class="has-text-weight-normal">
                                         ` + transaction_memo + `
                                     </span>
                                 </p>
@@ -330,7 +354,7 @@ window.addEventListener('load', function() {
                             transaction_sender + `" target="_blank">
                                         ` + transaction_sender + `
                                     </a>
-                                    <span class="has-text-grey">
+                                    <span class="has-text-weight-normal">
                                         ` + transaction_memo + `
                                     </span>
                                 </p>
@@ -351,6 +375,10 @@ window.addEventListener('load', function() {
             } else transactions_table.innerHTML = `<div class="column is-full">
                     <p class="title is-size-6">
                         No transactions yet or they're temporarily unavailable
+                    </p>
+                    <p class='subtitle is-size-6'>
+                        If you have sent funds recently,
+                        it will take a few seconds until the transaction will appear here.
                     </p>
                 </div>`;
         });
@@ -411,21 +439,15 @@ window.addEventListener('load', function() {
         let password = document.getElementById('passwordinput').value
 
         if (username && password) {
-
-            $("#logincheck").fadeOut('fast', function() {
-                $("#loginload").fadeIn('fast');
-            });
+            document.getElementById('loginbutton').classList.add("is-loading")
 
             document.getElementById('send').onclick = function() {
                 let recipient = document.getElementById('recipientinput').value
                 let amount = document.getElementById('amountinput').value
                 let memo = document.getElementById('memoinput').value
 
-                update_element("sendinginfo", "Requesting transfer...")
-                document.getElementById("send").classList.add("is-loading");
-
                 if (recipient && amount) {
-                    update_element("sendinginfo", "Requesting transaction...");
+                    document.getElementById("send").classList.add("is-loading");
                     $.getJSON('https://server.duinocoin.com/transaction/' +
                         '?username=' + username +
                         "&password=" + encodeURIComponent(password) +
@@ -437,6 +459,10 @@ window.addEventListener('load', function() {
                             if (data.success == true) {
                                 serverMessage = data["result"].split(",");
                                 if (serverMessage[0] == "OK") {
+                                    $('#recipientinput').val('');
+                                    $('#amountinput').val('');
+                                    $('#memoinput').val('');
+
                                     let modal_success = document.querySelector('#modal_success');
                                     document.querySelector('#modal_success .modal-card-body .content p')
                                         .innerHTML = `<span class='subtitle has-text-success'><b>` +
@@ -453,7 +479,6 @@ window.addEventListener('load', function() {
                                         modal_success.classList.remove('is-active');
                                     }
                                     document.getElementById("send").classList.remove("is-loading");
-                                    update_element("sendinginfo", "");
                                 }
 
                             } else {
@@ -469,21 +494,11 @@ window.addEventListener('load', function() {
                                     modal_error.classList.remove('is-active');
                                 }
                                 document.getElementById("send").classList.remove("is-loading");
-                                update_element("sendinginfo", "");
                             }
                         })
-                } else {
-                    update_element("sendinginfo",
-                        "<span class='subtitle is-size-6 mb-2 has-text-danger'><b>Fill in the blanks first</b></span>");
-                    document.getElementById("send").classList.remove("is-loading");
-
-                    setTimeout(() => {
-                        update_element("sendinginfo", "");
-                    }, 5000);
                 }
             }
 
-            update_element("logintext", "Authenticating...");
             $.getJSON('https://server.duinocoin.com/auth/' +
                 encodeURIComponent(username) +
                 '?password=' +
@@ -492,59 +507,55 @@ window.addEventListener('load', function() {
                     if (data.success == true) {
                         console.log("User logged-in");
 
-                        $("#login").hide('fast', function() {
-                            $("#user").html("<b>" + username.toUpperCase() + "'S</b>");
-                            user_data(username);
-                            window.setInterval(() => {
+                        window.setTimeout(() => {
+                            $("#login").fadeOut('fast', function() {
+                                document.getElementById('loginbutton').classList.remove("is-loading")
+                                $("#user").html("<b>" + username + "</b>");
                                 user_data(username);
-                            }, 10 * 1000);
+                                window.setInterval(() => {
+                                    user_data(username);
+                                }, 10 * 1000);
 
-                            get_duco_price();
-                            window.setInterval(() => {
                                 get_duco_price();
-                            }, 30 * 1000);
+                                window.setInterval(() => {
+                                    get_duco_price();
+                                }, 30 * 1000);
 
+                                window.setTimeout(() => {
+                                    $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                }, 1000);
+                                $("#wallet").fadeIn('fast');
 
-                            window.setTimeout(() => {
-                                $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                            }, 1000);
-                            $("#wallet").show('slow');
-
-                            // THEME SWITCHER
-                            let themesel = document.getElementById('themesel');
-                            themesel.addEventListener('input', updateValue);
-                        });
-                    } else {
-                        update_element("logintext", data.message);
-                        $("#loginload").fadeOut('fast');
-
-                        setTimeout(() => {
-                            update_element("logintext", "Login");
-                            $("#logincheck").fadeIn('fast', function() {
-                                $("#loginload").fadeOut('fast');
+                                // THEME SWITCHER
+                                let themesel = document.getElementById('themesel');
+                                themesel.addEventListener('input', updateValue);
                             });
-                        }, 5000);
+                        }, 250);
+                    } else {
+                        window.setTimeout(() => {
+                            $('#usernameinput').val('');
+                            $('#passwordinput').val('');
+
+                            let modal_error = document.querySelector('#modal_error');
+                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                `<b>An error has occurred while logging in: </b>` + data.message + `</b><br></p>`;
+                            document.querySelector('html').classList.add('is-clipped');
+                            modal_error.classList.add('is-active');
+
+                            document.querySelector('#modal_error .delete').onclick = function() {
+                                document.querySelector('html').classList.remove('is-clipped');
+                                modal_error.classList.remove('is-active');
+                            }
+                            document.getElementById('loginbutton').classList.remove("is-loading")
+                        }, 250);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                 update_element("logintext", "Wallet API is unreachable");
-                $("#loginload").fadeOut('fast');
-
-                setTimeout(() => {
-                    update_element("logintext", "Login");
-                    $("#logincheck").fadeIn('fast', function() {
-                        $("#loginload").fadeOut('fast');
-                    });
-                }, 5000);
+                document.getElementById('loginbutton').classList.remove("is-loading")
+                setTimeout(() => { update_element("logintext", ""); }, 5000);
             })
-        } else {
-            update_element("logintext", "Fill in the blanks first");
-
-            setTimeout(() => {
-                update_element("logintext", "Login");
-            }, 5000);
         }
-
     }
 
     document.getElementById("pageloader").setAttribute('class', "pageloader is-primary"); // After page is loaded

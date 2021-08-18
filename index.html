@@ -35,6 +35,7 @@
     <!-- JS -->
     <script type="text/javascript" src="js/fontawesome.js"></script>
     <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Wallet Scripts -->
     <script type="text/javascript" src="js/chart.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
@@ -60,57 +61,44 @@
         <p class="title">Duino-Coin Web Wallet</p>
     </div>
     <div class="container">
-        <section class="hero is-fullheight" id="login">
+        <section class="hero is-fullheight" id="login" style="display:flex">
             <div class="hero-body is-align-self-center">
                 <div class="columns">
                     <div class="column">
                         <div class="box">
-                            <section style="max-width: 20rem;">
-                                <p class="title">
+                            <section class="has-text-centered" style="max-width:100%">
+                                <p class="title m-2">
                                     <a href="https://duinocoin.com">
-                                        <img src="assets/ducobanner.png" width="200rem" class="image">
+                                        <img src="assets/ducobanner.png" width="175rem" class="image center">
                                     </a>
                                 </p>
-                                <p class="title">
+                                <p class="title mt-5">
                                     Sign in
                                 </p>
                                 <p class="subtitle">
                                     to your Duino-Coin Wallet
                                 </p>
-                                <!--<p class="subtitle has-text-danger-dark">
-                                    Wallet is be temporarily down as there's an issue<br>
-                                    with the vps and I'm waiting for the provider to respond.<br>
-                                    I have no idea how long it will take
-                                </p>-->
                                 <div class="field mt-5">
                                     <div class="control has-icons-left">
                                         <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
-                                        <span class="icon is-small is-left">
-                                            <i class="fa fa-user"></i>
+                                        <span class="icon is-left">
+                                            <i style="color: #777" class="fa fa-user"></i>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="control has-icons-left">
                                         <input type="password" id="passwordinput" placeholder="Password" class="input" required>
-                                        <span class="icon is-small is-left">
-                                            <i class="fa fa-lock"></i>
+                                        <span class="icon is-left">
+                                            <i style="color: #777" class="fa fa-lock"></i>
                                         </span>
                                     </div>
                                 </div>
+                                <p id="logintext"></p>
                                 <div class="field mt-5">
                                     <div class="buttons">
-                                        <button class="button is-duco is-warning is-fullwidth" id="loginbutton">
-                                            <span id="logincheck">
-                                                <i class="fa fa-fw fa-check" id="logincheck"></i>
-                                            </span>
-                                            <span id="loginload" style="display:none">
-                                                <i class="fas fa-circle-notch fa-spin"></i>
-                                            </span>
-                                            &nbsp;
-                                            <span id="logintext">
-                                                Login
-                                            </span>
+                                        <button class="button is-duco is-dark is-fullwidth" id="loginbutton">
+                                            Login
                                         </button>
                                         <a href="register.html" class="button is-fullwidth">
                                             <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
@@ -124,47 +112,48 @@
                 </div>
             </div>
         </section>
-        <section id="wallet" class="hero is-fullheight" style="display:none;">
-            <br>
-            <div class="container box box-grey">
-                <div class="columns is-multiline">
-                    <div class="column is-full">
-                        <div class="box">
-                            <div class="columns">
-                                <div class="column">
-                                    <p class="subtitle">
-                                        <i class="fa fa-wallet is-size-7 card-orange fa-fw"></i>
-                                        <span id="user"></span> BALANCE
-                                    </p>
-                                    <p class="title">
-                                        <span id="balance">
-                                            Fetching data
-                                        </span>
-                                    </p>
-                                    <p class="subtitle is-size-6">
-                                        <span id="balanceusd" style="white-space: nowrap"></span>
-                                    </p>
-                                    <p class="subtitle">
-                                        <span id="estimatedprofit">
-                                            <i class="fas fa-spinner fa-pulse"></i>
-                                            Calculating est. daily profit
-                                        </span>
-                                        <span class="subtitle" id="estimatedprofitusd">
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="column">
-                                    <canvas height="70em" id="balance_chart"></canvas>
-                                </div>
-                            </div>
-                        </div>
+    </div>
+    <div id="wallet" style="display:none;">
+        <div class="box-grey">
+            <div class="box m-3">
+                <div class="columns">
+                    <div class="column">
+                        <p class="title is-size-5">
+                            <i class="fa fa-wallet is-size-7 card-orange fa-fw"></i>
+                            Welcome back, <span id="user"></span>!
+                        </p>
+                        <p class="title">
+                            <span id="balance">
+                                Fetching data
+                            </span>
+                        </p>
+                        <p class="subtitle">
+                            <span id="balanceusd" style="white-space: nowrap"></span>
+                        </p>
+                        <p class="subtitle">
+                            <span id="estimatedprofit">
+                                <i class="fas fa-spinner fa-pulse"></i>
+                                Calculating est. daily profit
+                            </span>
+                            <span class="subtitle" id="estimatedprofitusd">
+                            </span>
+                        </p>
                     </div>
-                    <div class="column is-half">
+                    <div class="column">
+                        <canvas height="70em" id="balance_chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-multiline is-gapless">
+                <div class="column is-half">
+                    <div class="column">
                         <div class="box">
-                            <p class="subtitle">
-                                <i class="fa fa-chart-bar is-size-7 card-pomegrante fa-fw"></i>
-                                YOUR MINERS
+                            <p class="title is-size-5">
+                                <i class="fa fa-tachometer-alt is-size-7 card-pomegrante fa-fw"></i>
+                                Miners
                                 <span id="minercount"></span>
+                                -
+                                <b id="total_hashrate">0 H/s</b> total
                             </p>
                             <div id="miners" class="columns is-multiline">
                                 <div class="column is-full">
@@ -173,62 +162,13 @@
                                     </p>
                                 </div>
                             </div>
-                            <p class="title is-size-6 mt-3">
-                                <i class="fa fa-tachometer-alt is-size-7 card-orange fa-fw"></i>&nbsp;
-                                <span id="total_hashrate">Total hashrate: 0 H/s</span>
-                            </p>
                         </div>
                     </div>
-                    <div class="column is-half">
+                    <div class="column">
                         <div class="box">
-                            <p class="subtitle">
-                                <i class="fa fa-share is-size-7 card-blue fa-fw"></i>
-                                TRANSFER DUCO
-                            </p>
-                            <label class="label">Recipient</label>
-                            <div class="control has-icons-left is-expanded">
-                                <input type="text" id="recipientinput" placeholder="e.g. Bilaboz" class="input" required>
-                                <span class="icon is-small is-left">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </div>
-                            <div class="columns">
-                                <div class="column">
-                                    <label class="label mt-2">Amount</label>
-                                    <div class="control has-icons-left is-expanded">
-                                        <input type="number" id="amountinput" placeholder="12.3456789" class="input" required>
-                                        <span class="icon is-small is-left">
-                                            <i class="fa fa-coins"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="column">
-                                    <label class="label mt-2">
-                                        Message
-                                        <span class="subtitle is-size-6">
-                                            (optional)
-                                        </span>
-                                    </label>
-                                    <div class="control has-icons-left is-expanded">
-                                        <input type="test" id="memoinput" placeholder="Kolka payment" class="input" required>
-                                        <span class="icon is-small is-left">
-                                            <i class="fa fa-envelope"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="button is-info is-outlined is-fullwidth" id="send">
-                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp;
-                                Send
-                            </button>
-                            <span class="subtitle my-2 is-size-7" id="sendinginfo"></span>
-                        </div>
-                    </div>
-                    <div class="column is-half">
-                        <div class="box">
-                            <p class="subtitle">
-                                <i class="fa fa-list-ul is-size-7 card-pink fa-fw"></i>
-                                TRANSACTIONS
+                            <p class="title is-size-5">
+                                <i class="fa fa-list-ul is-size-7 card-blue fa-fw"></i>
+                                Last transactions
                             </p>
                             <div id="transactions_table" class="columns is-multiline">
                                 <div class="column is-full">
@@ -239,92 +179,144 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column is-half">
+                    <div class="column">
                         <div class="box">
-                            <p class="subtitle">
+                            <p class="title is-size-5">
+                                <i class="fa fa-newspaper is-size-7 card-pink fa-fw"></i>
+                                News center
+                            </p>
+                            <iframe id="news_iframe" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;max-height:12rem" allowtransparency="true">Please wait</iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="column">
+                        <div class="box">
+                            <p class="title is-size-5">
+                                <i class="fa fa-share is-size-7 card-green fa-fw"></i>
+                                Transfer DUCO
+                            </p>
+                            <div class="columns is-multiline">
+                                <div class="column is-half">
+                                    <div class="control has-icons-left is-expanded">
+                                        <input type="text" id="recipientinput" placeholder="Recipient" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="control has-icons-left is-expanded">
+                                        <input type="number" id="amountinput" placeholder="Amount" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-coins"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="control has-icons-left is-expanded">
+                                        <input type="test" id="memoinput" placeholder="Message (optional)" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-envelope"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <button class="button is-primary is-fullwidth" id="send">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box">
+                            <p class="title is-size-5">
                                 <i class="fa fa-money-bill-wave is-size-7 card-turquoise fa-fw"></i>
-                                DUCO PRICE
+                                Duino-Coin prices
                             </p>
                             <div class="columns is-multiline">
                                 <div class="column is-full">
-                                    <span class="subtitle">
+                                    <span class="title is-size-5">
+                                        <img class="icon icon-text" target="_blank" src="assets/ducoexchange.png">
                                         <a href="https://exchange.duinocoin.com" target="_blank">
-                                            <img class="icon icon-text" target="_blank" src="assets/ducoexchange.png">
-                                            <b>DUCO Exchange</b>
+                                            DUCO Exchange
                                         </a>
-                                        <span class="subtitle is-size-6">
-                                            (official)
-                                        </span>
                                     </span>
-                                    <div class="columns is-multiline">
+                                    <div class="columns is-multiline mt-1">
                                         <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> XMG
-                                            <br>
-                                            <span id="ducousd" class="has-text-weight-bold">
+                                            <p id="ducousd" class="title is-size-6">
                                                 Fetching data
-                                            </span>
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> XMG
+                                            </p>
                                         </div>
                                         <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> BCH
-                                            <br>
-                                            <span id="ducousd_bch" class="has-text-weight-bold">
+                                            <p id="ducousd_bch" class="title is-size-6">
                                                 Fetching data
-                                            </span>
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> BCH
+                                            </p>
                                         </div>
                                         <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> TRX
-                                            <br>
-                                            <span id="ducousd_trx" class="has-text-weight-bold">
+                                            <p id="ducousd_trx" class="title is-size-6">
                                                 Fetching data
-                                            </span>
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                                            </p>
                                         </div>
-                                        <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> XRP
-                                            <br>
-                                            <span id="ducousd_xrp" class="has-text-weight-bold">
-                                                Coming soon
-                                            </span>
+                                        <div class="column">
+                                            <p id="ducousd_xrp" class="title is-size-6">
+                                                Fetching data
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> XRP
+                                            </p>
                                         </div>
-                                        <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> DGB
-                                            <br>
-                                            <span id="ducousd_dgb" class="has-text-weight-bold">
-                                                Coming soon
-                                            </span>
+                                        <div class="column">
+                                            <p id="ducousd_dgb" class="title is-size-6">
+                                                Fetching data
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> DGB
+                                            </p>
                                         </div>
-                                        <div class="column is-one-third">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> NANO
-                                            <br>
-                                            <span id="ducousd_nano" class="has-text-weight-bold">
-                                                Coming soon
-                                            </span>
+                                        <div class="column">
+                                            <p id="ducousd_nano" class="title is-size-6">
+                                                Fetching data
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> NANO
+                                            </p>
+                                        </div>
+                                        <div class="column">
+                                            <p id="ducousd_fjc" class="title is-size-6">
+                                                Fetching data
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> FJC
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="column">
-                                    <span class="subtitle">
+                                    <span class="title is-size-5">
+                                        <img class="icon icon-text" target="_blank" src="assets/nodes.png">
                                         <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank">
-                                            <img class="icon icon-text" target="_blank" src="assets/nodes.png">
-                                            <b>Node-S</b>
+                                            Node-S
                                         </a>
-                                        <span class="subtitle is-size-6">
-                                            (third-party)
-                                        </span>
                                     </span>
-                                    <div class="columns">
+                                    <div class="columns mt-1">
                                         <div class="column">
-                                            &bull;
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> USD
-                                            <br>
-                                            <span id="duco_nodes" class="has-text-weight-bold">
+                                            <p id="duco_nodes" class="title is-size-6">
                                                 Fetching data
-                                            </span>
+                                            </p>
+                                            <p class="subtitle is-size-7">
+                                                DUCO <i class="fa fa-arrows-alt-h"></i> USD
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -334,9 +326,6 @@
                                             <img class="icon icon-text" target="_blank" src="assets/justswap.png">
                                             <b>JustSwap</b>
                                         </a>
-                                        <span class="subtitle is-size-6">
-                                            (third-party)
-                                        </span>
                                     </span>
                                     <div class="columns">
                                         <div class="column">
@@ -355,9 +344,6 @@
                                             <img class="icon icon-text" target="_blank" src="assets/pancake.png">
                                             <b>PancakeSwap</b>
                                         </a>
-                                        <span class="subtitle is-size-6">
-                                            (third-party)
-                                        </span>
                                     </span>
                                     <div class="columns">
                                         <div class="column">
@@ -365,7 +351,7 @@
                                             bscDUCO <i class="fa fa-arrows-alt-h"></i> BNB
                                             <br>
                                             <span id="duco_pancake" class="has-text-weight-bold">
-                                                Coming soon
+                                                Fetching data
                                             </span>
                                         </div>
                                     </div>
@@ -373,16 +359,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="column is-full">
-                        <div class="box">
-                            <p class="subtitle">
-                                <i class="fa fa-newspaper is-size-7 card-green fa-fw"></i>
-                                NEWS
-                            </p>
-                            <iframe id="news_iframe" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:12rem" allowtransparency="true">Please wait</iframe>
-                        </div>
-                    </div>
-                    <div class="column">
+                </div>
+                <div class="column mx-3 mb-2">
+                    <div class="box">
                         <div class="buttons">
                             <div class="control has-icons-left mb-2 mr-2">
                                 <div class="select is-normal">
@@ -430,14 +409,25 @@
                                 <i class="fab fa-fw fa-discord icon is-small"></i>
                             </a>
                         </div>
+                        <div class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false">
+                            <div class="box">
+                                <p class="title">
+                                    An ad should be here, but you're probably using an adblocker 😞
+                                </p>
+                                <p class="subtitle">
+                                    We host all the websites from our money and the <b>single ad</b> here helps to cover these costs.<br>
+                                    If you want, support the project directly by either buying our
+                                    <a href="https://store.duinocoin.com" target="_blank">merch</a>
+                                    or
+                                    <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
+                                    Thanks in advance 😎
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <br>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <ins class="adsbygoogle mb-2" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
             </div>
-            <br>
-        </section>
+        </div>
     </div>
     <div class="footer">
         <p class="subtitle has-text-centered is-size-6">

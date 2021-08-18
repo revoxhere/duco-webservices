@@ -99,6 +99,10 @@
     background: linear-gradient(145deg, #fd746c, #ff9068) !important;
 }
 
+.has-text-duco {
+    color: #e3532b;
+}
+
 .is-duco {
     background: linear-gradient(160deg, #fccf30 0%, #f55555 100%);
     border: none !important;
@@ -106,15 +110,18 @@
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
-
 #miners {
-    height: 12.5rem;
-    overflow-y: scroll;
+    max-height: 10rem;
+    overflow-y: auto;
+    margin-right: 0.25em;
+    margin-bottom: 0.25em;
 }
 
 #transactions_table {
-    max-height: 16.8rem;
-    overflow-y: scroll;
+    max-height: 10rem;
+    overflow-y: auto;
+    margin-right: 0.25em;
+    margin-bottom: 0.25em;
 }
 
 .fa-check,
@@ -213,28 +220,35 @@ body {
     }
 
     select {
+        border: none !important;
         background: #2d3436 !important;
         color: #fafafa !important;
     }
 }
 
-/* Change Autocomplete styles in Chrome*/
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Change Autocomplete styles in Chrome
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:valid {
-    //border: 1px solid hsl(141, 53%, 53%) !important;
-    -webkit-text-fill-color: hsl(141, 53%, 53%);
+    -webkit-text-fill-color: rgba(211, 84, 0,1.0);
     -webkit-box-shadow: 0 0 0px 10px inherit inset;
     transition: background-color 5000s ease-in-out 0s;
-}
+}*/
 
 #modal_error {
-    animation: fadeIn 1s;
-    -webkit-animation: fadeIn 1s;
-    -moz-animation: fadeIn 1s;
-    -o-animation: fadeIn 1s;
-    -ms-animation: fadeIn 1s;
+    animation: fadeIn 0.5s;
+    -webkit-animation: fadeIn 0.5s;
+    -moz-animation: fadeIn 0.5s;
+    -o-animation: fadeIn 0.5s;
+    -ms-animation: fadeIn 0.5s;
 }
 
 @keyframes fadeIn {
