@@ -243,8 +243,11 @@ window.addEventListener('load', function() {
                     } else if (miner_software.includes("Web")) {
                         icon = "fa-globe";
                         color = "#009432";
+                    } else if (miner_software.includes("Android")) {
+                        icon = "fa-android";
+                        color = "#fa983a";
                     } else {
-                        icon = "question-circle";
+                        icon = "fa-question-circle";
                         color = "#16a085";
                     }
 
