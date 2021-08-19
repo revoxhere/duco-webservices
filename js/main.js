@@ -244,7 +244,7 @@ window.addEventListener('load', function() {
                         icon = "fa-globe";
                         color = "#009432";
                     } else if (miner_software.includes("Android")) {
-                        icon = "fa-android";
+                        icon = "fa-mobile";
                         color = "#fa983a";
                     } else {
                         icon = "fa-question-circle";
