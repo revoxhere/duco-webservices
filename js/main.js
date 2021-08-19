@@ -229,21 +229,29 @@ window.addEventListener('load', function() {
                     accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
 
                     if (miner_software.includes("ESP8266")) {
+                        icon = "fa-wifi";
                         color = "#F5515F";
                     } else if (miner_software.includes("ESP32")) {
+                        icon = "fa-wifi";
                         color = "#5f27cd";
                     } else if (miner_software.includes("AVR")) {
+                        icon = "fa-microchip";
                         color = "#0984e3";
                     } else if (miner_software.includes("PC")) {
+                        icon = "fa-desktop";
                         color = "#d35400";
+                    } else if (miner_software.includes("Web")) {
+                        icon = "fa-globe";
+                        color = "#009432";
                     } else {
+                        icon = "question-circle";
                         color = "#16a085";
                     }
 
                     user_miners_html += `
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
-                                    <i class="fas fa-spin fa-cog fa-fw"></i>
+                                    <i class="fas `+icon+` fa-fw"></i>
                                     <span style="color:` + color + `">
                                         ` + miner_name + `
                                     </span>
@@ -523,12 +531,14 @@ window.addEventListener('load', function() {
 
                                 window.setTimeout(() => {
                                     $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+
                                     if (window.canRunAds === undefined) {
                                         $("#adblocker_detected").show()
                                     } else {
                                         (adsbygoogle = window.adsbygoogle || []).push({});
+                                        (adsbygoogle = window.adsbygoogle || []).push({});
                                     }
-                                }, 1000);
+                                }, 250);
                                 $("#wallet").fadeIn('fast');
 
                                 // THEME SWITCHER
