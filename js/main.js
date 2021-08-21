@@ -531,7 +531,8 @@ window.addEventListener('load', function() {
                                 window.setInterval(() => {
                                     get_duco_price();
                                 }, 30 * 1000);
-
+                                
+                                $("#wallet").fadeIn('fast');
 
                                 $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
 
@@ -540,9 +541,7 @@ window.addEventListener('load', function() {
                                 } else {
                                     (adsbygoogle = window.adsbygoogle || []).push({});
                                 }
-                                
-                                $("#wallet").fadeIn('fast');
-
+                               
                                 // THEME SWITCHER
                                 let themesel = document.getElementById('themesel');
                                 themesel.addEventListener('input', updateValue);
