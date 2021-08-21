@@ -532,16 +532,15 @@ window.addEventListener('load', function() {
                                     get_duco_price();
                                 }, 30 * 1000);
 
-                                window.setTimeout(() => {
-                                    $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
 
-                                    if (window.canRunAds === undefined) {
-                                        $("#adblocker_detected").show()
-                                    } else {
-                                        (adsbygoogle = window.adsbygoogle || []).push({});
-                                        (adsbygoogle = window.adsbygoogle || []).push({});
-                                    }
-                                }, 250);
+                                $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+
+                                if (window.canRunAds === undefined) {
+                                    $("#adblocker_detected").show()
+                                } else {
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                }
+                                
                                 $("#wallet").fadeIn('fast');
 
                                 // THEME SWITCHER
