@@ -285,7 +285,7 @@ window.addEventListener('load', function() {
                 update_element("miners", user_miners_html);
                 update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
                 total_hashrate = 0;
-            } else {
+            } /*else {
                 update_element("miners", `
                     <div class="column is-full">
                         <p class='title is-size-6'>
@@ -296,7 +296,7 @@ window.addEventListener('load', function() {
                             it will take a minute or two until their stats will appear here.
                         </p>
                     </div>`);
-            }
+            }*/
 
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received " + user_transactions.length);
