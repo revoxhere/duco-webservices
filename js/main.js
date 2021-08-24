@@ -80,12 +80,13 @@ window.addEventListener('load', function() {
 
 
     function updateValue(e) {
-        let theme = e.target.value;
         let radiate = $('#radiate');
         let alt = $('#alt');
         let crisp = $('#crisp');
         let material = $('#material');
         let frosted = $('#frosted');
+
+        let theme = e.target.value;
         switch (theme) {
             case 'frosted':
                 frosted.attr('disabled', false);
@@ -139,22 +140,19 @@ window.addEventListener('load', function() {
         fetch("https://server.duinocoin.com/api.json")
             .then(response => response.json())
             .then(data => {
-                duco_price = round_to(5, data["Duco price"]);
+                update_element("ducousd", "≈ $" + round_to(5, data["Duco price"]));
 
-                update_element("ducousd", "≈ $" + duco_price);
+                update_element("ducousd_xmg", "≈ $" + round_to(5, data["Duco price XMG"]));
                 update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
                 update_element("ducousd_trx", "≈ $" + round_to(5, data["Duco price TRX"]));
 
                 update_element("ducousd_xrp", "≈ $" + round_to(5, data["Duco price XRP"]));
                 update_element("ducousd_dgb", "≈ $" + round_to(5, data["Duco price DGB"]));
                 update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
-
                 update_element("ducousd_fjc", "≈ $" + round_to(5, data["Duco price FJC"]));
 
                 update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
-
                 update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
-
                 update_element("duco_pancake", "≈ $" + round_to(5, data["Duco PancakeSwap price"]));
 
             })
@@ -254,7 +252,7 @@ window.addEventListener('load', function() {
                     user_miners_html += `
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
-                                    <i class="fas `+icon+` fa-fw"></i>
+                                    <i class="fas ` + icon + ` fa-fw"></i>
                                     <span style="color:` + color + `">
                                         ` + miner_name + `
                                     </span>
@@ -285,18 +283,19 @@ window.addEventListener('load', function() {
                 update_element("miners", user_miners_html);
                 update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
                 total_hashrate = 0;
-            } /*else {
-                update_element("miners", `
-                    <div class="column is-full">
-                        <p class='title is-size-6'>
-                            No miners detected
-                        </p>
-                        <p class='subtitle is-size-6'>
-                            If you have turned them on recently, 
-                            it will take a minute or two until their stats will appear here.
-                        </p>
-                    </div>`);
-            }*/
+            }
+            /*else {
+                           update_element("miners", `
+                               <div class="column is-full">
+                                   <p class='title is-size-6'>
+                                       No miners detected
+                                   </p>
+                                   <p class='subtitle is-size-6'>
+                                       If you have turned them on recently, 
+                                       it will take a minute or two until their stats will appear here.
+                                   </p>
+                               </div>`);
+                       }*/
 
             user_transactions = data.transactions.reverse();
             console.log("Transaction list received " + user_transactions.length);
@@ -517,36 +516,33 @@ window.addEventListener('load', function() {
                 function(data) {
                     if (data.success == true) {
                         console.log("User logged-in");
-
-                        window.setTimeout(() => {
-                            $("#login").fadeOut('fast', function() {
-                                document.getElementById('loginbutton').classList.remove("is-loading")
-                                $("#user").html("<b>" + username + "</b>");
+                        $("#login").fadeOut('fast', function() {
+                            document.getElementById('loginbutton').classList.remove("is-loading")
+                            $("#user").html("<b>" + username + "</b>");
+                            user_data(username);
+                            window.setInterval(() => {
                                 user_data(username);
-                                window.setInterval(() => {
-                                    user_data(username);
-                                }, 10 * 1000);
+                            }, 10 * 1000);
 
+                            get_duco_price();
+                            window.setInterval(() => {
                                 get_duco_price();
-                                window.setInterval(() => {
-                                    get_duco_price();
-                                }, 30 * 1000);
-                                
-                                $("#wallet").fadeIn('fast');
+                            }, 30 * 1000);
 
-                                $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+                            $("#wallet").fadeIn('fast');
 
-                                if (window.canRunAds === undefined) {
-                                    $("#adblocker_detected").show()
-                                } else {
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                }
-                               
-                                // THEME SWITCHER
-                                let themesel = document.getElementById('themesel');
-                                themesel.addEventListener('input', updateValue);
-                            });
-                        }, 250);
+                            $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+
+                            if (window.canRunAds === undefined) {
+                                $("#adblocker_detected").show()
+                            } else {
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            }
+
+                            // THEME SWITCHER
+                            let themesel = document.getElementById('themesel');
+                            themesel.addEventListener('input', updateValue);
+                        });
                     } else {
                         window.setTimeout(() => {
                             $('#usernameinput').val('');
