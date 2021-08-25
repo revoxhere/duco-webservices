@@ -7,24 +7,20 @@ const email = document.getElementById('email');
 const password = document.getElementById('password');
 const passwordConfirm = document.getElementById('passwordconfirm');
 const captchainfo = document.getElementById('captchainfo');
-
-// RANDOM BACKGROUND
-const bg_list = [
-    'backgrounds/1-min.png',
-    'backgrounds/2-min.png',
-    'backgrounds/3-min.png',
-    'backgrounds/4-min.png',
-    'backgrounds/5-min.png',
-    'backgrounds/6-min.jpg',
-    'backgrounds/7-min.png',
-    'backgrounds/8-min.png',
-    'backgrounds/9-min.png'
-]
-let num = Math.floor(Math.random() * bg_list.length)
-document.body.background = bg_list[num];
 let captcha;
 let server_message;
 let version_received;
+
+// RANDOM BACKGROUND
+const bg_list = [
+    'backgrounds/wallet/yenn-sea-1.jpg',
+    'backgrounds/wallet/yenn-sea-2.jpg',
+    'backgrounds/wallet/yenn-mountains-1.jpg',
+    'backgrounds/wallet/hge-sea-1.jpg'
+]
+let num = Math.floor(Math.random() * bg_list.length)
+document.body.background = bg_list[num];
+
 register.onclick = function(event) {
     captcha = grecaptcha.getResponse();
     if (checkInputs()) {
@@ -39,9 +35,12 @@ register.onclick = function(event) {
             function(data) {
 
                 if (data.success == true) {
-                    $("#logintext").text("Register a new account");
+                    $("#logintext").text("Create a new wallet");
                     document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
-                        `<b>Sucessfully registered new account.<br>You can now go to the login page and authenticate with your credentials.<br>Soon you'll also receive an e-mail confirming the registration process.<br>Have fun using Duino-Coin!</b><br></p>`;
+                        `<b>Your wallet has been sucessfully created.</b>`
+                        + `<br>You can now go to the login page and authenticate with your credentials.`
+                        + `<br>Soon you'll also receive an e-mail confirming the registration process.`
+                        + `<br><b>Have fun using Duino-Coin!</b><br></p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_success.classList.add('is-active');
 
@@ -53,7 +52,7 @@ register.onclick = function(event) {
                     server_message = data.message
                     $("#logincheck").show(1);
                     $("#loginload").hide(1);
-                    $("#logintext").text("Register a new account");
+                    $("#logintext").text("Create a new wallet");
                     document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                         `<b>` + server_message + `. Please try again</b><br></p>`;
                     document.querySelector('html').classList.add('is-clipped');
