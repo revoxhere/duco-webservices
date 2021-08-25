@@ -7,41 +7,37 @@
     <title>Duino-Coin | Web Wallet</title>
     <!-- SEO Stuff -->
     <meta name="description" content="Duino-Coin Web Wallet">
-    <meta name="keywords" content="Wallet, webWallet, duinocoin, duco, duco webWallet, web Wallet">
-    <link rel="canonical" href="http://51.15.127.80/webwallet.html" />
+    <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco web wallet">
+    <link rel="canonical" href="https://wallet.duinocoin.com" />
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#f0932b">
     <!-- Open Graph Metadata -->
     <meta property="og:site_name" content="Duino-Coin Web Wallet" />
-    <meta property="og:site" content="http://51.15.127.80/webwallet.html" />
+    <meta property="og:site" content="https://wallet.duinocoin.com" />
     <meta property="og:title" content="Duino-Coin Web Wallet" />
     <meta property="og:description" content="Duino-Coin Web Wallet" />
-    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" />
-    <meta property="og:url" content="http://51.15.127.80/webwallet.html" />
+    <meta property="og:image" content="assets/duco.svg" />
+    <meta property="og:url" content="https://wallet.duinocoin.com" />
     <meta property="og:type" content="website" />
     <!-- Twitter Metadata -->
     <meta name="twitter:title" content="Duino-Coin Web Wallet">
     <meta name="twitter:description" content="Duino-Coin Web Wallet">
-    <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true">
-    <meta name="twitter:site" content="@CoinDuino">
-    <meta name="twitter:creator" content="@CoinDuino">
-    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
-    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/NewWallet.ico?raw=true" type="image/png" />
+    <meta name="twitter:image" content="assets/duco.svg">
+    <meta name="twitter:site" content="@DuinoCoin">
+    <meta name="twitter:creator" content="@DuinoCoin">
+    <link rel="icon" href="assets/duco.svg" type="image/png" />
+    <link rel="shortcut icon" href="assets/duco.svg" type="image/png" />
     <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="backgrounds/1-min.png">
-    <link rel="preload" as="image" href="backgrounds/2-min.png">
-    <link rel="preload" as="image" href="backgrounds/3-min.png">
-    <link rel="preload" as="image" href="backgrounds/4-min.png">
-    <link rel="preload" as="image" href="backgrounds/5-min.png">
-    <link rel="preload" as="image" href="backgrounds/6-min.jpg">
-    <link rel="preload" as="image" href="backgrounds/7-min.png">
-    <link rel="preload" as="image" href="backgrounds/8-min.png">
-    <link rel="preload" as="image" href="backgrounds/9-min.png">
+    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-1.jpg">
+    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-2.jpg">
+    <link rel="preload" as="image" href="backgrounds/wallet/yenn-mountains-1.jpg">
+    <link rel="preload" as="image" href="backgrounds/wallet/hge-sea-1.jpg">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
+    <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
@@ -70,7 +66,7 @@
                         </p>
                     </span>
                     <div class="field mt-5">
-                        <label for="" class="label has-text-grey">Username</label>
+                        <label for="" class="label">Username</label>
                         <div id="usernameInput" class="field">
                             <p class="control has-icons-left">
                                 <input class="input" id="username" type="text" placeholder="e.g. a_cool_username">
@@ -86,7 +82,7 @@
                         </p>
                     </div>
                     <div class="field">
-                        <label for="" class="label has-text-grey">Password</label>
+                        <label for="" class="label">Password</label>
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input class="input" id="password" type="password" placeholder="******">
@@ -102,7 +98,7 @@
                         </p>
                     </div>
                     <div class="field">
-                        <label for="" class="label has-text-grey">Confirm Password</label>
+                        <label for="" class="label">Confirm Password</label>
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input class="input" id="passwordconfirm" type="password" placeholder="******">
@@ -114,7 +110,7 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label for="" class="label has-text-grey">E-Mail</label>
+                        <label for="" class="label">E-Mail</label>
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input class="input" id="email" type="email" placeholder="my@email.com">
@@ -129,11 +125,8 @@
                             Please provide a real e-mail as it will be used to confirm exchanges and receive updates about your account.
                         </p>
                     </div>
-                    <div class="field" >
-                        <label for="" class="label has-text-grey">Captcha</label>
-                        <div style="text-align: center;">
-                            <div class="h-captcha" data-theme="dark" data-sitekey="1c77cf53-13bc-46a2-b358-84c6766be2bc"></div>
-                        </div>
+                    <div class="field">
+                        <div class="h-captcha" data-theme="dark" data-sitekey="1c77cf53-13bc-46a2-b358-84c6766be2bc"></div>
                         <small id="captchainfo" class="has-text-danger"></small>
                     </div>
                     <div class="field">
@@ -210,6 +203,7 @@
                 <div class="content">
                     <p></p>
                 </div>
+                <a class="button" href="https://wallet.duinocoin.com">Login</a>
             </section>
         </div>
     </div>
