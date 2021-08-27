@@ -521,7 +521,7 @@ window.addEventListener('load', function() {
                             user_data(username);
                             window.setInterval(() => {
                                 user_data(username);
-                            }, 10 * 1000);
+                            }, 7.5 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {
