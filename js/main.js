@@ -198,6 +198,17 @@ window.addEventListener('load', function() {
             balanceusd = round_to(4, balanceusd);
             update_element("balanceusd", "≈ $" + balanceusd);
 
+            verified = data.balance.verified;
+            if (verified == "yes") {
+                update_element("verified",
+                    "(<span class='has-text-success-dark'>Verified account " +
+                    "<i class='fa fa-check'></i></span>)");
+            } else {
+                update_element("verified",
+                    "(<span class='has-text-danger-dark'>Unverified account " +
+                    "<i class='fa fa-question-circle'></i></span>)");
+            }
+
             user_miners = data.miners;
             console.log(user_miners)
             console.log("Miner data received " + user_miners.length);
