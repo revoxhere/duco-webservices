@@ -140,9 +140,8 @@ window.addEventListener('load', function() {
         fetch("https://server.duinocoin.com/api.json")
             .then(response => response.json())
             .then(data => {
-                duco_price = round_to(5, data["Duco price"])
                 update_element("ducousd", "≈ $" + round_to(5, data["Duco price"]));
-                duco_price = round_to(5, data["Duco price"];
+                duco_price = round_to(5, data["Duco price"]);
 
                 update_element("ducousd_xmg", "≈ $" + round_to(5, data["Duco price XMG"]));
                 update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
