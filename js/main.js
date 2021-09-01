@@ -141,6 +141,7 @@ window.addEventListener('load', function() {
             .then(response => response.json())
             .then(data => {
                 update_element("ducousd", "≈ $" + round_to(5, data["Duco price"]));
+                duco_price = round_to(5, data["Duco price"];
 
                 update_element("ducousd_xmg", "≈ $" + round_to(5, data["Duco price XMG"]));
                 update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
