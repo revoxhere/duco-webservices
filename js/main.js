@@ -36,6 +36,63 @@ window.addEventListener('load', function() {
     let num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
+    fetch('https://duco.sytes.net/ducostats.json')
+        .then(response => response.json())
+        .then(data => {
+            if (data["api"]["online"] === true) api_status = 
+                `<p class="subtitle is-size-6 has-text-success-dark">` +
+                `<i class="fa fa-fw fa-check"></i> REST API`;
+            else api_status =
+                `<p class="subtitle is-size-6 has-text-danger-dark">` +
+                `<i class="fa fa-fw fa-times-circle"></i> REST API`;
+
+            if (data["vps"]["online"] === true) vps_status = 
+                `<p class="subtitle is-size-6 has-text-success-dark">` +
+                `<i class="fa fa-fw fa-check"></i> Master server`;
+            else vps_status = 
+                `<p class="subtitle is-size-6 has-text-danger-dark">` +
+                `<i class="fa fa-fw fa-times-circle"></i> Master server`;
+
+            if (data["node"]["online"] === true) pulse_status = 
+                `<p class="subtitle is-size-6 has-text-success-dark">` +
+                `<i class="fa fa-fw fa-check"></i> Pulse Pool`;
+            else pulse_status = 
+                `<p class="subtitle is-size-6 has-text-danger-dark">` +
+                `<i class="fa fa-fw times-circle"></i> Pulse Pool`;
+
+            if (data["node2"]["online"] === true) star_status = 
+                `<p class="subtitle is-size-6 has-text-success-dark">` +
+                `<i class="fa fa-fw fa-check"></i> Star Pool`;
+            else star_status = 
+                `<p class="subtitle is-size-6 has-text-danger-dark">` +
+                `<i class="fa fa-fw times-circle"></i> Star Pool`;
+
+            if (data["node3"]["online"] === true) beyond_status =
+                `<p class="subtitle is-size-6 has-text-success-dark">` +
+                `<i class="fa fa-fw fa-check"></i> Beyond Pool`;
+            else beyond_status = 
+                `<p class="subtitle is-size-6 has-text-danger-dark">` +
+                `<i class="fa fa-fw times-circle"></i> Beyond Pool`;
+
+            let final_html = `<div class="columns is-centered is-multiline">` +
+                `<div class="column is-half">` +
+                api_status +
+                `</div>` +
+                `<div class="column is-half">` +
+                vps_status +
+                `</div>` +
+                `<div class="column is-one-third">` +
+                pulse_status +
+                `</div>` +
+                `<div class="column is-one-third">` +
+                star_status +
+                `</div>` +
+                `<div class="column is-one-third">` +
+                beyond_status +
+                `</div></div>`;
+            $("#status").html(final_html);
+        })
+
     const data = {
         labels: timestamps,
         datasets: [{
@@ -175,8 +232,11 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const user_data = (username) => {
-        $.getJSON('https://server.duinocoin.com/users/' + username, function(data) {
+        fetch("https://server.duinocoin.com/users/"+encodeURIComponent(username))
+        .then(response => response.json())
+        .then(data => {
             data = data.result;
+            console.log(data);
             balance = parseFloat(data.balance.balance);
             let balanceusd = balance * duco_price;
             console.log("Balance received: " + balance + " ($" + balanceusd + ")");
@@ -533,7 +593,7 @@ window.addEventListener('load', function() {
                             user_data(username);
                             window.setInterval(() => {
                                 user_data(username);
-                            }, 7.5 * 1000);
+                            }, 5 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {

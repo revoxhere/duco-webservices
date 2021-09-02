@@ -15,7 +15,7 @@
 
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         .box {
-            background-color: rgba(0, 0, 0, .3) !important;
+            background-color: rgba(0, 0, 0, .5) !important;
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
@@ -44,7 +44,7 @@
 
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         .box {
-            background-color: rgba(220, 220, 220, 0.6);
+            background-color: rgba(220, 220, 220, 0.75);
             -webkit-backdrop-filter: blur(1em);
             backdrop-filter: blur(10px);
         }

@@ -99,15 +99,10 @@
     background: linear-gradient(145deg, #fd746c, #ff9068) !important;
 }
 
-.has-text-duco {
-    color: #fd746c;
-}
-
 .is-duco {
     background: linear-gradient(160deg, #fccf30 0%, #f55555 100%);
     border: none !important;
     color: white !important;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 #miners {
@@ -124,17 +119,11 @@
     margin-bottom: 0.25em;
 }
 
-.fa-check,
-.fa-circle-notch,
-.fa-sign-in-alt {
-    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25));
-}
 
 .is-duco-alt {
     background: linear-gradient(160deg, #fe9c88 0%, #f5d961 100%);
     border: none;
     color: white !important;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
 }
 
 .iframe-container {
@@ -228,20 +217,10 @@ body {
 
 
 .center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-/* Change Autocomplete styles in Chrome
-.input:-webkit-autofill,
-.input:-webkit-autofill:hover,
-.input:-webkit-autofill:focus,
-.input:valid {
-    -webkit-text-fill-color: rgba(211, 84, 0,1.0);
-    -webkit-box-shadow: 0 0 0px 10px inherit inset;
-    transition: background-color 5000s ease-in-out 0s;
-}*/
 
 #modal_error {
     animation: fadeIn 0.5s;
