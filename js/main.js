@@ -691,13 +691,15 @@ window.addEventListener('load', function() {
                             user_data(username);
                             window.setInterval(() => {
                                 user_data(username);
-                            }, 5 * 1000);
+                            }, 7.5 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {
                                 get_duco_price();
                             }, 30 * 1000);
-
+                            
+                            $("#wallet").fadeIn('fast');
+                            
                             $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
 
                             if (window.canRunAds === undefined) {
@@ -749,7 +751,7 @@ window.addEventListener('load', function() {
                                 }
                             }
 
-                            $("#wallet").fadeIn('fast');
+                            
                         });
                     } else {
                         window.setTimeout(() => {
