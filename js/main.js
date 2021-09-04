@@ -11,10 +11,24 @@ let timestamps = [];
 let balances = [];
 let first_launch = true;
 
+
+function update_element(element, value) {
+    // Nicely fade in the new value if it changed
+    element = "#" + element;
+    old_value = $(element).text()
+
+    if ($("<div>" + value + "</div>").text() != old_value) {
+        $(element).fadeOut('fast', function() {
+            $(element).html(value);
+            $(element).fadeIn('fast');
+        });
+    }
+}
+
 window.addEventListener('load', function() {
     // CONSOLE WARNING
     console.log("%cCaution!", "color: red; font-size: 10em");
-    console.log(`%cThis browser feature is intended for developers. 
+    console.log(`%cThis browser feature is intended for developers.
     If someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, 
     it is a fraud. If you do, this person will be able to access your account.`, "font-size: 1.5em;");
 
@@ -26,71 +40,159 @@ window.addEventListener('load', function() {
         'backgrounds/wallet/hge-sea-1.jpg'
     ]
 
-    const color_list = [
-        '#e67e22',
-        '#8e44ad',
-        '#1abc9c',
-        '#2ecc71'
-    ]
-
     let num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
     fetch('https://duco.sytes.net/ducostats.json')
         .then(response => response.json())
         .then(data => {
-            if (data["api"]["online"] === true) api_status = 
-                `<p class="subtitle is-size-6 has-text-success-dark">` +
-                `<i class="fa fa-fw fa-check"></i> REST API`;
-            else api_status =
-                `<p class="subtitle is-size-6 has-text-danger-dark">` +
-                `<i class="fa fa-fw fa-times-circle"></i> REST API`;
+            if (data["api"]["online"])
+                api_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-success">
+                            <i class="fas fa-check-square"></i>
+                        </span>
+                        <b>REST API</b>
+                    </div>
+                    <p class="block">
+                        Operating normally since ` +
+                new Date(data["api"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
+            else
+                api_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <b>REST API</b>
+                    </div>
+                    <p class="block">
+                        Possible problems with the wallet and external sites since ` +
+                new Date(data["api"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
 
-            if (data["vps"]["online"] === true) vps_status = 
-                `<p class="subtitle is-size-6 has-text-success-dark">` +
-                `<i class="fa fa-fw fa-check"></i> Master server`;
-            else vps_status = 
-                `<p class="subtitle is-size-6 has-text-danger-dark">` +
-                `<i class="fa fa-fw fa-times-circle"></i> Master server`;
+            if (data["vps"]["online"])
+                vps_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-success">
+                            <i class="fas fa-check-square"></i>
+                        </span>
+                        <b>Master server</b>
+                    </div>
+                    <p class="block">
+                        Operating normally since ` +
+                new Date(data["vps"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
+            else
+                vps_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <b>Master server</b>
+                    </div>
+                    <p class="block">
+                        Possible problems with pools syncing and transactions since ` +
+                new Date(data["vps"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
 
-            if (data["node"]["online"] === true) pulse_status = 
-                `<p class="subtitle is-size-6 has-text-success-dark">` +
-                `<i class="fa fa-fw fa-check"></i> Pulse Pool`;
-            else pulse_status = 
-                `<p class="subtitle is-size-6 has-text-danger-dark">` +
-                `<i class="fa fa-fw times-circle"></i> Pulse Pool`;
+            if (data["node"]["online"])
+                pulse_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-success">
+                            <i class="fas fa-check-square"></i>
+                        </span>
+                        <b>Pulse Pool</b>
+                    </div>
+                    <p class="block">
+                        Operating normally since ` +
+                new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
+            else
+                pulse_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <b>Pulse Pool</b>
+                    </div>
+                    <p class="block">
+                        Possible problems with mining since ` +
+                new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
 
-            if (data["node2"]["online"] === true) star_status = 
-                `<p class="subtitle is-size-6 has-text-success-dark">` +
-                `<i class="fa fa-fw fa-check"></i> Star Pool`;
-            else star_status = 
-                `<p class="subtitle is-size-6 has-text-danger-dark">` +
-                `<i class="fa fa-fw times-circle"></i> Star Pool`;
+            if (data["node2"]["online"])
+                star_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-success">
+                            <i class="fas fa-check-square"></i>
+                        </span>
+                        <b>Star Pool</b>
+                    </div>
+                    <p class="block">
+                        Operating normally since ` +
+                new Date(data["node2"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
+            else
+                star_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <b>Star Pool</b>
+                    </div>
+                    <p class="block">
+                        Possible problems with mining since ` +
+                new Date(data["node2"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
 
-            if (data["node3"]["online"] === true) beyond_status =
-                `<p class="subtitle is-size-6 has-text-success-dark">` +
-                `<i class="fa fa-fw fa-check"></i> Beyond Pool`;
-            else beyond_status = 
-                `<p class="subtitle is-size-6 has-text-danger-dark">` +
-                `<i class="fa fa-fw times-circle"></i> Beyond Pool`;
+            if (data["node3"]["online"] === true)
+                beyond_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-success">
+                            <i class="fas fa-check-square"></i>
+                        </span>
+                        <b>Beyond Pool</b>
+                    </div>
+                    <p class="block">
+                        Operating normally since ` +
+                new Date(data["node3"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
+            else
+                beyond_status =
+                `<div class="column">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <b>Beyond Pool</b>
+                    </div>
+                    <p class="block">
+                        Possible problems with mining since ` +
+                new Date(data["node3"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                    </p>
+                </div>`;
 
-            let final_html = `<div class="columns is-centered is-multiline">` +
-                `<div class="column is-half">` +
-                api_status +
-                `</div>` +
-                `<div class="column is-half">` +
-                vps_status +
-                `</div>` +
-                `<div class="column is-one-third">` +
-                pulse_status +
-                `</div>` +
-                `<div class="column is-one-third">` +
-                star_status +
-                `</div>` +
-                `<div class="column is-one-third">` +
-                beyond_status +
-                `</div></div>`;
-            $("#status").html(final_html);
+            let final_html = api_status + vps_status + pulse_status + star_status + beyond_status;
+            $("#server-status").html(final_html);
         })
 
     const data = {
@@ -102,11 +204,16 @@ window.addEventListener('load', function() {
 
     const config = {
         options: {
-            backgroundColor: color_list[num],
-            borderColor: color_list[num],
+            backgroundColor: "#e67e22",
+            borderColor: "#e67e22",
             plugins: {
                 legend: {
                     display: false
+                }
+            },
+            elements: {
+                line: {
+                    tension: 0
                 }
             }
         },
@@ -116,8 +223,7 @@ window.addEventListener('load', function() {
 
     const balance_chart = new Chart(
         document.getElementById('balance_chart'),
-        config
-    );
+        config);
 
     function get_now() {
         const today = new Date();
@@ -134,7 +240,6 @@ window.addEventListener('load', function() {
         balances.push(balance);
         balance_chart.update();
     };
-
 
     function updateValue(e) {
         let radiate = $('#radiate');
@@ -191,7 +296,6 @@ window.addEventListener('load', function() {
         }
     }
 
-
     // PRICE FROM API
     const get_duco_price = () => {
         fetch("https://server.duinocoin.com/api.json")
@@ -232,96 +336,102 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const user_data = (username) => {
-        fetch("https://server.duinocoin.com/users/"+encodeURIComponent(username))
-        .then(response => response.json())
-        .then(data => {
-            data = data.result;
-            console.log(data);
-            balance = parseFloat(data.balance.balance);
-            let balanceusd = balance * duco_price;
-            console.log("Balance received: " + balance + " ($" + balanceusd + ")");
+        fetch("https://server.duinocoin.com/users/" + encodeURIComponent(username))
+            .then(response => response.json())
+            .then(data => {
+                data = data.result;
+                console.log(data);
+                balance = parseFloat(data.balance.balance);
+                let balanceusd = balance * duco_price;
+                console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
-            if (first_launch) {
+                if (first_launch) {
+                    push_to_graph(balance);
+                    first_launch = false;
+                }
                 push_to_graph(balance);
-                first_launch = false;
-            }
-            push_to_graph(balance);
 
-            if (oldb != balance) {
-                calculdaily(balance, oldb)
-                oldb = balance;
-            }
+                if (oldb != balance) {
+                    calculdaily(balance, oldb)
+                    oldb = balance;
+                }
 
-            balance = round_to(8, balance);
-            update_element("balance", balance + " DUCO");
+                balance = round_to(8, balance);
+                update_element("balance", balance + " DUCO");
 
-            balanceusd = round_to(4, balanceusd);
-            update_element("balanceusd", "≈ $" + balanceusd);
+                balanceusd = round_to(4, balanceusd);
+                update_element("balanceusd", "≈ $" + balanceusd);
 
-            verified = data.balance.verified;
-            if (verified == "yes") {
-                update_element("verified",
-                    "(<span class='has-text-success-dark'>Verified account " +
-                    "<i class='fa fa-check'></i></span>)");
-            } else {
-                update_element("verified",
-                    "(<span class='has-text-danger-dark'>Unverified account " +
-                    "<i class='fa fa-question-circle'></i></span>)");
-            }
+                verified = data.balance.verified;
+                if (verified == "yes") {
+                    update_element("verify",
+                        `<button disabled class="button" target="_blank">
+                            <span id="verified" class="has-text-success-dark">
+                                Your account is verified
+                            </span>
+                        </a>`);
+                } else {
+                    update_element("verify",
+                        `<a href="https://server.duinocoin.com/verify.html" class="button" target="_blank">
+                            <span id="verified" class="has-text-danger-dark">
+                                Verify your account
+                            </span>
+                        </a>`);
+                }
 
-            user_miners = data.miners;
-            console.log(user_miners)
-            console.log("Miner data received " + user_miners.length);
+                user_miners = data.miners;
+                console.log(user_miners)
+                console.log("Miner data received " + user_miners.length);
 
-            if (user_miners.length > 0) {
-                let user_miners_html = '';
-                let miner_name = '';
-                let diffString = '';
+                if (user_miners.length > 0) {
+                    let user_miners_html = '';
+                    let miner_name = '';
+                    let diffString = '';
 
-                for (let miner in user_miners) {
-                    miner_hashrate = user_miners[miner]["hashrate"];
-                    miner_identifier = user_miners[miner]["identifier"];
-                    miner_software = user_miners[miner]["software"];
-                    miner_diff = user_miners[miner]["diff"];
-                    miner_rejected = user_miners[miner]["rejected"];
-                    miner_accepted = user_miners[miner]["accepted"];
-                    miner_sharetime = user_miners[miner]["sharetime"];
+                    for (let miner in user_miners) {
+                        miner_hashrate = user_miners[miner]["hashrate"];
+                        miner_identifier = user_miners[miner]["identifier"];
+                        miner_software = user_miners[miner]["software"];
+                        miner_diff = user_miners[miner]["diff"];
+                        miner_rejected = user_miners[miner]["rejected"];
+                        miner_accepted = user_miners[miner]["accepted"];
+                        miner_sharetime = user_miners[miner]["sharetime"];
 
-                    if (miner_identifier === "None") {
-                        miner_name = miner_software;
-                        miner_soft = "";
-                    } else {
-                        miner_name = miner_identifier;
-                        miner_soft = "(" + miner_software + ")";
-                    }
+                        if (miner_identifier === "None") {
+                            miner_name = miner_software;
+                            miner_soft = "";
+                        } else {
+                            miner_name = miner_identifier;
+                            miner_soft = "(" + miner_software + ")";
+                        }
 
-                    diffString = scientific_prefix(miner_diff)
-                    accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
+                        diffString = scientific_prefix(miner_diff)
+                        accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
 
-                    if (miner_software.includes("ESP8266")) {
-                        icon = "fa-wifi";
-                        color = "#F5515F";
-                    } else if (miner_software.includes("ESP32")) {
-                        icon = "fa-wifi";
-                        color = "#5f27cd";
-                    } else if (miner_software.includes("AVR")) {
-                        icon = "fa-microchip";
-                        color = "#0984e3";
-                    } else if (miner_software.includes("PC")) {
-                        icon = "fa-desktop";
-                        color = "#d35400";
-                    } else if (miner_software.includes("Web")) {
-                        icon = "fa-globe";
-                        color = "#009432";
-                    } else if (miner_software.includes("Android")) {
-                        icon = "fa-mobile";
-                        color = "#fa983a";
-                    } else {
-                        icon = "fa-question-circle";
-                        color = "#16a085";
-                    }
+                        if (miner_software.includes("ESP8266")) {
+                            icon = "fa-wifi";
+                            color = "#F5515F";
+                        } else if (miner_software.includes("ESP32")) {
+                            icon = "fa-wifi";
+                            color = "#5f27cd";
+                        } else if (miner_software.includes("AVR")) {
+                            icon = "fa-microchip";
+                            color = "#0984e3";
+                        } else if (miner_software.includes("PC")) {
+                            icon = "fa-desktop";
+                            color = "#d35400";
+                        } else if (miner_software.includes("Web")) {
+                            icon = "fa-globe";
+                            color = "#009432";
+                        } else if (miner_software.includes("Android")) {
+                            icon = "fa-mobile";
+                            color = "#fa983a";
+                        } else {
+                            icon = "fa-question-circle";
+                            color = "#16a085";
+                        }
 
-                    user_miners_html += `
+                        user_miners_html += `
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
                                     <i class="fas ` + icon + ` fa-fw"></i>
@@ -349,14 +459,14 @@ window.addEventListener('load', function() {
                                 </p>
                             </div>`;
 
-                    total_hashrate += miner_hashrate;
-                }
-                update_element("minercount", "(" + user_miners.length + ")");
-                update_element("miners", user_miners_html);
-                update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
-                total_hashrate = 0;
-            } else {
-                update_element("miners", `
+                        total_hashrate += miner_hashrate;
+                    }
+                    update_element("minercount", "(" + user_miners.length + ")");
+                    update_element("miners", user_miners_html);
+                    update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
+                    total_hashrate = 0;
+                } else {
+                    update_element("miners", `
                                <div class="column is-full">
                                    <p class='title is-size-6'>
                                        No miners detected
@@ -366,28 +476,30 @@ window.addEventListener('load', function() {
                                        it will take a minute or two until their stats will appear here.
                                    </p>
                                </div>`);
-            }
+                }
 
-            user_transactions = data.transactions.reverse();
-            console.log("Transaction list received " + user_transactions.length);
+                user_transactions = data.transactions.reverse();
+                console.log("Transaction list received " + user_transactions.length);
 
-            let transactions_table = document.getElementById("transactions_table");
-            if (user_transactions.length > 0) {
-                transactions_html = "";
-                for (let i in user_transactions) {
-                    transaction_date = user_transactions[i]["datetime"];
-                    transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
-                    transaction_hash_full = user_transactions[i]["hash"];
-                    transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 8);
-                    transaction_memo = user_transactions[i]["memo"];
-                    transaction_recipient = user_transactions[i]["recipient"];
-                    transaction_sender = user_transactions[i]["sender"];
+                let transactions_table = document.getElementById("transactions_table");
+                if (user_transactions.length > 0) {
+                    transactions_html = "";
+                    for (let i in user_transactions) {
+                        transaction_date = user_transactions[i]["datetime"];
+                        transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
+                        transaction_hash_full = user_transactions[i]["hash"];
+                        transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 8);
+                        transaction_memo = user_transactions[i]["memo"];
+                        transaction_recipient = user_transactions[i]["recipient"];
+                        transaction_sender = user_transactions[i]["sender"];
 
-                    if (transaction_memo == "None") transaction_memo = "";
-                    else transaction_memo = "\"" + transaction_memo + "\""
+                        if (transaction_memo == "None")
+                            transaction_memo = "";
+                        else
+                            transaction_memo = "\"" + transaction_memo + "\""
 
-                    if (transaction_sender == username) {
-                        thtml = `
+                        if (transaction_sender == username) {
+                            thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
                                     <i class="fa fa-arrow-right fa-fw"></i>
@@ -400,7 +512,7 @@ window.addEventListener('load', function() {
                                         to
                                     </span>
                                     <a href="https://explorer.duinocoin.com/?search=` +
-                            transaction_recipient + `" target="_blank">
+                                transaction_recipient + `" target="_blank">
                                         ` + transaction_recipient + `
                                     </a>
                                     <span class="has-text-weight-normal">
@@ -412,14 +524,14 @@ window.addEventListener('load', function() {
                                         ` + transaction_date + `
                                     </span>
                                     <a href="https://explorer.duinocoin.com/?search=` +
-                            transaction_hash_full + `" target="_blank">
+                                transaction_hash_full + `" target="_blank">
                                         (` + transaction_hash + `)
                                     </a>
                                 </p>
                             </div>`;
-                        transactions_html += thtml;
-                    } else {
-                        thtml = `
+                            transactions_html += thtml;
+                        } else {
+                            thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
                                     <i class="fa fa-arrow-left fa-fw"></i>
@@ -432,7 +544,7 @@ window.addEventListener('load', function() {
                                         from
                                     </span>
                                     <a href="https://explorer.duinocoin.com/?search=` +
-                            transaction_sender + `" target="_blank">
+                                transaction_sender + `" target="_blank">
                                         ` + transaction_sender + `
                                     </a>
                                     <span class="has-text-weight-normal">
@@ -444,16 +556,17 @@ window.addEventListener('load', function() {
                                         ` + transaction_date + `
                                     </span>
                                     <a href="https://explorer.duinocoin.com/?search=` +
-                            transaction_hash_full + `" target="_blank">
+                                transaction_hash_full + `" target="_blank">
                                         (` + transaction_hash + `)
                                     </a>
                                 </p>
                             </div>`;
-                        transactions_html += thtml;
+                            transactions_html += thtml;
+                        }
                     }
-                }
-                transactions_table.innerHTML = transactions_html;
-            } else transactions_table.innerHTML = `<div class="column is-full">
+                    transactions_table.innerHTML = transactions_html;
+                } else
+                    transactions_table.innerHTML = `<div class="column is-full">
                     <p class="title is-size-6">
                         No transactions yet or they're temporarily unavailable
                     </p>
@@ -462,26 +575,12 @@ window.addEventListener('load', function() {
                         it will take a few seconds until the transaction will appear here.
                     </p>
                 </div>`;
-        });
+            });
     }
-
 
     function round_to(precision, value) {
         power_of_ten = 10 ** precision;
         return Math.round(value * power_of_ten) / power_of_ten;
-    }
-
-    function update_element(element, value) {
-        // Nicely fade in the new value if it changed
-        element = "#" + element;
-        old_value = $(element).text()
-
-        if ($("<div>" + value + "</div>").text() != old_value) {
-            $(element).fadeOut('fast', function() {
-                $(element).html(value);
-                $(element).fadeIn('fast');
-            });
-        }
     }
 
     /* Accurate daily calculator by Lukas */
@@ -512,7 +611,6 @@ window.addEventListener('load', function() {
             document.getElementById("loginbutton").click();
         }
     });
-
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
@@ -600,8 +698,6 @@ window.addEventListener('load', function() {
                                 get_duco_price();
                             }, 30 * 1000);
 
-                            $("#wallet").fadeIn('fast');
-
                             $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
 
                             if (window.canRunAds === undefined) {
@@ -613,6 +709,47 @@ window.addEventListener('load', function() {
                             // THEME SWITCHER
                             let themesel = document.getElementById('themesel');
                             themesel.addEventListener('input', updateValue);
+
+                            document.getElementById('changepassbtn').onclick = function() {
+                                let modal_success = document.querySelector('#modal_changepass');
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_success.classList.add('is-active');
+                                document.querySelector('#modal_changepass .delete').onclick = function() {
+                                    document.querySelector('html').classList.remove('is-clipped');
+                                    modal_success.classList.remove('is-active');
+                                }
+                            }
+
+                            document.getElementById('changepassconf').onclick = function() {
+                                changepass(username);
+                            }
+
+                            function changepass(username) {
+                                old_pass = document.getElementById("oldpass").value;
+                                new_pass = document.getElementById("newpass").value;
+                                new_pass_conf = document.getElementById("newpass_conf").value;
+
+                                if (new_pass != new_pass_conf) {
+                                    update_element("changepass_text", "New passwords don't match")
+                                } else {
+                                    fetch("https://server.duinocoin.com/changepass/" + encodeURIComponent(username) +
+                                            "?password=" + encodeURIComponent(old_pass) +
+                                            "&newpassword=" + encodeURIComponent(new_pass))
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                update_element("changepass_text", data.result);
+                                                $('#oldpass').val('');
+                                                $('#newpass').val('');
+                                                $('#newpass_conf').val('');
+                                            } else {
+                                                update_element("changepass_text", data.message);
+                                            }
+                                        });
+                                }
+                            }
+
+                            $("#wallet").fadeIn('fast');
                         });
                     } else {
                         window.setTimeout(() => {
@@ -635,10 +772,12 @@ window.addEventListener('load', function() {
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                 update_element("logintext", "Wallet API is unreachable");
                 document.getElementById('loginbutton').classList.remove("is-loading")
-                setTimeout(() => { update_element("logintext", ""); }, 5000);
+                setTimeout(() => {
+                    update_element("logintext", "");
+                }, 5000);
             })
         }
     }
 
-    document.getElementById("pageloader").setAttribute('class', "pageloader is-primary"); // After page is loaded
+    $("#loader-wrapper").fadeOut(); // After page is loaded
 });

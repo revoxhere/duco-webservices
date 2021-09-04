@@ -47,90 +47,109 @@
     <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
     <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
     <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
-    <link rel="preload" href="css/bulma-pageloader.min.css" as="style">
-    <link rel="stylesheet" href="css/bulma-pageloader.min.css" type="text/css">
     <!-- Themes -->
     <link rel="stylesheet" disabled id="radiate" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
     <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
 </head>
 
 <body>
-    <div id="pageloader" class="pageloader is-active is-primary">
-        <p class="title">Duino-Coin Web Wallet</p>
+    <div id="loader-wrapper">
+        <div class="load">
+            <hr />
+            <hr />
+            <hr />
+            <hr />
+        </div>
     </div>
     <div class="container">
         <section class="hero is-fullheight" id="login" style="display:flex">
             <div class="hero-body is-align-self-center">
-                <div class="columns is-centered">
-                    <div class="column is-one-third">
-                        <div class="box">
-                            <section style="max-width:100%">
-                                <p class="title m-2">
-                                    <a href="https://duinocoin.com">
-                                        <img src="assets/ducobanner.png" width="175rem" class="image">
-                                    </a>
-                                </p>
-                                <p class="title mt-5">
-                                    <i class="fa fa-fw fa-sign-in-alt"></i>
-                                    Sign in
-                                </p>
-                                <p class="subtitle">
-                                    to your Duino-Coin Wallet
-                                </p>
-                                <div class="field mt-5">
-                                    <div class="control has-icons-left">
-                                        <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
-                                        <span class="icon is-left">
-                                            <i style="color: #777" class="fa fa-user"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="control has-icons-left">
-                                        <input type="password" id="passwordinput" placeholder="Password" class="input" required>
-                                        <span class="icon is-left">
-                                            <i style="color: #777" class="fa fa-lock"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <p id="logintext"></p>
-                                <div class="field mt-5">
-                                    <div class="buttons">
-                                        <button class="button is-duco is-dark is-fullwidth" id="loginbutton">
-                                            Login
-                                        </button>
-                                        <a href="register.html" class="button is-fullwidth">
-                                            <i class="fa fa-sign-in-alt fa-fw"></i>&nbsp;
-                                            Create a wallet
-                                        </a>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                    <div class="column is-one-third">
-                        <div class="columns is-multiline">
-                            <div class="column is-full">
+                <div class="columns is-centered is-multiline">
+                    <div class="column is-narrow">
+                        <div class="columns">
+                            <div class="column">
                                 <div class="box">
-                                    <p class="title is-size-4">
-                                        <i class="fa fa-fw fa-newspaper"></i>
-                                        News
-                                    </p>
+                                    <section>
+                                        <p class="title">
+                                            <a href="https://duinocoin.com">
+                                                <img src="assets/ducobanner.png" style="filter: saturate(70%)" width="175rem" class="image center">
+                                            </a>
+                                        </p>
+                                        <p class="title is-size-4">
+                                            Sign in
+                                        </p>
+                                        <p class="subtitle is-size-5">
+                                            to your <b>Duino-Coin</b> wallet
+                                        </p>
+                                        <div class="field mt-5">
+                                            <div class="control has-icons-left">
+                                                <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
+                                                <span class="icon is-left">
+                                                    <i style="color: #777" class="fa fa-user"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="control has-icons-left">
+                                                <input type="password" id="passwordinput" placeholder="Password" class="input" required>
+                                                <span class="icon is-left">
+                                                    <i style="color: #777" class="fa fa-lock"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <p id="logintext"></p>
+                                        <div class="field mt-5">
+                                            <div class="buttons">
+                                                <button class="button is-dark is-duco" id="loginbutton">
+                                                    Login
+                                                </button>
+                                                <a href="register.html" class="button">
+                                                    Create a new wallet
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-narrow">
+                                <div class="box">
+                                    <div class="columns is-mobile">
+                                        <div class="column">
+                                            <p class="title is-size-5">
+                                                News center
+                                            </p>
+                                        </div>
+                                        <div class="column">
+                                            <p class="title is-size-6 has-text-right has-text-link">
+                                                <a href="https://server.duinocoin.com/news.html" target="_blank">
+                                                    <i class="icon is-small fa fa-eye"></i>&nbsp;
+                                                    View all
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
                                     <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:10rem" allowtransparency="true">Please wait</iframe>
                                 </div>
                             </div>
-                            <div class="column is-full">
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="columns">
+                            <div class="column">
                                 <div class="box">
-                                    <p class="title is-size-4">
-                                        <i class="fa fa-fw fa-server"></i>
-                                        Service status
+                                    <p class="title is-size-5">
+                                        Servers status
                                     </p>
-                                    <p class="subtitle is-size-4">
-                                        <div id="status">Please wait...</div>
-                                    </p>
-                                    <p class="title is-size-6 mt-3 has-text-warning-dark">
-                                        <i class="fa fa-fw fa-exclamation-triangle"></i>
-                                        Rewards are being readjusted
+                                    <div class="columns is-multiline">
+                                        <div id="server-status"></div>
+                                    </div>
+                                    <p class="subtitle is-size-7 has-text-right">
+                                        Data provided by
+                                        <a href="https://duco.sytes.net">
+                                            Lukas
+                                        </a>
                                     </p>
                                 </div>
                             </div>
@@ -141,38 +160,30 @@
         </section>
     </div>
     <div id="wallet" class="m-1" style="display:none;">
-        <div class="box m-3">
-            <div class="columns">
-                <div class="column">
-                    <p class="title is-size-5">
-                        <i class="fa fa-wallet is-size-7 card-orange fa-fw"></i>
-                        Welcome back, <span id="user"></span>!
-                        <a href="https://server.duinocoin.com/verify.html" target="_blank">
-                            <span id="verified" class="has-text-grey">
-                                Fetching data
-                            </span>
-                        </a>
-                    </p>
-                    <p class="title">
-                        <span id="balance">
-                            Fetching data
-                        </span>
-                    </p>
-                    <p class="subtitle">
-                        <span id="balanceusd" style="white-space: nowrap"></span>
-                    </p>
-                    <p class="subtitle">
-                        <span id="estimatedprofit">
-                            <i class="fas fa-spinner fa-pulse"></i>
-                            Calculating est. daily profit
-                        </span>
-                        <span class="subtitle" id="estimatedprofitusd">
-                        </span>
-                    </p>
-                </div>
-                <div class="column">
-                    <canvas height="70em" id="balance_chart"></canvas>
-                </div>
+        <div class="box m-3" style="height:12.5em">
+            <div class="canvascontainer is-hidden-mobile">
+                <canvas height="30em" id="balance_chart"></canvas>
+            </div>
+            <div class="container">
+                <p class="subtitle is-size-5 has-text-centered">
+                    Welcome back, <b id="user"></b>
+                </p>
+                <p class="title has-text-centered">
+                    <span id="balance">
+                        Fetching data
+                    </span>
+                </p>
+                <p class="subtitle has-text-centered">
+                    <span id="balanceusd" style="white-space: nowrap"></span>
+                </p>
+                <p class="subtitle has-text-centered">
+                    <span id="estimatedprofit">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                        Calculating est. daily profit
+                    </span>
+                    <span class="subtitle" id="estimatedprofitusd">
+                    </span>
+                </p>
             </div>
         </div>
         <div class="columns is-multiline is-gapless">
@@ -253,7 +264,7 @@
                                 </div>
                             </div>
                             <div class="column is-half">
-                                <button class="button is-primary is-fullwidth" id="send">
+                                <button class="button is-primary is-light is-fullwidth" id="send">
                                     Send
                                 </button>
                             </div>
@@ -477,6 +488,10 @@
                         <a href="https://play.google.com/store/apps/details?id=com.pripun.duinocoin" target="_blank" class="button">
                             <i class="fab fa-fw fa-android icon is-small"></i>
                         </a>
+                        <button id="changepassbtn" class="button">
+                            Change password
+                        </button>
+                        <span id="verify"></span>
                     </div>
                 </div>
             </div>
@@ -549,7 +564,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head has-background-success">
-                <p class="modal-card-title"><b style="color: white">Info</b></p>
+                <p class="modal-card-title">Success</p>
                 <button class="delete" aria-label="close"></button>
             </header>
             <section class="modal-card-body">
@@ -563,12 +578,47 @@
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head has-background-danger">
-                <p class="modal-card-title"><b style="color: white">Error</b></p>
+                <p class="modal-card-title">Error</p>
                 <button class="delete" aria-label="close"></button>
             </header>
             <section class="modal-card-body">
                 <div class="content">
                     <p></p>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="modal_changepass" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Change password</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="content">
+                    <div class="columns">
+                        <div class="column">
+                            <input class="input" placeholder="Old password" type="password" id="oldpass">
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="New password" type="password" id="newpass">
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="Re-type new password" type="password" id="newpass_conf">
+                        </div>
+                    </div>
+
+                    <div class="columns">
+                        <div class="column is-narrow">
+                            <button class="button is-primary is-light" id="changepassconf">
+                                Submit
+                            </button>
+                        </div>
+                        <div class="column mt-1">
+                            <span id="changepass_text" class="subtitle"></span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

@@ -1,3 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif !important;
+}
+.canvascontainer {
+    text-align:center;
+    margin: auto;
+}
+
+#balance_chart {
+    opacity: 0.25;
+    position: fixed;
+    touch-action: none;
+    display: inline;
+    overflow: hidden;
+    margin: 0.25em !important;
+    height: 10em !important;
+}
+
 .card-orange {
     top: 0.15em;
     position: relative;
@@ -94,16 +114,29 @@
     color: white;
 }
 
-.is-primary {
-    /* Override Bulmas primary color to Duco-Colored gradient*/
-    background: linear-gradient(145deg, #fd746c, #ff9068) !important;
+.is-duco {
+    background: linear-gradient(45deg, #f55555, #e65c00);
+    border: none !important;
 }
 
-.is-duco {
-    background: linear-gradient(160deg, #fccf30 0%, #f55555 100%);
+.is-duco:hover {
+    background: linear-gradient(45deg, #f54555, #e64c00);
     border: none !important;
-    color: white !important;
 }
+
+
+@keyframes fade {
+
+    0%,
+    100% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 1
+    }
+}
+
 
 #miners {
     max-height: 10rem;
@@ -119,6 +152,84 @@
     margin-bottom: 0.25em;
 }
 
+#loader-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+@media (prefers-color-scheme: light) {
+    #loader-wrapper {
+        background: #dcdde1;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    #loader-wrapper {
+        background: #2f3640;
+    }
+}
+
+.load {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+}
+
+.load hr {
+    border: 0;
+    margin: 0;
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    border-radius: 50%;
+    animation: spin 2s ease infinite;
+}
+
+.load :first-child {
+    background: #8A2387;
+    animation-delay: -1.5s;
+}
+
+.load :nth-child(2) {
+    background: #E94057;
+    animation-delay: -1s;
+}
+
+.load :nth-child(3) {
+    background: #F27121;
+    animation-delay: -0.5s;
+}
+
+.load :last-child {
+    background: #FF4B2B;
+}
+
+@keyframes spin {
+
+    0%,
+    100% {
+        transform: translate(0)
+    }
+
+    25% {
+        transform: translate(160%)
+    }
+
+    50% {
+        transform: translate(160%, 160%)
+    }
+
+    75% {
+        transform: translate(0, 160%)
+    }
+}
 
 .is-duco-alt {
     background: linear-gradient(160deg, #fe9c88 0%, #f5d961 100%);
@@ -222,12 +333,20 @@ body {
     margin-right: auto;
 }
 
+#modal_success {
+    animation: fadeIn 1s;
+    -webkit-animation: fadeIn 1s;
+    -moz-animation: fadeIn 1s;
+    -o-animation: fadeIn 1s;
+    -ms-animation: fadeIn 1s;
+}
+
 #modal_error {
-    animation: fadeIn 0.5s;
-    -webkit-animation: fadeIn 0.5s;
-    -moz-animation: fadeIn 0.5s;
-    -o-animation: fadeIn 0.5s;
-    -ms-animation: fadeIn 0.5s;
+    animation: fadeIn 1s;
+    -webkit-animation: fadeIn 1s;
+    -moz-animation: fadeIn 1s;
+    -o-animation: fadeIn 1s;
+    -ms-animation: fadeIn 1s;
 }
 
 @keyframes fadeIn {

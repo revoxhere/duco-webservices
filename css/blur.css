@@ -15,17 +15,25 @@
 
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         .box {
-            background-color: rgba(0, 0, 0, .5) !important;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(9px) saturate(180%);
+            -webkit-backdrop-filter: blur(9px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.57);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
         }
 
         input,
         .button,
-        .tag,
         select,
         button {
-            background-color: rgba(0, 0, 0, 0.6) !important;
+            border-radius: 12px !important;
+            backdrop-filter: blur(9px) saturate(180%);
+            -webkit-backdrop-filter: blur(9px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.125);
+        }
+
+        input {
+            background-color: rgba(17, 25, 40, 0.57) !important;
         }
     }
 
@@ -39,21 +47,30 @@
     .tag,
     select {
         /* Fallback for firefox that still doesn't support blur */
-        background-color: rgba(255, 255, 255, .8);
+        background-color: rgba(255, 255, 255, 0.8);
     }
 
-    @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    @supports ((-webkit-backdrop-filter: blur(9px)) or (backdrop-filter: blur(9px))) {
         .box {
-            background-color: rgba(220, 220, 220, 0.75);
-            -webkit-backdrop-filter: blur(1em);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(9px) saturate(180%);
+            -webkit-backdrop-filter: blur(9px) saturate(180%);
+            background-color:  rgba(255, 240, 222, 0.57);
+            border-radius: 12px;
+            border: 1px solid rgba(209, 213, 219, 0.3);
         }
 
         input,
         .button,
         select,
         button {
-            background-color: rgba(255, 255, 255, 0.5) !important;
+            border-radius: 12px !important;
+            backdrop-filter: blur(9px) saturate(180%);
+            -webkit-backdrop-filter: blur(9px) saturate(280%);
+            border: 1px solid rgba(209, 213, 219, 0.3);
+        }
+
+        input {
+            background-color: rgba(255, 240, 222, 0.57) !important;
         }
     }
 
