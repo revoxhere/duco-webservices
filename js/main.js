@@ -435,8 +435,8 @@ window.addEventListener('load', function() {
                         user_miners_html += `
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
-                                    <i class="fas ` + icon + ` fa-fw"></i>
-                                    <span style="color:` + color + `">
+                                    <i class="fas ` + icon + ` fa-fw" style="color:` + color + `"></i>
+                                    <span>
                                         ` + miner_name + `
                                     </span>
                                     -
@@ -503,8 +503,8 @@ window.addEventListener('load', function() {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-right fa-fw"></i>
-                                    <span class="has-text-danger">
+                                    <i class="fa fa-arrow-right fa-fw has-text-danger"></i>
+                                    <span>
                                         Sent
                                         ` + transaction_amount + `
                                         DUCO
@@ -535,8 +535,8 @@ window.addEventListener('load', function() {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-left fa-fw"></i>
-                                    <span class="has-text-success-dark">
+                                    <i class="fa fa-arrow-left fa-fw has-text-success"></i>
+                                    <span>
                                         Received
                                         ` + transaction_amount + `
                                         DUCO

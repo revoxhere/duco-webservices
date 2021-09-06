@@ -160,7 +160,7 @@
         </section>
     </div>
     <div id="wallet" class="m-1" style="display:none;">
-        <div class="box m-3" style="height:12.5em">
+        <div class="box m-3">
             <div class="canvascontainer is-hidden-mobile">
                 <canvas height="30em" id="balance_chart"></canvas>
             </div>
@@ -190,13 +190,19 @@
             <div class="column is-half">
                 <div class="column">
                     <div class="box">
-                        <p class="title is-size-5">
-                            <i class="fa fa-tachometer-alt is-size-7 card-pomegrante fa-fw"></i>
-                            Miners
-                            <span id="minercount"></span>
-                            -
-                            <b id="total_hashrate">0 H/s</b> total
-                        </p>
+                        <div class="columns is-multiline">
+                            <div class="column">
+                                <p class="title is-size-5">
+                                    Your miners
+                                    <span id="minercount"></span>
+                                </p>
+                            </div>
+                            <div class="column">
+                                <p class="title is-size-6 has-text-right">
+                                    <b id="total_hashrate">0 H/s</b> total
+                                </p>
+                            </div>
+                        </div>
                         <div id="miners" class="columns is-multiline">
                             <div class="column is-full">
                                 <p class="title is-size-6">
@@ -209,8 +215,7 @@
                 <div class="column">
                     <div class="box">
                         <p class="title is-size-5">
-                            <i class="fa fa-list-ul is-size-7 card-blue fa-fw"></i>
-                            Last transactions
+                            Your last transactions
                         </p>
                         <div id="transactions_table" class="columns is-multiline">
                             <div class="column is-full">
@@ -223,10 +228,21 @@
                 </div>
                 <div class="column">
                     <div class="box">
-                        <p class="title is-size-5">
-                            <i class="fa fa-newspaper is-size-7 card-pink fa-fw"></i>
-                            News center
-                        </p>
+                        <div class="columns is-multiline">
+                            <div class="column">
+                                <p class="title is-size-5">
+                                    News center
+                                </p>
+                            </div>
+                            <div class="column">
+                                <p class="title is-size-6 has-text-right has-text-link">
+                                    <a href="https://server.duinocoin.com/news.html" target="_blank">
+                                        <i class="icon is-small fa fa-eye"></i>&nbsp;
+                                        View all
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
                         <iframe id="news_iframe" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;max-height:12rem" allowtransparency="true">Please wait</iframe>
                     </div>
                 </div>
@@ -235,8 +251,7 @@
                 <div class="column">
                     <div class="box">
                         <p class="title is-size-5">
-                            <i class="fa fa-share is-size-7 card-green fa-fw"></i>
-                            Transfer DUCO
+                            Transfer coins
                         </p>
                         <div class="columns is-multiline">
                             <div class="column is-half">
@@ -273,10 +288,18 @@
                 </div>
                 <div class="column">
                     <div class="box">
-                        <p class="title is-size-5">
-                            <i class="fa fa-money-bill-wave is-size-7 card-turquoise fa-fw"></i>
-                            Duino-Coin prices - max: <b id="ducousd">...</b>
-                        </p>
+                        <div class="columns is-multiline">
+                            <div class="column">
+                                <p class="title is-size-5">
+                                    Exchange rates
+                                </p>
+                            </div>
+                            <div class="column">
+                                <p class="title is-size-6 has-text-right">
+                                    max: <b id="ducousd">fetching data</b>
+                                </p>
+                            </div>
+                        </div>
                         <div class="columns is-multiline">
                             <div class="column is-full">
                                 <span class="title is-size-5">
@@ -465,10 +488,6 @@
                             <img src="assets/furim_faucet.png" class="icon is-small">
                             <span>Furim's Faucet</span>
                         </a>
-                        <a href="http://phantom32.tk" target="_blank" class="button">
-                            <i class="fa fa-fw fa-ghost icon is-small has-text-duco"></i>
-                            <span>phantom32's Faucet</span>
-                        </a>
                         <a href="https://duco-faucet.pcgeek.pl" target="_blank" class="button">
                             <img src="assets/amogus_faucet.png" class="icon is-small">
                             <span>Amogus Faucet</span>
@@ -616,7 +635,6 @@
                             <input class="input" placeholder="Re-type new password" type="password" id="newpass_conf">
                         </div>
                     </div>
-
                     <div class="columns">
                         <div class="column is-narrow">
                             <button class="button is-primary is-light" id="changepassconf">

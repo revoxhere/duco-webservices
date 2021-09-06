@@ -3,19 +3,13 @@
 body {
     font-family: 'Lato', sans-serif !important;
 }
+
 .canvascontainer {
-    text-align:center;
-    margin: auto;
+    display: none;
 }
 
 #balance_chart {
-    opacity: 0.25;
-    position: fixed;
-    touch-action: none;
-    display: inline;
-    overflow: hidden;
-    margin: 0.25em !important;
-    height: 10em !important;
+    display: none;
 }
 
 .card-orange {

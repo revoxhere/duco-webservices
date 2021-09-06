@@ -2,6 +2,21 @@
     background-color: transparent !important;
 }
 
+.canvascontainer {
+    margin: auto !important;
+    display: block;
+}
+
+#balance_chart {
+    opacity: 0.25 !important;
+    position: fixed !important;
+    touch-action: none !important;
+    display: inline !important;
+    overflow: hidden !important;
+    height: 10em !important;
+    display: block;
+}
+
 @media (prefers-color-scheme: dark) {
 
     .box,
