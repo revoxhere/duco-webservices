@@ -397,13 +397,14 @@ window.addEventListener('load', function() {
                         miner_rejected = user_miners[miner]["rejected"];
                         miner_accepted = user_miners[miner]["accepted"];
                         miner_sharetime = user_miners[miner]["sharetime"];
+                        miner_pool = user_miners[miner]["pool"];
 
                         if (miner_identifier === "None") {
                             miner_name = miner_software;
                             miner_soft = "";
                         } else {
                             miner_name = miner_identifier;
-                            miner_soft = "(" + miner_software + ")";
+                            miner_soft = " &bull; " + miner_software;
                         }
 
                         diffString = scientific_prefix(miner_diff)
@@ -436,24 +437,36 @@ window.addEventListener('load', function() {
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
                                     <i class="fas ` + icon + ` fa-fw" style="color:` + color + `"></i>
-                                    <span>
+                                    <span class="has-text-grey-darker">
                                         ` + miner_name + `
                                     </span>
-                                    -
+                                    <span class="has-text-weight-normal">
+                                        &bull;
+                                    </span>
                                     <span>
                                         ` + scientific_prefix(miner_hashrate) + `H/s
                                     </span>
                                     <span class="has-text-weight-normal">
-                                        (` + miner_sharetime.toFixed(2) + `s)
+                                        &bull;
+                                    </span>
+                                    <b class="has-text-success-dark">
+                                        ` + accepted_rate + `
+                                    </b>
+                                    <span class="has-text-weight-normal">
+                                        correct shares
                                     </span>
                                 </p>
                                 <p class="subtitle is-size-7">
-                                    <b>` + miner_accepted + "/" + (miner_accepted + miner_rejected) + `
-                                        <span class="has-text-success-dark">
-                                            (` + accepted_rate + `)
-                                        </span>
-                                    </b> accepted shares,
+                                    <b>
+                                        ` + miner_accepted + "/" + (miner_accepted + miner_rejected) + `
+                                    </b> total shares
+                                    &bull;
                                     difficulty <b>` + diffString + `</b>
+                                    (` + miner_sharetime.toFixed(2) + `s)
+                                    &bull; node:
+                                    <span class="has-text-info-dark">
+                                        ` + miner_pool + `
+                                    </span>
                                     <span>
                                         ` + miner_soft + `
                                     </span>
