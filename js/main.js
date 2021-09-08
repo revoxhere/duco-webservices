@@ -304,19 +304,19 @@ window.addEventListener('load', function() {
                 update_element("ducousd", " $" + round_to(5, data["Duco price"]));
                 duco_price = round_to(5, data["Duco price"]);
 
-                update_element("ducousd_xmg", "≈ $" + round_to(5, data["Duco price XMG"]));
-                update_element("ducousd_bch", "≈ $" + round_to(5, data["Duco price BCH"]));
-                update_element("ducousd_trx", "≈ $" + round_to(5, data["Duco price TRX"]));
-                update_element("ducousd_rvn", "≈ $" + round_to(5, data["Duco price RVN"]));
+                update_element("ducousd_xmg", "$" + round_to(5, data["Duco price XMG"]));
+                update_element("ducousd_bch", "$" + round_to(5, data["Duco price BCH"]));
+                update_element("ducousd_trx", "$" + round_to(5, data["Duco price TRX"]));
+                update_element("ducousd_rvn", "$" + round_to(5, data["Duco price RVN"]));
 
-                update_element("ducousd_xrp", "≈ $" + round_to(5, data["Duco price XRP"]));
-                update_element("ducousd_dgb", "≈ $" + round_to(5, data["Duco price DGB"]));
-                update_element("ducousd_nano", "≈ $" + round_to(5, data["Duco price NANO"]));
-                update_element("ducousd_fjc", "≈ $" + round_to(5, data["Duco price FJC"]));
+                update_element("ducousd_xrp", "$" + round_to(5, data["Duco price XRP"]));
+                update_element("ducousd_dgb", "$" + round_to(5, data["Duco price DGB"]));
+                update_element("ducousd_nano", "$" + round_to(5, data["Duco price NANO"]));
+                update_element("ducousd_fjc", "$" + round_to(5, data["Duco price FJC"]));
 
-                update_element("duco_nodes", "≈ $" + round_to(5, data["Duco Node-S price"]));
-                update_element("duco_justswap", "≈ $" + round_to(5, data["Duco JustSwap price"]));
-                update_element("duco_pancake", "≈ $" + round_to(5, data["Duco PancakeSwap price"]));
+                update_element("duco_nodes", "$" + round_to(5, data["Duco Node-S price"]));
+                update_element("duco_justswap", "$" + round_to(5, data["Duco JustSwap price"]));
+                update_element("duco_pancake", "$" + round_to(5, data["Duco PancakeSwap price"]));
 
             })
     }
