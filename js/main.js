@@ -437,7 +437,7 @@ window.addEventListener('load', function() {
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
                                     <i class="fas ` + icon + ` fa-fw" style="color:` + color + `"></i>
-                                    <span class="has-text-grey-darker">
+                                    <span class="has-text-weight-normal">
                                         ` + miner_name + `
                                     </span>
                                     <span class="has-text-weight-normal">
