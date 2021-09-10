@@ -327,20 +327,13 @@ body {
     margin-right: auto;
 }
 
-#modal_success {
-    animation: fadeIn 1s;
-    -webkit-animation: fadeIn 1s;
-    -moz-animation: fadeIn 1s;
-    -o-animation: fadeIn 1s;
-    -ms-animation: fadeIn 1s;
-}
-
-#modal_error {
-    animation: fadeIn 1s;
-    -webkit-animation: fadeIn 1s;
-    -moz-animation: fadeIn 1s;
-    -o-animation: fadeIn 1s;
-    -ms-animation: fadeIn 1s;
+#modal_success, #modal_error, #modal_changepass {
+    animation: fadeIn 0.3s;
+    -webkit-animation: fadeIn 0.3s;
+    -moz-animation: fadeIn 0.3s;
+    -o-animation: fadeIn 0.3s;
+    -ms-animation: fadeIn 0.3s;
+    transition: 0.3s;
 }
 
 @keyframes fadeIn {
@@ -391,4 +384,36 @@ body {
     100% {
         opacity: 1;
     }
+}
+
+.divider {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    color: #7a7a7a !important;
+    font-size: .75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: .5px !important;
+}
+
+.divider:after,
+.divider:before {
+    content: "" !important;
+    display: block !important;
+    flex: 1 !important;
+    height: 1px !important;
+    background-color: #b5b5b5 !important;
+}
+
+.divider:after {
+    margin-left: 10px !important;
+}
+
+.divider:before {
+    margin-right: 10px !important;
+}
+
+.divider.is-vertical:after,
+.divider.is-vertical:before {
+    width: 1px !important;
 }

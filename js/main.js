@@ -384,11 +384,15 @@ window.addEventListener('load', function() {
                 console.log(user_miners)
                 console.log("Miner data received " + user_miners.length);
 
-                if (user_miners.length > 0) {
-                    let user_miners_html = '';
-                    let miner_name = '';
-                    let diffString = '';
+                let miner_list = {
+                    "AVR": [],
+                    "PC": [],
+                    "ESP": [],
+                    "Other": []
+                };
+                let user_miners_html = "";
 
+                if (user_miners.length) {
                     for (let miner in user_miners) {
                         miner_hashrate = user_miners[miner]["hashrate"];
                         miner_identifier = user_miners[miner]["identifier"];
@@ -407,24 +411,30 @@ window.addEventListener('load', function() {
                             miner_soft = " &bull; " + miner_software;
                         }
 
-                        diffString = scientific_prefix(miner_diff)
-                        accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100)) + "%"
+                        let diffString = scientific_prefix(miner_diff)
+                        let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
 
+                        let miner_type = "Other";
                         if (miner_software.includes("ESP8266")) {
                             icon = "fa-wifi";
                             color = "#F5515F";
+                            miner_type = "ESP";
                         } else if (miner_software.includes("ESP32")) {
                             icon = "fa-wifi";
                             color = "#5f27cd";
-                        } else if (miner_software.includes("AVR")) {
+                            miner_type = "ESP";
+                        } else if (miner_software.includes("AVR") || miner_software.includes("I2C")) {
                             icon = "fa-microchip";
                             color = "#0984e3";
+                            miner_type = "AVR";
                         } else if (miner_software.includes("PC")) {
                             icon = "fa-desktop";
                             color = "#d35400";
+                            miner_type = "PC";
                         } else if (miner_software.includes("Web")) {
                             icon = "fa-globe";
                             color = "#009432";
+                            miner_type = "PC";
                         } else if (miner_software.includes("Android")) {
                             icon = "fa-mobile";
                             color = "#fa983a";
@@ -433,7 +443,15 @@ window.addEventListener('load', function() {
                             color = "#16a085";
                         }
 
-                        user_miners_html += `
+                        let accept_color = "has-text-warning-dark";
+                        if (accepted_rate < 50) {
+                            accept_color = "has-text-danger-dark";
+                        }
+                        else if (accepted_rate > 95) {
+                            accept_color = "has-text-success-dark";
+                        }
+
+                        miner_list[miner_type].push(`
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
                                     <i class="fas ` + icon + ` fa-fw" style="color:` + color + `"></i>
@@ -449,8 +467,8 @@ window.addEventListener('load', function() {
                                     <span class="has-text-weight-normal">
                                         &bull;
                                     </span>
-                                    <b class="has-text-success-dark">
-                                        ` + accepted_rate + `
+                                    <b class="` + accept_color + `">
+                                        ` + accepted_rate + `%
                                     </b>
                                     <span class="has-text-weight-normal">
                                         correct shares
@@ -471,10 +489,19 @@ window.addEventListener('load', function() {
                                         ` + miner_soft + `
                                     </span>
                                 </p>
-                            </div>`;
-
+                            </div>`);
                         total_hashrate += miner_hashrate;
                     }
+
+                    for (key in miner_list) {
+                        if (miner_list[key].length) {
+                            user_miners_html += `<div class="divider column is-full">` + key + `</div>`;
+                            for (worker in miner_list[key]) {
+                                user_miners_html += miner_list[key][worker];
+                            }
+                        }
+                    }
+
                     update_element("minercount", "(" + user_miners.length + ")");
                     update_element("miners", user_miners_html);
                     update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
@@ -711,9 +738,9 @@ window.addEventListener('load', function() {
                             window.setInterval(() => {
                                 get_duco_price();
                             }, 30 * 1000);
-                            
+
                             $("#wallet").fadeIn('fast');
-                            
+
                             $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
 
                             if (window.canRunAds === undefined) {
@@ -765,7 +792,7 @@ window.addEventListener('load', function() {
                                 }
                             }
 
-                            
+
                         });
                     } else {
                         window.setTimeout(() => {

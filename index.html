@@ -83,7 +83,7 @@
                                         </p>
                                         <div class="field mt-5">
                                             <div class="control has-icons-left">
-                                                <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
+                                                <input type="text" id="usernameinput" placeholder="Wallet (username)" value="revox" class="input" required>
                                                 <span class="icon is-left">
                                                     <i style="color: #777" class="fa fa-user"></i>
                                                 </span>
@@ -91,7 +91,7 @@
                                         </div>
                                         <div class="field">
                                             <div class="control has-icons-left">
-                                                <input type="password" id="passwordinput" placeholder="Password" class="input" required>
+                                                <input type="password" id="passwordinput" placeholder="Password" value="chujowsto" class="input" required>
                                                 <span class="icon is-left">
                                                     <i style="color: #777" class="fa fa-lock"></i>
                                                 </span>
@@ -214,9 +214,13 @@
                 </div>
                 <div class="column">
                     <div class="box">
-                        <p class="title is-size-5">
-                            Your last transactions
-                        </p>
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <p class="title is-size-5">
+                                    Your last transactions
+                                </p>
+                            </div>
+                        </div>
                         <div id="transactions_table" class="columns is-multiline">
                             <div class="column is-full">
                                 <p class="title is-size-6">
@@ -586,6 +590,20 @@
             </a>
             CSS framework
         </p>
+    </div>
+    <div id="modal_send" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head has-background-success">
+                <p class="modal-card-title">Send funds</p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="content">
+                    <p></p>
+                </div>
+            </section>
+        </div>
     </div>
     <div id="modal_success" class="modal">
         <div class="modal-background"></div>
