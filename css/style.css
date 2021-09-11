@@ -320,6 +320,9 @@ body {
     }
 }
 
+.button, .input {
+    transition: 0.2s;
+}
 
 .center {
     display: block;
@@ -327,7 +330,7 @@ body {
     margin-right: auto;
 }
 
-#modal_success, #modal_error, #modal_changepass {
+#modal_success, #modal_error, #modal_changepass, #modal_wrap {
     animation: fadeIn 0.3s;
     -webkit-animation: fadeIn 0.3s;
     -moz-animation: fadeIn 0.3s;

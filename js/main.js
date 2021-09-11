@@ -365,15 +365,15 @@ window.addEventListener('load', function() {
 
                 verified = data.balance.verified;
                 if (verified == "yes") {
-                    update_element("verify",
-                        `<button disabled class="button" target="_blank">
+                    $("#verify").html(
+                        `<button disabled class="button mr-2">
                             <span id="verified" class="has-text-success-dark">
                                 Your account is verified
                             </span>
-                        </a>`);
+                        </button>`);
                 } else {
-                    update_element("verify",
-                        `<a href="https://server.duinocoin.com/verify.html" class="button" target="_blank">
+                    $("#verify").html(
+                        `<a href="https://server.duinocoin.com/verify.html" class="button mr-2" target="_blank">
                             <span id="verified" class="has-text-danger-dark">
                                 Verify your account
                             </span>
@@ -446,8 +446,7 @@ window.addEventListener('load', function() {
                         let accept_color = "has-text-warning-dark";
                         if (accepted_rate < 50) {
                             accept_color = "has-text-danger-dark";
-                        }
-                        else if (accepted_rate > 95) {
+                        } else if (accepted_rate > 95) {
                             accept_color = "has-text-success-dark";
                         }
 
@@ -792,6 +791,39 @@ window.addEventListener('load', function() {
                                 }
                             }
 
+                            document.getElementById('wrapbtn').onclick = function() {
+                                let modal_success = document.querySelector('#modal_wrap');
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_success.classList.add('is-active');
+                                document.querySelector('#modal_wrap .delete').onclick = function() {
+                                    document.querySelector('html').classList.remove('is-clipped');
+                                    modal_success.classList.remove('is-active');
+                                }
+                            }
+
+                            document.getElementById('wrapconf').onclick = function() {
+                                wrap(username, password);
+                            }
+
+                            function wrap(username, password) {
+                                amount = document.getElementById("wrap_amount").value;
+                                address = document.getElementById("wrap_address").value;
+
+                                fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
+                                        "?password=" + encodeURIComponent(password) +
+                                        "&address=" + encodeURIComponent(address) +
+                                        "&amount=" + encodeURIComponent(amount))
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            update_element("wrap_text", data.result);
+                                            $('#wrap_amount').val('');
+                                            $('#wrap_address').val('');
+                                        } else {
+                                            update_element("wrap_text", data.message);
+                                        }
+                                    });
+                            }
 
                         });
                     } else {

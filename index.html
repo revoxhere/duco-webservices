@@ -497,13 +497,22 @@
                             <span>Amogus Faucet</span>
                         </a>
                         <a href="https://duinocoin.com/donate" target="_blank" class="button">
-                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>&nbsp;
-                            <span><b>Donate</b></span>
+                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>
+                            <span>Donate</span>
                         </a>
                         <a href="https://store.duinocoin.com" target="_blank" class="button">
-                            <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>&nbsp;
+                            <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
                             <span>Merch</span>
                         </a>
+                        <button id="changepassbtn" class="button">
+                            <i class="fa fa-fw fa-key icon is-small"></i>
+                            <span>Change password</span>
+                        </button>
+                        <button id="wrapbtn" class="button">
+                            <img src="assets/wduco.png" class="icon is-small">
+                            <span>Wrap DUCO to wDUCO</span>
+                        </button>
+                        <div id="verify"></div>
                         <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
                             <i class="fab fa-fw fa-github icon is-small"></i>
                         </a>
@@ -519,10 +528,6 @@
                         <a href="https://play.google.com/store/apps/details?id=com.pripun.duinocoin" target="_blank" class="button">
                             <i class="fab fa-fw fa-android icon is-small"></i>
                         </a>
-                        <button id="changepassbtn" class="button">
-                            Change password
-                        </button>
-                        <span id="verify"></span>
                     </div>
                 </div>
             </div>
@@ -591,28 +596,14 @@
             CSS framework
         </p>
     </div>
-    <div id="modal_send" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head has-background-success">
-                <p class="modal-card-title">Send funds</p>
-                <button class="delete" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-                <div class="content">
-                    <p></p>
-                </div>
-            </section>
-        </div>
-    </div>
     <div id="modal_success" class="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
-            <header class="modal-card-head has-background-success">
+            <header class="modal-card-head has-background-success mx-1">
                 <p class="modal-card-title">Success</p>
                 <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body">
+            <section class="modal-card-body mx-1">
                 <div class="content">
                     <p></p>
                 </div>
@@ -622,11 +613,11 @@
     <div id="modal_error" class="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
-            <header class="modal-card-head has-background-danger">
+            <header class="modal-card-head has-background-danger mx-1">
                 <p class="modal-card-title">Error</p>
                 <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body">
+            <section class="modal-card-body mx-1">
                 <div class="content">
                     <p></p>
                 </div>
@@ -636,11 +627,11 @@
     <div id="modal_changepass" class="modal">
         <div class="modal-background"></div>
         <div class="modal-card">
-            <header class="modal-card-head">
+            <header class="modal-card-head mx-1">
                 <p class="modal-card-title">Change password</p>
                 <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body">
+            <section class="modal-card-body mx-1">
                 <div class="content">
                     <div class="columns">
                         <div class="column">
@@ -661,6 +652,51 @@
                         </div>
                         <div class="column mt-1">
                             <span id="changepass_text" class="subtitle"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="modal_wrap" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head mx-1">
+                <p class="modal-card-title">
+                    Wrap DUCO to wDUCO 
+                    <div class="tag is-success mr-1">BETA</div>
+                </p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body mx-1">
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-full content">
+                            <p>
+                                <b>Duino-Coin is a hybrid currency</b>, meaning that it can be converted to <b>wDUCO</b> - Duino wrapped on the <b>Tron</b> network (as a decentralized token). You can read more about it
+                                <a href="https://github.com/revoxhere/duino-coin/wiki/wDUCO-tutorial" target="_blank">
+                                    here
+                                </a>
+                            </p>
+                            <p class="mt-3">
+                                Please note that <b>this feature is currently in beta</b> and may not work fully yet. For better stability and unwrap functions please use our <b>CLI Wallet</b>.
+                            </p>
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="Amount" type="number" id="wrap_amount">
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-narrow">
+                            <button class="button is-primary is-light" id="wrapconf">
+                                Wrap
+                            </button>
+                        </div>
+                        <div class="column mt-1">
+                            <span id="wrap_text" class="subtitle"></span>
                         </div>
                     </div>
                 </div>
