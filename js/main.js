@@ -386,8 +386,8 @@ window.addEventListener('load', function() {
 
                 let miner_list = {
                     "AVR": [],
-                    "PC": [],
                     "ESP": [],
+                    "PC": [],
                     "Other": []
                 };
                 let user_miners_html = "";
@@ -494,7 +494,7 @@ window.addEventListener('load', function() {
 
                     for (key in miner_list) {
                         if (miner_list[key].length) {
-                            user_miners_html += `<div class="divider column is-full">` + key + `</div>`;
+                            user_miners_html += `<div class="divider column is-full">${key} (${miner_list[key].length})</div>`;
                             for (worker in miner_list[key]) {
                                 user_miners_html += miner_list[key][worker];
                             }
