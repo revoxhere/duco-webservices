@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Lato', sans-serif !important;
+    background-position: fixed !important;
 }
 
 .canvascontainer {
