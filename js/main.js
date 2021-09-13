@@ -40,7 +40,7 @@ window.addEventListener('load', function() {
         'backgrounds/wallet/hge-sea-1.jpg'
     ]
 
-    let num = Math.floor(Math.random() * bg_list.length)
+    const num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
     fetch('https://duco.sytes.net/ducostats.json')
@@ -390,18 +390,42 @@ window.addEventListener('load', function() {
                     "PC": [],
                     "Other": []
                 };
+
                 let user_miners_html = "";
+                let threaded_miners = {};
 
                 if (user_miners.length) {
                     for (let miner in user_miners) {
-                        miner_hashrate = user_miners[miner]["hashrate"];
-                        miner_identifier = user_miners[miner]["identifier"];
-                        miner_software = user_miners[miner]["software"];
-                        miner_diff = user_miners[miner]["diff"];
-                        miner_rejected = user_miners[miner]["rejected"];
-                        miner_accepted = user_miners[miner]["accepted"];
-                        miner_sharetime = user_miners[miner]["sharetime"];
-                        miner_pool = user_miners[miner]["pool"];
+                        let miner_wallet_id = user_miners[miner]["wd"];
+                        if (!miner_wallet_id) miner_wallet_id = Math.random();
+                        const miner_hashrate = user_miners[miner]["hashrate"];
+                        const miner_rejected = user_miners[miner]["rejected"];
+                        const miner_accepted = user_miners[miner]["accepted"];
+
+                        if (!threaded_miners[miner_wallet_id]) {
+                            threaded_miners[miner_wallet_id] = user_miners[miner];
+                            threaded_miners[miner_wallet_id]["threads"] = 1;
+                            continue;
+                        } else if (threaded_miners[miner_wallet_id]) {
+                            threaded_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
+                            threaded_miners[miner_wallet_id]["rejected"] += miner_rejected;
+                            threaded_miners[miner_wallet_id]["accepted"] += miner_accepted;
+                            threaded_miners[miner_wallet_id]["threads"] += 1;
+                            continue;
+                        }
+                    }
+
+                    for (let miner in threaded_miners) {
+                        miner_hashrate = threaded_miners[miner]["hashrate"];
+                        miner_identifier = threaded_miners[miner]["identifier"];
+                        miner_software = threaded_miners[miner]["software"];
+                        miner_diff = threaded_miners[miner]["diff"];
+                        miner_rejected = threaded_miners[miner]["rejected"];
+                        miner_accepted = threaded_miners[miner]["accepted"];
+                        miner_sharetime = threaded_miners[miner]["sharetime"];
+                        miner_pool = threaded_miners[miner]["pool"];
+                        miner_algo = threaded_miners[miner]["algorithm"];
+                        miner_count = threaded_miners[miner]["threads"];
 
                         if (miner_identifier === "None") {
                             miner_name = miner_software;
@@ -416,7 +440,7 @@ window.addEventListener('load', function() {
 
                         let miner_type = "Other";
                         if (miner_software.includes("ESP8266")) {
-                            icon = "fa-wifi";
+                            icon = "fa-rss";
                             color = "#F5515F";
                             miner_type = "ESP";
                         } else if (miner_software.includes("ESP32")) {
@@ -425,11 +449,11 @@ window.addEventListener('load', function() {
                             miner_type = "ESP";
                         } else if (miner_software.includes("AVR") || miner_software.includes("I2C")) {
                             icon = "fa-microchip";
-                            color = "#0984e3";
+                            color = "#B33771";
                             miner_type = "AVR";
                         } else if (miner_software.includes("PC")) {
-                            icon = "fa-desktop";
-                            color = "#d35400";
+                            icon = "fa-laptop";
+                            color = "#F97F51";
                             miner_type = "PC";
                         } else if (miner_software.includes("Web")) {
                             icon = "fa-globe";
@@ -450,58 +474,75 @@ window.addEventListener('load', function() {
                             accept_color = "has-text-success-dark";
                         }
 
+                        let thread_string = "";
+                        if (miner_count > 1) {
+                            thread_string = `(${miner_count} threads)`;
+                        }
+
                         miner_list[miner_type].push(`
                             <div class="column" style="min-width:50%">
                                 <p class="title is-size-6">
-                                    <i class="fas ` + icon + ` fa-fw" style="color:` + color + `"></i>
+                                    <i class="fas ${icon} fa-fw" style="color: ${color}"></i>
                                     <span class="has-text-weight-normal">
-                                        ` + miner_name + `
+                                         ${miner_name}
                                     </span>
                                     <span class="has-text-weight-normal">
                                         &bull;
                                     </span>
                                     <span>
-                                        ` + scientific_prefix(miner_hashrate) + `H/s
+                                        ${scientific_prefix(miner_hashrate)}H/s
                                     </span>
                                     <span class="has-text-weight-normal">
                                         &bull;
                                     </span>
-                                    <b class="` + accept_color + `">
-                                        ` + accepted_rate + `%
+                                    <b class="${accept_color}">
+                                        ${accepted_rate}%
                                     </b>
                                     <span class="has-text-weight-normal">
                                         correct shares
                                     </span>
+                                    <span class="has-text-info-dark">
+                                        ${thread_string}
+                                    </span>
                                 </p>
                                 <p class="subtitle is-size-7">
                                     <b>
-                                        ` + miner_accepted + "/" + (miner_accepted + miner_rejected) + `
-                                    </b> total shares
-                                    &bull;
-                                    difficulty <b>` + diffString + `</b>
-                                    (` + miner_sharetime.toFixed(2) + `s)
+                                        ${miner_accepted}/${(miner_accepted + miner_rejected)}
+                                    </b>
+                                    total shares
+                                    &bull; difficulty 
+                                    <b>
+                                        ${diffString}
+                                    </b>
+                                    (${miner_sharetime.toFixed(2)}s)
                                     &bull; node:
                                     <span class="has-text-info-dark">
-                                        ` + miner_pool + `
+                                        ${miner_pool}
+                                    </span>
+                                    &bull; algo:
+                                    <span class="has-text-warning-dark">
+                                        ${miner_algo}
                                     </span>
                                     <span>
-                                        ` + miner_soft + `
+                                        ${miner_soft}
                                     </span>
                                 </p>
                             </div>`);
                         total_hashrate += miner_hashrate;
                     }
 
+                    all_miners = 0
                     for (key in miner_list) {
                         if (miner_list[key].length) {
                             user_miners_html += `<div class="divider column is-full">${key} (${miner_list[key].length})</div>`;
                             for (worker in miner_list[key]) {
                                 user_miners_html += miner_list[key][worker];
                             }
+                            all_miners += miner_list[key].length
                         }
                     }
 
-                    update_element("minercount", "(" + user_miners.length + ")");
+                    update_element("minercount", `(${all_miners})`);
                     update_element("miners", user_miners_html);
                     update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
                     total_hashrate = 0;
