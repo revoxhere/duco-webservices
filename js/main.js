@@ -543,8 +543,8 @@ window.addEventListener('load', function() {
                     }
 
                     update_element("minercount", `(${all_miners})`);
-                    update_element("miners", user_miners_html);
                     update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
+                    $("#miners").html(user_miners_html);
                     total_hashrate = 0;
                 } else {
                     update_element("miners", `
