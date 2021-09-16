@@ -134,7 +134,7 @@ body {
 
 
 #miners {
-    max-height: 10rem;
+    height: 12rem;
     overflow-y: auto;
     margin-right: 0.25em;
     margin-bottom: 0.25em;
