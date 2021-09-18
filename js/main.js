@@ -772,12 +772,12 @@ window.addEventListener('load', function() {
                             user_data(username);
                             window.setInterval(() => {
                                 user_data(username);
-                            }, 7.5 * 1000);
+                            }, 10 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {
                                 get_duco_price();
-                            }, 30 * 1000);
+                            }, 60 * 1000);
 
                             $("#wallet").fadeIn('fast');
 
@@ -886,7 +886,7 @@ window.addEventListener('load', function() {
                         }, 250);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                update_element("logintext", "Wallet API is unreachable");
+                update_element("logintext", "API unreachable (IP ban, connection error or server issue)");
                 document.getElementById('loginbutton').classList.remove("is-loading")
                 setTimeout(() => {
                     update_element("logintext", "");
