@@ -47,6 +47,8 @@
     <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
     <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
     <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
+    <link rel="preload" href="css/checkbox.css" as="style">
+    <link rel="stylesheet" href="css/checkbox.css" type="text/css">
     <!-- Themes -->
     <link rel="stylesheet" disabled id="radiate" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
     <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
@@ -97,8 +99,15 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <div class="field">
+                                            <label class="b-checkbox checkbox">
+                                                <input type="checkbox" id="remember">
+                                                <span class="check is-success"></span>
+                                                <span class="control-label">Remember me</span>
+                                            </label>
+                                        </div>
                                         <p id="logintext"></p>
-                                        <div class="field mt-5">
+                                        <div class="field mt-3">
                                             <div class="buttons">
                                                 <button class="button is-dark is-duco" id="loginbutton">
                                                     Login
@@ -431,23 +440,39 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="column">
+                                <span class="title is-size-5">
+                                    <img class="icon icon-text" target="_blank" src="assets/sushi.png">
+                                    <a href="https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2" target="_blank">
+                                        SushiSwap
+                                    </a>
+                                </span>
+                                <div class="column">
+                                    <p id="duco_sushi" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        maticDUCO <i class="fa fa-arrows-alt-h"></i> MATIC
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="box">
                         <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-                        <div class="box" id="adblocker_detected" style="display:none">
-                            <p class="title">
-                                An ad should be here, but you're probably using an adblocker 😞
+                        <div class="content" id="adblocker_detected" style="display:none">
+                            <p class="title is-size-4">
+                                An ad should be here but you're using an adblocker 😞
                             </p>
                             <p class="subtitle">
-                                We host all the websites from our money and the <b>single ad</b> here helps to cover these costs.<br>
-                                If you want, support the project directly by either buying our
-                                <a href="https://store.duinocoin.com" target="_blank">merch</a>
+                                We host all the websites and servers from <span class="has-text-danger">our own money</span> that is often limited or not sufficient. The <b>single ad here</b> helps to cover these costs.
+                                If you're enjoying the project, it would be cool if you supported us by buying our
+                                <a href="https://store.duinocoin.com" target="_blank">official merch</a>
                                 or
                                 <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
-                                Thanks in advance 😎
+                                Thanks in advance 🥺
                             </p>
                         </div>
                     </div>
@@ -468,6 +493,19 @@
                                 <i class="fas fa-sun" style="color:#f0932b"></i>
                             </span>
                         </div>
+                        <button id="changepassbtn" class="button">
+                            <i class="fa fa-fw fa-key icon"></i>
+                            <span>Change password</span>
+                        </button>
+                        <button id="wrapbtn" class="button">
+                            <img src="assets/wduco.png" class="icon is-small">
+                            <span>Wrap DUCO to wDUCO</span>
+                        </button>
+                        <button id="logout" class="button">
+                            <i class="fa fa-fw fa-sign-out-alt icon" style="color:#5f27cd;"></i>
+                            <span>Logout</span>
+                        </button>
+                        <div id="verify"></div>
                         <a href="https://server.duinocoin.com/webminer.html" class="button">
                             <img class="icon is-small" src="assets/webminer.png">
                             <span>Web Miner</span>
@@ -504,15 +542,6 @@
                             <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
                             <span>Merch</span>
                         </a>
-                        <button id="changepassbtn" class="button">
-                            <i class="fa fa-fw fa-key icon is-small"></i>
-                            <span>Change password</span>
-                        </button>
-                        <button id="wrapbtn" class="button">
-                            <img src="assets/wduco.png" class="icon is-small">
-                            <span>Wrap DUCO to wDUCO</span>
-                        </button>
-                        <div id="verify"></div>
                         <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
                             <i class="fab fa-fw fa-github icon is-small"></i>
                         </a>
@@ -663,7 +692,7 @@
         <div class="modal-card">
             <header class="modal-card-head mx-1">
                 <p class="modal-card-title">
-                    Wrap DUCO to wDUCO 
+                    Wrap DUCO to wDUCO
                     <div class="tag is-success mr-1">BETA</div>
                 </p>
                 <button class="delete" aria-label="close"></button>
@@ -704,5 +733,14 @@
         </div>
     </div>
 </body>
+<script>
+(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+    const $notification = $delete.parentNode;
+
+    $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+    });
+});
+</script>
 
 </html>

@@ -25,6 +25,36 @@ function update_element(element, value) {
     }
 }
 
+function setcookie(name, value, days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        var expires = "; expires=" + date.toGMTString();
+    } else
+        var expires = "";
+    document.cookie = name + "=" + value + expires + ";path=/";
+}
+
+function getcookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return undefined;
+}
+
+function delcookie(name) {   
+    document.cookie = name+'=; Max-Age=-99999999;';  
+}
+
 window.addEventListener('load', function() {
     // CONSOLE WARNING
     console.log("%cCaution!", "color: red; font-size: 10em");
@@ -317,7 +347,7 @@ window.addEventListener('load', function() {
                 update_element("duco_nodes", "$" + round_to(5, data["Duco Node-S price"]));
                 update_element("duco_justswap", "$" + round_to(5, data["Duco JustSwap price"]));
                 update_element("duco_pancake", "$" + round_to(5, data["Duco PancakeSwap price"]));
-
+                update_element("duco_sushi", "$" + round_to(5, data["Duco SushiSwap price"]));
             })
     }
 
@@ -693,6 +723,13 @@ window.addEventListener('load', function() {
         }
     });
 
+    // LOGOUT
+    document.getElementById('logout').onclick = function() {
+        delcookie("username");
+        delcookie("password");
+        window.location.reload(true);
+    }
+
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
         let username = document.getElementById('usernameinput').value
@@ -766,18 +803,24 @@ window.addEventListener('load', function() {
                 function(data) {
                     if (data.success == true) {
                         console.log("User logged-in");
+                        if ($('#remember').is(":checked")) {
+                            console.log("Saving password");
+                            setcookie("password", password, 30);
+                            console.log("Saving username");
+                            setcookie("username", username, 30);
+                        }
                         $("#login").fadeOut('fast', function() {
                             document.getElementById('loginbutton').classList.remove("is-loading")
                             $("#user").html("<b>" + username + "</b>");
                             user_data(username);
                             window.setInterval(() => {
                                 user_data(username);
-                            }, 10 * 1000);
+                            }, 7.5 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {
                                 get_duco_price();
-                            }, 60 * 1000);
+                            }, 30 * 1000);
 
                             $("#wallet").fadeIn('fast');
 
@@ -886,7 +929,7 @@ window.addEventListener('load', function() {
                         }, 250);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                update_element("logintext", "API unreachable (IP ban, connection error or server issue)");
+                update_element("logintext", "Wallet API is unreachable");
                 document.getElementById('loginbutton').classList.remove("is-loading")
                 setTimeout(() => {
                     update_element("logintext", "");
@@ -896,4 +939,10 @@ window.addEventListener('load', function() {
     }
 
     $("#loader-wrapper").fadeOut(); // After page is loaded
+
+    if (getcookie("password") && getcookie("username")) {
+        $('#usernameinput').val(getcookie("username"));
+        $('#passwordinput').val(getcookie("password"));
+        $('#loginbutton').click();
+    }
 });
