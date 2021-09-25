@@ -12,6 +12,43 @@ let balances = [];
 let first_launch = true;
 
 
+function round_to(precision, value) {
+    power_of_ten = 10 ** precision;
+    return Math.round(value * power_of_ten) / power_of_ten;
+}
+
+/* Accurate daily calculator by Lukas */
+function calculdaily(newb, oldb) {
+    //Duco made in last seconds
+    let ducomadein = newb - oldb;
+    let time_passed = (Date.now() - start) / 1000;
+    let daily = 86400 * ducomadein / time_passed;
+
+    // Large values mean transaction or big block - ignore this value
+    if (daily > 0 && daily < 500) {
+        daily = round_to(2, daily)
+        update_element("estimatedprofit", `
+                <i class="far fa-star"></i>
+                Earning about <b>` + daily + ` ᕲ</b> daily`);
+
+        avgusd = round_to(2, daily * duco_price);
+        update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
+    }
+    start = Date.now()
+}
+
+async function detectAdBlock() {
+    let adBlockEnabled = false
+    const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+    try {
+        await fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true)
+    } catch (e) {
+        adBlockEnabled = true
+    }
+}
+detectAdBlock();
+
+
 function update_element(element, value) {
     // Nicely fade in the new value if it changed
     element = "#" + element;
@@ -51,16 +88,16 @@ function getcookie(cname) {
     return undefined;
 }
 
-function delcookie(name) {   
-    document.cookie = name+'=; Max-Age=-99999999;';  
+function delcookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
 }
+
 
 window.addEventListener('load', function() {
     // CONSOLE WARNING
-    console.log("%cCaution!", "color: red; font-size: 10em");
-    console.log(`%cThis browser feature is intended for developers.
-    If someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, 
-    it is a fraud. If you do, this person will be able to access your account.`, "font-size: 1.5em;");
+    console.log(`%cHold on!`, "color: red; font-size: 3em");
+    console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
+    console.log(`%cPlease proceed with caution.`, "color: orange; font-size: 1.5em;");
 
     // RANDOM BACKGROUND
     const bg_list = [
@@ -331,23 +368,23 @@ window.addEventListener('load', function() {
         fetch("https://server.duinocoin.com/api.json")
             .then(response => response.json())
             .then(data => {
-                update_element("ducousd", " $" + round_to(5, data["Duco price"]));
+                $("#ducousd").html(" $" + round_to(5, data["Duco price"]));
                 duco_price = round_to(5, data["Duco price"]);
 
-                update_element("ducousd_xmg", "$" + round_to(5, data["Duco price XMG"]));
-                update_element("ducousd_bch", "$" + round_to(5, data["Duco price BCH"]));
-                update_element("ducousd_trx", "$" + round_to(5, data["Duco price TRX"]));
-                update_element("ducousd_rvn", "$" + round_to(5, data["Duco price RVN"]));
+                $("#ducousd_xmg").html("$" + round_to(5, data["Duco price XMG"]));
+                $("#ducousd_bch").html("$" + round_to(5, data["Duco price BCH"]));
+                $("#ducousd_trx").html("$" + round_to(5, data["Duco price TRX"]));
+                $("#ducousd_rvn").html("$" + round_to(5, data["Duco price RVN"]));
 
-                update_element("ducousd_xrp", "$" + round_to(5, data["Duco price XRP"]));
-                update_element("ducousd_dgb", "$" + round_to(5, data["Duco price DGB"]));
-                update_element("ducousd_nano", "$" + round_to(5, data["Duco price NANO"]));
-                update_element("ducousd_fjc", "$" + round_to(5, data["Duco price FJC"]));
+                $("#ducousd_xrp").html("$" + round_to(5, data["Duco price XRP"]));
+                $("#ducousd_dgb").html("$" + round_to(5, data["Duco price DGB"]));
+                $("#ducousd_nano").html("$" + round_to(5, data["Duco price NANO"]));
+                $("#ducousd_fjc").html("$" + round_to(5, data["Duco price FJC"]));
 
-                update_element("duco_nodes", "$" + round_to(5, data["Duco Node-S price"]));
-                update_element("duco_justswap", "$" + round_to(5, data["Duco JustSwap price"]));
-                update_element("duco_pancake", "$" + round_to(5, data["Duco PancakeSwap price"]));
-                update_element("duco_sushi", "$" + round_to(5, data["Duco SushiSwap price"]));
+                $("#ducousd_nodes").html("$" + round_to(5, data["Duco Node-S price"]));
+                $("#ducousd_justswap").html("$" + round_to(5, data["Duco JustSwap price"]));
+                $("#ducousd_pancake").html("$" + round_to(5, data["Duco PancakeSwap price"]));
+                $("#ducousd_sushi").html("$" + round_to(5, data["Duco SushiSwap price"]));
             })
     }
 
@@ -366,15 +403,13 @@ window.addEventListener('load', function() {
     };
 
     //USER DATA FROM API
-    const user_data = (username) => {
+    const user_data = (username, first_open) => {
         fetch("https://server.duinocoin.com/users/" + encodeURIComponent(username))
             .then(response => response.json())
             .then(data => {
                 data = data.result;
-                console.log(data);
                 balance = parseFloat(data.balance.balance);
                 let balanceusd = balance * duco_price;
-                console.log("Balance received: " + balance + " ($" + balanceusd + ")");
 
                 if (first_launch) {
                     push_to_graph(balance);
@@ -388,39 +423,41 @@ window.addEventListener('load', function() {
                 }
 
                 balance = round_to(8, balance);
-                update_element("balance", balance + " DUCO");
+                if (first_open) $("#balance").html(balance + " DUCO");
+                else update_element("balance", balance + " DUCO");
 
                 balanceusd = round_to(4, balanceusd);
-                update_element("balanceusd", "≈ $" + balanceusd);
+                if (first_open) $("#balanceusd").html("≈ $" + balanceusd);
+                else update_element("balanceusd", "≈ $" + balanceusd);
 
-                verified = data.balance.verified;
-                if (verified == "yes") {
-                    $("#verify").html(
-                        `<button disabled class="button mr-2">
-                            <span id="verified" class="has-text-success-dark">
-                                Your account is verified
-                            </span>
-                        </button>`);
-                } else {
-                    $("#verify").html(
-                        `<a href="https://server.duinocoin.com/verify.html" class="button mr-2" target="_blank">
-                            <span id="verified" class="has-text-danger-dark">
-                                Verify your account
-                            </span>
-                        </a>`);
+                if (first_open) {
+                    verified = data.balance.verified;
+                    if (verified === "yes") {
+                        $("#verify").html(
+                            `<button disabled class="button mr-2 has-text-success-dark">
+                                <i class="fa fa-check icon"></i>
+                                <span id="verified">
+                                    Your account is verified
+                                </span>
+                            </button>`);
+                    } else {
+                        $("#verify").html(
+                            `<a href="https://server.duinocoin.com/verify.html" class="button mr-2 has-text-danger-dark" target="_blank">
+                                <i class="fa fa-info-circle icon"></i>
+                                <span id="verified">
+                                    <b>Verify your account</b>
+                                </span>
+                            </a>`);
+                    }
                 }
 
                 user_miners = data.miners;
-                console.log(user_miners)
-                console.log("Miner data received " + user_miners.length);
-
                 let miner_list = {
                     "AVR": [],
                     "ESP": [],
                     "PC": [],
                     "Other": []
                 };
-
                 let user_miners_html = "";
                 let threaded_miners = {};
 
@@ -572,12 +609,17 @@ window.addEventListener('load', function() {
                         }
                     }
 
-                    update_element("minercount", `(${all_miners})`);
-                    update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
+                    if (first_open) $("#minercount").html(`(${all_miners})`);
+                    else update_element("minercount", `(${all_miners})`);
+
+                    if (first_open) $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
+                    else update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
+
                     $("#miners").html(user_miners_html);
                     total_hashrate = 0;
                 } else {
-                    update_element("miners", `
+                    if (first_open) {
+                        $("#miners").html(`
                                <div class="column is-full">
                                    <p class='title is-size-6'>
                                        No miners detected
@@ -587,11 +629,22 @@ window.addEventListener('load', function() {
                                        it will take a minute or two until their stats will appear here.
                                    </p>
                                </div>`);
+
+                    } else {
+                        update_element("miners", `
+                               <div class="column is-full">
+                                   <p class='title is-size-6'>
+                                       No miners detected
+                                   </p>
+                                   <p class='subtitle is-size-6'>
+                                       If you have turned them on recently, 
+                                       it will take a minute or two until their stats will appear here.
+                                   </p>
+                               </div>`);
+                    }
                 }
 
                 user_transactions = data.transactions.reverse();
-                console.log("Transaction list received " + user_transactions.length);
-
                 let transactions_table = document.getElementById("transactions_table");
                 if (user_transactions.length > 0) {
                     transactions_html = "";
@@ -689,31 +742,6 @@ window.addEventListener('load', function() {
             });
     }
 
-    function round_to(precision, value) {
-        power_of_ten = 10 ** precision;
-        return Math.round(value * power_of_ten) / power_of_ten;
-    }
-
-    /* Accurate daily calculator by Lukas */
-    function calculdaily(newb, oldb) {
-        //Duco made in last seconds
-        let ducomadein = newb - oldb;
-        let time_passed = (Date.now() - start) / 1000;
-        let daily = 86400 * ducomadein / time_passed;
-
-        // Large values mean transaction or big block - ignore this value
-        if (daily > 0 && daily < 500) {
-            daily = round_to(2, daily)
-            update_element("estimatedprofit", `
-                <i class="far fa-star"></i>
-                Earning about <b>` + daily + ` ᕲ</b> daily`);
-
-            avgusd = round_to(2, daily * duco_price);
-            update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
-        }
-        start = Date.now()
-    }
-
     // ENTER KEY AS LOGIN
     let input_login = document.getElementById("login");
     input_login.addEventListener("keyup", function(event) {
@@ -752,7 +780,6 @@ window.addEventListener('load', function() {
                         "&amount=" + amount +
                         "&memo=" + memo,
                         function(data) {
-                            console.log(data);
                             if (data.success == true) {
                                 serverMessage = data["result"].split(",");
                                 if (serverMessage[0] == "OK") {
@@ -802,31 +829,28 @@ window.addEventListener('load', function() {
                 encodeURIComponent(password),
                 function(data) {
                     if (data.success == true) {
-                        console.log("User logged-in");
                         if ($('#remember').is(":checked")) {
-                            console.log("Saving password");
                             setcookie("password", password, 30);
-                            console.log("Saving username");
                             setcookie("username", username, 30);
                         }
-                        $("#login").fadeOut('fast', function() {
+                        $("#login").fadeOut(250, function() {
                             document.getElementById('loginbutton').classList.remove("is-loading")
                             $("#user").html("<b>" + username + "</b>");
-                            user_data(username);
+                            user_data(username, true);
                             window.setInterval(() => {
-                                user_data(username);
-                            }, 7.5 * 1000);
+                                user_data(username, false);
+                            }, 10 * 1000);
 
                             get_duco_price();
                             window.setInterval(() => {
                                 get_duco_price();
                             }, 30 * 1000);
 
-                            $("#wallet").fadeIn('fast');
+                            $("#wallet").fadeIn(250);
 
-                            $('iframe#news_iframe').attr('src', 'https://server.duinocoin.com/news.html');
+                            $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
 
-                            if (window.canRunAds === undefined) {
+                            if (detectAdBlock()) {
                                 $("#adblocker_detected").show()
                             } else {
                                 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -900,11 +924,11 @@ window.addEventListener('load', function() {
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.success) {
-                                            update_element("wrap_text", data.result);
+                                            update_element("wrap_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
                                             $('#wrap_amount').val('');
                                             $('#wrap_address').val('');
                                         } else {
-                                            update_element("wrap_text", data.message);
+                                            update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
                                         }
                                     });
                             }
