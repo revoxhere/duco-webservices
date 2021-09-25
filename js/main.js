@@ -381,10 +381,10 @@ window.addEventListener('load', function() {
                 $("#ducousd_nano").html("$" + round_to(5, data["Duco price NANO"]));
                 $("#ducousd_fjc").html("$" + round_to(5, data["Duco price FJC"]));
 
-                $("#ducousd_nodes").html("$" + round_to(5, data["Duco Node-S price"]));
-                $("#ducousd_justswap").html("$" + round_to(5, data["Duco JustSwap price"]));
-                $("#ducousd_pancake").html("$" + round_to(5, data["Duco PancakeSwap price"]));
-                $("#ducousd_sushi").html("$" + round_to(5, data["Duco SushiSwap price"]));
+                $("#duco_nodes").html("$" + round_to(5, data["Duco Node-S price"]));
+                $("#duco_justswap").html("$" + round_to(5, data["Duco JustSwap price"]));
+                $("#duco_pancake").html("$" + round_to(5, data["Duco PancakeSwap price"]));
+                $("#duco_sushi").html("$" + round_to(5, data["Duco SushiSwap price"]));
             })
     }
 
