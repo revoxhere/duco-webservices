@@ -258,6 +258,15 @@ window.addEventListener('load', function() {
             $("#server-status").html(final_html);
         })
 
+    fetch('https://server.duinocoin.com/PoolRewards.json')
+        .then(response => response.json())
+        .then(data => {
+            $("#avr_rewards").html(`~ ${Math.round(data["AVR"]["reward"] * 0.000756)} ᕲ daily`)
+            $("#esp8266_rewards").html(`~ ${Math.round(data["ESP8266"]["reward"] * 0.00012)} ᕲ daily`)
+            $("#esp32_rewards").html(`~ ${Math.round(data["ESP32"]["reward"] * 0.000188)} ᕲ daily`)
+            $("#pc_rewards").html(`~ ${Math.round(data["MEDIUM"]["reward"] * 0.00008144)} ᕲ daily`)
+        })
+
     const data = {
         labels: timestamps,
         datasets: [{
