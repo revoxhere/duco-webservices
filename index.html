@@ -32,14 +32,18 @@
     <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-2.jpg">
     <link rel="preload" as="image" href="backgrounds/wallet/yenn-mountains-1.jpg">
     <link rel="preload" as="image" href="backgrounds/wallet/hge-sea-1.jpg">
-    <!-- JS -->
-    <script type="text/javascript" src="js/prebid-ads.js"></script>
-    <script type="text/javascript" src="js/fontawesome.js"></script>
-    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Wallet Scripts -->
-    <script type="text/javascript" src="js/chart.js"></script>
+    <!-- Wallet Script -->
+    <link rel="preload" as="script" href="js/main.js">
     <script type="text/javascript" src="js/main.js"></script>
+    <!-- JS -->
+    <link rel="preload" as="script" href="js/chart.js">
+    <script type="text/javascript" src="js/chart.js"></script>
+    <link rel="preload" as="script" href="js/jquery-3.6.0.min.js">
+    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <link rel="preload" as="script" href="js/fontawesome.js">
+    <script type="text/javascript" src="js/fontawesome.js"></script>
+    <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -203,11 +207,11 @@
                             <div class="column">
                                 <p class="title is-size-5">
                                     Your miners
-                                    <span id="minercount"></span>
+                                    <span id="minercount" class="has-text-weight-normal"></span>
                                 </p>
                             </div>
                             <div class="column">
-                                <p class="title is-size-6 has-text-right">
+                                <p class="subtitle is-size-6 has-text-right">
                                     <b id="total_hashrate">0 H/s</b> total
                                 </p>
                             </div>
@@ -308,7 +312,7 @@
                                 </p>
                             </div>
                             <div class="column">
-                                <p class="title is-size-6 has-text-right">
+                                <p class="subtitle is-size-6 has-text-right">
                                     max: <b id="ducousd">fetching data</b>
                                 </p>
                             </div>
@@ -461,18 +465,18 @@
                 </div>
                 <div class="column">
                     <div class="box">
-                        <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+                        <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
                         <div class="content" id="adblocker_detected" style="display:none">
                             <p class="title is-size-4">
                                 An ad should be here but you're using an adblocker 😞
                             </p>
                             <p class="subtitle">
-                                We host all the websites and servers from <span class="has-text-danger">our own money</span> that is often limited or not sufficient. The <b>single ad here</b> helps to cover these costs.
+                                We host all the websites and servers from <span class="has-text-danger-dark">our own money</span> that is often limited or not sufficient. The <b>single ad here</b> helps to cover these costs.<br>
                                 If you're enjoying the project, it would be cool if you supported us by buying our
                                 <a href="https://store.duinocoin.com" target="_blank">official merch</a>
                                 or
                                 <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
-                                Thanks in advance 🥺
+                                <span class="has-text-success-dark">Thanks in advance 🥺</span>
                             </p>
                         </div>
                     </div>
@@ -709,6 +713,8 @@
                             </p>
                             <p class="mt-3">
                                 Please note that <b>this feature is currently in beta</b> and may not work fully yet. For better stability and unwrap functions please use our <b>CLI Wallet</b>.
+                                <br>
+                                <b class="has-text-danger-dark">Warning:</b> your Tron wallet needs to support tokens, otherwise wrapped DUCO may get lost.
                             </p>
                         </div>
                         <div class="column">
@@ -717,14 +723,14 @@
                         <div class="column">
                             <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
                         </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-narrow">
-                            <button class="button is-primary is-light" id="wrapconf">
+                        <div class="column">
+                            <button class="button is-fullwidth is-primary is-light" id="wrapconf">
                                 Wrap
                             </button>
                         </div>
-                        <div class="column mt-1">
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column">
                             <span id="wrap_text" class="subtitle"></span>
                         </div>
                     </div>
