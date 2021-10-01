@@ -106,7 +106,7 @@ window.addEventListener('load', function() {
     const num = Math.floor(Math.random() * bg_list.length)
     document.body.background = bg_list[num];
 
-    fetch('https://duco.sytes.net/ducostats.json')
+    /* fetch('https://duco.sytes.net/ducostats.json')
         .then(response => response.json())
         .then(data => {
             if (data["api"]["online"])
@@ -262,10 +262,10 @@ window.addEventListener('load', function() {
         .then(response => response.json())
         .then(data => {
             $("#avr_rewards").html(`~ ${Math.round(data["AVR"]["reward"] * 0.000756)} ᕲ daily`)
-            $("#esp8266_rewards").html(`~ ${Math.round(data["ESP8266"]["reward"] * 0.00012)} ᕲ daily`)
-            $("#esp32_rewards").html(`~ ${Math.round(data["ESP32"]["reward"] * 0.000188)} ᕲ daily`)
-            $("#pc_rewards").html(`~ ${Math.round(data["MEDIUM"]["reward"] * 0.00008144)} ᕲ daily`)
-        })
+            $("#esp8266_rewards").html(`~ ${Math.round(0.00012 * data["ESP8266"]["reward"])} ᕲ daily`)
+            $("#esp32_rewards").html(`~ ${Math.round(0.000188 * data["ESP32"]["reward"])} ᕲ daily`)
+            $("#pc_rewards").html(`~ ${Math.round(0.00008144 * data["MEDIUM"]["reward"])} ᕲ daily`)
+        }) */
 
     const data = {
         labels: timestamps,
