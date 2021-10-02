@@ -258,7 +258,7 @@ window.addEventListener('load', function() {
             $("#server-status").html(final_html);
         })
 
-    fetch('http://51.15.127.80/PoolRewards.json')
+    fetch('https://server.duinocoin.com/PoolRewards.json')
         .then(response => response.json())
         .then(data => {
             $("#avr_rewards").html(`~ ${Math.round(data["AVR"]["reward"] * 0.000756)} ᕲ daily`)
@@ -370,7 +370,7 @@ window.addEventListener('load', function() {
 
     // PRICE FROM API
     const get_duco_price = () => {
-        fetch("http://51.15.127.80/api.json")
+        fetch("https://server.duinocoin.com/api.json")
             .then(response => response.json())
             .then(data => {
                 $("#ducousd").html(" $" + round_to(5, data["Duco price"]));
@@ -409,7 +409,7 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const user_data = (username, first_open) => {
-        fetch("http://51.15.127.80/users/" + encodeURIComponent(username))
+        fetch("https://server.duinocoin.com/users/" + encodeURIComponent(username))
             .then(response => response.json())
             .then(data => {
                 data = data.result;
@@ -447,7 +447,7 @@ window.addEventListener('load', function() {
                             </button>`);
                     } else {
                         $("#verify").html(
-                            `<a href="http://51.15.127.80/verify.html" class="button mr-2 has-text-danger-dark" target="_blank">
+                            `<a href="https://server.duinocoin.com/verify.html" class="button mr-2 has-text-danger-dark" target="_blank">
                                 <i class="fa fa-info-circle icon"></i>
                                 <span id="verified">
                                     <b>Verify your account</b>
@@ -778,7 +778,7 @@ window.addEventListener('load', function() {
 
                 if (recipient && amount) {
                     document.getElementById("send").classList.add("is-loading");
-                    $.getJSON('http://51.15.127.80/transaction/' +
+                    $.getJSON('https://server.duinocoin.com/transaction/' +
                         '?username=' + username +
                         "&password=" + encodeURIComponent(password) +
                         "&recipient=" + recipient +
@@ -828,7 +828,7 @@ window.addEventListener('load', function() {
                 }
             }
 
-            $.getJSON('http://51.15.127.80/auth/' +
+            $.getJSON('https://server.duinocoin.com/auth/' +
                 encodeURIComponent(username) +
                 '?password=' +
                 encodeURIComponent(password),
@@ -853,7 +853,7 @@ window.addEventListener('load', function() {
 
                             $("#wallet").fadeIn(250);
 
-                            $("iframe#news_iframe").attr('src', 'http://51.15.127.80/news.html');
+                            $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
 
                             if (adBlockEnabled) {
                                 $("#adblocker_detected").show()
@@ -887,7 +887,7 @@ window.addEventListener('load', function() {
                                 if (new_pass != new_pass_conf) {
                                     update_element("changepass_text", "New passwords don't match")
                                 } else {
-                                    fetch("http://51.15.127.80/changepass/" + encodeURIComponent(username) +
+                                    fetch("https://server.duinocoin.com/changepass/" + encodeURIComponent(username) +
                                             "?password=" + encodeURIComponent(old_pass) +
                                             "&newpassword=" + encodeURIComponent(new_pass))
                                         .then(response => response.json())
@@ -922,7 +922,7 @@ window.addEventListener('load', function() {
                                 amount = document.getElementById("wrap_amount").value;
                                 address = document.getElementById("wrap_address").value;
 
-                                fetch("http://51.15.127.80/wduco_wrap/" + encodeURIComponent(username) +
+                                fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
                                         "?password=" + encodeURIComponent(password) +
                                         "&address=" + encodeURIComponent(address) +
                                         "&amount=" + encodeURIComponent(amount))
