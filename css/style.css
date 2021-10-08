@@ -2,7 +2,18 @@
 
 body {
     font-family: 'Lato', sans-serif !important;
+
     background-position: fixed !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+
+    width: 100% !important;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .canvascontainer {
@@ -157,12 +168,20 @@ body {
 }
 
 @media (prefers-color-scheme: light) {
+    body {
+        background-color: #DDDDDD;
+    }
+
     #loader-wrapper {
         background: #dcdde1;
     }
 }
 
 @media (prefers-color-scheme: dark) {
+    body {
+        background-color: #111111;
+    }
+
     #loader-wrapper {
         background: #2f3640;
     }
@@ -254,17 +273,6 @@ body {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-body {
-    background-size: cover !important;
-    background-attachment: fixed !important;
-    width: 100% !important;
-    min-height: -webkit-fill-available;
-    overflow-x: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background-repeat: no-repeat !important;
-}
-
 @media (prefers-color-scheme: light) {
     .box-grey {
         background-color: #F5F5F5 !important;
@@ -321,7 +329,8 @@ body {
     }
 }
 
-.button, .input {
+.button,
+.input {
     transition: 0.2s;
 }
 
@@ -331,7 +340,10 @@ body {
     margin-right: auto;
 }
 
-#modal_success, #modal_error, #modal_changepass, #modal_wrap {
+#modal_success,
+#modal_error,
+#modal_changepass,
+#modal_wrap {
     animation: fadeIn 0.3s;
     -webkit-animation: fadeIn 0.3s;
     -moz-animation: fadeIn 0.3s;

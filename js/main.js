@@ -9,6 +9,8 @@ let total_hashrate = 0;
 let start = Date.now();
 let timestamps = [];
 let balances = [];
+let username;
+let transaction_limit = 5;
 let first_launch = true;
 
 
@@ -55,7 +57,9 @@ function update_element(element, value) {
             $(element).html(value);
             $(element).fadeIn('fast');
         });
+        return true;
     }
+    return false;
 }
 
 function setcookie(name, value, days) {
@@ -119,7 +123,7 @@ window.addEventListener('load', function() {
                         <b>REST API</b>
                     </div>
                     <p class="block">
-                        Operating normally since ` +
+                        Operational since ` +
                 new Date(data["api"]["since"] * 1000).toLocaleDateString("pl-PL") + `
                     </p>
                 </div>`;
@@ -127,14 +131,15 @@ window.addEventListener('load', function() {
                 api_status =
                 `<div class="column">
                     <div class="icon-text">
-                        <span class="icon has-text-danger">
+                        <span class="icon has-text-warning">
                             <i class="fas fa-exclamation-triangle"></i>
                         </span>
                         <b>REST API</b>
                     </div>
-                    <p class="block">
+                    <p class="block has-text-weight-bold">
                         Possible problems with the wallet and external sites since ` +
                 new Date(data["api"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        ${new Date(data["api"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
 
@@ -148,22 +153,23 @@ window.addEventListener('load', function() {
                         <b>Master server</b>
                     </div>
                     <p class="block">
-                        Operating normally since ` +
-                new Date(data["vps"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        Operational since
+                        ${new Date(data["vps"]["since"] * 1000).toLocaleDateString("pl-PL")}
                     </p>
                 </div>`;
             else
                 vps_status =
                 `<div class="column">
                     <div class="icon-text">
-                        <span class="icon has-text-danger">
+                        <span class="icon has-text-warning">
                             <i class="fas fa-exclamation-triangle"></i>
                         </span>
                         <b>Master server</b>
                     </div>
-                    <p class="block">
+                    <p class="block has-text-weight-bold">
                         Possible problems with pools syncing and transactions since ` +
                 new Date(data["vps"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        ${new Date(data["vps"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
 
@@ -177,7 +183,7 @@ window.addEventListener('load', function() {
                         <b>Pulse Pool</b>
                     </div>
                     <p class="block">
-                        Operating normally since ` +
+                        Operational since ` +
                 new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
                     </p>
                 </div>`;
@@ -185,14 +191,15 @@ window.addEventListener('load', function() {
                 pulse_status =
                 `<div class="column">
                     <div class="icon-text">
-                        <span class="icon has-text-danger">
+                        <span class="icon has-text-warning">
                             <i class="fas fa-exclamation-triangle"></i>
                         </span>
                         <b>Pulse Pool</b>
                     </div>
-                    <p class="block">
+                    <p class="block has-text-weight-bold">
                         Possible problems with mining since ` +
                 new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        ${new Date(data["node"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
 
@@ -206,7 +213,7 @@ window.addEventListener('load', function() {
                         <b>Star Pool</b>
                     </div>
                     <p class="block">
-                        Operating normally since ` +
+                        Operational since ` +
                 new Date(data["node2"]["since"] * 1000).toLocaleDateString("pl-PL") + `
                     </p>
                 </div>`;
@@ -214,14 +221,15 @@ window.addEventListener('load', function() {
                 star_status =
                 `<div class="column">
                     <div class="icon-text">
-                        <span class="icon has-text-danger">
+                        <span class="icon has-text-warning">
                             <i class="fas fa-exclamation-triangle"></i>
                         </span>
                         <b>Star Pool</b>
                     </div>
-                    <p class="block">
+                    <p class="block has-text-weight-bold">
                         Possible problems with mining since ` +
                 new Date(data["node2"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        ${new Date(data["node2"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
 
@@ -235,7 +243,7 @@ window.addEventListener('load', function() {
                         <b>Beyond Pool</b>
                     </div>
                     <p class="block">
-                        Operating normally since ` +
+                        Operational since ` +
                 new Date(data["node3"]["since"] * 1000).toLocaleDateString("pl-PL") + `
                     </p>
                 </div>`;
@@ -243,14 +251,15 @@ window.addEventListener('load', function() {
                 beyond_status =
                 `<div class="column">
                     <div class="icon-text">
-                        <span class="icon has-text-danger">
+                        <span class="icon has-text-warning">
                             <i class="fas fa-exclamation-triangle"></i>
                         </span>
                         <b>Beyond Pool</b>
                     </div>
-                    <p class="block">
+                    <p class="block has-text-weight-bold">
                         Possible problems with mining since ` +
                 new Date(data["node3"]["since"] * 1000).toLocaleDateString("pl-PL") + `
+                        ${new Date(data["node3"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
 
@@ -258,13 +267,13 @@ window.addEventListener('load', function() {
             $("#server-status").html(final_html);
         })
 
-    fetch('https://server.duinocoin.com/PoolRewards.json')
+    fetch('https://duco.sytes.net/ducorewards.json')
         .then(response => response.json())
         .then(data => {
-            $("#avr_rewards").html(`~ ${Math.round(data["AVR"]["reward"] * 0.000756)} ᕲ daily`)
-            $("#esp8266_rewards").html(`~ ${Math.round(0.00012 * data["ESP8266"]["reward"])} ᕲ daily`)
-            $("#esp32_rewards").html(`~ ${Math.round(0.000188 * data["ESP32"]["reward"])} ᕲ daily`)
-            $("#pc_rewards").html(`~ ${Math.round(0.00008144 * data["MEDIUM"]["reward"])} ᕲ daily`)
+            $("#avr_rewards").html(`~ ${Math.round(data.avr.dailycoins)} ᕲ daily`)
+            $("#esp8266_rewards").html(`~ ${Math.round(data.esp8266.dailycoins)} ᕲ daily`)
+            $("#esp32_rewards").html(`~ ${Math.round(data.esp32.dailycoins)} ᕲ daily`)
+            $("#pc_rewards").html(`~ ${Math.round(data["pc/pi"].dailycoins*1.2)} ᕲ daily`)
         })
 
     const data = {
@@ -313,57 +322,29 @@ window.addEventListener('load', function() {
         balance_chart.update();
     };
 
-    function updateValue(e) {
-        let radiate = $('#radiate');
-        let alt = $('#alt');
-        let crisp = $('#crisp');
-        let material = $('#material');
-        let frosted = $('#frosted');
-
+    function change_theme(e) {
+        const radiate = $('#radiate');
+        const frosted = $('#frosted');
         let theme = e.target.value;
+
         switch (theme) {
             case 'frosted':
                 frosted.attr('disabled', false);
                 radiate.attr('disabled', true);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', true);
-                material.attr('disabled', true);
+                document.body.background = bg_list[num];
+                setcookie("theme", 'frosted', 30);
                 break;
             case 'radiance':
                 radiate.attr('disabled', false);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', true);
-                material.attr('disabled', true);
                 frosted.attr('disabled', true);
-                break;
-            case 'altlight':
-                radiate.attr('disabled', true);
-                alt.attr('disabled', false);
-                crisp.attr('disabled', true);
-                material.attr('disabled', true);
-                frosted.attr('disabled', true);
+                document.body.background = "none";
+                setcookie("theme", 'radiance', 30);
                 break;
             case 'light':
                 radiate.attr('disabled', true);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', true);
-                material.attr('disabled', true);
                 frosted.attr('disabled', true);
-                break;
-            case 'crisp':
-                radiate.attr('disabled', true);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', false);
-                material.attr('disabled', true);
-                frosted.attr('disabled', true);
-                break;
-            case 'material':
-            default:
-                radiate.attr('disabled', true);
-                alt.attr('disabled', true);
-                crisp.attr('disabled', true);
-                material.attr('disabled', false);
-                frosted.attr('disabled', true);
+                document.body.background = "none";
+                setcookie("theme", 'light', 30);
                 break;
         }
     }
@@ -407,9 +388,14 @@ window.addEventListener('load', function() {
         return value;
     };
 
+    $('#txcount').on('change', function() {
+        transaction_limit = this.value;
+        document.getElementById('txsel').classList.add("is-loading");
+    });
+
     //USER DATA FROM API
     const user_data = (username, first_open) => {
-        fetch("https://server.duinocoin.com/users/" + encodeURIComponent(username))
+        fetch(`https://server.duinocoin.com/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
             .then(response => response.json())
             .then(data => {
                 data = data.result;
@@ -650,7 +636,6 @@ window.addEventListener('load', function() {
                 }
 
                 user_transactions = data.transactions.reverse();
-                let transactions_table = document.getElementById("transactions_table");
                 if (user_transactions.length > 0) {
                     transactions_html = "";
                     for (let i in user_transactions) {
@@ -733,9 +718,9 @@ window.addEventListener('load', function() {
                             transactions_html += thtml;
                         }
                     }
-                    transactions_table.innerHTML = transactions_html;
+                    update_element("transactions_table", transactions_html);
                 } else
-                    transactions_table.innerHTML = `<div class="column is-full">
+                    update_element("transactions_table", `<div class="column is-full">
                     <p class="title is-size-6">
                         No transactions yet or they're temporarily unavailable
                     </p>
@@ -743,7 +728,11 @@ window.addEventListener('load', function() {
                         If you have sent funds recently,
                         it will take a few seconds until the transaction will appear here.
                     </p>
-                </div>`;
+                </div>`);
+            }).then(function() {
+                if (update_element("transactioncount", user_transactions.length)) {
+                    document.getElementById('txsel').classList.remove("is-loading");
+                }
             });
     }
 
@@ -765,8 +754,8 @@ window.addEventListener('load', function() {
 
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
-        let username = document.getElementById('usernameinput').value
-        let password = document.getElementById('passwordinput').value
+        username = $('#usernameinput').val()
+        password = $('#passwordinput').val()
 
         if (username && password) {
             document.getElementById('loginbutton').classList.add("is-loading")
@@ -863,7 +852,7 @@ window.addEventListener('load', function() {
 
                             // THEME SWITCHER
                             let themesel = document.getElementById('themesel');
-                            themesel.addEventListener('input', updateValue);
+                            themesel.addEventListener('input', change_theme);
 
                             document.getElementById('changepassbtn').onclick = function() {
                                 let modal_success = document.querySelector('#modal_changepass');
@@ -955,7 +944,7 @@ window.addEventListener('load', function() {
                                 modal_error.classList.remove('is-active');
                             }
                             document.getElementById('loginbutton').classList.remove("is-loading")
-                        }, 250);
+                        }, 150);
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
                 update_element("logintext", "Wallet API is unreachable");
@@ -966,12 +955,17 @@ window.addEventListener('load', function() {
             })
         }
     }
-
-    $("#loader-wrapper").fadeOut(); // After page is loaded
+    if (getcookie("theme")) {
+        cookie = getcookie("theme");
+        $("#themesel").val(cookie);
+        change_theme({ "target": { "value": cookie } });
+    }
 
     if (getcookie("password") && getcookie("username")) {
         $('#usernameinput').val(getcookie("username"));
         $('#passwordinput').val(getcookie("password"));
         $('#loginbutton').click();
     }
+
+    $("#loader-wrapper").fadeOut(); // After page is loaded
 });

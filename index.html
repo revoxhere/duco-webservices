@@ -54,7 +54,9 @@
     <link rel="preload" href="css/checkbox.css" as="style">
     <link rel="stylesheet" href="css/checkbox.css" type="text/css">
     <!-- Themes -->
-    <link rel="stylesheet" disabled id="radiate" type="text/css" href="https://jenil.github.io/bulmaswatch/nuclear/bulmaswatch.min.css">
+    <link rel="preload" href="css/radiance.css" as="style">
+    <link rel="stylesheet" disabled id="radiate" type="text/css" href="css/radiance.css">
+    <link rel="preload" href="css/blur.css" as="style">
     <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
 </head>
 
@@ -103,7 +105,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="field">
+                                        <div class="field" style="margin-left:0.1em">
                                             <label class="b-checkbox checkbox">
                                                 <input type="checkbox" id="remember">
                                                 <span class="check is-success"></span>
@@ -288,7 +290,20 @@
                             <div class="column">
                                 <p class="title is-size-5">
                                     Your last transactions
+                                    <span class="has-text-weight-normal">
+                                        (<span id="transactioncount">0</span>)
+                                    </span>
                                 </p>
+                            </div>
+                            <div class="column is-narrow has-text-right">
+                                <div class="select" id="txsel">
+                                    <select id="txcount">
+                                        <option selected value="5">5</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="7777">All</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div id="transactions_table" class="columns is-multiline">
@@ -579,10 +594,6 @@
                             <img src="assets/ducominingdashboarddark.png" class="icon is-small">
                             <span>Lulaschkas' Dashboard</span>
                         </a>
-                        <a href="https://duinotracker.com" target="_blank" class="button">
-                            <i class="fa fa-fw fa-address-book icon is-small" style="color:#22a6b3"></i>
-                            <span>DuinoTracker</span>
-                        </a>
                         <a href="https://duco.pcgeek.pl/" target="_blank" class="button">
                             <img src="assets/ducopcgeek.png" class="icon is-small">
                             <span>DuinoCoin in Charts</span>
@@ -627,7 +638,7 @@
             </div>
         </div>
     </div>
-    <div class="footer">
+    <div class="footer mt-5">
         <p class="subtitle has-text-centered is-size-6">
             The
             <b>
