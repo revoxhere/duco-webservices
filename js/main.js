@@ -28,13 +28,13 @@ function calculdaily(newb, oldb) {
     let daily = 86400 * ducomadein / time_passed;
 
     // Large values mean transaction or big block - ignore this value
-    if (daily > 0 && daily < 800) {
-        daily = round_to(2, daily)
+    if (daily > 0 && daily < 500) {
+        daily = round_to(1, daily)
         update_element("estimatedprofit", `
                 <i class="far fa-star"></i>
                 Earning about <b>` + daily + ` ᕲ</b> daily`);
 
-        avgusd = round_to(2, daily * duco_price);
+        avgusd = round_to(3, daily * duco_price);
         update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
     }
     start = Date.now()
@@ -188,7 +188,7 @@ window.addEventListener('load', function() {
                         ${new Date(data["vps"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
-            
+
             if (data["node2"]["online"])
                 star_status =
                 `<div class="column">
@@ -385,33 +385,38 @@ window.addEventListener('load', function() {
             .then(response => response.json())
             .then(data => {
                 data = data.result;
-                balance = parseFloat(data.balance.balance);
-                let balanceusd = balance * duco_price;
-
-                balance = round_to(8, balance);
-                if (first_launch) {
-                    oldb = 0;
-                    push_to_graph(balance);
-                    first_launch = false;
-                } else {
-                    oldb = balance;
-                }
+                balance = round_to(8, parseFloat(data.balance.balance));
+                balanceusd = balance * duco_price;
                 push_to_graph(balance);
 
-                if (oldb != balance) {
-                    calculdaily(balance, oldb)
+                if (first_launch) {
+                    push_to_graph(balance);
+                    $("#balance").prop('Counter', 0).animate({
+                        Counter: balance,
+                    }, {
+                        duration: 750,
+                        easing: 'swing',
+                        step: function(now) {
+                            $("#balance").text(round_to(8, now));
+                        }
+                    });
+                    first_launch = false;
+                } else {
+                    $("#balance").prop('Counter', oldb).animate({
+                        Counter: balance,
+                    }, {
+                        duration: 750,
+                        easing: 'swing',
+                        step: function(now) {
+                            $("#balance").text(round_to(8, now));
+                        }
+                    });
                 }
-                
-                $("#balance").prop('Counter', oldb).animate({
-                    Counter: balance,
-                }, {
-                    duration: 500,
-                    easing: 'swing',
-                    step: function(now) {
-                        $("#balance").text(round_to(8, now));
-                    }
-                });
 
+                if (oldb != balance) {
+                    calculdaily(balance, oldb);
+                    oldb = balance;
+                }
 
                 balanceusd = round_to(4, balanceusd);
                 if (first_open) $("#balanceusd").html("≈ $" + balanceusd);
