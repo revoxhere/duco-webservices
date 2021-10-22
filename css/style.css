@@ -343,13 +343,13 @@ body {
 #modal_success,
 #modal_error,
 #modal_changepass,
-#modal_wrap {
-    animation: fadeIn 0.3s;
-    -webkit-animation: fadeIn 0.3s;
-    -moz-animation: fadeIn 0.3s;
-    -o-animation: fadeIn 0.3s;
-    -ms-animation: fadeIn 0.3s;
-    transition: 0.3s;
+#modal_wrap,
+#modal_send {
+    animation: fadeIn 0.2s;
+    -webkit-animation: fadeIn 0.2s;
+    -moz-animation: fadeIn 0.2s;
+    -o-animation: fadeIn 0.2s;
+    -ms-animation: fadeIn 0.2s;
 }
 
 @keyframes fadeIn {

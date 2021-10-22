@@ -10,6 +10,7 @@ let start = Date.now();
 let timestamps = [];
 let balances = [];
 let username;
+let notify_shown = false;
 let transaction_limit = 5;
 let first_launch = true;
 
@@ -27,7 +28,7 @@ function calculdaily(newb, oldb) {
     let daily = 86400 * ducomadein / time_passed;
 
     // Large values mean transaction or big block - ignore this value
-    if (daily > 0 && daily < 500) {
+    if (daily > 0 && daily < 800) {
         daily = round_to(2, daily)
         update_element("estimatedprofit", `
                 <i class="far fa-star"></i>
@@ -91,6 +92,21 @@ function getcookie(cname) {
 function delcookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
 }
+
+function miner_notify() {
+    let modal_error = document.querySelector('#modal_error');
+    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+        `<b>You're wasting power</b><br>Your total miner efficiency is <b>less than 20%</b>, because you're using too many miners.<br>Big farms are not good for Duino-Coin, as you won't earn more but only put more load on the servers. You can read more about it <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos" target="_blank">here</a>.<br>Consider making your rig smaller.</p>`;
+    document.querySelector('html').classList.add('is-clipped');
+    modal_error.classList.add('is-active');
+
+    document.querySelector('#modal_error .delete').onclick = function() {
+        document.querySelector('html').classList.remove('is-clipped');
+        modal_error.classList.remove('is-active');
+    }
+}
+
+
 
 
 window.addEventListener('load', function() {
@@ -172,37 +188,7 @@ window.addEventListener('load', function() {
                         ${new Date(data["vps"]["since"] * 1000).toLocaleTimeString("pl-PL")}
                     </p>
                 </div>`;
-
-            if (data["node"]["online"])
-                pulse_status =
-                `<div class="column">
-                    <div class="icon-text">
-                        <span class="icon has-text-success">
-                            <i class="fas fa-check-square"></i>
-                        </span>
-                        <b>Pulse Pool</b>
-                    </div>
-                    <p class="block">
-                        Operational since ` +
-                new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
-                    </p>
-                </div>`;
-            else
-                pulse_status =
-                `<div class="column">
-                    <div class="icon-text">
-                        <span class="icon has-text-warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <b>Pulse Pool</b>
-                    </div>
-                    <p class="block has-text-weight-bold">
-                        Possible problems with mining since ` +
-                new Date(data["node"]["since"] * 1000).toLocaleDateString("pl-PL") + `
-                        ${new Date(data["node"]["since"] * 1000).toLocaleTimeString("pl-PL")}
-                    </p>
-                </div>`;
-
+            
             if (data["node2"]["online"])
                 star_status =
                 `<div class="column">
@@ -263,7 +249,7 @@ window.addEventListener('load', function() {
                     </p>
                 </div>`;
 
-            let final_html = api_status + vps_status + pulse_status + star_status + beyond_status;
+            let final_html = api_status + vps_status + star_status + beyond_status;
             $("#server-status").html(final_html);
         })
 
@@ -402,20 +388,30 @@ window.addEventListener('load', function() {
                 balance = parseFloat(data.balance.balance);
                 let balanceusd = balance * duco_price;
 
+                balance = round_to(8, balance);
                 if (first_launch) {
+                    oldb = 0;
                     push_to_graph(balance);
                     first_launch = false;
+                } else {
+                    oldb = balance;
                 }
                 push_to_graph(balance);
 
                 if (oldb != balance) {
                     calculdaily(balance, oldb)
-                    oldb = balance;
                 }
+                
+                $("#balance").prop('Counter', oldb).animate({
+                    Counter: balance,
+                }, {
+                    duration: 500,
+                    easing: 'swing',
+                    step: function(now) {
+                        $("#balance").text(round_to(8, now));
+                    }
+                });
 
-                balance = round_to(8, balance);
-                if (first_open) $("#balance").html(balance + " DUCO");
-                else update_element("balance", balance + " DUCO");
 
                 balanceusd = round_to(4, balanceusd);
                 if (first_open) $("#balanceusd").html("≈ $" + balanceusd);
@@ -603,6 +599,11 @@ window.addEventListener('load', function() {
                     if (first_open) $("#minercount").html(`(${all_miners})`);
                     else update_element("minercount", `(${all_miners})`);
 
+                    if (all_miners > 50 && !notify_shown) {
+                        miner_notify();
+                        notify_shown = true;
+                    }
+
                     if (first_open) $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     else update_element("total_hashrate", scientific_prefix(total_hashrate) + "H/s");
 
@@ -760,13 +761,23 @@ window.addEventListener('load', function() {
         if (username && password) {
             document.getElementById('loginbutton').classList.add("is-loading")
 
-            document.getElementById('send').onclick = function() {
+            document.getElementById('send_button').onclick = function() {
+                let modal_success = document.querySelector('#modal_send');
+                document.querySelector('html').classList.add('is-clipped');
+                modal_success.classList.add('is-active');
+                document.querySelector('#modal_send .delete').onclick = function() {
+                    document.querySelector('html').classList.remove('is-clipped');
+                    modal_success.classList.remove('is-active');
+                }
+            }
+
+            document.getElementById('send_confirm').onclick = function() {
                 let recipient = document.getElementById('recipientinput').value
                 let amount = document.getElementById('amountinput').value
                 let memo = document.getElementById('memoinput').value
 
                 if (recipient && amount) {
-                    document.getElementById("send").classList.add("is-loading");
+                    document.getElementById("send_confirm").classList.add("is-loading");
                     $.getJSON('https://server.duinocoin.com/transaction/' +
                         '?username=' + username +
                         "&password=" + encodeURIComponent(password) +
@@ -774,12 +785,15 @@ window.addEventListener('load', function() {
                         "&amount=" + amount +
                         "&memo=" + memo,
                         function(data) {
+                            $('#recipientinput').val('');
+                            $('#amountinput').val('');
+                            $('#memoinput').val('');
                             if (data.success == true) {
                                 serverMessage = data["result"].split(",");
                                 if (serverMessage[0] == "OK") {
-                                    $('#recipientinput').val('');
-                                    $('#amountinput').val('');
-                                    $('#memoinput').val('');
+                                    let modal_send = document.querySelector('#modal_send');
+                                    document.querySelector('html').classList.remove('is-clipped');
+                                    modal_send.classList.remove('is-active');
 
                                     let modal_success = document.querySelector('#modal_success');
                                     document.querySelector('#modal_success .modal-card-body .content p')
@@ -796,11 +810,16 @@ window.addEventListener('load', function() {
                                         document.querySelector('html').classList.remove('is-clipped');
                                         modal_success.classList.remove('is-active');
                                     }
-                                    document.getElementById("send").classList.remove("is-loading");
+                                    document.getElementById("send_confirm").classList.remove("is-loading");
                                 }
 
                             } else {
                                 serverMessage = data["message"].split(",");
+
+                                let modal_send = document.querySelector('#modal_send');
+                                document.querySelector('html').classList.remove('is-clipped');
+                                modal_send.classList.remove('is-active');
+
                                 let modal_error = document.querySelector('#modal_error');
                                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                                     `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
@@ -811,7 +830,7 @@ window.addEventListener('load', function() {
                                     document.querySelector('html').classList.remove('is-clipped');
                                     modal_error.classList.remove('is-active');
                                 }
-                                document.getElementById("send").classList.remove("is-loading");
+                                document.getElementById("send_confirm").classList.remove("is-loading");
                             }
                         })
                 }
