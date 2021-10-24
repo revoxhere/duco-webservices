@@ -848,8 +848,8 @@ window.addEventListener('load', function() {
                 function(data) {
                     if (data.success == true) {
                         if ($('#remember').is(":checked")) {
-                            setcookie("password", password, 30);
-                            setcookie("username", username, 30);
+                            setcookie("password", encodeURIComponent(password), 30);
+                            setcookie("username", encodeURIComponent(username), 30);
                         }
                         $("#login").fadeOut(250, function() {
                             document.getElementById('loginbutton').classList.remove("is-loading")
