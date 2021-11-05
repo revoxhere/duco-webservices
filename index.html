@@ -3,46 +3,39 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Duino-Coin | Web Wallet</title>
-    <!-- SEO Stuff -->
-    <meta name="description" content="Duino-Coin Web Wallet">
-    <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco web wallet">
-    <link rel="canonical" href="https://wallet.duinocoin.com" />
     <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <title>Duino-Coin | Web Wallet</title>
+    <meta name="apple-mobile-web-app-title" content="Duino-Coin | Web Wallet">
+    <meta name="application-name" content="Duino-Coin | Web Wallet">
+    <meta name="twitter:title" content="Duino-Coin | Web Wallet">
+    <meta property="og:title" content="Duino-Coin | Web Wallet">
+    <meta name="description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="twitter:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta property="og:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="keywords" content="Duino-Coin, duco, Duino Coin, DUCO">
+    <meta name="author" content="revox from the Duino-Coin Team">
+    <meta property="og:url" content="https://wallet.duinocoin.com">
+    <meta name="msapplication-TileColor" content="#f0932b">
     <meta name="theme-color" content="#f0932b">
-    <!-- Open Graph Metadata -->
-    <meta property="og:site_name" content="Duino-Coin Web Wallet" />
-    <meta property="og:site" content="https://wallet.duinocoin.com" />
-    <meta property="og:title" content="Duino-Coin Web Wallet" />
-    <meta property="og:description" content="Duino-Coin Web Wallet" />
-    <meta property="og:image" content="assets/duco.svg" />
-    <meta property="og:url" content="https://wallet.duinocoin.com" />
-    <meta property="og:type" content="website" />
-    <!-- Twitter Metadata -->
-    <meta name="twitter:title" content="Duino-Coin Web Wallet">
-    <meta name="twitter:description" content="Duino-Coin Web Wallet">
-    <meta name="twitter:image" content="assets/duco.svg">
     <meta name="twitter:site" content="@DuinoCoin">
-    <meta name="twitter:creator" content="@DuinoCoin">
-    <link rel="icon" href="assets/duco.svg" type="image/png" />
-    <link rel="shortcut icon" href="assets/duco.svg" type="image/png" />
+    <meta name="twitter:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image:url" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta name="twitter:card" content="summary_large_image">
     <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-1.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-2.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-mountains-1.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/hge-sea-1.jpg">
-    <!-- Wallet Script -->
-    <link rel="preload" as="script" href="js/main.js">
-    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="preload" as="image" href="img/yenn-sea-1.jpg">
     <!-- JS -->
-    <link rel="preload" as="script" href="js/chart.js">
-    <script type="text/javascript" src="js/chart.js"></script>
     <link rel="preload" as="script" href="js/jquery-3.6.0.min.js">
     <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
     <link rel="preload" as="script" href="js/fontawesome.js">
     <script type="text/javascript" src="js/fontawesome.js"></script>
     <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
@@ -51,222 +44,147 @@
     <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
     <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
     <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
-    <link rel="preload" href="css/checkbox.css" as="style">
-    <link rel="stylesheet" href="css/checkbox.css" type="text/css">
-    <!-- Themes -->
-    <link rel="preload" href="css/radiance.css" as="style">
-    <link rel="stylesheet" disabled id="radiate" type="text/css" href="css/radiance.css">
-    <link rel="preload" href="css/blur.css" as="style">
-    <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.4.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@1.1.1/css/font-awesome-animation.min.css">
 </head>
 
 <body>
-    <div id="loader-wrapper">
-        <div class="load">
-            <hr />
-            <hr />
-            <hr />
-            <hr />
-        </div>
+    <div id="background"></div>
+    <div class="login-content" class="mt-0">
+        <form class="box blur" id="form">
+            <p class="title is-size-5 mb-0">
+                <span class="icon-text">
+                    <span class="icon">
+                        <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
+                    </span>
+                    <span>
+                        <span class="has-text-weight-bold">
+                            Duino-Coin
+                        </span>
+                        <span class="has-text-weight-light">
+                            Web Wallet
+                        </span>
+                    </span>
+                </span>
+            </p>
+            <br>
+            <p class="title is-size-3 mb-5">
+                <span class="has-text-weight-bold">
+                    Sign in
+                </span>
+                <span class="has-text-weight-normal">
+                    to your account
+                </span>
+            </p>
+            <div class="input-div one" id="usernamediv">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Username</h5>
+                    <input id="usernameinput" type="text" class="input" autocomplete="username" required>
+                </div>
+            </div>
+            <div class="input-div pass" id="passworddiv">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Passphrase</h5>
+                    <input id="passwordinput" type="password" class="input" autocomplete="current-password" required>
+                </div>
+            </div>
+            <div>
+                <button type="submit" id="submit" class="btn button">Login</button>
+            </div>
+            <a href="register.html">Don't have a wallet?</a>
+        </form>
     </div>
-    <div class="container">
-        <section class="hero is-fullheight" id="login" style="display:flex">
-            <div class="hero-body is-align-self-center">
-                <div class="columns is-centered is-multiline">
-                    <div class="column is-narrow">
-                        <div class="columns">
-                            <div class="column">
-                                <div class="box">
-                                    <section>
-                                        <p class="title">
-                                            <a href="https://duinocoin.com">
-                                                <img src="assets/ducobanner.png" style="filter: saturate(70%)" width="175rem" class="image center">
-                                            </a>
-                                        </p>
-                                        <p class="title is-size-4">
-                                            Sign in
-                                        </p>
-                                        <p class="subtitle is-size-5">
-                                            to your <b>Duino-Coin</b> wallet
-                                        </p>
-                                        <div class="field mt-5">
-                                            <div class="control has-icons-left">
-                                                <input type="text" id="usernameinput" placeholder="Wallet (username)" class="input" required>
-                                                <span class="icon is-left">
-                                                    <i style="color: #777" class="fa fa-user"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="field">
-                                            <div class="control has-icons-left">
-                                                <input type="password" id="passwordinput" placeholder="Password" class="input" required>
-                                                <span class="icon is-left">
-                                                    <i style="color: #777" class="fa fa-lock"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="field" style="margin-left:0.1em">
-                                            <label class="b-checkbox checkbox">
-                                                <input type="checkbox" id="remember">
-                                                <span class="check is-success"></span>
-                                                <span class="control-label">Remember me</span>
-                                            </label>
-                                        </div>
-                                        <p id="logintext"></p>
-                                        <div class="field mt-3">
-                                            <div class="buttons">
-                                                <button class="button is-dark is-duco" id="loginbutton">
-                                                    Login
-                                                </button>
-                                                <a href="register.html" class="button">
-                                                    Create a new wallet
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </div>
-                            </div>
+    <div id="wallet" style="display:none;">
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64" title="Synced with Gravatar">
+                                <img class="is-rounded" id="useravatar" alt="User avatar">
+                            </figure>
+                            <p class="mt-1 has-text-centered">
+                                <a class="modal-button" data-target="modal-settings">
+                                    <i class="fa fa-cog" title="Settings"></i>
+                                </a>&nbsp;
+                                <a onclick="logout()">
+                                    <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                </a>
+                            </p>
                         </div>
-                        <div class="columns">
-                            <div class="column is-narrow">
-                                <div class="box">
-                                    <div class="columns is-mobile">
-                                        <div class="column">
-                                            <p class="title is-size-5">
-                                                News center
-                                            </p>
-                                        </div>
-                                        <div class="column">
-                                            <p class="title is-size-6 has-text-right has-text-link">
-                                                <a href="https://server.duinocoin.com/news.html" target="_blank">
-                                                    <i class="icon is-small fa fa-eye"></i>&nbsp;
-                                                    View all
-                                                </a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <iframe src="https://server.duinocoin.com/news.html" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;height:10rem" allowtransparency="true">Please wait</iframe>
-                                </div>
+                        <div class="media-content" style="overflow-wrap: anywhere;">
+                            <div class="content has-text-left mb-0">
+                                <p>
+                                    <strong id="username">
+                                        username
+                                    </strong>
+                                    <small id="email">(user@domain.com)</small>
+                                    <small id="verify">verified?</small>
+                                </p>
                             </div>
+                            <p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
+                                <strong class="has-text-weight-bold" id="balance">0.0</strong> DUCO
+                            </p>
+                            <p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
+                                ≈<span class="has-text-weight-bold" id="balancefiat">0.0</span> USD
+                            </p>
+                            <p>
+                                <small class="has-text-weight-normal">
+                                    <span id="estimatedprofit">
+                                        <i class="fas fa-spinner fa-pulse"></i>
+                                        Calculating est. daily profit
+                                    </span>
+                                    <span id="estimatedprofitusd">
+                                    </span>
+                                </small>
+                            </p>
                         </div>
-                    </div>
-                    <div class="column is-one-third">
-                        <div class="columns is-multiline">
-                            <div class="column is-full">
-                                <div class="box">
-                                    <p class="title is-size-5">
-                                        Servers status
-                                    </p>
-                                    <div class="columns is-multiline">
-                                        <div id="server-status">
-                                            <div class="column content">
-                                                Fetching or data unavailable
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p class="subtitle is-size-7 has-text-right">
-                                        Data provided by
-                                        <a href="https://duco.sytes.net">
-                                            Lukas
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="box">
-                                    <p class="title is-size-5">
-                                        Current rewards
-                                    </p>
-                                    <div class="columns is-multiline is-mobile">
-                                        <div class="column is-half">
-                                            <div class="icon-text">
-                                                <span>
-                                                    <i class="fas fa-microchip fa-fw" style="color:B33771;"></i>
-                                                </span>&nbsp;
-                                                <b>Arduino</b>
-                                            </div>
-                                            <p class="block" id="avr_rewards">
-                                                calculating
-                                            </p>
-                                        </div>
-                                        <div class="column is-half">
-                                            <div class="icon-text">
-                                                <span>
-                                                    <i class="fas fa-rss fa-fw" style="color:F5515F;"></i>
-                                                </span>&nbsp;
-                                                <b>ESP8266</b>
-                                            </div>
-                                            <p class="block" id="esp8266_rewards">
-                                                calculating
-                                            </p>
-                                        </div>
-                                        <div class="column">
-                                            <div class="icon-text">
-                                                <span>
-                                                    <i class="fas fa-wifi fa-fw" style="color:5f27cd;"></i>
-                                                </span>&nbsp;
-                                                <b>ESP32</b>
-                                            </div>
-                                            <p class="block" id="esp32_rewards">
-                                                calculating
-                                            </p>
-                                        </div>
-                                        <div class="column">
-                                            <div class="icon-text">
-                                                <span>
-                                                    <i class="fas fa-desktop fa-fw" style="color:F97F51;"></i>
-                                                </span>&nbsp;
-                                                <b>PC (Medium diff.)</b>
-                                            </div>
-                                            <p class="block" id="pc_rewards">
-                                                calculating
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+                    <div class="content" id="adblocker_detected">
+                        <p class="title is-size-5 mb-0">
+                            An ad should be here but
+                            <span class="has-text-weight-bold">
+                                you're using an adblocker 😞
+                            </span>
+                        </p>
+                        <p class="content">
+                            We spend <span class="has-text-danger-dark">our own money</span> to maintain the servers. A <b>single ad</b> here helps in covering these costs.
+                            If you like the project consider buying our
+                            <a href="https://store.duinocoin.com" target="_blank">official merch</a>
+                            or
+                            <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
+                            <span class="has-text-success-dark">Thanks in advance! 🥺</span>
+                        </p>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    <div id="wallet" class="m-1" style="display:none;">
-        <div class="box m-3">
-            <div class="canvascontainer is-hidden-mobile">
-                <canvas height="30em" id="balance_chart"></canvas>
-            </div>
-            <div class="container">
-                <p class="subtitle is-size-5 has-text-centered">
-                    Welcome back, <b id="user"></b>
-                </p>
-                <p class="title has-text-centered">
-                    <span id="balance">
-                        0
-                    </span>
-                </p>
-                <p class="subtitle has-text-centered">
-                    <span id="balanceusd" style="white-space: nowrap"></span>
-                </p>
-                <p class="subtitle has-text-centered">
-                    <span id="estimatedprofit">
-                        <i class="fas fa-spinner fa-pulse"></i>
-                        Calculating est. daily profit
-                    </span>
-                    <span class="subtitle" id="estimatedprofitusd">
-                    </span>
-                </p>
-            </div>
         </div>
-        <div class="columns is-multiline is-gapless">
-            <div class="column is-half">
-                <div class="column">
-                    <div class="box">
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
                         <div class="columns is-mobile">
                             <div class="column">
-                                <p class="title is-size-5">
-                                    Your miners
-                                    <span id="minercount" class="has-text-weight-normal"></span>
+                                <p class="icon-text is-size-6">
+                                    <i class="icon fa fa-charging-station"></i>
+                                    <span>
+                                        Your <strong>Miners</strong>
+                                        <span class="has-text-weight-normal">
+                                            (<span id="minercount">0</span>)
+                                        </span>
+                                    </span>
                                 </p>
                             </div>
                             <div class="column">
@@ -275,28 +193,72 @@
                                 </p>
                             </div>
                         </div>
-                        <div id="miners" class="columns is-multiline" style="resize: vertical;">
-                            <div class="column is-full">
-                                <p class="title is-size-6">
-                                    Fetching data
-                                </p>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="mcontainer mt-3">
+                        <table class="table is-fullwidth" id="minertable">
+                            <thead>
+                                <th></th>
+                                <th>
+                                    <span>Miner</span>
+                                </th>
+                                <th>
+                                    <span class="icon-text">
+                                        <span>Hashrate</span>
+                                        <span class="icon" style="color:#f0932b">
+                                            <i class="mdi mdi-pickaxe animated faa-slow faa-wrench"></i>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th>
+                                    <span class="icon-text">
+                                        <span>Correct shares</span>
+                                        <span class="icon has-text-success-dark">
+                                            <i class="fa fa-spell-check"></i>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody id="miners">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="content" id="nominers">
+                        <span class="has-text-weight-bold">
+                            No miners detected.
+                        </span>
+                        <span class="has-text-weight-normal">
+                            If you've turned them on recently it will take a minute
+                            or two until their stats will appear here.
+                        </span><br>
+                        <!--<span class="has-text-weight-normal">
+                            <span class="has-text-weight-bold">
+                                Having problems?
+                            </span>
+                            See the
+                            <span class="has-text-weight-bold">
+                                <a href="">
+                                    troubleshooting guide
+                                </a>
+                            </span>
+                        </span>-->
                     </div>
                 </div>
-                <div class="column">
-                    <div class="box">
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
                         <div class="columns is-mobile">
                             <div class="column">
-                                <p class="title is-size-5">
-                                    Your last transactions
-                                    <span class="has-text-weight-normal">
-                                        (<span id="transactioncount">0</span>)
+                                <p class="icon-text is-size-6">
+                                    <i class="icon fa fa-stream"></i>
+                                    <span>
+                                        Your <strong>last transactions</strong>
                                     </span>
                                 </p>
                             </div>
                             <div class="column is-narrow has-text-right">
-                                <div class="select" id="txsel">
+                                <div class="select mb-0" id="txsel">
                                     <select id="txcount">
                                         <option selected value="5">5</option>
                                         <option value="15">15</option>
@@ -306,6 +268,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tcontainer">
                         <div id="transactions_table" class="columns is-multiline">
                             <div class="column is-full">
                                 <p class="title is-size-6">
@@ -313,374 +277,434 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="columns">
+                    </div>
+                    <a class="button mt-3 is-fullwidth modal-button" data-target="modal-send">
+                        Send coins
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
+                        <div class="columns is-mobile">
                             <div class="column">
-                                <button class="button mt-3 is-fullwidth" id="send_button">
-                                    Send coins
-                                </button>
+                                <h2 class="icon-text is-size-6">
+                                    <i class="icon far fa-newspaper"></i>
+                                    <span><strong>News</strong> center</span>
+                                </h2>
+                            </div>
+                            <div class="column">
+                                <p class="is-size-6 has-text-right has-text-link">
+                                    <span class="icon-text">
+                                        <a href="https://server.duinocoin.com/news.html" target="_blank">
+                                            <i class="icon is-small fa fa-eye"></i>
+                                            <span>View all</span>
+                                        </a>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="column">
-                    <div class="box">
-                        <div class="columns is-mobile">
-                            <div class="column">
-                                <p class="title is-size-5">
-                                    News center
-                                </p>
-                            </div>
-                            <div class="column">
-                                <p class="title is-size-6 has-text-right has-text-link">
-                                    <a href="https://server.duinocoin.com/news.html" target="_blank">
-                                        <i class="icon is-small fa fa-eye"></i>&nbsp;
-                                        View all
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                        <iframe id="news_iframe" frameborder="0" style="word-break:break-all;width:100%;overflow:auto;max-height:12rem" allowtransparency="true">Please wait</iframe>
+                    <div class="iframe-container">
+                        <iframe id="news_iframe" frameborder="0" allowtransparency="true">Please wait</iframe>
                     </div>
                 </div>
             </div>
-            <div class="column is-half">
-                <div class="column">
-                    <div class="box">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
                         <div class="columns is-mobile">
                             <div class="column">
-                                <p class="title is-size-5">
-                                    Exchange rates
-                                </p>
+                                <h2 class="icon-text is-size-6">
+                                    <i class="icon fa fa-coins"></i>
+                                    <span><strong>Duino-Coin</strong> prices</span>
+                                </h2>
                             </div>
                             <div class="column">
-                                <p class="subtitle is-size-6 has-text-right">
-                                    max: <b id="ducousd">fetching data</b>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="columns is-multiline">
-                            <div class="column is-full">
-                                <span class="title is-size-5">
-                                    <img class="icon icon-text" target="_blank" src="assets/ducoexchange.png">
-                                    <a href="https://exchange.duinocoin.com" target="_blank">
-                                        DUCO Exchange
-                                    </a>
-                                </span>
-                                <div class="columns is-multiline mt-1">
-                                    <div class="column">
-                                        <p id="ducousd_xmg" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> XMG
-                                        </p>
-                                    </div>
-                                    <div class="column">
-                                        <p id="ducousd_bch" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> BCH
-                                        </p>
-                                    </div>
-                                    <div class="column">
-                                        <p id="ducousd_trx" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> TRX
-                                        </p>
-                                    </div>
-                                    <div class="column">
-                                        <p id="ducousd_nano" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> NANO
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <span class="title is-size-5">
-                                    <img class="icon icon-text" target="_blank" src="assets/nodes.png">
-                                    <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank">
-                                        Node-S
-                                    </a>
-                                </span>
-                                <div class="columns mt-1">
-                                    <div class="column">
-                                        <p id="duco_nodes" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            DUCO <i class="fa fa-arrows-alt-h"></i> USD
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <span class="title is-size-5">
-                                    <img class="icon icon-text" target="_blank" src="assets/justswap.png">
-                                    <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank">
-                                        JustSwap
-                                    </a>
-                                </span>
-                                <div class="columns mt-1">
-                                    <div class="column">
-                                        <p id="duco_justswap" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            wDUCO <i class="fa fa-arrows-alt-h"></i> TRX
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <span class="title is-size-5">
-                                    <img class="icon icon-text" target="_blank" src="assets/pancake.png">
-                                    <a href="https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b" target="_blank">
-                                        PancakeSwap
-                                    </a>
-                                </span>
-                                <div class="columns mt-1">
-                                    <div class="column">
-                                        <p id="duco_pancake" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            bscDUCO <i class="fa fa-arrows-alt-h"></i> BSC
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <span class="title is-size-5">
-                                    <img class="icon icon-text" target="_blank" src="assets/sushi.png">
-                                    <a href="https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2" target="_blank">
-                                        SushiSwap
-                                    </a>
-                                </span>
-                                <div class="columns mt-1">
-                                    <div class="column">
-                                        <p id="duco_sushi" class="title is-size-6">
-                                            Fetching data
-                                        </p>
-                                        <p class="subtitle is-size-7">
-                                            maticDUCO <i class="fa fa-arrows-alt-h"></i> MATIC
-                                        </p>
-                                    </div>
-                                </div>
+                                <h2 class="has-text-right is-size-6">
+                                    <span>max: <b id="ducousd">?</b></span>
+                                </h2>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="column">
-                    <div class="box">
-                        <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
-                        <div class="content" id="adblocker_detected" style="display:none">
-                            <p class="title is-size-4">
-                                An ad should be here but you're using an adblocker 😞
+                    <div class="columns is-multiline is-mobile">
+                        <div class="column is-full">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="DUCO Exchange" src="assets/ducoexchange.png">
+                                <a href="https://exchange.duinocoin.com" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">DUCO</span>
+                                        <span>Exchange</span>
+                                    </span>
+                                </a>
                             </p>
-                            <p class="subtitle">
-                                We host all the websites and servers from <span class="has-text-danger-dark">our own money</span> that is often limited or not sufficient. The <b>single ad here</b> helps to cover these costs.<br>
-                                If you're enjoying the project, it would be cool if you supported us by buying our
-                                <a href="https://store.duinocoin.com" target="_blank">official merch</a>
-                                or
-                                <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
-                                <span class="has-text-success-dark">Thanks in advance 🥺</span>
+                            <div class="columns is-mobile is-multiline">
+                                <div class="column">
+                                    <p id="ducousd_xmg" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> XMG
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_bch" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> BCH
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_trx" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_nano" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> NANO
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="Node-S exchange" src="assets/nodes.png">
+                                <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Node-S</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_nodes" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                DUCO <i class="fa fa-arrows-alt-h"></i> USD
                             </p>
                         </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="box">
-                        <div class="buttons">
-                            <div class="control has-icons-left mb-2 mr-2">
-                                <div class="select is-normal">
-                                    <select id="themesel">
-                                        <option value="light">Simple</option>
-                                        <option selected value="frosted">Frosted glass</option>
-                                        <option value="radiance">Nuclear</option>
-                                    </select>
-                                </div>
-                                <span class="icon is-left">
-                                    <i class="fas fa-sun" style="color:#f0932b"></i>
-                                </span>
-                            </div>
-                            <button id="changepassbtn" class="button">
-                                <i class="fa fa-fw fa-key icon"></i>
-                                <span>Change password</span>
-                            </button>
-                            <button id="wrapbtn" class="button">
-                                <img src="assets/wduco.png" class="icon is-small">
-                                <span>Wrap DUCO to wDUCO</span>
-                            </button>
-                            <button id="logout" class="button">
-                                <i class="fa fa-fw fa-sign-out-alt icon" style="color:#5f27cd;"></i>
-                                <span>Logout</span>
-                            </button>
-                            <div id="verify"></div>
-                            <a href="https://server.duinocoin.com/webminer.html" class="button">
-                                <img class="icon is-small" src="assets/webminer.png">
-                                <span>Web Miner</span>
-                            </a>
-                            <a href="https://explorer.duinocoin.com" target="_blank" class="button">
-                                <img src="assets/explorer.png" class="icon is-small">
-                                <span>Network explorer</span>
-                            </a>
-                            <a href="https://duco.sytes.net/" target="_blank" class="button">
-                                <img src="assets/ducominingdashboarddark.png" class="icon is-small">
-                                <span>Lulaschkas' Dashboard</span>
-                            </a>
-                            <a href="https://duco.pcgeek.pl/" target="_blank" class="button">
-                                <img src="assets/ducopcgeek.png" class="icon is-small">
-                                <span>DuinoCoin in Charts</span>
-                            </a>
-                            <a href="https://siunus.github.io/duco-monitor/" target="_blank" class="button">
-                                <span>DUCO Monitor</span>
-                            </a>
-                            <a href="https://raffle.furim.xyz" target="_blank" class="button">
-                                <i class="fa fa-fw fa-dice icon is-small" style="color:#6c5ce7"></i>
-                                <span>Furim's Raffle</span>
-                            </a>
-                            <a href="https://faucet.furim.xyz/" target="_blank" class="button">
-                                <img src="assets/furim_faucet.png" class="icon is-small">
-                                <span>Furim's Faucet</span>
-                            </a>
-                            <a href="https://duco-faucet.pcgeek.pl" target="_blank" class="button">
-                                <img src="assets/amogus_faucet.png" class="icon is-small">
-                                <span>Amogus Faucet</span>
-                            </a>
-                            <a href="https://duinocoin.com/donate" target="_blank" class="button">
-                                <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>
-                                <span>Donate</span>
-                            </a>
-                            <a href="https://store.duinocoin.com" target="_blank" class="button">
-                                <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
-                                <span>Merch</span>
-                            </a>
-                            <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
-                                <i class="fab fa-fw fa-github icon is-small"></i>
-                            </a>
-                            <a href="https://discord.gg/duinocoin" target="_blank" class="button">
-                                <i class="fab fa-fw fa-discord icon is-small"></i>
-                            </a>
-                            <a href="https://twitter.com/DuinoCoin/" target="_blank" class="button">
-                                <i class="fab fa-fw fa-twitter icon is-small"></i>
-                            </a>
-                            <a href="https://www.reddit.com/r/Duinocoin/" target="_blank" class="button">
-                                <i class="fab fa-fw fa-reddit icon is-small"></i>
-                            </a>
-                            <a href="https://play.google.com/store/apps/details?id=com.pripun.duinocoin" target="_blank" class="button">
-                                <i class="fab fa-fw fa-android icon is-small"></i>
-                            </a>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="JustSwap" src="assets/justswap.png">
+                                <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Just Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_justswap" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                wDUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                            </p>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="PancakeSwap" src="assets/pancake.png">
+                                <a href="https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Pancake Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_pancake" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                bscDUCO <i class="fa fa-arrows-alt-h"></i> BSC
+                            </p>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="SushiSwap" src="assets/sushi.png">
+                                <a href="https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Sushi Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_sushi" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                maticDUCO <i class="fa fa-arrows-alt-h"></i> MATIC
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <br>
     </div>
-    <div class="footer mt-5">
-        <p class="subtitle has-text-centered is-size-6">
-            The
-            <b>
-                Official Duino-Coin Web Wallet
-            </b>
-            is
-            <a href="https://opensource.org/licenses/MIT">
-                <b>MIT</b> licensed
+    <div class="footer-container blur">
+        <div class="footer-content ">
+            <a href="https://status.duinocoin.com" target="_blank">
+                Server status
             </a>
-            <br>
-            and made by
-            <a href="https://revoxhere.github.io">
-                revox
+            &bull;
+            <a href="https://github.com/revoxhere/duino-coin#terms-of-service" target="_blank">
+                ToS & Privacy policy
             </a>
-            from the
-            <b>
-                Duino
-            </b>
-            team
-            <b>
-                2019-2021
-            </b>
-            <br><br>
-            Background photos shot by
-            <a href="https://www.instagram.com/vlegle/">
-                Yennefer
+            &bull;
+            <a class="modal-button" data-target="modal-credits">
+                Credits
             </a>
-            and
-            <a href="https://github.com/hgepro">
-                HGEpro
-            </a>
-            <br>
-            Some scripts are based on the original
-            <a href="https://github.com/LDarki">
-                LDarki's
-            </a>
-            version
-            <br>
-            Page is hosted by
-            <a href="https://kristian-kramer.com">
-                Kristian
-            </a>
-            and/or
-            <a href="https://pages.github.com">
-                GH Pages
-            </a>
-            <br>
-            and is fully
-            <b>
-                open source
-            </b>
-            - you can improve it
-            <a href="https://github.com/revoxhere/duco-webservices">
-                here
-            </a><br><br>
-            Created with the help of
-            <a href="https://bulma.io">
-                <b>BULMA</b>
-            </a>
-            CSS framework
-        </p>
+        </div>
     </div>
-    <div id="modal_success" class="modal">
+    <div id="modal-settings" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head has-background-success mx-1">
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-cog"></i>
+                        </span>
+                        <span>Settings</span>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="buttons">
+                        <a class="button modal-button" data-target="modal-changepass" class="button">
+                            <i class="icon is-small fa fa-key"></i>
+                            <span>Change password</span>
+                        </a>
+                        <a class="button modal-button" data-target="modal-wrap" class="button">
+                            <img src="assets/wduco.png" class="icon is-small">
+                            <span>Wrap DUCO to wDUCO</span>
+                        </a>
+                        <a href="https://server.duinocoin.com/webminer.html" class="button">
+                            <img class="icon is-small" src="assets/webminer.png">
+                            <span>Web Miner</span>
+                        </a>
+                        <a href="https://explorer.duinocoin.com" target="_blank" class="button">
+                            <img src="assets/explorer.png" class="icon is-small">
+                            <span>Network explorer</span>
+                        </a>
+                    </div>
+                    <div class="buttons">
+                        <a href="https://duco.sytes.net/" target="_blank" class="button">
+                            <img src="assets/ducominingdashboarddark.png" class="icon is-small">
+                            <span>Lulaschkas' Dashboard</span>
+                        </a>
+                        <a href="https://duco.pcgeek.pl/" target="_blank" class="button">
+                            <img src="assets/ducopcgeek.png" class="icon is-small">
+                            <span>Duino-Coin in Charts</span>
+                        </a>
+                        <a href="https://siunus.github.io/duco-monitor/" target="_blank" class="button">
+                            <i class="icon fa fa-search is-small"></i>
+                            <span>DUCO Monitor</span>
+                        </a>
+                        <a href="https://raffle.furim.xyz" target="_blank" class="button">
+                            <i class="fa fa-fw fa-dice icon is-small" style="color:#6c5ce7"></i>
+                            <span>Furim's Raffle</span>
+                        </a>
+                        <a href="https://faucet.furim.xyz/" target="_blank" class="button">
+                            <img src="assets/furim_faucet.png" class="icon is-small">
+                            <span>Furim's Faucet</span>
+                        </a>
+                        <a href="https://duco-faucet.pcgeek.pl" target="_blank" class="button">
+                            <img src="assets/amogus_faucet.png" class="icon is-small">
+                            <span>Amogus Faucet</span>
+                        </a>
+                    </div>
+                    <div class="buttons">
+                        <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-github icon is-small"></i>
+                        </a>
+                        <a href="https://discord.gg/duinocoin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-discord icon is-small"></i>
+                        </a>
+                        <a href="https://twitter.com/DuinoCoin/" target="_blank" class="button">
+                            <i class="fab fa-fw fa-twitter icon is-small"></i>
+                        </a>
+                        <a href="https://www.reddit.com/r/Duinocoin/" target="_blank" class="button">
+                            <i class="fab fa-fw fa-reddit icon is-small"></i>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.pripun.duinocoin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-android icon is-small"></i>
+                        </a>
+                        <a href="https://duinocoin.com/donate" target="_blank" class="button">
+                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>
+                            <span>Donate</span>
+                        </a>
+                        <a href="https://store.duinocoin.com" target="_blank" class="button">
+                            <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
+                            <span>Merch</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal-credits" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="https://wallet.duinocoin.com/assets/duco.svg">
+                        </span>
+                        <span>Duino-Coin&nbsp;</span>
+                        <span class="has-text-weight-light">
+                            Web Wallet
+                        </span>
+                    </span>
+                </p>
+                <div class="content">
+                    <span class="has-text-weight-bold">
+                        Maintained by
+                        <a href="https://revoxhere.github.io">
+                            revox
+                        </a>
+                    </span>
+                    from
+                    <span class="has-text-weight-bold">
+                        the
+                        <a href="https://duinocoin.com/team">
+                            Duino team
+                        </a> 🔧
+                    </span><br>
+                    Background photos
+                    <span class="has-text-weight-bold">
+                        shot by
+                        <a href="https://www.instagram.com/vlegle/">
+                            Yennefer
+                        </a> 📸
+                    </span><br><br>
+                    Made with the
+                    <span class="has-text-weight-bold">
+                        <a href="https://bulma.io">
+                            Bulma
+                        </a>
+                        CSS framework
+                    </span><br>
+                    <span class="has-text-weight-bold">
+                        JavaScript work
+                    </span>
+                    assisted with the help of
+                    <span class="has-text-weight-bold">
+                        <a href="https://jquery.com">
+                            jQuery
+                        </a>
+                    </span><br><br>
+                    This page is
+                    <span class="has-text-weight-bold">
+                        open-source
+                    </span>
+                    - you can
+                    <span class="has-text-weight-bold">
+                        improve it
+                        <a href="https://github.com/revoxhere/duco-webservices">
+                            on GitHub
+                        </a>
+                    </span>
+                    <p>
+                        MIT licensed &bull; 2019-2021 the Duino-Coin Project
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal_success" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <header class="modal-card-head has-background-success">
                 <p class="modal-card-title">Success</p>
-                <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body mx-1">
+            <section class="modal-card-body">
                 <div class="content">
                     <p></p>
                 </div>
             </section>
         </div>
     </div>
-    <div id="modal_error" class="modal">
+    <div id="modal_error" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head has-background-danger mx-1">
+        <div class="modal-content">
+            <header class="modal-card-head has-background-danger">
                 <p class="modal-card-title">Error</p>
-                <button class="delete" aria-label="close"></button>
             </header>
-            <section class="modal-card-body mx-1">
+            <section class="modal-card-body">
                 <div class="content">
                     <p></p>
                 </div>
             </section>
         </div>
     </div>
-    <div id="modal_changepass" class="modal">
+    <div id="modal-send" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head mx-1">
-                <p class="modal-card-title">Change password</p>
-                <button class="delete" style="background-color:#777 !important" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body mx-1">
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-paper-plane"></i>
+                        </span>
+                        <span>Transfer coins</span>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-half">
+                            <div class="control has-icons-left is-expanded">
+                                <input type="text" id="recipientinput" placeholder="Recipient" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="control has-icons-left is-expanded">
+                                <input type="number" id="amountinput" placeholder="Amount" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-coins"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column is-full">
+                            <div class="control has-icons-left is-expanded">
+                                <input type="test" id="memoinput" placeholder="Message (optional)" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column is-full">
+                            <button class="button is-fullwidth" onclick="send()" id="send_confirm">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal-changepass" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <span>Change password</span>
+                    </span>
+                </p>
                 <div class="content">
                     <div class="columns">
                         <div class="column">
@@ -695,7 +719,7 @@
                     </div>
                     <div class="columns">
                         <div class="column is-narrow">
-                            <button class="button is-primary is-light" id="changepassconf">
+                            <button class="button" onclick="changepass()">
                                 Submit
                             </button>
                         </div>
@@ -704,20 +728,22 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
+        <button class="modal-close is-large" aria-label="close"></button>
     </div>
-    <div id="modal_wrap" class="modal">
+    <div id="modal-wrap" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head mx-1">
-                <p class="modal-card-title">
-                    Wrap DUCO to wDUCO
-                    <div class="tag is-success mr-1">BETA</div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="https://wallet.duinocoin.com/assets/wduco.png">
+                        </span>
+                        <span>wDUCO wrap</span>
+                    </span>
                 </p>
-                <button class="delete" aria-label="close" style="background-color:#777 !important"></button>
-            </header>
-            <section class="modal-card-body mx-1">
                 <div class="content">
                     <div class="columns is-multiline">
                         <div class="column is-full content">
@@ -740,7 +766,7 @@
                             <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
                         </div>
                         <div class="column is-full">
-                            <button class="button is-fullwidth" id="wrapconf">
+                            <button class="button is-fullwidth" onclick="wrap()">
                                 Wrap
                             </button>
                         </div>
@@ -751,65 +777,19 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
-    </div>
-    <div id="modal_send" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head mx-1">
-                <p class="modal-card-title">
-                    Send coins
-                </p>
-                <button class="delete" aria-label="close" style="background-color:#777 !important"></button>
-            </header>
-            <section class="modal-card-body mx-1">
-                <div class="content">
-                    <div class="columns is-multiline">
-                            <div class="column is-half">
-                                <div class="control has-icons-left is-expanded">
-                                    <input type="text" id="recipientinput" placeholder="Recipient" class="input" required>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #777" class="fa fa-user"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column is-half">
-                                <div class="control has-icons-left is-expanded">
-                                    <input type="number" id="amountinput" placeholder="Amount" class="input" required>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #777" class="fa fa-coins"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column is-full">
-                                <div class="control has-icons-left is-expanded">
-                                    <input type="test" id="memoinput" placeholder="Message (optional)" class="input" required>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #777" class="fa fa-envelope"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column is-full">
-                                <button class="button is-fullwidth" id="send_confirm">
-                                    Confirm
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
     </div>
 </body>
-<script>
-(document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-    const $notification = $delete.parentNode;
-
-    $delete.addEventListener('click', () => {
-        $notification.parentNode.removeChild($notification);
-    });
-});
-</script>
+<!-- Wallet Script -->
+<link rel="preload" as="script" href="js/wallet/main.js">
+<script type="text/javascript" src="js/wallet/main.js"></script>
+<link rel="preload" as="script" href="js/wallet/wallet.js">
+<script type="text/javascript" src="js/wallet/wallet.js"></script>
+<link rel="preload" as="script" href="js/wallet/welcometext.js">
+<script type="text/javascript" src="js/wallet/welcometext.js"></script>
+<link rel="preload" as="script" href="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js">
+<script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 
 </html>

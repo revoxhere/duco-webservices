@@ -3,68 +3,83 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Duino-Coin | Web Wallet</title>
-    <!-- SEO Stuff -->
-    <meta name="description" content="Duino-Coin Web Wallet">
-    <meta name="keywords" content="wallet, webwallet, duinocoin, duco, duco web wallet">
-    <link rel="canonical" href="https://wallet.duinocoin.com" />
     <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <title>Duino-Coin | Web Wallet</title>
+    <meta name="apple-mobile-web-app-title" content="Duino-Coin | Web Wallet">
+    <meta name="application-name" content="Duino-Coin | Web Wallet">
+    <meta name="twitter:title" content="Duino-Coin | Web Wallet">
+    <meta property="og:title" content="Duino-Coin | Web Wallet">
+    <meta name="description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="twitter:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta property="og:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="keywords" content="Duino-Coin, duco, Duino Coin, DUCO">
+    <meta name="author" content="revox from the Duino-Coin Team">
+    <meta property="og:url" content="https://wallet.duinocoin.com">
+    <meta name="msapplication-TileColor" content="#f0932b">
     <meta name="theme-color" content="#f0932b">
-    <!-- Open Graph Metadata -->
-    <meta property="og:site_name" content="Duino-Coin Web Wallet" />
-    <meta property="og:site" content="https://wallet.duinocoin.com" />
-    <meta property="og:title" content="Duino-Coin Web Wallet" />
-    <meta property="og:description" content="Duino-Coin Web Wallet" />
-    <meta property="og:image" content="assets/duco.svg" />
-    <meta property="og:url" content="https://wallet.duinocoin.com" />
-    <meta property="og:type" content="website" />
-    <!-- Twitter Metadata -->
-    <meta name="twitter:title" content="Duino-Coin Web Wallet">
-    <meta name="twitter:description" content="Duino-Coin Web Wallet">
-    <meta name="twitter:image" content="assets/duco.svg">
     <meta name="twitter:site" content="@DuinoCoin">
-    <meta name="twitter:creator" content="@DuinoCoin">
-    <link rel="icon" href="assets/duco.svg" type="image/png" />
-    <link rel="shortcut icon" href="assets/duco.svg" type="image/png" />
-    <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-1.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-sea-2.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/yenn-mountains-1.jpg">
-    <link rel="preload" as="image" href="backgrounds/wallet/hge-sea-1.jpg">
+    <meta name="twitter:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image:url" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta name="twitter:card" content="summary_large_image">
     <!-- Bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark" />
-    <link rel="stylesheet" id="frosted" type="text/css" href="css/blur.css">
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preload" href="css/bulma.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
+    <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css">
+    <!-- Preload Background Images -->
+    <link rel="preload" as="image" href="img/yenn-sea-1.jpg">
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <style>
+        #background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-position: 50% 50%;
+            background-image: url("img/yenn-sea-1.jpg");
+        }
+    </style>
 </head>
 
 <body>
-    <div id="pageloader" class="pageloader is-active is-primary is-right-to-left">
-        <p class="title">Duino-Coin Web Wallet</p>
-    </div>
+    <div id="background"></div>
     <section class="hero is-fullheight">
         <div class="hero-body is-align-self-center">
             <div class="container" style="max-width:30em">
-                <div class="box register-form">
-                    <span id="wallettext">
-                        <p class="title">
-                            <a href="https://duinocoin.com">
-                                <img src="assets/ducobanner.png" width="200rem" class="image">
-                            </a>
-                        </p>
-                        <p class="title">
-                            Sign up
-                        </p>
-                        <p class="subtitle">
-                            Create a new Duino-Coin Wallet
-                        </p>
-                    </span>
+                <div class="box blur register-form">
+                    <p class="title is-size-5 mb-0 has-text-centered">
+                        <span class="icon-text">
+                            <span class="icon">
+                                <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
+                            </span>
+                            <span>
+                                <span class="has-text-weight-bold">
+                                    Duino-Coin
+                                </span>
+                                <span class="has-text-weight-light">
+                                    Web Wallet
+                                </span>
+                            </span>
+                        </span>
+                    </p>
+                    <br>
+                    <p class="title is-size-3 mb-5 has-text-weight-normal has-text-centered">
+                        <span class="has-text-weight-bold">
+                            Create
+                        </span> a new wallet
+                    </p>
                     <div class="field mt-5">
                         <label for="" class="label">Username</label>
                         <div id="usernameInput" class="field">
@@ -217,4 +232,5 @@ window.addEventListener('load', function() {
     pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
 });
 </script>
+<link rel="preload" as="script" href="js/register.js">
 <script type="text/javascript" src="js/register.js"></script>
