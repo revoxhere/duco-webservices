@@ -19,20 +19,6 @@ input {
     border-radius: 20px !important;
 }
 
-
-#minertable {
-    position: sticky;
-    overflow-y: auto;
-    overflow-x: auto;
-}
-
-table,
-th,
-td {
-    border-collapse: collapse;
-    border: none !important;
-}
-
 @media screen and (min-width: 768px) {
     #wallet {
         margin-top: 2.5rem !important;
@@ -185,10 +171,27 @@ form {
     border-bottom: 2px solid var(--grey);
 }
 
+#minertable {
+    white-space: nowrap;
+    background-color: transparent !important;
+}
+
+table,
+th,
+td {
+    border: none !important;
+}
+
+@media screen and (max-width: 768px) {
+    .mcontainer {
+        width: 85vw;
+    }
+}
+
 .mcontainer {
     max-height: 20em !important;
-    overflow-y: auto;
-    overflow-x: auto;
+    overflow: auto;
+    margin-bottom: 0 !important;
     border-radius: 0px 0px 10px 10px !important;
 }
 
@@ -436,10 +439,6 @@ summary:before {
     transform: rotate(0);
     transform-origin: .2rem 50%;
     transition: .2s transform ease;
-}
-
-table {
-    background-color: transparent !important;
 }
 
 td {
