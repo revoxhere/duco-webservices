@@ -185,7 +185,7 @@ form {
 
 .mcontainer {
     max-height: 20em !important;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     border-radius: 0px 0px 10px 10px !important;
 }
@@ -196,7 +196,7 @@ form {
 
 .tcontainer {
     max-height: 17em !important;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     border-radius: 0px 0px 10px 10px !important;
 }
