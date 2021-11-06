@@ -21,7 +21,9 @@ input {
 
 
 #minertable {
-    overflow-wrap: anywhere;
+    position: sticky;
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
 table,
@@ -186,15 +188,13 @@ form {
 .mcontainer {
     max-height: 20em !important;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     border-radius: 0px 0px 10px 10px !important;
 }
 
-#transactions_table {
-    height: 100%;
-}
 
 .tcontainer {
+    height: 100%;
     max-height: 17em !important;
     overflow-y: auto;
     overflow-x: hidden;
