@@ -48,14 +48,6 @@ td {
     border-radius: 0px 0px 10px 10px !important;
 }
 
-.iframe-container {
-    position: fixed;
-    top: 3.5em;
-    left: 1em;
-    right: 1em;
-    bottom: 1em;
-}
-
 @media screen and (max-width: 768px) {
     .iframe-container {
         position: relative;
@@ -377,6 +369,7 @@ input {
     height: 100%;
     overflow: hidden;
     background-position: 50% 50%;
+    z-index: -777;
 }
 
 [data-tooltip]:after,
