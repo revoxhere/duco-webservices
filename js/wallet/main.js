@@ -536,7 +536,7 @@ window.addEventListener('load', function() {
                         if (miner_efficiency < 40) {
                             warning_icon = `
                     <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
-                        <i class="icon fa times-circle animatedfaa-flash"></i>
+                        <i class="icon fa times-circle animated faa-flash"></i>
                     </span>`
                         } else if (accepted_rate < 50) {
                             warning_icon = `
