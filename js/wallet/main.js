@@ -383,6 +383,11 @@ window.addEventListener('load', function() {
                 if (first_open) $("#balance").html(balance);
                 else update_element("balance", balance);
 
+                if (oldb != balance) {
+                    calculdaily(balance, oldb);
+                    oldb = balance;
+                }
+
                 $("#ducousd").html(" $" + round_to(5, duco_price));
                 $("#ducousd_xmg").html("$" + round_to(5, data.prices.xmg));
                 $("#ducousd_bch").html("$" + round_to(5, data.prices.bch));
