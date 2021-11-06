@@ -370,6 +370,19 @@ input {
     overflow: hidden;
     background-position: 50% 50%;
     z-index: -777;
+   -webkit-transform: translateZ(0);
+   -moz-transform: translateZ(0);
+   -ms-transform: translateZ(0);
+   -o-transform: translateZ(0);
+   transform: translateZ(0);
+}
+
+.blur {
+    -webkit-transform: translateZ(0);
+   -moz-transform: translateZ(0);
+   -ms-transform: translateZ(0);
+   -o-transform: translateZ(0);
+   transform: translateZ(0);
 }
 
 [data-tooltip]:after,
