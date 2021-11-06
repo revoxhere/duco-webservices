@@ -535,14 +535,14 @@ window.addEventListener('load', function() {
                         let warning_icon = "";
                         if (miner_efficiency < 40) {
                             warning_icon = `
-                    <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
-                        <i class="icon fa times-circle animated faa-flash"></i>
-                    </span>`
+                        <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
+                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        </span>`
                         } else if (accepted_rate < 50) {
                             warning_icon = `
-                    <span class="icon-text has-text-danger" title="Too many rejected shares">
-                        <i class="icon fa times-circle animated faa-flash"></i>
-                    </span>`
+                        <span class="icon-text has-text-danger" title="Too many rejected shares">
+                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        </span>`
                         }
 
                         miners_html += `
