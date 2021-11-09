@@ -179,22 +179,31 @@ form {
 table,
 th,
 td {
+    word-break: break-all;
+    white-space: nowrap;
+    white-space: normal;
     border: none !important;
 }
 
-@media screen and (max-width: 768px) {
-    .mcontainer {
-        width: 85vw;
-    }
-}
-
 .mcontainer {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     max-height: 20em !important;
-    overflow: auto;
-    margin-bottom: 0 !important;
+    margin-bottom: 0px !important;
     border-radius: 0px 0px 10px 10px !important;
 }
 
+@media screen and (max-width: 768px) {
+    table {
+        border-collapse: collapse !important;
+    }
+    tr {
+        min-width: 10px !important;
+    }
+    .mcontainer {
+        overflow-x: scroll !important;
+    }
+}
 
 .tcontainer {
     height: 100%;
