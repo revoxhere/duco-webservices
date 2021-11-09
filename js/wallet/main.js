@@ -111,6 +111,7 @@ function send() {
             "&amount=" + amount +
             "&memo=" + memo,
             function(data) {
+                document.getElementById("send_confirm").classList.remove("is-loading");
                 $('#recipientinput').val('');
                 $('#amountinput').val('');
                 $('#memoinput').val('');
@@ -136,7 +137,6 @@ function send() {
                             document.querySelector('html').classList.remove('is-clipped');
                             modal_success.classList.remove('is-active');
                         }
-                        document.getElementById("send_confirm").classList.remove("is-loading");
                     }
 
                 } else {
@@ -156,7 +156,6 @@ function send() {
                         document.querySelector('html').classList.remove('is-clipped');
                         modal_error.classList.remove('is-active');
                     }
-                    document.getElementById("send_confirm").classList.remove("is-loading");
                 }
             })
     }
@@ -553,41 +552,53 @@ window.addEventListener('load', function() {
                         miners_html += `
                             <tr>
                                 <th align="right">
-                                    <span class="has-text-grey">
-                                        ${miner_num}
-                                    </span>
-                                </th>
-                                <th>
-                                    <span class="icon-text">
-                                        <span class="icon" title="Miner type: ${miner_type}">
-                                            ${icon}
+                                    <p>
+                                        <span class="has-text-grey">
+                                            ${miner_num}
                                         </span>
-                                        <span class="has-text-weight-bold" title="Miner name">
-                                            ${miner_name}
+                                    </p>
+                                </th>
+                                <th>
+                                    <p>
+                                        <span class="icon-text">
+                                            <span class="icon" title="Miner type: ${miner_type}">
+                                                ${icon}
+                                            </span>
+                                            <span class="has-text-weight-bold" title="Miner name">
+                                                ${miner_name}
+                                            </span>
                                         </span>
-                                    </th>
+                                    </p>
                                 </th>
                                 <th>
-                                    <span class="has-text-weight-bold" title="Miner hashrate">
-                                        ${scientific_prefix(miner_hashrate)}H/s
-                                    </span>
-                                    <span class="has-text-weight-normal" title="Threads/cores">
-                                        ${thread_string}
-                                    </span>
+                                    <p>
+                                        <span class="has-text-weight-bold" title="Miner hashrate">
+                                            ${scientific_prefix(miner_hashrate)}H/s
+                                        </span>
+                                        <span class="has-text-weight-normal" title="Threads/cores">
+                                            ${thread_string}
+                                        </span>
+                                    </p>
                                 </th>
                                 <th>
-                                    <span class="has-text-weight-normal">
-                                        ${scientific_prefix(miner_accepted)}/${scientific_prefix(miner_accepted+miner_rejected)}
-                                    </span>
-                                    <span class="${accept_color}">
-                                        (${accepted_rate}%)
-                                    </span>
+                                    <p>
+                                        <span class="has-text-weight-normal">
+                                            ${scientific_prefix(miner_accepted)}/${scientific_prefix(miner_accepted+miner_rejected)}
+                                        </span>
+                                        <span class="${accept_color}">
+                                            (${accepted_rate}%)
+                                        </span>
+                                    </p>
                                 </th>
                                 <th align="center">
-                                    ${warning_icon}
-                                    <span class="icon-text" style="cursor: pointer">
-                                        <i class="icon fa fa-info-circle"></i>
-                                    </span>
+                                    <p>
+                                        <span class="icon-text">
+                                            ${warning_icon}
+                                        </span>
+                                        <span class="icon-text" style="cursor: pointer">
+                                            <i class="icon fa fa-info-circle"></i>
+                                        </span>
+                                    </p>
                                 </th>
                             </tr>
                             <tr>
@@ -673,20 +684,19 @@ window.addEventListener('load', function() {
                     $("#miners").html(miners_html);
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
-                    $(function() {
-                        $("td[colspan=5]").find(".content").hide();
-                        $(".fa-info-circle").click(function(event) {
-                            let $target = $(event.target);
-                            //$target.closest("tr").toggleClass("is-selected");
-                            $target.closest("tr").next().find(".content").slideToggle(250);
-                        });
-                    });
-
                 } else {
                     $("#minertable").fadeOut(function() {
                         $("#nominers").fadeIn();
                     });
                 }
+
+                $(function() {
+                    $("td[colspan=5]").find(".content").hide();
+                    $(".fa-info-circle").click(function(event) {
+                        let $target = $(event.target);
+                        $target.closest("tr").next().find(".content").slideToggle(250);
+                    });
+                });
 
                 user_transactions = data.transactions.reverse();
                 if (user_transactions.length > 0) {
@@ -822,8 +832,8 @@ window.addEventListener('load', function() {
                             }, 10 * 1000);
 
                             setTimeout(function() {
-                                $('#form').hide("drop", {direction:"down"}, 500, function() {
-                                    $('#wallet').show("drop", {direction:"up"}, 500, function() {
+                                $('#form').hide("drop", { direction: "down" }, 500, function() {
+                                    $('#wallet').show("drop", { direction: "up" }, 500, function() {
                                         $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
 
                                         if (adBlockEnabled) {
@@ -856,18 +866,19 @@ window.addEventListener('load', function() {
                     $("#submit").removeClass("is-loading");
                 });
         } else {
-            $("#usernamediv").effect("shake", { duration: 750, easing: "linear", distance: 5, times: 3 });
+            $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
         }
     });
 
-    if ($('#usernameinput').val()) {
-        $('#usernamediv').addClass("focus");
-    }
-
-    if ($('#passwordinput').val()) {
-        $('#passworddiv').addClass("focus");
-    }
+    window.setInterval(function() {
+        if ($('#usernameinput').val()) {
+            $('#usernamediv').addClass("focus");
+        }
+        if ($('#passwordinput').val()) {
+            $('#passworddiv').addClass("focus");
+        }
+    }, 100)
 
     if (getcookie("password") && getcookie("username")) {
         $('#usernamediv').addClass("focus");
