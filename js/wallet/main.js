@@ -871,20 +871,23 @@ window.addEventListener('load', function() {
         }
     });
 
-    window.setInterval(function() {
+    setInterval(function() {
+        console.log("checked")
         if ($('#usernameinput').val()) {
             $('#usernamediv').addClass("focus");
         }
         if ($('#passwordinput').val()) {
             $('#passworddiv').addClass("focus");
         }
-    }, 100)
+    }, 500)
 
+    setTimeout(function() {
     if (getcookie("password") && getcookie("username")) {
-        $('#usernamediv').addClass("focus");
-        $('#passworddiv').addClass("focus");
-        $('#usernameinput').val(getcookie("username"));
-        $('#passwordinput').val(getcookie("password"));
-        $('#submit').click();
-    }
+            $('#usernamediv').addClass("focus");
+            $('#passworddiv').addClass("focus");
+            $('#usernameinput').val(getcookie("username"));
+            $('#passwordinput').val(getcookie("password"));
+            $('#submit').click();
+        }
+    }, 500)
 });
