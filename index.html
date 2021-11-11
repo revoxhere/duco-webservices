@@ -3,1199 +3,793 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <html lang="en">
-    <title>Duino-Coin | Network statistics</title>
-    <link rel="icon" href="assets/stats.png" type="image/png" />
-    <link rel="shortcut icon" href="assets/stats.png" type="image/png" />
-    <meta name="description" content="View network statistics of Duino-Coin - coin that can be mined with almost everything.">
-    <meta name="keywords" content="duino, duinocoin, arduino, crypto, mining, blockchain, cryptocurrency, bitcoin">
-    <link rel="canonical" href="https://duinocoin.com" />
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#EE5A24">
-    <!-- Open Graph Metadata -->
-    <meta property="og:site_name" content="Duino-Coin | Network" />
-    <meta property="og:site" content="duinocoin.com" />
-    <meta property="og:title" content="Duino-Coin | Network" />
-    <meta property="og:description" content="View network statistics of Duino-Coin - coin that can be mined with almost everything." />
-    <meta property="og:image" content="assets/stats.png" />
-    <meta property="og:url" content="https://duinocoin.com" />
-    <meta property="og:type" content="website" />
-    <!-- Twitter Metadata -->
-    <meta name="twitter:title" content="Duino-Coin | Network">
-    <meta name="twitter:description" content="View network statistics of Duino-Coin - coin that can be mined with almost everything.">
-    <meta name="twitter:image" content="assets/stats.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <title>Duino-Coin | Web Wallet</title>
+    <meta name="apple-mobile-web-app-title" content="Duino-Coin | Web Wallet">
+    <meta name="application-name" content="Duino-Coin | Web Wallet">
+    <meta name="twitter:title" content="Duino-Coin | Web Wallet">
+    <meta property="og:title" content="Duino-Coin | Web Wallet">
+    <meta name="description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="twitter:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta property="og:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="keywords" content="Duino-Coin, duco, Duino Coin, DUCO">
+    <meta name="author" content="revox from the Duino-Coin Team">
+    <meta property="og:url" content="https://wallet.duinocoin.com">
+    <meta name="msapplication-TileColor" content="#f0932b">
+    <meta name="theme-color" content="#f0932b">
     <meta name="twitter:site" content="@DuinoCoin">
-    <meta name="twitter:creator" content="@DuinoCoin">
-    <!-- Imports -->
+    <meta name="twitter:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image:url" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Preload Background Images -->
+    <link rel="preload" as="image" href="img/yenn-sea-1.jpg">
+    <!-- JS -->
+    <link rel="preload" as="script" href="js/jquery-3.6.0.min.js">
+    <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+    <link rel="preload" as="script" href="js/fontawesome.js">
+    <script type="text/javascript" src="js/fontawesome.js"></script>
+    <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
+    <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Bulma -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preload" href="css/bulma.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
+    <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/bulma.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/bulma-prefers-dark.min.css">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="ducostyle.css">
-    <script src="assets/fontawesome.js"></script>
-    <script src="assets/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.4.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@1.1.1/css/font-awesome-animation.min.css">
 </head>
 
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="https://duinocoin.com">
-                <img src="assets/duco.svg">
-            </a>
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="DuinoNavbar">
-                <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
-            </a>
-        </div>
-        <div id="DuinoNavbar" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="https://github.com/revoxhere/duino-coin/blob/gh-pages/assets/whitepaper.pdf">
+    <div id="background"></div>
+    <div class="login-content" class="mt-0">
+        <form class="box blur" id="form">
+            <p class="title is-size-5 mb-0">
+                <span class="icon-text">
                     <span class="icon">
-                        <i class="fa fa-book" style="color:#ff7a3e;" aria-hidden="true"></i>
+                        <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
                     </span>
-                    <span>Whitepaper</span>
-                </a>
-                <a class="navbar-item" href="https://explorer.duinocoin.com">
-                    <span class="icon">
-                        <i class="fa fa-poll" style="color:#ff6a48;" aria-hidden="true"></i>
+                    <span>
+                        <span class="has-text-weight-bold">
+                            Duino-Coin
+                        </span>
+                        <span class="has-text-weight-light">
+                            Web Wallet
+                        </span>
                     </span>
-                    <span>Network</span>
-                </a>
-                <a class="navbar-item" href="https://duinocoin.com/donate.html">
-                    <span class="icon">
-                        <i class="fa fa-heart" style="color:#ff5a54;" aria-hidden="true"></i>
-                    </span>
-                    <span>Donate</span>
-                </a>
-                <a class="navbar-item" href="https://duinocoin.com/team.html">
-                    <span class="icon">
-                        <i class="fa fa-user-friends" style="color:#ff4962;" aria-hidden="true"></i>
-                    </span>
-                    <span>Team</span>
-                </a>
-                <a class="navbar-item" href="https://duinocoin.com/apps.html">
-                    <span class="icon">
-                        <i class="fa fa-lightbulb" style="color:#ff3870;" aria-hidden="true"></i>
-                    </span>
-                    <span>Apps</span>
-                </a>
-                <a class="navbar-item" href="https://duinocoin.com/contact.html">
-                    <span class="icon">
-                        <i class="fa fa-envelope" style="color:#ff2780;" aria-hidden="true"></i>
-                    </span>
-                    <span>Contact</span>
-                </a>
+                </span>
+            </p>
+            <br>
+            <p class="title is-size-3 mb-5">
+                <span class="has-text-weight-bold">
+                    Sign in
+                </span>
+                <span class="has-text-weight-normal">
+                    to your account
+                </span>
+            </p>
+            <div class="input-div one" id="usernamediv">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Username</h5>
+                    <input id="usernameinput" type="text" class="input" autocomplete="username" required>
+                </div>
             </div>
-            <div class="navbar-end">
-                <a class="navbar-item is-hidden-mobile" href="https://twitter.com/DuinoCoin/">
-                    <i class="fab fa-twitter icon fa-lg" aria-hidden="true"></i>
-                </a>
-                <a class="navbar-item is-hidden-mobile" href="https://www.reddit.com/r/Duinocoin/">
-                    <i class="fab fa-reddit icon fa-lg" aria-hidden="true"></i>
-                </a>
-                <a class="navbar-item is-hidden-mobile" href="https://discord.gg/kvBkccy">
-                    <i class="fab fa-discord icon fa-lg" aria-hidden="true"></i>
-                </a>
-                <a class="navbar-item is-hidden-mobile" href="https://github.com/revoxhere/duino-coin">
-                    <i class="fab fa-github icon fa-lg" aria-hidden="true"></i>
-                </a>
-                <div class="navbar-item">
-                    <a class="button is-duco is-rounded" style="border:none" href="https://duinocoin.com/getting-started.html">
-                        <strong>Get started</strong>
-                    </a>
+            <div class="input-div pass" id="passworddiv">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Passphrase</h5>
+                    <input id="passwordinput" type="password" class="input" autocomplete="current-password" required>
+                </div>
+            </div>
+            <div>
+                <button type="submit" id="submit" class="btn button">Login</button>
+            </div>
+            <a href="register.html">Don't have a wallet?</a>
+        </form>
+    </div>
+    <div id="wallet" style="display:none;">
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-64x64" title="Synced with Gravatar">
+                                <img class="is-rounded" id="useravatar" alt="User avatar">
+                            </figure>
+                            <p class="mt-1 has-text-centered">
+                                <a class="modal-button" data-target="modal-settings">
+                                    <i class="fa fa-cog" title="Settings"></i>
+                                </a>&nbsp;
+                                <a onclick="logout()">
+                                    <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="media-content" style="overflow-wrap: anywhere;">
+                            <div class="content has-text-left mb-0">
+                                <p>
+                                    <strong id="username">
+                                        username
+                                    </strong>
+                                    <small id="verify">?</small>
+                                    <small id="email">(user@domain.com)</small>
+                                </p>
+                            </div>
+                            <p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
+                                <strong class="has-text-weight-bold" id="balance">0.0</strong> DUCO
+                            </p>
+                            <p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
+                                ≈<span class="has-text-weight-bold" id="balancefiat">0.0</span> USD
+                            </p>
+                            <p>
+                                <small class="has-text-weight-normal">
+                                    <span id="estimatedprofit">
+                                        <i class="fas fa-spinner fa-pulse"></i>
+                                        Calculating est. daily profit
+                                    </span>
+                                    <span id="estimatedprofitusd">
+                                    </span>
+                                </small>
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <ins class="adsbygoogle" style="display:block" align="center" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+                    <div class="content" id="adblocker_detected">
+                        <p class="title is-size-5 mb-0">
+                            An ad should be here but
+                            <span class="has-text-weight-bold">
+                                you're using an adblocker 😞
+                            </span>
+                        </p>
+                        <p class="content">
+                            We spend <span class="has-text-danger-dark">our own money</span> to maintain the servers. A <b>single ad</b> here helps in covering these costs.
+                            If you like the project consider buying our
+                            <a href="https://store.duinocoin.com" target="_blank">official merch</a>
+                            or
+                            <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
+                            <span class="has-text-success-dark">Thanks in advance! 🥺</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </nav>
-    <section class="section">
-        <div class="container">
-            <!-- STATISTICS -->
-            <div class="panel blur" style="overflow:hidden">
-                <p class="panel-heading heading is-size-5">
-                    <span style="color:#ff7a3e">Live</span> Duino network statistics
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <p class="icon-text is-size-6">
+                                    <i class="icon fa fa-charging-station"></i>
+                                    <span>
+                                        Your <strong>Miners</strong>
+                                        <span class="has-text-weight-normal">
+                                            (<span id="minercount">0</span>)
+                                        </span>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="column">
+                                <p class="subtitle is-size-6 has-text-right">
+                                    <b id="total_hashrate">0 H/s</b> total
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mcontainer">
+                        <table class="table is-fullwidth" id="minertable">
+                            <thead>
+                                <th></th>
+                                <th>
+                                    <span>Miner</span>
+                                </th>
+                                <th>
+                                    <span class="icon-text">
+                                        <span>Hashrate</span>
+                                        <span class="icon" style="color:#f0932b">
+                                            <i class="mdi mdi-pickaxe animated faa-slow faa-wrench"></i>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th>
+                                    <span class="icon-text">
+                                        <span>Correct shares</span>
+                                        <span class="icon has-text-success-dark">
+                                            <i class="fa fa-spell-check"></i>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th></th>
+                            </thead>
+                            <tbody id="miners">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="content" id="nominers">
+                        <span class="has-text-weight-bold">
+                            No miners detected.
+                        </span>
+                        <span class="has-text-weight-normal">
+                            If you've turned them on recently it will take a minute
+                            or two until their stats will appear here.
+                        </span><br>
+                        <!--<span class="has-text-weight-normal">
+                            <span class="has-text-weight-bold">
+                                Having problems?
+                            </span>
+                            See the
+                            <span class="has-text-weight-bold">
+                                <a href="">
+                                    troubleshooting guide
+                                </a>
+                            </span>
+                        </span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <p class="icon-text is-size-6">
+                                    <i class="icon fa fa-stream"></i>
+                                    <span>
+                                        Your <strong>last transactions</strong>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="column is-narrow has-text-right">
+                                <div class="select mb-0" id="txsel">
+                                    <select id="txcount">
+                                        <option selected value="5">5</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="7777">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-gapless is-multiline">
+                        <div class="column is-full tcontainer">
+                            <div id="transactions_table" class="columns is-multiline">
+                                <div class="column is-full">
+                                    <p class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-full">
+                            <a class="button mt-3 is-fullwidth modal-button" data-target="modal-send">
+                                Send coins
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <h2 class="icon-text is-size-6">
+                                    <i class="icon far fa-newspaper"></i>
+                                    <span><strong>News</strong> center</span>
+                                </h2>
+                            </div>
+                            <div class="column">
+                                <p class="is-size-6 has-text-right has-text-link">
+                                    <span class="icon-text">
+                                        <a href="https://server.duinocoin.com/news.html" target="_blank">
+                                            <i class="icon is-small fa fa-eye"></i>
+                                            <span>View all</span>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iframe-container">
+                        <iframe id="news_iframe" frameborder="0" allowtransparency="true">Please wait</iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="tile is-parent">
+                <div class="tile is-child box blur">
+                    <div class="heading">
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <h2 class="icon-text is-size-6">
+                                    <i class="icon fa fa-coins"></i>
+                                    <span><strong>Duino-Coin</strong> prices</span>
+                                </h2>
+                            </div>
+                            <div class="column">
+                                <h2 class="has-text-right is-size-6">
+                                    <span>max: <b id="ducousd">?</b></span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-multiline is-mobile">
+                        <div class="column is-full">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="DUCO Exchange" src="assets/ducoexchange.png">
+                                <a href="https://exchange.duinocoin.com" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">DUCO</span>
+                                        <span>Exchange</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <div class="columns is-mobile is-multiline">
+                                <div class="column">
+                                    <p id="ducousd_xmg" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> XMG
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_bch" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> BCH
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_trx" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                                    </p>
+                                </div>
+                                <div class="column">
+                                    <p id="ducousd_nano" class="title is-size-6">
+                                        Fetching data
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        DUCO <i class="fa fa-arrows-alt-h"></i> NANO
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="Node-S exchange" src="assets/nodes.png">
+                                <a href="http://www.node-s.co.za/duco_exchange/home" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Node-S</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_nodes" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                DUCO <i class="fa fa-arrows-alt-h"></i> USD
+                            </p>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="JustSwap" src="assets/justswap.png">
+                                <a href="https://justswap.io/#/scan/detail/trx/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Just Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_justswap" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                wDUCO <i class="fa fa-arrows-alt-h"></i> TRX
+                            </p>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="PancakeSwap" src="assets/pancake.png">
+                                <a href="https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Pancake Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_pancake" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                bscDUCO <i class="fa fa-arrows-alt-h"></i> BSC
+                            </p>
+                        </div>
+                        <div class="column">
+                            <p class="has-text-weight-normal icon-text">
+                                <img class="icon" alt="SushiSwap" src="assets/sushi.png">
+                                <a href="https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2" target="_blank">
+                                    <span>
+                                        <span class="has-text-weight-bold">Sushi Swap</span>
+                                    </span>
+                                </a>
+                            </p>
+                            <p id="duco_sushi" class="title is-size-6">
+                                Fetching data
+                            </p>
+                            <p class="subtitle is-size-7">
+                                maticDUCO <i class="fa fa-arrows-alt-h"></i> MATIC
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="footer-container blur">
+        <div class="footer-content ">
+            <a href="https://status.duinocoin.com" target="_blank">
+                Server status
+            </a>
+            &bull;
+            <a href="https://github.com/revoxhere/duino-coin#terms-of-service" target="_blank">
+                ToS & Privacy policy
+            </a>
+            &bull;
+            <a class="modal-button" data-target="modal-credits">
+                Credits
+            </a>
+        </div>
+    </div>
+    <div id="modal-settings" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-cog"></i>
+                        </span>
+                        <span>Settings</span>
+                    </span>
                 </p>
-                <div class="panel-content">
-                    <div class="columns is-multiline" style="margin:auto !important">
-                        <div class="column is-full">
-                            <nav class="level">
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            Net hashrate
-                                        </p>
-                                        <p class="title" id="hashrate">
-                                            Please wait
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            Users
-                                        </p>
-                                        <p class="title" id="registeredusers">
-                                            Please wait
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            DUCO in circulation
-                                        </p>
-                                        <p class="title" id="allmined">
-                                            Please wait
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            Net energy usage
-                                        </p>
-                                        <p class="title" id="watt_usage">
-                                            Please wait
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            Mined shares
-                                        </p>
-                                        <p class="title" id="shares">
-                                            Please wait
-                                        </p>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
-                        <div class="column is-full">
-                            <nav class="level">
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            Arduinos
-                                        </p>
-                                        <p class="title" id="arduinos">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            ESP8266S
-                                        </p>
-                                        <p class="title" id="esp8266s">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            ESP32S
-                                        </p>
-                                        <p class="title" id="esp32s">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            RASPBERRY PIS
-                                        </p>
-                                        <p class="title" id="rpis">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            CPUS
-                                        </p>
-                                        <p class="title" id="cpus">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            PHONES
-                                        </p>
-                                        <p class="title" id="phones">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="level-item has-text-centered">
-                                    <div>
-                                        <p class="heading is-size-6">
-                                            OTHERS
-                                        </p>
-                                        <p class="title" id="others">
-                                            0
-                                        </p>
-                                    </div>
-                                </div>
-                            </nav>
-                        </div>
+                <div class="content">
+                    <div class="buttons">
+                        <a class="button modal-button" data-target="modal-changepass" class="button">
+                            <i class="icon is-small fa fa-key"></i>
+                            <span>Change password</span>
+                        </a>
+                        <a class="button modal-button" data-target="modal-wrap" class="button">
+                            <img src="assets/wduco.png" class="icon is-small">
+                            <span>Wrap DUCO to wDUCO</span>
+                        </a>
+                        <a href="https://server.duinocoin.com/webminer.html" class="button">
+                            <img class="icon is-small" src="assets/webminer.png">
+                            <span>Web Miner</span>
+                        </a>
+                        <a href="https://explorer.duinocoin.com" target="_blank" class="button">
+                            <img src="assets/explorer.png" class="icon is-small">
+                            <span>Network explorer</span>
+                        </a>
+                    </div>
+                    <div class="buttons">
+                        <a href="https://duco.sytes.net/" target="_blank" class="button">
+                            <img src="assets/ducominingdashboarddark.png" class="icon is-small">
+                            <span>Lulaschkas' Dashboard</span>
+                        </a>
+                        <a href="https://duco.pcgeek.pl/" target="_blank" class="button">
+                            <img src="assets/ducopcgeek.png" class="icon is-small">
+                            <span>Duino-Coin in Charts</span>
+                        </a>
+                        <a href="https://siunus.github.io/duco-monitor/" target="_blank" class="button">
+                            <i class="icon fa fa-search is-small"></i>
+                            <span>DUCO Monitor</span>
+                        </a>
+                        <a href="https://furim.xyz/" target="_blank" class="button">
+                            <img src="assets/furim_faucet.png" class="icon is-small">
+                            <span>Furime Services</span>
+                        </a>
+                        <a href="https://duco-faucet.pcgeek.pl" target="_blank" class="button">
+                            <img src="assets/amogus_faucet.png" class="icon is-small">
+                            <span>Amogus Faucet</span>
+                        </a>
+                    </div>
+                    <div class="buttons">
+                        <a href="https://github.com/revoxhere/duino-coin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-github icon is-small"></i>
+                        </a>
+                        <a href="https://discord.gg/duinocoin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-discord icon is-small"></i>
+                        </a>
+                        <a href="https://twitter.com/DuinoCoin/" target="_blank" class="button">
+                            <i class="fab fa-fw fa-twitter icon is-small"></i>
+                        </a>
+                        <a href="https://www.reddit.com/r/Duinocoin/" target="_blank" class="button">
+                            <i class="fab fa-fw fa-reddit icon is-small"></i>
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=com.pripun.duinocoin" target="_blank" class="button">
+                            <i class="fab fa-fw fa-android icon is-small"></i>
+                        </a>
+                        <a href="https://duinocoin.com/donate" target="_blank" class="button">
+                            <i class="fa fa-fw fa-heart icon is-small" style="color:#eb4d4b;"></i>
+                            <span>Donate</span>
+                        </a>
+                        <a href="https://store.duinocoin.com" target="_blank" class="button">
+                            <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
+                            <span>Merch</span>
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="columns is-multiline">
-                <div class="column is-half">
-                    <!-- EXPLORER -->
-                    <form class="panel blur">
-                        <p class="panel-heading heading is-size-5">
-                            Chain explorer
-                        </p>
-                        <div class="container m-4">
-                            <div class="field has-addons">
-                                <p class="control is-expanded">
-                                    <input class="input is-rounded ducoinput" id="search_input" type="text" placeholder="Enter wallet name, transaction or block hash" name="search">
-                                </p>
-                                <p class="control">
-                                    <a onclick="button_search()" class="button is-rounded is-full is-search">
-                                        Search
-                                    </a>
-                                </p>
-                            </div>
-                            <p class="is-size-5 has-text-centered" id="transactionstext1">
-                                Enter something in the search box above to search through the chain
-                            </p>
-                            <p class="is-size-6" id="transactionstext2"></p>
-                            <br>
-                            <div class="columns is-mobile">
-                                <div class="column is-half">
-                                    <div class="divider">Last transactions</div>
-                                    <p class="is-size-6 is-size-6" id="transactionstext3">
-                                        Please wait
-                                    </p>
-                                </div>
-                                <div class="column is-half">
-                                    <div class="divider">Last blocks</div>
-                                    <p class="is-size-6 is-size-6" id="transactionstext4">
-                                        Please wait
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal-credits" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="https://wallet.duinocoin.com/assets/duco.svg">
+                        </span>
+                        <span>Duino-Coin&nbsp;</span>
+                        <span class="has-text-weight-light">
+                            Web Wallet
+                        </span>
+                    </span>
+                </p>
+                <div class="content">
+                    <span class="has-text-weight-bold">
+                        Maintained by
+                        <a href="https://revoxhere.github.io">
+                            revox
+                        </a>
+                    </span>
+                    from
+                    <span class="has-text-weight-bold">
+                        the
+                        <a href="https://duinocoin.com/team">
+                            Duino team
+                        </a> 🔧
+                    </span><br>
+                    Background photos
+                    <span class="has-text-weight-bold">
+                        shot by
+                        <a href="https://www.instagram.com/vlegle/">
+                            Yennefer
+                        </a> 📸
+                    </span><br><br>
+                    Made with the
+                    <span class="has-text-weight-bold">
+                        <a href="https://bulma.io">
+                            Bulma
+                        </a>
+                        CSS framework
+                    </span><br>
+                    <span class="has-text-weight-bold">
+                        JavaScript work
+                    </span>
+                    assisted with the help of
+                    <span class="has-text-weight-bold">
+                        <a href="https://jquery.com">
+                            jQuery
+                        </a>
+                    </span><br><br>
+                    This page is
+                    <span class="has-text-weight-bold">
+                        open-source
+                    </span>
+                    - you can
+                    <span class="has-text-weight-bold">
+                        improve it
+                        <a href="https://github.com/revoxhere/duco-webservices">
+                            on GitHub
+                        </a>
+                    </span>
+                    <p>
+                        MIT licensed &bull; 2019-2021 the Duino-Coin Project
+                    </p>
                 </div>
-                <!-- CHARTS -->
-                <div class="column is-half">
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal_success" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <header class="modal-card-head has-background-success">
+                <p class="modal-card-title">Success</p>
+            </header>
+            <section class="modal-card-body">
+                <div class="content">
+                    <p></p>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="modal_error" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <header class="modal-card-head has-background-danger">
+                <p class="modal-card-title">Error</p>
+            </header>
+            <section class="modal-card-body">
+                <div class="content">
+                    <p></p>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="modal-send" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-paper-plane"></i>
+                        </span>
+                        <span>Transfer coins</span>
+                    </span>
+                </p>
+                <div class="content">
                     <div class="columns is-multiline">
-                        <div class="column is-full">
-                            <div class="panel blur">
-                                <p class="panel-heading heading is-size-5">
-                                    Charts
-                                </p>
-                                <div class="columns is-multiline m-3">
-                                    <div class="column">
-                                        <div class="panel-block">
-                                            <a class="modal-button" data-target="modal-prices">
-                                                <img src="https://server.duinocoin.com/prices.png">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="column">
-                                        <div class="panel-block">
-                                            <a class="modal-button" data-target="modal-miners">
-                                                <img src="https://server.duinocoin.com/minerchart.png">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="column">
-                                        <div class="panel-block">
-                                            <a class="modal-button" data-target="modal-balances">
-                                                <img src="https://server.duinocoin.com/balancechart.png">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="column is-half">
+                            <div class="control has-icons-left is-expanded">
+                                <input type="text" id="recipientinput" placeholder="Recipient" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="control has-icons-left is-expanded">
+                                <input type="number" id="amountinput" placeholder="Amount" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-coins"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="column is-full">
-                            <!-- NODES -->
-                            <div class="panel blur" style="overflow:hidden">
-                                <p class="panel-heading heading is-size-5">
-                                    Mining nodes
-                                </p>
-                                <div class="level is-centered m-3 is-multiline">
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading is-size-6">
-                                                <i class="fa fa-server"></i>&nbsp;
-                                                MASTER
-                                            </p>
-                                            <p class="title is-size-6" id="hashrate">
-                                                CPU:
-                                                <b id="master_cpu">
-                                                    ...
-                                                </b><br>
-                                                RAM:
-                                                <b id="master_ram">
-                                                    ...
-                                                </b><br>
-                                                Clients:
-                                                <b id="master_connections">
-                                                    ...
-                                                </b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading is-size-6">
-                                                <i class="fa fa-star"></i>&nbsp;
-                                                STAR
-                                            </p>
-                                            <p class="title is-size-6" id="hashrate">
-                                                CPU:
-                                                <b id="star_cpu">
-                                                    ...
-                                                </b><br>
-                                                RAM:
-                                                <b id="star_ram">
-                                                    ...
-                                                </b><br>
-                                                Clients:
-                                                <b id="star_connections">
-                                                    ...
-                                                </b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading is-size-6">
-                                                <i class="fa fa-rocket"></i>&nbsp;
-                                                BEYOND
-                                            </p>
-                                            <p class="title is-size-6" id="hashrate">
-                                                CPU:
-                                                <b id="beyond_cpu">
-                                                    ...
-                                                </b><br>
-                                                RAM:
-                                                <b id="beyond_ram">
-                                                    ...
-                                                </b><br>
-                                                Clients:
-                                                <b id="beyond_connections">
-                                                    ...
-                                                </b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading is-size-6">
-                                                <i class="fa fa-heart-broken"></i>&nbsp;
-                                                SVKO
-                                            </p>
-                                            <p class="title is-size-6" id="hashrate">
-                                                CPU:
-                                                <b id="svko_cpu">
-                                                    ...
-                                                </b><br>
-                                                RAM:
-                                                <b id="svko_ram">
-                                                    ...
-                                                </b><br>
-                                                Clients:
-                                                <b id="svko_connections">
-                                                    ...
-                                                </b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="level-item has-text-left">
-                                        <div>
-                                            <p class="heading is-size-6">
-                                                <i class="fa fa-plus"></i>&nbsp;
-                                                NULL
-                                            </p>
-                                            <p class="title is-size-6" id="hashrate">
-                                                CPU:
-                                                <b id="null_cpu">
-                                                    ...
-                                                </b><br>
-                                                RAM:
-                                                <b id="null_ram">
-                                                    ...
-                                                </b><br>
-                                                Clients:
-                                                <b id="null_connections">
-                                                    ...
-                                                </b>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="control has-icons-left is-expanded">
+                                <input type="test" id="memoinput" placeholder="Message (optional)" class="input" required>
+                                <span class="icon is-small is-left">
+                                    <i style="color: #777" class="fa fa-envelope"></i>
+                                </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- ACTIVE WORKERS -->
-                <div class="column is-full" id="workersdiv">
-                    <div class="panel blur">
-                        <div class="panel-heading">
-                            <p class="heading is-size-5">
-                                Active workers
-                            </p>
-                            <div class="columns is-multiline mt-1 is-mobile">
-                                <div class="column is-narrow">
-                                    <p class="is-size-6 has-text-grey-dark">
-                                        <i class="fa fa-times-circle has-text-danger"></i>
-                                        unverified account
-                                    </p>
-                                </div>
-                                <div class="column is-narrow">
-                                    <p class="is-size-6 has-text-grey-dark">
-                                        <i class="fa fa-check has-text-success"></i>
-                                        verified account
-                                    </p>
-                                </div>
-                                <div class="column is-narrow">
-                                    <p class="is-size-6 has-text-grey-dark">
-                                        <span class="tag">123</span>
-                                        amount of workers
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <p id="workers" class="is-size-6 is-size-6 m-3">
-                            <button id="loadworkers" class="button is-rounded" onclick="fill_worker_list()">
-                                Load all workers
+                        <div class="column is-full">
+                            <button class="button is-fullwidth" onclick="send()" id="send_confirm">
+                                Confirm
                             </button>
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <strong>Duino-Coin</strong> website by <strong><a href="https://revoxhere.github.io">Robert "revox" Piotrowski</a></strong> from the <strong>Duino team</strong> 2019-2021
-            <br>Hosted by <strong><a href="https://kristian-kramer.com">Kristian "Tech1k" Kramer</a></strong> and/or <strong><a href="https://pages.github.com">GitHub Pages</a></strong>
-            <br>Made with <strong><a href="https://bulma.io">Bulma</a>
-        </div>
-    </footer>
-    <div id="modal-prices" class="modal modal-fx-fadeInScale">
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal-changepass" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
         <div class="modal-content">
-            <img src=" https://server.duinocoin.com/prices.png" alt="Price chart">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <span>Change password</span>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns">
+                        <div class="column">
+                            <input class="input" placeholder="Old password" type="password" id="oldpass">
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="New password" type="password" id="newpass">
+                        </div>
+                        <div class="column">
+                            <input class="input" placeholder="Re-type new password" type="password" id="newpass_conf">
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-narrow">
+                            <button class="button" onclick="changepass()">
+                                Submit
+                            </button>
+                        </div>
+                        <div class="column mt-1">
+                            <span id="changepass_text" class="subtitle"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
-    <div id="modal-miners" class="modal">
+    <div id="modal-wrap" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
         <div class="modal-content">
-            <img src=" https://server.duinocoin.com/minerchart.png" alt="Miner distribution chart">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <img src="https://wallet.duinocoin.com/assets/wduco.png">
+                        </span>
+                        <span>wDUCO wrap</span>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-full content">
+                            <p>
+                                <b>Duino-Coin is a hybrid currency</b>, meaning that it can be converted to <b>wDUCO</b> - Duino wrapped on the <b>Tron</b> network (as a decentralized token). You can read more about it
+                                <a href="https://github.com/revoxhere/duino-coin/wiki/wDUCO-tutorial" target="_blank">
+                                    here
+                                </a>
+                            </p>
+                            <p class="mt-3">
+                                Please note that <b>this feature is currently in beta</b> and may not work fully yet. For better stability and unwrap functions please use our <b>CLI Wallet</b>.
+                                <br>
+                                <b class="has-text-danger-dark">Warning:</b> your Tron wallet needs to support tokens, otherwise wrapped DUCO may get lost.
+                            </p>
+                        </div>
+                        <div class="column is-half">
+                            <input class="input" placeholder="Amount" type="number" id="wrap_amount">
+                        </div>
+                        <div class="column is-half">
+                            <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
+                        </div>
+                        <div class="column is-full">
+                            <button class="button is-fullwidth" onclick="wrap()">
+                                Wrap
+                            </button>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-full">
+                            <span id="wrap_text" class="subtitle"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
-    <div id="modal-balances" class="modal modal-fx-fadeInScale">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-            <img src=" https://server.duinocoin.com/balancechart.png" alt="Balance distribution chart">
-        </div>
-        <button class="modal-close is-large" aria-label="close"></button>
-    </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => { // HAMBURGER MENU
-        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-        if ($navbarBurgers.length > 0) {
-            $navbarBurgers.forEach(el => { // Add a click event on each of burger menus
-                el.addEventListener('click', () => {
-                    const target = el.dataset.target; // Get the target from the "data-target" attribute
-                    const $target = document.getElementById(target);
-                    el.classList.toggle('is-active'); // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-                    $target.classList.toggle('is-active');
-                });
-            });
-        }
-    });
-
-    let duco_price = 0.00045;
-    let load_workers = false;
-    let url_string = window.location;
-    let url = new URL(url_string);
-    let to_search = url.searchParams.get("search");
-
-    function update_element(element, value) {
-        $(`#${element}`).html(value);
-    }
-
-
-    function round_to(precision, value) {
-        power_of_ten = 10 ** precision;
-        return Math.round(value * power_of_ten) / power_of_ten;
-    }
-
-
-    function fill_worker_list() {
-        $("#loadworkers").addClass("is-loading")
-        fetch("https://server.duinocoin.com/statistics_miners")
-            .catch(function(error) {
-                console.log(error);
-            })
-            .then(response => response.json())
-            .then(data => {
-                data = data.result;
-                let workers = `<ul class="workers">`
-                let counter = 0;
-                let worker_counter = 0;
-                let sorted_workers = [];
-                for (worker in data) {
-                    sorted_workers.push({
-                        "User": worker,
-                        "Verified": data[worker]["v"],
-                        "Miners": data[worker]["w"]
-                    })
-                }
-                sorted_workers.sort((a, b) => b.Miners - a.Miners);
-                for (let i = 0; i < sorted_workers.length; i++) {
-                    let worker = sorted_workers[i];
-
-                    if (worker.Verified == "yes") {
-                        workers +=
-                            `<li class="has-text-success">
-                                  <i class="fas fa-check"></i>
-                                  <a onclick="link_search('${worker.User}')">` +
-                            worker.User +
-                            `</a><b class="tag">` +
-                            worker.Miners +
-                            `</b></li>`;
-                    } else {
-                        workers +=
-                            `<li class="has-text-danger">
-                                  <i class="fas fa-times-circle"></i>
-                                  <a onclick="link_search('${worker.User}')">` +
-                            worker.User +
-                            `</a>
-                        <b class="tag">` +
-                            worker.Miners +
-                            `</b></li>`;
-                    }
-
-                    worker_counter += worker.Miners;
-                    counter++;
-                }
-                workers += `</ul>`;
-                document.getElementById("workers").innerHTML = workers;
-                $("#allworkers").text("(" + worker_counter + " workers on " + counter + " accounts)");
-            });
-    }
-
-
-    const scientific_prefix = (value) => {
-        value = parseFloat(value);
-        if (value / 1000000 > 0.5)
-            value = round_to(4, value / 1000000) + " M";
-        else if (value / 1000 > 0.5)
-            value = round_to(4, value / 1000) + " k";
-        else
-            value = round_to(4, value) + " ";
-        return value;
-    };
-
-    function update_stats() {
-        fetch("https://server.duinocoin.com/api.json")
-            .catch(function(error) {
-                console.log(error);
-            })
-            .then(response => response.json())
-            .then(data => {
-                duco_price = data["Duco price"];
-
-                update_element("hashrate", data["Pool hashrate"])
-
-                update_element("registeredusers", data["Registered users"])
-
-                update_element("allmined", scientific_prefix(data["All-time mined DUCO"]));
-
-                update_element("watt_usage", data["Net energy usage"])
-
-                update_element("shares", scientific_prefix(data["Mined blocks"]))
-
-                update_element("arduinos", data["Miner distribution"]["Arduino"])
-
-                update_element("esp8266s", data["Miner distribution"]["ESP8266"])
-
-                update_element("esp32s", Math.round(data["Miner distribution"]["ESP32"] / 2))
-
-                update_element("rpis", Math.round(data["Miner distribution"]["RPi"] / 4))
-
-                update_element("cpus", Math.round(data["Miner distribution"]["Web"] +
-                    data["Miner distribution"]["CPU"] / 4))
-
-                update_element("phones", Math.round(data["Miner distribution"]["Phone"] / 4))
-
-                update_element("others", data["Miner distribution"]["Other"])
-
-                /* Nodes */
-
-                update_element("master_connections", data["Active connections"])
-                update_element("master_ver", data["Server version"])
-                update_element("master_cpu", round_to(1, data["Server CPU usage"]) + "%")
-                update_element("master_ram", round_to(1, data["Server RAM usage"]) + "%")
-                update_element("master_threads", data["Open threads"])
-            })
-    }
-
-
-    function last_explorer_hashes() {
-        fetch("https://server.duinocoin.com/transactions.json")
-            .catch(function(error) {
-                console.log(error);
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                hashes = []
-                for (hash in data) {
-                    hashes.push(data[hash])
-                }
-
-                transaction_hashes_html = "";
-                for (hash in hashes.reverse()) {
-                    if (hash >= 5) break
-                    this_hash = hashes[hash].Hash;
-                    if (this_hash.length == 40) {
-                        transaction_hashes_html += `<a class='transaction2 monospace' onclick="link_search('${this_hash}')">` + this_hash.substring(0, 40) + "</a><br>";
-                    } else {
-                        transaction_hashes_html += `<a class='transaction1 monospace' onclick="link_search('${this_hash}')">` + this_hash.substring(0, 40) + "</a><br>";
-                    }
-                }
-                $("#transactionstext3").html(transaction_hashes_html);
-            })
-        fetch("https://server.duinocoin.com/foundBlocks.json")
-            .catch(function(error) {
-                console.log(error);
-            })
-            .then(response => response.json())
-            .then(data => {
-                let last = [];
-                for (hash in data) {
-                    last.push(hash);
-                }
-
-                block_hashes_html = "";
-                for (hash in last.reverse()) {
-                    if (hash >= 5) break
-                    this_hash = last[hash];
-                    if (this_hash.length == 40) {
-                        block_hashes_html += `<a class='block2 monospace' onclick="link_search('${this_hash}')">` + this_hash.substring(0, 40) + "</a><br>";
-                    } else {
-                        block_hashes_html += `<a class='block1 monospace' onclick="link_search('${this_hash}')">` + this_hash.substring(0, 40) + "</a><br>";
-                    }
-                }
-                $("#transactionstext4").html(block_hashes_html);
-            })
-    }
-
-    function get_prefix(symbol, value) {
-        value = parseFloat(value);
-        if (value / 1000000000 > 0.5)
-            value = round_to(2, value / 1000000000) + " G" + symbol;
-        else if (value / 1000000 > 0.5)
-            value = round_to(2, value / 1000000) + " M" + symbol;
-        else if (value / 1000 > 0.5)
-            value = round_to(2, value / 1000) + " k" + symbol;
-        else
-            value = round_to(2, value) + " " + symbol;
-        return value;
-    }
-
-    String.prototype.escape = function() {
-        var tagsToReplace = {
-            '&': ' ',
-            '\\': ' ',
-            '/': ' ',
-            '(': ' ',
-            ')': ' ',
-            '`': ' ',
-            '<': ' ',
-            '>': ' '
-        };
-        return this.replace(/[&<>]/g, function(tag) {
-            return tagsToReplace[tag] || tag;
-        });
-    };
-
-    function search(searched_string) {
-        let cont = true;
-        if (searched_string) {
-            console.log(searched_string);
-            window.history.pushState('Duino-Coin | Network statistics', 'Duino-Coin | Network statistics', `?search=${searched_string}`);
-            $("#transactionstext1").html(`<div class="divider">Results&nbsp;for&nbsp;<span style="overflow:hidden"><a onclick="link_search('${searched_string}')">${searched_string}</a></span></div>`);
-        }
-        if (cont) {
-            $.getJSON("https://server.duinocoin.com/transactions/" + searched_string, function(data) {
-                    if (data.success == true && data.result != "No transaction found") {
-                        cont = false;
-                        let amount_usd = data.result.amount * duco_price;
-                        if (searched_string.length == 40) transaction_type = "DUCO-S1";
-                        else transaction_type = "XXHASH"
-
-                        found_transaction_html = `
-                            <table class="table is-narrow is-fullwidth">
-                                <tbody>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-info-circle"></i>
-                                                <span>Type</span> 
-                                            </span>
-                                        </th>
-                                        <th>
-                                            Transaction #${data.result.id} (${transaction_type})
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-calendar"></i>
-                                                <span>Timestamp</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${data.result.datetime}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-arrow-right"></i>
-                                                <span>Output (sender)</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            <a onclick="link_search('${data.result.sender}')">
-                                                ${data.result.sender}
-                                            </a>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-arrow-left"></i>
-                                                <span>Input (recipient)</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            <a onclick="link_search('${data.result.recipient}')">
-                                                ${data.result.recipient}
-                                            </a>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-coins"></i>
-                                                <span>Transferred amount</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${data.result.amount} DUCO
-                                            ($${round_to(4, amount_usd)})
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-envelope"></i>
-                                                <span>Memo</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${data.result.memo}
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>`
-
-                        update_element("transactionstext2", found_transaction_html);
-                    }
-                })
-                .fail(function(error) {
-                    console.log(error.responseText);
-                    if (error.responseText.includes("500")) error = "500 - internal server error";
-                    else if (error.responseText.includes("429")) error = "429 - too many requests (slow down)";
-                    else if (error.responseText.includes("404")) error = "404 - nothing interesting found";
-                    found_transaction_html = `<ul class="is-size-6"><li>` +
-                        `<i class='fas fa-info-circle'></i>` +
-                        `&nbsp;Error: <b>${error}</b> 🤦‍♀️</li></ul>`;
-                    update_element("transactionstext2", found_transaction_html);
-                });
-        }
-        if (cont) {
-            $.getJSON('https://server.duinocoin.com/users/' + searched_string, function(data) {
-                    if (data.success == true) {
-                        cont = false;
-                        let amount_usd = data.result.balance.balance * duco_price;
-
-                        miner_str = "";
-                        miner_count = 0;
-                        if (data.result.miners.length) {
-                            let threaded_miners = {};
-                            user_miners = data.result.miners;
-
-                            for (let miner in user_miners) {
-                                let miner_wallet_id = user_miners[miner]["wd"];
-                                if (!miner_wallet_id) miner_wallet_id = Math.random();
-                                const miner_hashrate = user_miners[miner]["hashrate"];
-                                const miner_rejected = user_miners[miner]["rejected"];
-                                const miner_accepted = user_miners[miner]["accepted"];
-
-                                if (!threaded_miners[miner_wallet_id]) {
-                                    threaded_miners[miner_wallet_id] = user_miners[miner];
-                                    threaded_miners[miner_wallet_id]["threads"] = 1;
-                                    miner_count += 1;
-                                    continue;
-                                } else if (threaded_miners[miner_wallet_id]) {
-                                    threaded_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
-                                    threaded_miners[miner_wallet_id]["rejected"] += miner_rejected;
-                                    threaded_miners[miner_wallet_id]["accepted"] += miner_accepted;
-                                    threaded_miners[miner_wallet_id]["threads"] += 1;
-                                    continue;
-                                }
-                            }
-
-                            i = 0;
-                            for (miner in threaded_miners) {
-                                if (threaded_miners[miner]["identifier"] != "None") {
-                                    miner_str += "<b>" +
-                                        threaded_miners[miner]["identifier"] +
-                                        "</b> <span class='has-text-grey'>(" +
-                                        threaded_miners[miner]["software"] +
-                                        ")</span> - " +
-                                        get_prefix("", threaded_miners[miner]["accepted"]) + "/" +
-                                        get_prefix("", (threaded_miners[miner]["accepted"] + threaded_miners[miner]["rejected"])) +
-                                        ", <b>" + get_prefix("H/s", threaded_miners[miner]["hashrate"]) + `</b> (${((threaded_miners[miner]["threads"] == 1) ? ("1 thread") : (`${threaded_miners[miner]["threads"]} threads`))}) <br>`;
-                                } else {
-                                    miner_str += "<b>" + threaded_miners[miner]["software"] + "</b> - " +
-                                        threaded_miners[miner]["accepted"] + "/" +
-                                        (threaded_miners[miner]["accepted"] + threaded_miners[miner]["rejected"]) +
-                                        ", <b>" + get_prefix("H/s", threaded_miners[miner]["hashrate"]) + `</b> (${((threaded_miners[miner]["threads"] == 1) ? ("1 thread") : (`${threaded_miners[miner]["threads"]} threads`))}) <br>`;
-                                }
-
-                                if (i > 10) {
-                                    miner_str += "And " + (miner_count - i) + " more miner(s)...";
-                                    break;
-                                }
-                                i += 1;
-                            }
-                        } else {
-                            miner_str += "No miners found for that user";
-                        }
-
-                        tx_str = "";
-                        i = 0;
-                        if (data["result"]["transactions"].length) {
-                            for (transaction in data["result"]["transactions"].reverse()) {
-                                if (data["result"]["transactions"][transaction]["sender"] == data["result"]["balance"]["username"]) {
-                                    tx_str += "<span class='has-text-grey'>" +
-                                        data["result"]["transactions"][transaction]["datetime"] +
-                                        "</span> Sent <span class='has-text-danger-dark'>" +
-                                        " <b>" +
-                                        Math.round(data["result"]["transactions"][transaction]["amount"] * 1000) / 1000 +
-                                        " DUCO</b></span> to " +
-                                        `<a onclick="link_search('${data["result"]["transactions"][transaction]["recipient"]}')">` +
-                                        "<b>" +
-                                        data["result"]["transactions"][transaction]["recipient"] + "</a></b> " + `<a onclick="link_search('${data["result"]["transactions"][transaction]["hash"]}')">(` + data["result"]["transactions"][transaction]["hash"].substr(data["result"]["transactions"][transaction]["hash"].length - 8) + ")</a><br>"
-                                } else {
-                                    tx_str += "<span class='has-text-grey'>" +
-                                        data["result"]["transactions"][transaction]["datetime"] +
-                                        "</span> Received <span class='has-text-success-dark'>" +
-                                        "<b>" +
-                                        Math.round(data["result"]["transactions"][transaction]["amount"] * 1000) / 1000 +
-                                        " DUCO</b></span> from " +
-                                        `<a onclick="link_search('${data["result"]["transactions"][transaction]["sender"]}')">` + "<b>" +
-                                        data["result"]["transactions"][transaction]["sender"] + "</a></b> " + `<a onclick="link_search('${data["result"]["transactions"][transaction]["hash"]}')">(` + data["result"]["transactions"][transaction]["hash"].substr(data["result"]["transactions"][transaction]["hash"].length - 8) + ")</a><br>"
-                                }
-
-                                i += 1;
-                                if (i > 10) {
-                                    break;
-                                }
-                            }
-                        } else {
-                            tx_str += "No transactions found for that user";
-                        }
-
-                        found_user_html = `
-                            <table class="table is-narrow is-fullwidth">
-                                <tbody>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-user"></i>
-                                                <span>Wallet name</span> 
-                                            </span>
-                                        </th>
-                                        <th>
-                                            <a onclick="link_search('${searched_string}')">
-                                                ${searched_string}
-                                            </a>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-coins"></i>
-                                                <span>Balance</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${round_to(10, data.result.balance.balance)} DUCO
-                                            ($${round_to(4, amount_usd)})
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-check-circle"></i>
-                                                <span>Verified</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${data.result.balance.verified}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-calendar"></i>
-                                                <span>Creation date</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${data.result.balance.created}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-cog"></i>
-                                                <span>Miners</span>
-                                            </span>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">
-                                            ${miner_str}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">
-                                            <span class="icon-text">
-                                                <i class="icon fas fa-people-arrows"></i>
-                                                <span>Transactions</span>
-                                            </span>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="2">
-                                            ${tx_str}
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>`
-
-                        update_element("transactionstext2", found_user_html);
-                    }
-                })
-                .fail(function(error) {
-                    if (error.responseText.includes("500")) error = "500 - internal server error";
-                    else if (error.responseText.includes("429")) error = "429 - too many requests (slow down)";
-                    else if (error.responseText.includes("404")) error = "404 - nothing interesting found";
-                    found_transaction_html = `<ul class="is-size-6"><li>` +
-                        `<i class='fas fa-info-circle'></i>` +
-                        `&nbsp;Error: <b>${error}</b> 🤦‍♀️</li></ul>`;
-                    update_element("transactionstext2", found_transaction_html);
-                });
-        }
-        if (cont) {
-            $.getJSON('https://server.duinocoin.com/foundBlocks.json', function(data) {
-                    cont = false;
-                    let found = data[searched_string]
-                    if (searched_string != "" && found != "" && found != undefined) {
-                        cont = false;
-                        let amount_usd = found["Amount generated"] * duco_price;
-                        if (searched_string.length == 40) block_type = "DUCO-S1";
-                        else block_type = "XXHASH"
-
-                        found["Finder"] = found["Finder"].replace("(DUCO-S1)", "")
-                        found["Finder"] = found["Finder"].replace("(XXHASH)", "")
-
-                        found_block_html = `
-                            <table class="table is-fullwidth">
-                                <tbody>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-info-circle"></i>
-                                                <span>Type</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            Block (${block_type})
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-calendar"></i>
-                                                <span>Timestamp</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${found["Date"]} ${found["Time"]}
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-user-tie"></i>
-                                                <span>Finder</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            <a onclick="link_search('${found["Finder"]}')">
-                                                ${found["Finder"]}
-                                            </a>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <span class="icon-text">
-                                                <i class="icon fa fa-coins"></i>
-                                                <span>Generated amount</span>
-                                            </span>
-                                        </th>
-                                        <th>
-                                            ${found["Amount generated"]} DUCO
-                                            ($${round_to(4, amount_usd)})
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>`
-
-                        update_element("transactionstext2", found_block_html);
-                    }
-                })
-                .fail(function(error) {
-                    if (error.responseText.includes("500")) error = "500 - internal server error";
-                    else if (error.responseText.includes("429")) error = "429 - too many requests (slow down)";
-                    else if (error.responseText.includes("404")) error = "404 - nothing interesting found";
-                    found_transaction_html = `<ul class="is-size-6"><li>` +
-                        `<i class='fas fa-info-circle'></i>` +
-                        `&nbsp;Error: <b>${error}</b> 🤦‍♀️</li></ul>`;
-                    update_element("transactionstext2", found_transaction_html);
-                });
-        }
-        if (cont) $("#transactionstext2").text(`Nothing interesting found for your query 🤷`);
-    }
-
-
-    function update_pools() {
-        fetch("https://server.duinocoin.com/all_pools")
-            .catch(function(error) {
-                console.log(error);
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success === true) {
-                    let pools = {};
-                    data.result.forEach(pool => {
-                        pools[pool["name"]] = pool;
-                    });
-                    // Update pool info, add new pools here
-
-                    // Star pool
-                    try {
-                        let star1_data = pools["star-pool-1"];
-                        update_element("star_connections", star1_data["connections"]);
-                        update_element("star_cpu", round_to(1, parseFloat(star1_data["cpu"])) + "%");
-                        update_element("star_ram", round_to(1, parseFloat(star1_data["ram"])) + "%");
-                    } catch (e) { console.log(e) };
-
-                    // Beyond pool
-                    try {
-                        let beyond1_data = pools["beyond-pool-1"];
-                        let beyond2_data = pools["beyond-pool-3"];
-                        update_element("beyond_connections", pools["beyond-pool-1"]["connections"] + pools["beyond-pool-2"]["connections"]);
-                        update_element("beyond_cpu", round_to(1, parseFloat(beyond1_data["cpu"])) + "%");
-                        update_element("beyond_ram", round_to(1, parseFloat(beyond1_data["ram"])) + "%");
-
-                        update_element("beyond_connections2", pools["beyond-pool-3"]["connections"] + pools["beyond-pool-4"]["connections"]);
-                        update_element("beyond_cpu2", round_to(1, parseFloat(beyond2_data["cpu"])) + "%");
-                        update_element("beyond_ram2", round_to(1, parseFloat(beyond2_data["ram"])) + "%");
-                    } catch (e) { console.log(e) };
-
-                    // Svko pool
-                    try {
-                        let svko1_data = pools["svko-pool-1"];
-                        let svko2_data = pools["svko-pool-2"];
-
-                        update_element("svko_connections", svko2_data["connections"] + svko1_data["connections"]);
-                        update_element("svko_cpu", round_to(1, parseFloat(svko1_data["cpu"])) + "%");
-                        update_element("svko_ram", round_to(1, parseFloat(svko1_data["ram"])) + "%");
-                    } catch (e) { console.log(e) };
-
-                    // Null pool
-                    try {
-                        let null_data = pools["null-pool-1"];
-
-                        update_element("null_connections", null_data["connections"]);
-                        update_element("null_cpu", round_to(1, parseFloat(null_data["cpu"])) + "%");
-                        update_element("null_ram", round_to(1, parseFloat(null_data["ram"])) + "%");
-                    } catch (e) { console.log(e) };
-
-                    // End of list of pools to update
-                }
-            })
-    }
-
-    update_stats();
-    window.setInterval(update_stats, 5000);
-
-    last_explorer_hashes();
-    window.setInterval(last_explorer_hashes, 5000);
-
-    update_pools();
-    window.setInterval(update_pools, 5000);
-
-    $("#search_input").on('keydown', function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            button_search();
-        }
-    });
-
-    function button_search() {
-        to_search = $('#search_input').val().escape();
-        console.log("Button search for ", to_search.escape())
-        search(to_search.escape());
-    }
-
-    function link_search(to_search) {
-        console.log("Link search for ", to_search.escape())
-        search(to_search.escape());
-    }
-
-    if (to_search.escape()) search(to_search.escape());
-    </script>
-    <script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 </body>
+<!-- Wallet Script -->
+<link rel="preload" as="script" href="js/wallet/main.js">
+<script type="text/javascript" src="js/wallet/main.js"></script>
+<link rel="preload" as="script" href="js/wallet/wallet.js">
+<script type="text/javascript" src="js/wallet/wallet.js"></script>
+<link rel="preload" as="script" href="js/wallet/welcometext.js">
+<script type="text/javascript" src="js/wallet/welcometext.js"></script>
+<link rel="preload" as="script" href="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js">
+<script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 
 </html>
