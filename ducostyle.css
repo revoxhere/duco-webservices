@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: whitesmoke rgba(255, 168, 16, 0.9);
+}
+
+*::-webkit-scrollbar {
+    width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 168, 16, 0.9);
+    border-radius: 20px;
+}
+
+a,
+button,
+input {
+    transition: 0.2s;
+}
+
+.is-primary {
+    background: linear-gradient(50deg, #ff7a3e, #ff4962, #ff2780) !important;
+}
+
+.navbar-item {
+    background: none !important;
+}
+
+
+.blur {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 20px !important;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.section>.container {
+    margin-top: 2.5em !important;
+}
+
+.panel-heading {
+    border-radius: 20px 20px 0 0;
+}
+
+table {
+    background: transparent !important;
+}
+
+.is-duco {
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #ff7a3e, #ff4962, #ff2780) !important;
+    display: block !important;
+    border-radius: 25px !important;
+    outline: none !important;
+    border: none !important;
+    background: linear-gradient(to left, #ff7a3e, #ff4962, #ff2780) !important;
+    background-size: 300% !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: 0.6s !important;
+}
+
+.is-duco:hover,
+.is-search:hover {
+    background-position: right !important;
+}
+
+.is-search {
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #ff2780, #ff4962, #ff7a3e) !important;
+    display: block !important;
+    border-radius: 0 25px 25px 0 !important;
+    outline: none !important;
+    border: none !important;
+    background: linear-gradient(to left, #ff2780, #ff4962, #ff7a3e) !important;
+    background-size: 300% !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: 0.6s !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .blur {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.125) !important;
+    }
+
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: #ddd !important;
+        background-color: transparent !important;
+    }
+}
+
+#transactionstext4,
+#transactionstext3 {
+    overflow: hidden;
+}
+
+#transactionstext4:before,
+#transactionstext3:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    height: 10em;
+    width: 10%;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0), #070708);
+}
+
+#transactionstext3:before {
+    right: 50%;
+}
+
+.ducoinput {
+    border: 1px solid #ff7a3e !important;
+}
+
+.ducoinput:focus {
+    box-shadow: 0 0 10px #ff7a3e;
+}
+
+@media (prefers-color-scheme: light) {
+
+    #transactionstext4:before,
+    #transactionstext3:before {
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0), #F9F9F9);
+    }
+
+    .blur {
+        background-color: rgba(255, 255, 255, 0.65) !important;
+        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
+        border: 1px solid rgba(209, 213, 219, 0.3) !important;
+    }
+
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.65) !important;
+        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
+    }
+
+    body {
+        background-color: #eee;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: #111 !important;
+        background-color: transparent !important;
+    }
+}
