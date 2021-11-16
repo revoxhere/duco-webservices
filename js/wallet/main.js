@@ -420,6 +420,7 @@ window.addEventListener('load', function() {
                 t_miners = []
                 if (user_miners.length) {
                     $("#nominers").fadeOut(0);
+                    $("#minertable").fadeIn(0)
                     for (let miner in user_miners) {
                         let miner_wallet_id = user_miners[miner]["wd"];
                         if (!miner_wallet_id) miner_wallet_id = Math.floor(Math.random() * 2812);
@@ -552,53 +553,43 @@ window.addEventListener('load', function() {
                         miners_html += `
                             <tr>
                                 <th align="right">
-                                    <p>
                                         <span class="has-text-grey">
                                             ${miner_num}
                                         </span>
-                                    </p>
                                 </th>
                                 <th>
-                                    <p>
                                         <span class="icon-text">
                                             <span class="icon" title="Miner type: ${miner_type}">
                                                 ${icon}
                                             </span>
-                                            <span class="has-text-weight-bold" title="Miner name">
-                                                ${miner_name}
-                                            </span>
                                         </span>
-                                    </p>
+                                        <span class="has-text-weight-bold" title="Miner name">
+                                            ${miner_name}
+                                        </span>
                                 </th>
                                 <th>
-                                    <p>
                                         <span class="has-text-weight-bold" title="Miner hashrate">
                                             ${scientific_prefix(miner_hashrate)}H/s
                                         </span>
                                         <span class="has-text-weight-normal" title="Threads/cores">
                                             ${thread_string}
                                         </span>
-                                    </p>
                                 </th>
                                 <th>
-                                    <p>
-                                        <span class="has-text-weight-normal">
-                                            ${scientific_prefix(miner_accepted)}/${scientific_prefix(miner_accepted+miner_rejected)}
-                                        </span>
-                                        <span class="${accept_color}">
-                                            (${accepted_rate}%)
-                                        </span>
-                                    </p>
+                                    <span class="${accept_color}">
+                                        ${accepted_rate}%
+                                    </span>
+                                    <span class="has-text-weight-normal">
+                                        (${miner_accepted}/${(miner_accepted+miner_rejected)})
+                                    </span>
                                 </th>
                                 <th align="center">
-                                    <p>
                                         <span class="icon-text">
                                             ${warning_icon}
                                         </span>
                                         <span class="icon-text" style="cursor: pointer">
                                             <i class="icon fa fa-info-circle"></i>
                                         </span>
-                                    </p>
                                 </th>
                             </tr>
                             <tr>
@@ -872,17 +863,19 @@ window.addEventListener('load', function() {
     });
 
     setInterval(function() {
-        console.log("checked")
-        if ($('#usernameinput').val()) {
+        console.log($('#usernameinput').val());
+        if ($('#usernameinput').val() != "") {
             $('#usernamediv').addClass("focus");
         }
-        if ($('#passwordinput').val()) {
+        if ($('#passwordinput').val() != "") {
             $('#passworddiv').addClass("focus");
         }
-    }, 500)
+
+        $(".mcontainer").css("max-width", window.innerWidth - 80)
+    }, 1000)
 
     setTimeout(function() {
-    if (getcookie("password") && getcookie("username")) {
+        if (getcookie("password") && getcookie("username")) {
             $('#usernamediv').addClass("focus");
             $('#passworddiv').addClass("focus");
             $('#usernameinput').val(getcookie("username"));
