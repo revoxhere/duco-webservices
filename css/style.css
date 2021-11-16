@@ -172,23 +172,20 @@ form {
 }
 
 #minertable {
-    white-space: nowrap;
     background-color: transparent !important;
 }
 
 table,
 th,
 td {
-    word-break: break-all;
-    white-space: nowrap;
-    white-space: normal;
     border: none !important;
 }
 
 .mcontainer {
     overflow-y: auto !important;
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
     max-height: 20em !important;
+
     margin-bottom: 0px !important;
     border-radius: 0px 0px 10px 10px !important;
 }
@@ -197,11 +194,9 @@ td {
     table {
         border-collapse: collapse !important;
     }
-    tr {
-        min-width: 10px !important;
-    }
-    .mcontainer {
-        overflow-x: scroll !important;
+
+    td {
+        min-width: 40em !important;
     }
 }
 
@@ -382,19 +377,19 @@ input {
     overflow: hidden;
     background-position: 50% 50%;
     z-index: -777;
-   -webkit-transform: translateZ(0);
-   -moz-transform: translateZ(0);
-   -ms-transform: translateZ(0);
-   -o-transform: translateZ(0);
-   transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .blur {
     -webkit-transform: translateZ(0);
-   -moz-transform: translateZ(0);
-   -ms-transform: translateZ(0);
-   -o-transform: translateZ(0);
-   transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 [data-tooltip]:after,
