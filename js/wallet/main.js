@@ -464,6 +464,7 @@ window.addEventListener('load', function() {
                         miner_pool = t_miners[miner]["pool"];
                         miner_algo = t_miners[miner]["algorithm"];
                         miner_count = t_miners[miner]["threads"];
+                        miner_ki = t_miners[miner]["ki"];
 
                         if (!miner_identifier || miner_identifier === "None") {
                             miner_name = miner_software;
@@ -516,7 +517,7 @@ window.addEventListener('load', function() {
                             miner_type = "Unknown!";
                         }
 
-                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_num - 1) * 100);
+                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
                         let efficiency_color = "has-text-warning-dark";
                         if (miner_efficiency < 40) {
                             efficiency_color = "has-text-danger-dark";
