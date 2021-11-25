@@ -863,15 +863,18 @@ window.addEventListener('load', function() {
         }
     });
 
-    setInterval(function() {
-        console.log($('#usernameinput').val());
-        if ($('#usernameinput').val() != "") {
+    document.addEventListener('onautocomplete', function(e) {
+      if (e.target.hasAttribute('autocompleted')) {
+        if (e.target.id == "usernameinput") {
             $('#usernamediv').addClass("focus");
         }
-        if ($('#passwordinput').val() != "") {
+        if (e.target.id == "passwordinput") {
             $('#passworddiv').addClass("focus");
         }
+      }
+    })
 
+    setInterval(function() {
         $(".mcontainer").css("max-width", window.innerWidth - 80)
     }, 1000)
 
