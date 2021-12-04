@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <!-- Browser standards -->
     <meta charset="utf-8">
@@ -8,16 +9,16 @@
     <!-- SEO Stuff -->
     <meta name="description" content="Duino-Coin Web Miner">
     <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
-    <link rel="canonical" href="http://51.15.127.80/webminer.html">
+    <link rel="canonical" href="https://server.duinocoin.com/webminer.html">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#f0932b">
     <!-- Open Graph Metadata -->
     <meta property="og:site_name" content="Duino-Coin Web Miner">
-    <meta property="og:site" content="http://51.15.127.80/webminer.html">
+    <meta property="og:site" content="https://server.duinocoin.com/webminer.html">
     <meta property="og:title" content="Duino-Coin Web Miner">
     <meta property="og:description" content="Duino-Coin Web Miner">
     <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
-    <meta property="og:url" content="http://51.15.127.80/webminer.html">
+    <meta property="og:url" content="https://server.duinocoin.com/webminer.html">
     <meta property="og:type" content="website">
     <!-- Twitter Metadata -->
     <meta name="twitter:title" content="Duino-Coin Web Miner">
@@ -28,444 +29,632 @@
     <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
     <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
     <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="backgrounds/1-min.png">
-    <link rel="preload" as="image" href="backgrounds/2-min.png">
-    <link rel="preload" as="image" href="backgrounds/3-min.png">
-    <link rel="preload" as="image" href="backgrounds/4-min.png">
-    <link rel="preload" as="image" href="backgrounds/5-min.png">
-    <link rel="preload" as="image" href="backgrounds/6-min.jpg">
-    <link rel="preload" as="image" href="backgrounds/7-min.png">
-    <link rel="preload" as="image" href="backgrounds/8-min.png">
-    <link rel="preload" as="image" href="backgrounds/9-min.png">
+    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-1.jpg">
+    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-2.jpg">
+    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-mountains-1.jpg">
+    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/hge-sea-1.jpg">
     <!-- Bulma -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-pageloader@0.3.0/dist/css/bulma-pageloader.min.css">
+    <link rel="preload" href="https://wallet.duinocoin.com/css/bulma.min.css" as="style">
+    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/bulma.min.css">
+    <link rel="preload" href="https://wallet.duinocoin.com/css/bulma-prefers-dark.min.css" as="style">
+    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/bulma-prefers-dark.min.css">
+    <link rel="preload" href="https://wallet.duinocoin.com/css/blur.css" as="style">
+    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/blur.css">
     <style>
-        .is-primary {
-            /* Override Bulmas primary color to Duco-Colored gradient*/
-            background: linear-gradient(160deg, #e74c3c, #f39c12) !important;
-        }
-
         body {
+            margin: 0 !important;
+            min-height: 100vh;
+            padding: 3vw !important;
             background-size: cover !important;
             background-attachment: fixed !important;
-            width: 100% !important;
-            height: 500vh !important;
-            margin: 0 !important;
-            padding: 0 !important;
             background-repeat: no-repeat !important;
         }
-    </style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 168, 16, 0.9), whitesmoke;
+    font-family: 'Lato', sans-serif;
+}
+
+*::-webkit-scrollbar {
+    width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 168, 16, 0.9);
+    border-radius: 20px;
+}
+
+.input, .button, .notification {
+    border-radius: 20px !important;
+}
+
+a,
+.button,
+.input {
+    transition: 0.2s;
+}
+
+.file-cta, textarea {
+    border-radius: 20px !important;
+}
+
+.file-cta {
+    width: 100%;
+}
+
+.is-primary {
+    background: linear-gradient(50deg, #ff7a3e, #ff4962, #ff2780) !important;
+}
+
+.navbar-item {
+    background: none !important;
+}
+
+
+.blur {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 20px !important;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.section>.container {
+    margin-top: 2.5em !important;
+}
+
+.panel-heading {
+    border-radius: 20px 20px 0 0;
+}
+
+table {
+    background: transparent !important;
+}
+
+.is-duco {
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #ff7a3e, #ff4962, #ff2780) !important;
+    display: block !important;
+    border-radius: 25px !important;
+    outline: none !important;
+    border: none !important;
+    background: linear-gradient(to left, #ff7a3e, #ff4962, #ff2780) !important;
+    background-size: 300% !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: 0.6s !important;
+}
+
+.is-duco:hover,
+.is-search:hover {
+    background-position: right !important;
+}
+
+.is-search {
+    box-shadow: none !important;
+    background: linear-gradient(135deg, #ff2780, #ff4962, #ff7a3e) !important;
+    display: block !important;
+    border-radius: 0 25px 25px 0 !important;
+    outline: none !important;
+    border: none !important;
+    background: linear-gradient(to left, #ff2780, #ff4962, #ff7a3e) !important;
+    background-size: 300% !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    transition: 0.6s !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .box {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 1) !important;
+    }
+
+    .blur {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.125) !important;
+    }
+
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: #ddd !important;
+        background-color: transparent !important;
+    }
+}
+
+#transactionstext4,
+#transactionstext3 {
+    overflow: hidden;
+}
+
+#transactionstext4:before,
+#transactionstext3:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    height: 10em;
+    width: 10%;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0), #070708);
+}
+
+#transactionstext3:before {
+    right: 50%;
+}
+
+.ducoinput {
+    border: 1px solid #ff7a3e !important;
+}
+
+.ducoinput:focus {
+    box-shadow: 0 0 10px #ff7a3e;
+}
+
+@media (prefers-color-scheme: light) {
+
+    #transactionstext4:before,
+    #transactionstext3:before {
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0), #F9F9F9);
+    }
+
+    .blur {
+        background-color: rgba(255, 255, 255, 0.65) !important;
+        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
+        border: 1px solid rgba(209, 213, 219, 0.3) !important;
+    }
+
+    .navbar {
+        background-color: rgba(255, 255, 255, 0.65) !important;
+        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
+    }
+
+    html {
+        background-color: #F3F3F3;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+        -webkit-text-fill-color: #111 !important;
+        background-color: transparent !important;
+    }
+}
+    </style>
     <!-- Font Awesome and jQuery-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.min.js" integrity="sha512-6ORWJX/LrnSjBzwefdNUyLCMTIsGoNP6NftMy2UAm1JBm6PRZCO1d7OHBStWpVFZLO+RerTvqX/Z9mBFfCJZ4A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://wallet.duinocoin.com/js/fontawesome.js"></script>
+    <script type="text/javascript" src="https://wallet.duinocoin.com/js/jquery-3.6.0.min.js"></script>
+    <script src="https://bernii.github.io/gauge.js/dist/gauge.min.js"></script>
 </head>
 <script>
     /* GLOBAL JS */
-    window.addEventListener('load', function ()
-    {
-        let clickcount = 0;
-
-        // RANDOM BACKGROUND
+    window.addEventListener('load', function () {
         const bg_list = [
-            'backgrounds/1-min.png',
-            'backgrounds/2-min.png',
-            'backgrounds/3-min.png',
-            'backgrounds/4-min.png',
-            'backgrounds/5-min.png',
-            'backgrounds/6-min.jpg',
-            'backgrounds/7-min.png',
-            'backgrounds/8-min.png',
-            'backgrounds/9-min.png'
+            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-1.jpg',
+            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-2.jpg',
+            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-mountains-1.jpg',
+            'https://wallet.duinocoin.com/backgrounds/wallet/hge-sea-1.jpg'
         ]
-
-        let num = Math.floor(Math.random() * bg_list.length)
+        const num = Math.floor(Math.random() * bg_list.length)
         document.body.background = bg_list[num];
 
-        document.getElementById('darkmode').onclick = function()
-        {
-            clickcount++;
-            if (clickcount % 2 == 1)
-            {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://unpkg.com/bulma-prefers-dark">');
-            }
-            if (clickcount % 2 == 0)
-            {
-                $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">');
-            }
-        }
+        $("#loader-wrapper").fadeOut(); // After page is loaded
     });
 </script>
+
 <body>
-    <div id="pageloader" class="pageloader is-active is-primary is-bottom-to-top">
-        <span class="title">Duino-Coin Web Miner</span>
-    </div>
     <div class="container">
         <section class="container">
-            <div class="hero-body">
-                <div class="box">
-                    <p class="title">
-                        <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
-                        Duino-Coin Web Miner
-                    </p>
-                    <p class="subtitle">
-                        Official JavaScript miner v2.6.5
-                        <span class="subtitle is-size-6">
-                            by
-                            <a href="https://github.com/revoxhere/">revox</a>,
-                            <a href="https://github.com/LDarki">LDarki</a>
-                            &
-                            <a href="https://github.com/sys-256">sys-256</a>
-                            <span class="has-text-grey">
-                                <br>2020-2021 the Duino-Coin project, distributed under the 
-                                <a href="https://opensource.org/licenses/MIT">
-                                    MIT license
-                                </a>
-                                <br>This page is open-source - you can improve it 
-                                <a href="https://github.com/revoxhere/playground">
-                                    here
+            <div class="box blur">
+                <div class="columns">
+                    <div class="column is-narrow">
+                        <p class="title has-text-weight-normal">
+                            <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
+                            <span class="has-text-weight-bold">
+                                Duino-Coin
+                            </span>
+                            Web Miner
+                            <small class="has-text-weight-light">
+                                2.8
+                            </small>
+                        </p>
+                        <p class="subtitle is-size-6">
+                            MIT licensed • 2019-2021 the Duino-Coin Project
+                            <br>This page is
+                            <span class="has-text-weight-bold">
+                                open-source
+                            </span> - you can
+                            <span class="has-text-weight-bold">
+                                improve it
+                                <a href="https://github.com/revoxhere/duco-webservices">
+                                    on GitHub
                                 </a>
                             </span>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+                    </div>
+                </div>
+                <p class="notification is-info is-size-6">
+                    <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+                    <i class="fa fa-info-circle"></i>
+                    <b>Tip:</b>
+                    Make sure you stay on the website during mining - most browsers suspend execution of JavaScript when the tab isn't active
+                </p>
+                <form>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <input class="input is-fullwidth has-icons" type="text" id="usernameinput" placeholder="Duino-Coin Username" name="username">
+                                <span class="icon is-left" style="color: #777">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <input class="input is-fullwidth has-icons" type="text" id="threadsinput" placeholder="Mining threads" name="threads">
+                                <span class="icon is-left" style="color: #777">
+                                    <i class="fa fa-hashtag"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="control has-icons-left">
+                                <input class="input is-fullwidth has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
+                                <span class="icon is-left" style="color: #777">
+                                    <i class="fa fa-comment"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <button type="submit" class="button is-fullwidth" id="minebuttonclass">
+                                <span id="minebutton">Start mining</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="columns is-multiline">
+                    <div class="column">
+                        <div class="box blur" style="height:100%">
+                            <p class="heading has-text-centered is-size-6">
+                                <i class="fa fa-bolt fa-fw" style="color:#eb4d4b;"></i>
+                                HASHRATE
+                            </p>
+                            <p class="has-text-centered">
+                                <canvas id="gauge"></canvas>
+                                <p class="title has-text-centered" id="hashrate">
+                                    0
+                                </p>
+                                <p class="subtitle has-text-centered mb-0">
+                                    Calculations per second
+                                </p>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="columns is-multiline">
+                            <div class="column is-full">
+                                <div class="box blur" style="height:100%">
+                                    <p class="heading has-text-centered is-size-6">
+                                        <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
+                                        CORRECT SHARES (<strong id="sharesperc">0%</strong>)
+                                    </p>
+                                    <p class="title has-text-centered" id="shares">
+                                        0/0
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="column is-full">
+                                <div class="box blur" style="height:100%">
+                                    <p class="heading has-text-centered mb-3 is-size-6">
+                                        <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
+                                        MINER LOG
+                                    </p>
+                                    <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; resize: vertical; height: 5rem">
+                                        <span class="has-text-grey" id="minerlog">Awaiting input<br></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="box blur" style="height:100%">
+                            <p class="heading has-text-centered is-size-6 mb-3">
+                                <i class="far fa-chart-bar" style="color:#2980b9;"></i>
+                                Thread performance
+                            </p>
+                            <div class="columns is-multiline" id="stats-per-cpu">
+                                <p class="title has-text-centered m-5 is-size-5">
+                                    Start mining to see thread hashrates
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <a href="https://wallet.duinocoin.com" class="button is-secondary">
+                        <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+                        <span>Duino-Coin Web Wallet</span>
+                    </a>
+                    <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
+                        <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
+                        <span>GitHub</span>
+                    </a>
+                    <p disabled class="button is-size-6 has-text-right">
+                        <span>
+                            <strong data-chronometer>
+                                00:00:00
+                            </strong>
+                            elapsed
                         </span>
                     </p>
-                    <p class="subtitle has-text-info is-size-6">
-                        <i class="fa fa-info-circle"></i>
-                        Make sure you stay on the website during mining - most browsers suspend execution of JavaScript
-                        when tab isn't active
-                    </p>
-                    <form>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="control has-icons-left">
-                                    <input class="input has-icons" type="text" id="usernameinput" placeholder="DUCO Username" name="username">
-                                    <span class="icon is-left">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="control has-icons-left">
-                                    <input class="input has-icons" type="text" id="threadsinput" placeholder="Amount of threads" name="threads">
-                                    <span class="icon is-left">
-                                        <i class="fa fa-microchip"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="control has-icons-left">
-                                    <input class="input has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
-                                    <span class="icon is-left">
-                                        <i class="fa fa-comment"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <button type="submit" class="button is-link" id="minebuttonclass">
-                                    <span id="minebutton">Start mining</span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
-                                    ACCEPTED SHARES
-                                </p>
-                                <p class="title">
-                                    <span id="shares">
-                                        0/0
-                                    </span>
-                                    <span class="subtitle" id="sharesperc">
-                                        (0%)
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="fa fa-tachometer-alt fa-fw" style="color:#eb4d4b;"></i>
-                                    HASHRATE
-                                </p>
-                                <p class="title">
-                                    <span id="hashrate">
-                                        0 H/s
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="fa fa-clock fa-fw" style="color:#f0932b;"></i>
-                                    ELAPSED TIME
-                                </p>
-                                <p class="title">
-                                    <span data-chronometer>
-                                        00:00:00
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
-                                    MINER LOG
-                                </p>
-                                <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; max-height: 12rem;">
-                                    <span class="has-text-grey" id="minerlog">Awaiting input...<br><br></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column is-two-fifths">
-                            <div class="box">
-                                <p class="subtitle">
-                                    <i class="far fa-chart-bar" style="color:#2980b9;"></i>
-                                    STATS PER CPU
-                                </p>
-                                <div id="stats-per-cpu" style="overflow-y: scroll; word-wrap: break-word; max-height: 12rem;">Awaiting input...</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="buttons is-centered">
-                        <button id="darkmode" class="button is-secondary">
-                            <i class="fa fa-fw fa-sun is-small icon"></i>&nbsp;
-                            <span>Switch theme</span>
-                        </button>
-                        <a href="https://wallet.duinocoin.com" class="button is-secondary">
-                            <i class="icon is-small fa fa-wallet" style="color:#f39c12"></i>
-                            <span>Web Wallet</span>
-                        </a>
-                        <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
-                            <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
-                            <span>GitHub</span>
-                        </a>
-                        <a href="https://duinocoin.com" class="button is-secondary">
-                            <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
-                            <span>Duino-Coin</span>
-                        </a>
-                        <a href="https://bulma.io" class="button is-secondary">
-                            <span>Made with</span>&nbsp;&nbsp;
-                            <img class="image" width="16em" src="https://seeklogo.com/images/B/bulma-logo-45B5145BF4-seeklogo.com.png" alt="Bulma">&nbsp;
-                            <span><b>BULMA</b></span>
-                        </a>
-                    </div>
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
                 </div>
             </div>
         </section>
     </div>
 </body>
+
 </html>
 <script>
-    let pageloader = document.getElementById("pageloader"); // PAGE LOAGER
-    pageloader.setAttribute('class', "pageloader is-active is-primary is-bottom-to-top"); // Before page is loaded
-    window.addEventListener('load', function()
-    {
-        pageloader.setAttribute('class', "pageloader is-primary is-bottom-to-top"); // After page is loaded
-    });
+//gets the username, rigid and amount of threads from the url parameters
+let url = new URL(window.location);
+let username = url.searchParams.get("username");
+let rigid = url.searchParams.get("rigid");
+let threads = url.searchParams.get("threads");
+let hashrate_text = document.getElementById("hashrate");
 
-    //gets the username, rigid and amount of threads from the url parameters
-    var url = new URL(window.location);
-    var username = url.searchParams.get("username");
-    var rigid = url.searchParams.get("rigid");
-    let threads = url.searchParams.get("threads");
+let gauges = [];
 
-    if (rigid === "")
-    {
-        rigid = "None"; //sets the rigid variable to "None", if the user didn't specify one
+let opts = {
+    angle: 0,
+    lineWidth: 0.1,
+    radiusScale: 1,
+    pointer: {
+        length: 0.6,
+        strokeWidth: 0.05,
+        color: '#57606f'
+    },
+    limitMax: false,
+    limitMin: false,
+    colorStart: '#ff7f50',
+    colorStop: '#ffa502',
+    strokeColor: '#747d8c',
+    highDpiSupport: true,
+    renderTicks: {
+        divisions: 5,
+        divWidth: 1.1,
+        divLength: 0.7,
+        divColor: '#333333',
+        subDivisions: 3,
+        subLength: 0.5,
+        subWidth: 0.6,
+        subColor: '#444444'
     }
-    
-    let userThreads = navigator.hardwareConcurrency; //lets userThreads be the amount of threads the user has
-    if (threads === "")
-    {
-        threads = userThreads; //sets the threads variable to the threads the user has if it didn't gave a number
+
+};
+
+let mini_opts = {
+    angle: 0,
+    lineWidth: 0.1,
+    radiusScale: 1,
+    pointer: {
+        length: 0.6,
+        strokeWidth: 0.05,
+        color: '#57606f'
+    },
+    limitMax: false,
+    limitMin: false,
+    colorStart: '#7bed9f',
+    colorStop: '#2ed573',
+    strokeColor: '#747d8c',
+    highDpiSupport: true,
+};
+
+gauge = new Gauge(document.getElementById("gauge")).setOptions(opts);
+gauge.setMinValue(0);
+gauge.animationSpeed = 16;
+gauge.set(0);
+
+(adsbygoogle = window.adsbygoogle || []).push({});
+
+
+if (rigid === "") {
+    rigid = "None";
+}
+
+let detected_threads = navigator.hardwareConcurrency;
+if (threads === "") {
+    threads = detected_threads;
+}
+
+minerlog = function(message) {
+    $('#minerlog').append(message);
+}
+
+
+if (username != null && username != "" && username != undefined) {
+    document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
+    document.getElementById("minebuttonclass").disabled = true;
+    document.getElementById("usernameinput").value = username;
+    document.getElementById("riginput").value = rigid;
+    document.getElementById("threadsinput").value = threads;
+
+    gauge.maxValue = threads * 150000;
+
+    function getTime() {
+        let date = new Date();
+        let h = date.getHours();
+        let m = date.getMinutes();
+        let s = date.getSeconds();
+
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+
+        return h + ":" + m + ":" + s;
     }
 
-    if (username != null && username != "" && username != undefined)
-    {
-        document.getElementById("minebutton").innerHTML = "<i class='fa fa-cogs fa-fw'></i>&nbsp;Mining started";
-        document.getElementById("minebuttonclass").style = "background-color: #b8e994;";
-        document.getElementById("usernameinput").value = username;
-        document.getElementById("riginput").value = rigid;
-        document.getElementById("threadsinput").value = threads;
-        
-        (adsbygoogle = window.adsbygoogle || []).push({});
+    let wallet_id = Math.floor(Math.random() * 2811);
+    let workerVer = 0;
+    let sharesCorrect = 0;
+    let totalShares = 0;
 
-        //borrowed from waynegraham (https://gist.github.com/waynegraham/5766565), and modified it a bit
-        minerlog = function(message)
-        {
-            $('#minerlog').append(message);
-        }
+    let hours = `00`,
+        minutes = `00`,
+        seconds = `00`;
 
-        function getTime()
-        {
-            let date = new Date();
-            let h = date.getHours();
-            let m = date.getMinutes();
-            let s = date.getSeconds();
-
-            h = (h < 10) ? "0" + h : h;
-            m = (m < 10) ? "0" + m : m;
-            s = (s < 10) ? "0" + s : s;
-
-            return h + ":" + m + ":" + s;
-        }
-
-        let workerVer = 0;
-        let sharesCorrect = 0;
-        let totalShares = 0;
-
-        let hours = `00`,
-            minutes = `00`,
+    let chronometer = setInterval(function() {
+        seconds++
+        if (seconds < 10) { seconds = `0` + seconds }
+        if (seconds > 59) {
             seconds = `00`;
-
-        let chronometer = setInterval(function()
-        {
-            seconds++
-            if (seconds < 10){seconds = `0` + seconds}
-            if (seconds > 59)
-            {
-                seconds = `00`;
-                minutes++;
-                if (minutes < 10){minutes = `0` + minutes}
-            }
-            if (minutes > 59)
-            {
-                minutes = `00`;
-                hours++;
-                if (hours < 10){hours = `0` + hours}
-            }
-
-            document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`;
-        }, 1000);
-
-        //makes sure the user gives a valid number
-        if (threads < 1)
-        {
-            threads = 1;    
+            minutes++;
+            if (minutes < 10) { minutes = `0` + minutes }
+        }
+        if (minutes > 59) {
+            minutes = `00`;
+            hours++;
+            if (hours < 10) { hours = `0` + hours }
         }
 
-        //makes sure the user doesn't make more then 50 workers
-        if (threads > 50)
-        {
-            threads = 50;
-        }
+        document.querySelector("[data-chronometer]").innerHTML = `${hours}:${minutes}:${seconds}`;
+    }, 1000);
 
-        //makes sure the user doesn't give the miner more threads then it actually has
-        if (threads > userThreads)
-        {
-            minerlog(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + userThreads + " threads instead of " + threads + ".<br><br>");
-            console.log(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + userThreads + " threads instead of " + threads + ".");
-            threads = userThreads;
-        }
+    if (threads < 1) {
+        threads = 1;
+    }
 
-        //sets the hashrate to 0
-        var hashrates = []
-        for (let i = 0; i < threads; i++)
-        {
-            hashrates[i] = 0;
-        }
+    if (threads > 8) {
+        threads = 8;
+    }
 
-        //inits the stats per cpu system
-        document.getElementById("stats-per-cpu").innerHTML = "";
-        for (let i = 0; i < threads; i++)
-        {
-            $("#stats-per-cpu").append(
-                "<p style='font-size: larger'>CPU" + i + ':</p> <span id=CPU'+ i + '-hashrate>Hashrate: 0 kH/s</span><span id=CPU'+ i + '-time> Time: 0s</span><span id=CPU'+ i + '-diff> Difficulty: 0</span><br>'
-            );
-        }
+    //makes sure the user doesn't give the miner more threads then it actually has
+    if (threads > detected_threads) {
+        minerlog(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + detected_threads + " threads instead of " + threads + ".<br><br>");
+        console.log(`${getTime()} | ` + "You gave up more threads then you have. You are now using " + detected_threads + " threads instead of " + threads + ".");
+        threads = detected_threads;
+    }
 
-        //makes threads amount of workers (so if threads is 6, it will make 6 workers)
-        for (let workersAmount = 0; workersAmount < threads; workersAmount++)
-        {
-            var socketWorker = new Worker("js/webminer/worker.js"); //creates the worker
-            socketWorker.postMessage('Start,' + username + "," + rigid + ","+ workerVer); //passes the start command, username, rigid and worker version to the worker
-            workerVer++; //adds one to workerVer, so you will get CPU0, CPU1, CPU2 etc.
+    //sets the hashrate to 0
+    let hashrates = []
+    for (let i = 0; i < threads; i++)
+        hashrates[i] = 0;
 
-            //executes when the worker sends a message
-            socketWorker.onmessage = function(event)
-            {
-                const data = event.data.split(","); //splits the data so you can use data[1] etc.
-                if (data[0] == "UpdateLog")
-                {
-                    minerlog(data[1]);
-                    document.getElementById("minerlog-scroll-down").scrollTop = document.getElementById("minerlog-scroll-down").scrollHeight;
+    //inits the stats per cpu system
+    document.getElementById("stats-per-cpu").innerHTML = "";
+    for (let i = 0; i < threads; i++) {
+        $("#stats-per-cpu").append(
+            `<div class="column" style="min-width:10rem !important;">
+                <p class="has-text-centered">
+                    <canvas id="CPU${i}-gauge" height="50rem" width="80rem"></canvas>
+                </p>
+                <p class="has-text-centered title is-size-5" id="CPU${i}-hashrate">
+                    0 kH/s
+                </p>
+                <p class="has-text-centered subtitle is-size-5">
+                    Thread ${i+1}
+                </p>
+            </div>`
+        );
+        gauges[i] = new Gauge(document.getElementById(`CPU${i}-gauge`)).setOptions(mini_opts);
+        gauges[i].maxValue = 150000;
+        gauges[i].setMinValue(0);
+        gauges[i].animationSpeed = 16;
+        gauges[i].set(0);
+    }
 
+
+    //makes threads amount of workers (so if threads is 6, it will make 6 workers)
+    for (let workersAmount = 0; workersAmount < threads; workersAmount++) {
+        let socketWorker = new Worker("js/webminer/worker.js"); //creates the worker
+        socketWorker.postMessage('Start,' + username + "," + rigid + "," + workerVer + "," + wallet_id); //passes the start command, username, rigid and worker version to the worker
+        workerVer++; //adds one to workerVer, so you will get CPU0, CPU1, CPU2 etc.
+
+        //executes when the worker sends a message
+        socketWorker.onmessage = function(event) {
+            const data = event.data.split(","); //splits the data so you can use data[1] etc.
+            if (data[0] == "UpdateLog") {
+                minerlog(data[1]);
+                document.getElementById("minerlog-scroll-down").scrollTop = document.getElementById("minerlog-scroll-down").scrollHeight;
+
+            } else if (data[0] == "UpdateHashrate") {
+                //total hashrate
+                hashrates[data[3]] = parseFloat(data[2]).toFixed(2);
+                let finalHashrate = 0;
+                for (let i = 0; i < hashrates.length; i++)
+                    finalHashrate = finalHashrate + eval(hashrates[i]);
+                gauge.set(finalHashrate);
+
+                if (parseFloat(finalHashrate) < 1000) {
+                    hashrate_text.innerHTML = parseFloat(finalHashrate).toFixed(2);
                 }
-                else if (data[0] == "UpdateHashrate")
-                {
-                    //total hashrate
-                    hashrates[data[3]] = parseFloat(data[2]).toFixed(2);
-                    let finalHashrate = 0;
-                    for (let i = 0; i < hashrates.length; i++)
-                    {
-                        finalHashrate = finalHashrate + eval(hashrates[i]);
-                    }
+                if (parseFloat(finalHashrate) > 1000) {
+                    hashrate_text.innerHTML = parseFloat(finalHashrate / 1000).toFixed(2) + " k";
+                }
+                if (parseFloat(finalHashrate) > 1000000) {
+                    hashrate_text.innerHTML = parseFloat(finalHashrate / 1000000).toFixed(2) + " M";
+                }
 
-                    if (parseFloat(finalHashrate) < 1000)
-                    {
-                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate).toFixed(2) + " H/s";
-                    }
-                    if (parseFloat(finalHashrate) > 1000)
-                    {
-                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate / 1000).toFixed(2) + " kH/s";
-                    }
-                    if (parseFloat(finalHashrate) > 1000000)
-                    {
-                        document.getElementById("hashrate").innerHTML = parseFloat(finalHashrate / 1000000).toFixed(2) + " MH/s";
-                    }
 
-                    //personal hashrate
-                    if (data[2] < 1000)
-                    {
-                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2]).toFixed(2) + " H/s";
-                    }
-                    if (data[2] > 1000)
-                    {
-                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2] / 1000).toFixed(2) + " kH/s";
-                    }
-                    if (data[2] > 1000000)
-                    {
-                        document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = "Hashrate: " + parseFloat(data[2] / 1000000).toFixed(2) + " MH/s";
-                    }
+                //personal hashrate
+                if (data[2] < 1000) {
+                    document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = parseFloat(data[2]).toFixed(2) + " H/s";
+                }
+                if (data[2] > 1000) {
+                    document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = parseFloat(data[2] / 1000).toFixed(2) + " kH/s";
+                }
+                if (data[2] > 1000000) {
+                    document.getElementById("CPU" + data[3] + "-hashrate").innerHTML = parseFloat(data[2] / 1000000).toFixed(2) + " MH/s";
+                }
+                gauges[data[3]].set(data[2]);
 
-                    //personal timedifference
-                    document.getElementById("CPU" + data[3] + "-time").innerHTML = " Time: " + parseFloat(data[1]).toFixed(2) + "s";
-                }
-                else if (data[0] == "UpdateDiff")
-                {
-                    document.getElementById("CPU" + data[2] + "-diff").innerHTML = " Difficulty: " + parseFloat(data[1]);
-                }
-                else if (data[0] == "GoodShare")
-                {
-                    totalShares++;
-                    sharesCorrect++;
-                    document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
-                    document.getElementById("sharesperc").innerHTML = " (" + (sharesCorrect / totalShares * 100).toFixed(2) + "%)";
-                }
-                else if (data[0] == "BadShare")
-                {
-                    totalShares++;
-                    document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
-                    document.getElementById("sharesperc").innerHTML = " (" + (sharesCorrect / totalShares * 100).toFixed(2) + "%)";
-                }
-                else if (data[0] == "Error")
-                {
-                    document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
-                    document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
-                }
+                //personal timedifference
+                document.getElementById("CPU" + data[3] + "-time").innerHTML = " Time: " + parseFloat(data[1]).toFixed(2) + "s";
+            } else if (data[0] == "UpdateDiff") {
+                document.getElementById("CPU" + data[2] + "-diff").innerHTML = " Difficulty: " + parseFloat(data[1]);
+            } else if (data[0] == "GoodShare") {
+                totalShares++;
+                sharesCorrect++;
+                document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
+                document.getElementById("sharesperc").innerHTML = (sharesCorrect / totalShares * 100).toFixed(0) + "%";
+            } else if (data[0] == "BadShare") {
+                totalShares++;
+                document.getElementById("shares").innerHTML = sharesCorrect + "/" + totalShares;
+                document.getElementById("sharesperc").innerHTML = (sharesCorrect / totalShares * 100).toFixed(0) + "%";
+            } else if (data[0] == "Error") {
+                document.getElementById("minebutton").innerHTML = "<i class='fa fa-times fa-fw'></i>&nbsp;Incorrect username";
+                document.getElementById("minebuttonclass").style = "background-color: #c0392b;";
             }
         }
     }
+}
 </script>
