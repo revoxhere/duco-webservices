@@ -756,6 +756,8 @@ window.addEventListener('load', function() {
     // MAIN WALLET SCRIPT
     document.getElementById('loginbutton').onclick = function() {
         username = $('#usernameinput').val()
+        //trim the username field to remove extra spaces
+        username = username.replace(/^[ ]+|[ ]+$/g,'')
         password = $('#passwordinput').val()
 
         if (username && password) {
