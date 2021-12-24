@@ -372,13 +372,6 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const user_data = (username, first_open) => {
-
-        const mcus = ["ESP8266", "ESP32", "I2C", "AVR"];
-        const devices = ["ESP8266", "ESP32", "I2C", "AVR", "PC", "Web", "Android", "Phone"];
-        const colors = ["#F5515F", "#5f27cd", "#B33771", "#B33771", "#F97F51", "#009432", "#fa983a", "#fa983a"];
-        const icons = ["wemos", "#5f27cd", "arduino", "arduino", "#F97F51", "#009432", "#fa983a", "#fa983a"];
-        const fa = ["wemos", "fa fa-wifi", null, null, "fa fa-laptop", "fa fa-globe", "fa fa-mobile", "fa fa-question-circle"];
-
         fetch(`https://server.duinocoin.com/v2/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
             .then(response => response.json())
             .then(data => {
@@ -424,7 +417,7 @@ window.addEventListener('load', function() {
 
                 user_miners = data.miners;
                 total_hashrate = 0;
-                t_miners = [];
+                t_miners = []
                 if (user_miners.length) {
                     $("#nominers").fadeOut(0);
                     $("#minertable").fadeIn(0)
@@ -456,19 +449,22 @@ window.addEventListener('load', function() {
                         return 0;
                     });
 
-                    t_miners.forEach(async (miner, miner_num) => {
-                        miner_threadid = miner["threadid"];
-                        miner_hashrate = miner["hashrate"];
-                        miner_identifier = miner["identifier"];
-                        miner_software = miner["software"];
-                        miner_diff = miner["diff"];
-                        miner_rejected = miner["rejected"];
-                        miner_accepted = miner["accepted"];
-                        miner_sharetime = miner["sharetime"];
-                        miner_pool = miner["pool"];
-                        miner_algo = miner["algorithm"];
-                        miner_count = miner["threads"];
-                        miner_ki = miner["ki"];
+                    miner_num = 0;
+                    miners_html = "";
+                    for (let miner in t_miners) {
+                        miner_num += 1;
+                        miner_threadid = t_miners[miner]["threadid"];
+                        miner_hashrate = t_miners[miner]["hashrate"];
+                        miner_identifier = t_miners[miner]["identifier"];
+                        miner_software = t_miners[miner]["software"];
+                        miner_diff = t_miners[miner]["diff"];
+                        miner_rejected = t_miners[miner]["rejected"];
+                        miner_accepted = t_miners[miner]["accepted"];
+                        miner_sharetime = t_miners[miner]["sharetime"];
+                        miner_pool = t_miners[miner]["pool"];
+                        miner_algo = t_miners[miner]["algorithm"];
+                        miner_count = t_miners[miner]["threads"];
+                        miner_ki = t_miners[miner]["ki"];
 
                         if (!miner_identifier || miner_identifier === "None") {
                             miner_name = miner_software;
@@ -478,191 +474,206 @@ window.addEventListener('load', function() {
                             miner_soft = miner_software + ", ";
                         }
 
-                        let miner_type = "Unknown!";
+                        let miner_diff_str = scientific_prefix(miner_diff)
+                        let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
+
                         let percentage = 0.80;
-                        let color = "#16a085";
-                        let icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
-                        let warning_icon = "";
-                        let thread_string = (1 < miner_count) ? `(${miner_count} threads)` : "";
-
-                        const found = miner_software.match(/ESP8266|ESP32|I2C|AVR|PC|Web|Android|Phone/);
-                        const accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
-                        const miner_diff_str = scientific_prefix(miner_diff)
-
-                        if (found !== null) {
-                            miner_type = found[0];
-                            let n = devices.indexOf(found[0]);
-                            color = colors[n];
-                            if (miner_type in mcus) percentage = 0.96;
-                            if (n in [0, 2, 3]) icon = `<img src="img/${icons[n]}.gif">`;
-                            else icon = `<i class="${fa[n]}" style="color:${color}"></i> `;
-                        }
-
-                        let accept_color = "has-text-success-dark";
-                        if (accepted_rate < 95) {
-                            accept_color = "has-text-warning-dark";
-                            if (accepted_rate < 50) {
-                                accept_color = "has-text-danger-dark";
-                                warning_icon = `
-                                <span class="icon-text has-text-danger" title="Too many rejected shares">
-                                    <i class="icon fa fa-times-circle animated faa-flash"></i>
-                                </span>`;
-                            }
-                        }
-
-                        const miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
-                        let efficiency_color = "has-text-success-dark";
-                        if (miner_efficiency < 80) {
-                            efficiency_color = "has-text-warning-dark";
-                            if (miner_efficiency < 40) {
-                                efficiency_color = "has-text-danger-dark";
-                                warning_icon = `
-                                <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
-                                    <i class="icon fa fa-times-circle animated faa-flash"></i>
-                                </span>`;
-                            }
-                        }
-
-                        let eid = document.getElementById(miner_threadid);
-                        if (eid === null) {
-                            miner_html = `
-                            <th align="right"><span id="${miner_threadid}_nu" class="has-text-grey">${miner_num}</span></th>
-                            <th>
-                                <span class="icon-text">
-                                <span id="${miner_threadid}_ty" class="icon" title="Miner type: ${miner_type}">${icon}</span>
-                                </span>
-                                <span id="${miner_threadid}_na" class="has-text-weight-bold" title="Miner name">
-                                    ${miner_name}
-                                </span>
-                            </th>
-                            <th>
-                                <span id="${miner_threadid}_hr" class="has-text-weight-bold" title="Miner hashrate">
-                                ${scientific_prefix(miner_hashrate)}H/s
-                                </span>
-                                <span id="${miner_threadid}_ts" class="has-text-weight-normal" title="Threads/cores">
-                                ${thread_string}
-                                </span>
-                            </th>
-                            <th>
-                                <span id="${miner_threadid}_ar" class="${accept_color}">${accepted_rate}%</span>
-                                <span id="${miner_threadid}_ap" class="has-text-weight-normal">
-                                (${miner_accepted}/${(miner_accepted + miner_rejected)})
-                                </span>
-                            </th>
-                            <th align="center">
-                                <span id="${miner_threadid}_wi" class="icon-text">${warning_icon}</span>
-                                <span class="icon-text" style="cursor: pointer">
-                                <i class="icon fa fa-info-circle"></i>
-                                </span>
-                            </th>`;
-
-                            miner_sub_html = `
-                            <td colspan="5" style="border: none;margin:none;padding:0;">
-                                <div class="content" style="display:block;">
-                                <div class="columns is-mobile">
-                                    <div class="column">
-                                    <ul class="my-1">
-                                        <li title="Miner software">
-                                        <span id="${miner_threadid}_sw" style="color:${color}">${miner_software}</span>
-                                        </li>
-                                        <li title="Time it took to find the latest result">
-                                        <span class="has-text-weight-normal">Last share:</span>
-                                        <span id="${miner_threadid}_st" class="has-text-weight-bold">
-                                            ${round_to(2, miner_sharetime)}s
-                                        </span>
-                                        </li>
-                                        <li title="Server your miner is connected to">
-                                        <span class="has-text-weight-normal">Node: </span>
-                                        <span id="${miner_threadid}_po" class="has-text-weight-bold">${miner_pool}</span>
-                                        </li>
-                                        <li title="How hard is it to mine">
-                                        <span class="has-text-weight-normal">Difficulty: </span>
-                                        <span id="${miner_threadid}_ds" class="has-text-weight-bold">${miner_diff_str}</span>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                    <div class="column">
-                                    <ul class="my-1">
-                                        <li title="Used hashing algorithm">
-                                        <span class="has-text-weight-normal">Algorithm:</span>
-                                        <span id="${miner_threadid}_al" class="has-text-weight-bold">${miner_algo}</span>
-                                        </li>
-                                        <li title="Identifier used to separate miners in the API">
-                                        <span class="has-text-weight-normal">Thread ID:</span>
-                                        <span id="${miner_threadid}_id" class="has-text-weight-bold" >
-                                            ${miner_threadid} (${miner_num})
-                                        </span>
-                                        </li>
-                                        <li title="Identifier used to group same threads">
-                                        <span class="has-text-weight-normal">Miner type:</span>
-                                        <span id="${miner_threadid}_tp" class="has-text-weight-bold">${miner_type}</span>
-                                        </li>
-                                        <li title="Kolka efficiency drop">
-                                        <span class="has-text-weight-normal">
-                                            Earnings
-                                            <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
-                                            target="_blank">(Kolka eff. drop)</a>:
-                                        </span>
-                                        <span id="${miner_threadid}_ec" class="has-text-weight-bold ${efficiency_color}">
-                                            ${miner_efficiency}%
-                                        </span>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                </div>
-                            </td>`;
-
-                            eid = document.createElement("tr");
-                            eid.setAttribute("id", miner_threadid);
-                            eid.innerHTML = miner_html;
-
-                            let eid_sub = document.createElement("tr");
-                            eid_sub.setAttribute("id", `${miner_threadid}_sub`);
-                            eid_sub.innerHTML = miner_sub_html;
-
-                            let e_miners = document.getElementById("miners");
-                            let ref = await e_miners.insertBefore(eid, e_miners.childNodes[miner_num]);
-                            await e_miners.insertBefore(eid_sub, ref.nextSibling);
-
+                        let miner_type = "Other";
+                        if (miner_software.includes("ESP8266")) {
+                            icon = `<img src="img/wemos.gif">`;
+                            color = "#F5515F";
+                            miner_type = "ESP8266";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("ESP32")) {
+                            color = "#5f27cd";
+                            icon = `<i class="fa fa-wifi" style="color:${color}"></i>`;
+                            miner_type = "ESP32";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("I2C")) {
+                            icon = `<img src="img/arduino.gif">`;
+                            color = "#B33771";
+                            miner_type = "AVR (I²C)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("AVR")) {
+                            icon = `<img src="img/arduino.gif">`;
+                            color = "#B33771";
+                            miner_type = "AVR (Normal)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("PC")) {
+                            color = "#F97F51";
+                            icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
+                            miner_type = "PC (Normal)";
+                        } else if (miner_software.includes("Web")) {
+                            color = "#009432";
+                            icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
+                            miner_type = "PC (Web)";
+                        } else if (miner_software.includes("Android") || miner_software.includes("Phone")) {
+                            color = "#fa983a";
+                            icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
+                            miner_type = "Mobile";
                         } else {
-                            let e;
-                            document.getElementById(`${miner_threadid}_nu`).textContent = miner_num;
-                            e = document.getElementById(`${miner_threadid}_ty`);
-                            e.setAttribute('title', `Miner type: ${miner_type}`);
-                            e.textContent = miner_type;
-
-                            document.getElementById(`${miner_threadid}_na`).textContent = miner_name
-                            document.getElementById(`${miner_threadid}_hr`).textContent = `${scientific_prefix(miner_hashrate)} H / s`;
-                            document.getElementById(`${miner_threadid}_ts`).textContent = thread_string;
-
-                            e = document.getElementById(`${miner_threadid}_ar`);
-                            e.className = accept_color;
-                            e.textContent = accepted_rate;
-
-                            document.getElementById(`${miner_threadid}_ap`).textContent = `(${miner_accepted}/${(miner_accepted + miner_rejected)})`;
-                            document.getElementById(`${miner_threadid}_wi`).textContent = warning_icon;
-
-                            e = document.getElementById(`${miner_threadid}_sw`);
-                            e.style.color = color;
-                            e.textContent = miner_software;
-
-                            document.getElementById(`${miner_threadid}_st`).textContent = `${round_to(2, miner_sharetime)}s`;
-                            document.getElementById(`${miner_threadid}_po`).textContent = miner_pool;
-                            document.getElementById(`${miner_threadid}_ds`).textContent = miner_diff_str;
-                            document.getElementById(`${miner_threadid}_al`).textContent = miner_algo;
-                            document.getElementById(`${miner_threadid}_id`).textContent = `${miner_threadid} (${miner_num})`;
-                            document.getElementById(`${miner_threadid}_tp`).textContent = miner_type;
-
-                            e = document.getElementById(`${miner_threadid}_ec`);
-                            e.className = `has-text-weight-bold ${efficiency_color}`;
-                            e.textContent = `${miner_efficiency}%`;
+                            color = "#16a085";
+                            icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
+                            miner_type = "Unknown!";
                         }
-                    });
 
-                    const e_miners = document.getElementById("miners");
-                    while (user_miners.length * 2 + 1 < e_miners.childNodes.length) e_miners.removeChild(e_miners.lastChild);
+                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
+                        let efficiency_color = "has-text-warning-dark";
+                        if (miner_efficiency < 40) {
+                            efficiency_color = "has-text-danger-dark";
+                        } else if (miner_efficiency > 80) {
+                            efficiency_color = "has-text-success-dark";
+                        }
 
+
+                        let accept_color = "has-text-warning-dark";
+                        if (accepted_rate < 50) {
+                            accept_color = "has-text-danger-dark";
+                        } else if (accepted_rate > 95) {
+                            accept_color = "has-text-success-dark";
+                        }
+
+                        let thread_string = "";
+                        if (miner_count > 1) {
+                            thread_string = `(${miner_count} threads)`;
+                        }
+
+                        let warning_icon = "";
+                        if (miner_efficiency < 40) {
+                            warning_icon = `
+                        <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
+                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        </span>`
+                        } else if (accepted_rate < 50) {
+                            warning_icon = `
+                        <span class="icon-text has-text-danger" title="Too many rejected shares">
+                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        </span>`
+                        }
+
+                        miners_html += `
+                            <tr>
+                                <th align="right">
+                                        <span class="has-text-grey">
+                                            ${miner_num}
+                                        </span>
+                                </th>
+                                <th>
+                                        <span class="icon-text">
+                                            <span class="icon" title="Miner type: ${miner_type}">
+                                                ${icon}
+                                            </span>
+                                        </span>
+                                        <span class="has-text-weight-bold" title="Miner name">
+                                            ${miner_name}
+                                        </span>
+                                </th>
+                                <th>
+                                        <span class="has-text-weight-bold" title="Miner hashrate">
+                                            ${scientific_prefix(miner_hashrate)}H/s
+                                        </span>
+                                        <span class="has-text-weight-normal" title="Threads/cores">
+                                            ${thread_string}
+                                        </span>
+                                </th>
+                                <th>
+                                    <span class="${accept_color}">
+                                        ${accepted_rate}%
+                                    </span>
+                                    <span class="has-text-weight-normal">
+                                        (${miner_accepted}/${(miner_accepted+miner_rejected)})
+                                    </span>
+                                </th>
+                                <th align="center">
+                                        <span class="icon-text">
+                                            ${warning_icon}
+                                        </span>
+                                        <span class="icon-text" style="cursor: pointer">
+                                            <i class="icon fa fa-info-circle"></i>
+                                        </span>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="border: none;margin:none;padding:0;">
+                                    <div class="content" style="display:none;">
+                                        <div class="columns is-mobile">
+                                            <div class="column">
+                                                <ul class="my-1">
+                                                    <li title="Miner software">
+                                                        <span style="color:${color}">
+                                                            ${miner_software}
+                                                        </span>
+                                                    </li>
+                                                    <li title="Time it took to find the latest result">
+                                                        <span class="has-text-weight-normal">
+                                                            Last share:
+                                                        </span>
+                                                        <span class="has-text-weight-bold">
+                                                            ${round_to(2, miner_sharetime)}s
+                                                        </span>
+                                                    </li>
+                                                    <li title="Server your miner is connected to">
+                                                        <span class="has-text-weight-normal">
+                                                            Node: 
+                                                        </span>
+                                                        <span class="has-text-weight-bold">
+                                                            ${miner_pool}
+                                                        </span>
+                                                    </li>
+                                                    <li title="How hard is it to mine">
+                                                        <span class="has-text-weight-normal">
+                                                            Difficulty: 
+                                                        </span>
+                                                        <span class="has-text-weight-bold">
+                                                            ${miner_diff_str}
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="column">
+                                                <ul class="my-1">
+                                                    <li title="Used hashing algorithm">
+                                                        <span class="has-text-weight-normal">
+                                                            Algorithm:
+                                                        </span>
+                                                        <span class="has-text-weight-bold">
+                                                            ${miner_algo}
+                                                        </span>
+                                                    </li>
+                                                    <li title="Identifier used to separate miners in the API">
+                                                        <span class="has-text-weight-normal">
+                                                            Thread ID:
+                                                        </span>
+                                                        <span class="has-text-weight-bold" >
+                                                            ${miner_threadid} (${miner})
+                                                        </span>
+                                                    </li>
+                                                    <li title="Identifier used to group same threads">
+                                                        <span class="has-text-weight-normal">
+                                                            Miner type:
+                                                        </span>
+                                                        <span class="has-text-weight-bold">
+                                                            ${miner_type}
+                                                        </span>
+                                                    </li>
+                                                    <li title="Kolka efficiency drop">
+                                                        <span class="has-text-weight-normal">
+                                                            Earnings
+                                                            <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
+                                                               target="_blank">(Kolka eff. drop)</a>:
+                                                        </span>
+                                                        <span class="has-text-weight-bold ${efficiency_color}">
+                                                            ${miner_efficiency}%
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>`
+                    }
+                    $("#miners").html(miners_html);
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
                 } else {
