@@ -1,431 +1,287 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <!-- Browser standards -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Duino-Coin | Web Miner</title>
-    <!-- SEO Stuff -->
-    <meta name="description" content="Duino-Coin Web Miner">
-    <meta name="keywords" content="miner, webminer, duinocoin, duco, duco webminer, web miner">
-    <link rel="canonical" href="https://server.duinocoin.com/webminer.html">
+    <link rel="canonical" href="https://server.duinocoin.com/" />
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#f0932b">
-    <!-- Open Graph Metadata -->
-    <meta property="og:site_name" content="Duino-Coin Web Miner">
-    <meta property="og:site" content="https://server.duinocoin.com/webminer.html">
-    <meta property="og:title" content="Duino-Coin Web Miner">
-    <meta property="og:description" content="Duino-Coin Web Miner">
-    <meta property="og:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
-    <meta property="og:url" content="https://server.duinocoin.com/webminer.html">
+    <!-- Favicons -->
+    <meta name="theme-color" content="#EE5A24">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png?v=3">
+    <link rel="manifest" href="favicons/site.webmanifest?v=3">
+    <link rel="mask-icon" href="favicons/safari-pinned-tab.svg?v=3" color="#5bbad5">
+    <link rel="shortcut icon" href="favicons/favicon.ico?v=3">
+    <!-- Primary Meta Tags -->
+    <title>Official Duino-Coin web miner</title>
+    <meta name="title" content="Official Duino-Coin web miner">
+    <meta name="description" content="Official Duino-Coin online (web) miner powered by JavaScript. Use any internet-enabled device for mining.">
+    <meta name="keywords" content="duino, duinocoin, arduino, crypto, mining, blockchain, cryptocurrency">
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <!-- Twitter Metadata -->
-    <meta name="twitter:title" content="Duino-Coin Web Miner">
-    <meta name="twitter:description" content="Duino-Coin Web Miner">
-    <meta name="twitter:image" content="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
-    <meta name="twitter:site" content="@CoinDuino">
-    <meta name="twitter:creator" content="@CoinDuino">
-    <link rel="icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
-    <link rel="shortcut icon" href="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true" type="image/png">
-    <!-- Preload Background Images -->
-    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-1.jpg">
-    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-2.jpg">
-    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/yenn-mountains-1.jpg">
-    <link rel="preload" as="image" href="https://wallet.duinocoin.com/backgrounds/wallet/hge-sea-1.jpg">
-    <!-- Bulma -->
-    <link rel="preload" href="https://wallet.duinocoin.com/css/bulma.min.css" as="style">
-    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/bulma.min.css">
-    <link rel="preload" href="https://wallet.duinocoin.com/css/bulma-prefers-dark.min.css" as="style">
-    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/bulma-prefers-dark.min.css">
-    <link rel="preload" href="https://wallet.duinocoin.com/css/blur.css" as="style">
-    <link rel="stylesheet" type="text/css" href="https://wallet.duinocoin.com/css/blur.css">
-    <style>
-        body {
-            margin: 0 !important;
-            min-height: 100vh;
-            padding: 3vw !important;
-            background-size: cover !important;
-            background-attachment: fixed !important;
-            background-repeat: no-repeat !important;
-        }
-        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 168, 16, 0.9), whitesmoke;
-    font-family: 'Lato', sans-serif;
-}
-
-*::-webkit-scrollbar {
-    width: 7px;
-}
-
-*::-webkit-scrollbar-track {
-    background: rgba(128, 128, 128, 0.2);
-    border-radius: 20px;
-}
-
-*::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 168, 16, 0.9);
-    border-radius: 20px;
-}
-
-.input, .button, .notification {
-    border-radius: 20px !important;
-}
-
-a,
-.button,
-.input {
-    transition: 0.2s;
-}
-
-.file-cta, textarea {
-    border-radius: 20px !important;
-}
-
-.file-cta {
-    width: 100%;
-}
-
-.is-primary {
-    background: linear-gradient(50deg, #ff7a3e, #ff4962, #ff2780) !important;
-}
-
-.navbar-item {
-    background: none !important;
-}
-
-
-.blur {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border-radius: 20px !important;
-}
-
-.navbar {
-    width: 100%;
-    position: fixed;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-}
-
-.section>.container {
-    margin-top: 2.5em !important;
-}
-
-.panel-heading {
-    border-radius: 20px 20px 0 0;
-}
-
-table {
-    background: transparent !important;
-}
-
-.is-duco {
-    box-shadow: none !important;
-    background: linear-gradient(135deg, #ff7a3e, #ff4962, #ff2780) !important;
-    display: block !important;
-    border-radius: 25px !important;
-    outline: none !important;
-    border: none !important;
-    background: linear-gradient(to left, #ff7a3e, #ff4962, #ff2780) !important;
-    background-size: 300% !important;
-    color: #fff !important;
-    cursor: pointer !important;
-    transition: 0.6s !important;
-}
-
-.is-duco:hover,
-.is-search:hover {
-    background-position: right !important;
-}
-
-.is-search {
-    box-shadow: none !important;
-    background: linear-gradient(135deg, #ff2780, #ff4962, #ff7a3e) !important;
-    display: block !important;
-    border-radius: 0 25px 25px 0 !important;
-    outline: none !important;
-    border: none !important;
-    background: linear-gradient(to left, #ff2780, #ff4962, #ff7a3e) !important;
-    background-size: 300% !important;
-    color: #fff !important;
-    cursor: pointer !important;
-    transition: 0.6s !important;
-}
-
-@media (prefers-color-scheme: dark) {
-    .box {
-        background-color: rgba(0, 0, 0, 0.5) !important;
-        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 1) !important;
-    }
-
-    .blur {
-        background-color: rgba(0, 0, 0, 0.7) !important;
-        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
-        border: 1px solid rgba(255, 255, 255, 0.125) !important;
-    }
-
-    .navbar {
-        background-color: rgba(0, 0, 0, 0.7) !important;
-        box-shadow: 0 8px 20px 0 rgba(32, 32, 32, 0.6) !important;
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        transition: background-color 5000s ease-in-out 0s;
-        -webkit-text-fill-color: #ddd !important;
-        background-color: transparent !important;
-    }
-}
-
-#transactionstext4,
-#transactionstext3 {
-    overflow: hidden;
-}
-
-#transactionstext4:before,
-#transactionstext3:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    pointer-events: none;
-    height: 10em;
-    width: 10%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0), #070708);
-}
-
-#transactionstext3:before {
-    right: 50%;
-}
-
-.ducoinput {
-    border: 1px solid #ff7a3e !important;
-}
-
-.ducoinput:focus {
-    box-shadow: 0 0 10px #ff7a3e;
-}
-
-@media (prefers-color-scheme: light) {
-
-    #transactionstext4:before,
-    #transactionstext3:before {
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0), #F9F9F9);
-    }
-
-    .blur {
-        background-color: rgba(255, 255, 255, 0.65) !important;
-        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
-        border: 1px solid rgba(209, 213, 219, 0.3) !important;
-    }
-
-    .navbar {
-        background-color: rgba(255, 255, 255, 0.65) !important;
-        box-shadow: 0 8px 20px 0 rgba(128, 128, 128, 0.6) !important;
-    }
-
-    html {
-        background-color: #F3F3F3;
-    }
-
-    input:-webkit-autofill,
-    input:-webkit-autofill:hover,
-    input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        transition: background-color 5000s ease-in-out 0s;
-        -webkit-text-fill-color: #111 !important;
-        background-color: transparent !important;
-    }
-}
-    </style>
-    <!-- Font Awesome and jQuery-->
-    <script type="text/javascript" src="https://wallet.duinocoin.com/js/fontawesome.js"></script>
-    <script type="text/javascript" src="https://wallet.duinocoin.com/js/jquery-3.6.0.min.js"></script>
+    <meta property="og:url" content="https://server.duinocoin.com/">
+    <meta property="og:title" content="Official Duino-Coin web miner">
+    <meta property="og:description" content="Official Duino-Coin online (web) miner powered by JavaScript. Use any internet-enabled device for mining.">
+    <meta property="og:image" content="/assets/webminer.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://server.duinocoin.com/">
+    <meta property="twitter:title" content="Official Duino-Coin web miner">
+    <meta property="twitter:description" content="Official Duino-Coin online (web) miner powered by JavaScript. Use any internet-enabled device for mining.">
+    <!-- CSS -->
+    <link rel="preload" href="assets/mystyles.css" as="style">
+    <link rel="stylesheet" type="text/css" href="assets/mystyles.css">
+    <!-- Jquery and FA -->
+    <link rel="preload" href="assets/js/fontawesome.js" as="script">
+    <script src="assets/js/fontawesome.js"></script>
+    <link rel="preload" href="assets/js/jquery.min.js" as="script">
+    <script src="assets/js/jquery.min.js"></script>
+    <!-- Others -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js"></script>
+    <link rel="preload" href="https://bernii.github.io/gauge.js/dist/gauge.min.js" as="script">
     <script src="https://bernii.github.io/gauge.js/dist/gauge.min.js"></script>
-</head>
-<script>
-    /* GLOBAL JS */
-    window.addEventListener('load', function () {
-        const bg_list = [
-            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-1.jpg',
-            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-sea-2.jpg',
-            'https://wallet.duinocoin.com/backgrounds/wallet/yenn-mountains-1.jpg',
-            'https://wallet.duinocoin.com/backgrounds/wallet/hge-sea-1.jpg'
-        ]
-        const num = Math.floor(Math.random() * bg_list.length)
-        document.body.background = bg_list[num];
+    <style>
+        a>figure {
+        transition: 0.2s all;
+    }
 
-        $("#loader-wrapper").fadeOut(); // After page is loaded
-    });
-</script>
+    a>figure:hover {
+        transform: scale(1.05);
+    }
+
+    .navbar-item:hover {
+        color: #ff9f43;
+    }
+
+    .button:hover:not(.workers) {
+        transform: scale(1.05);
+    }
+
+    #transactionstext1 {
+        overflow-wrap: break-word;
+    }
+
+    #wavecontainer {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    #waveduco {
+        height: 12rem;
+        color: white;
+        z-index: 1;
+        position: absolute;
+        display: table;
+        margin: 0 auto;
+        animation: scale 2.73s ease-in-out infinite;
+    }
+
+    #devices {
+        transition: opacity 0.5s;
+    }
+
+    .hide {
+        opacity: 0 !important;
+    }
+
+    @keyframes scale {
+        0% {
+            transform: scale(1.3);
+        }
+
+        30% {
+            transform: scale(0.9);
+        }
+
+        85% {
+            transform: scale(1.3);
+        }
+
+        100% {
+            transform: scale(1.3);
+        }
+    }
+    </style>
+</head>
 
 <body>
-    <div class="container">
-        <section class="container">
-            <div class="box blur">
-                <div class="columns">
-                    <div class="column is-narrow">
-                        <p class="title has-text-weight-normal">
-                            <img class="icon is-medium" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/WebMiner.png?raw=true">
-                            <span class="has-text-weight-bold">
-                                Duino-Coin
-                            </span>
-                            Web Miner
-                            <small class="has-text-weight-light">
-                                2.8
-                            </small>
-                        </p>
-                        <p class="subtitle is-size-6">
-                            MIT licensed • 2019-2021 the Duino-Coin Project
-                            <br>This page is
-                            <span class="has-text-weight-bold">
-                                open-source
-                            </span> - you can
-                            <span class="has-text-weight-bold">
-                                improve it
-                                <a href="https://github.com/revoxhere/duco-webservices">
-                                    on GitHub
-                                </a>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="column">
-                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
-                    </div>
-                </div>
-                <p class="notification is-info is-size-6">
-                    <button class="delete" onclick="this.parentElement.style.display='none'"></button>
-                    <i class="fa fa-info-circle"></i>
-                    <b>Tip:</b>
-                    Make sure you stay on the website during mining - most browsers suspend execution of JavaScript when the tab isn't active
-                </p>
-                <form>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="control has-icons-left">
-                                <input class="input is-fullwidth has-icons" type="text" id="usernameinput" placeholder="Duino-Coin Username" name="username">
-                                <span class="icon is-left" style="color: #777">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="control has-icons-left">
-                                <input class="input is-fullwidth has-icons" type="text" id="threadsinput" placeholder="Mining threads" name="threads">
-                                <span class="icon is-left" style="color: #777">
-                                    <i class="fa fa-hashtag"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="control has-icons-left">
-                                <input class="input is-fullwidth has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
-                                <span class="icon is-left" style="color: #777">
-                                    <i class="fa fa-comment"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <button type="submit" class="button is-fullwidth" id="minebuttonclass">
-                                <span id="minebutton">Start mining</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <div class="columns is-multiline">
-                    <div class="column">
-                        <div class="box blur" style="height:100%">
-                            <p class="heading has-text-centered is-size-6">
-                                <i class="fa fa-bolt fa-fw" style="color:#eb4d4b;"></i>
-                                HASHRATE
-                            </p>
-                            <p class="has-text-centered">
-                                <canvas id="gauge"></canvas>
-                                <p class="title has-text-centered" id="hashrate">
-                                    0
-                                </p>
-                                <p class="subtitle has-text-centered mb-0">
-                                    Calculations per second
-                                </p>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="column is-one-third">
-                        <div class="columns is-multiline">
-                            <div class="column is-full">
-                                <div class="box blur" style="height:100%">
-                                    <p class="heading has-text-centered is-size-6">
-                                        <i class="fa fa-check fa-fw" style="color:#6ab04c;"></i>
-                                        CORRECT SHARES (<strong id="sharesperc">0%</strong>)
-                                    </p>
-                                    <p class="title has-text-centered" id="shares">
-                                        0/0
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="column is-full">
-                                <div class="box blur" style="height:100%">
-                                    <p class="heading has-text-centered mb-3 is-size-6">
-                                        <i class="fa fa-list fa-fw" style="color:#f39c12;"></i>
-                                        MINER LOG
-                                    </p>
-                                    <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; resize: vertical; height: 5rem">
-                                        <span class="has-text-grey" id="minerlog">Awaiting input<br></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="box blur" style="height:100%">
-                            <p class="heading has-text-centered is-size-6 mb-3">
-                                <i class="far fa-chart-bar" style="color:#2980b9;"></i>
-                                Thread performance
-                            </p>
-                            <div class="columns is-multiline" id="stats-per-cpu">
-                                <p class="title has-text-centered m-5 is-size-5">
-                                    Start mining to see thread hashrates
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="buttons">
-                    <a href="https://wallet.duinocoin.com" class="button is-secondary">
-                        <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
-                        <span>Duino-Coin Web Wallet</span>
-                    </a>
-                    <a href="https://github.com/revoxhere/duino-coin" class="button is-secondary">
-                        <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
-                        <span>GitHub</span>
-                    </a>
-                    <p disabled class="button is-size-6 has-text-right">
-                        <span>
-                            <strong data-chronometer>
-                                00:00:00
-                            </strong>
-                            elapsed
+    <div id="pageloader">
+        <div id="loader"></div>
+    </div>
+    <section class="section">
+        <div class="container">
+            <div class="columns mt-3">
+                <div class="column is-narrow">
+                    <p class="title is-size-1 has-text-weight-normal">
+                        <span class="icon-text">
+                            <span id="svgContainer" class="icon is-large"></span>
                         </span>
+                        <span class="has-text-weight-bold">
+                            Duino-Coin
+                        </span>
+                        <span>
+                            Web Miner
+                        </span>
+                        <small class="has-text-weight-light">
+                            v3
+                        </small>
+                    </p>
+                    <p class="subtitle is-size-6">
+                        MIT licensed • 2019-2021 the Duino-Coin Project
+                        <br>This page is
+                        <span class="has-text-weight-bold">
+                            open-source
+                        </span>
+                        - you can
+                        improve it on 
+                        <a href="https://github.com/revoxhere/duco-webservices">
+                            GitHub
+                        </a>
                     </p>
                 </div>
+                <div class="column">
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle has-text-centered" style="display:block" data-ad-client="ca-pub-4670059148424169" data-ad-slot="4687652378" data-ad-format="horizontal" data-full-width-responsive="false"></ins>
+                </div>
             </div>
-        </section>
-    </div>
+            <p class="notification is-info is-size-6">
+                <button class="delete" onclick="this.parentElement.style.display='none'"></button>
+                <i class="fa fa-info-circle"></i>
+                <b>Tip:</b>
+                Make sure you stay on the website during mining - most browsers suspend execution of JavaScript when the tab isn't active
+            </p>
+            <form>
+                <div class="columns">
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input is-fullwidth has-icons" type="text" id="usernameinput" placeholder="Duino-Coin Username" name="username">
+                            <span class="icon is-left" style="color: #777">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input is-fullwidth has-icons" type="text" id="threadsinput" placeholder="Mining threads" name="threads">
+                            <span class="icon is-left" style="color: #777">
+                                <i class="fa fa-hashtag"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="control has-icons-left">
+                            <input class="input is-fullwidth has-icons" type="text" id="riginput" placeholder="Rig name (optional)" name="rigid">
+                            <span class="icon is-left" style="color: #777">
+                                <i class="fa fa-comment"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <button type="submit" class="button is-fullwidth" id="minebuttonclass">
+                            <span id="minebutton">Start mining</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="columns is-multiline">
+                <div class="column">
+                    <div class="box" style="height:100%">
+                        <p class="heading has-text-centered is-size-6">
+                            <i class="fa has-text-danger fa-bolt"></i>
+                            HASHRATE
+                        </p>
+                        <p class="has-text-centered">
+                            <canvas id="gauge"></canvas>
+                            <p class="title has-text-centered" id="hashrate">
+                                0
+                            </p>
+                            <p class="subtitle has-text-centered mb-0">
+                                Calculations per second
+                            </p>
+                        </p>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <div class="columns is-multiline">
+                        <div class="column is-full">
+                            <div class="box" style="height:100%">
+                                <p class="heading has-text-centered is-size-6">
+                                    <i class="fa has-text-success fa-check"></i>
+                                    CORRECT SHARES (<strong id="sharesperc">0%</strong>)
+                                </p>
+                                <p class="title has-text-centered" id="shares">
+                                    0/0
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column is-full">
+                            <div class="box" style="height:100%">
+                                <p class="heading has-text-centered mb-3 is-size-6">
+                                    <i class="fa has-text-warning-dark fa-list"></i>
+                                    MINER LOG
+                                </p>
+                                <div id="minerlog-scroll-down" style="overflow-y: scroll; word-wrap: break-word; resize: vertical; height: 5rem">
+                                    <span id="minerlog">
+                                        Awaiting input<br>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="box" style="height:100%">
+                        <p class="heading has-text-centered is-size-6 mb-3">
+                            <i class="far has-text-info fa-chart-bar"></i>
+                            Thread performance
+                        </p>
+                        <div class="columns is-mobile is-multiline" id="stats-per-cpu">
+                            <p class="title has-text-centered m-5 is-size-5">
+                                Start mining to see thread hashrates
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="https://wallet.duinocoin.com" class="button">
+                    <img class="icon is-small" src="https://github.com/revoxhere/duino-coin/blob/master/Resources/duco.png?raw=true">
+                    <span>Duino-Coin Web Wallet</span>
+                </a>
+                <a href="https://github.com/revoxhere/duco-webservices" class="button">
+                    <i class="fab fa-fw fa-github icon is-small"></i>&nbsp;
+                    <span>GitHub</span>
+                </a>
+                <p disabled class="button is-size-6 has-text-right">
+                    <span>
+                        <strong data-chronometer>
+                            00:00:00
+                        </strong>
+                        elapsed
+                    </span>
+                </p>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>
 <script>
-//gets the username, rigid and amount of threads from the url parameters
+const pageloader = document.getElementById('loader');
+bodymovin.loadAnimation({
+    wrapper: pageloader,
+    animType: 'svg',
+    autoplay: true,
+    loop: true,
+    path: 'assets/loader.json'
+});
+// Get the username, rigid and amount of threads from the url parameters if provided
 let url = new URL(window.location);
 let username = url.searchParams.get("username");
 let rigid = url.searchParams.get("rigid");
@@ -445,43 +301,30 @@ let opts = {
     },
     limitMax: false,
     limitMin: false,
-    colorStart: '#ff7f50',
-    colorStop: '#ffa502',
+    colorStart: '#EF7A44',
     strokeColor: '#747d8c',
-    highDpiSupport: true,
-    renderTicks: {
-        divisions: 5,
-        divWidth: 1.1,
-        divLength: 0.7,
-        divColor: '#333333',
-        subDivisions: 3,
-        subLength: 0.5,
-        subWidth: 0.6,
-        subColor: '#444444'
-    }
-
+    highDpiSupport: true
 };
 
 let mini_opts = {
-    angle: 0,
+    angle: -0.5,
     lineWidth: 0.1,
     radiusScale: 1,
     pointer: {
-        length: 0.6,
-        strokeWidth: 0.05,
+        length: 0,
+        strokeWidth: 0,
         color: '#57606f'
     },
     limitMax: false,
     limitMin: false,
     colorStart: '#7bed9f',
-    colorStop: '#2ed573',
     strokeColor: '#747d8c',
-    highDpiSupport: true,
+    highDpiSupport: false,
 };
 
 gauge = new Gauge(document.getElementById("gauge")).setOptions(opts);
 gauge.setMinValue(0);
-gauge.animationSpeed = 16;
+gauge.animationSpeed = 40;
 gauge.set(0);
 
 (adsbygoogle = window.adsbygoogle || []).push({});
@@ -573,22 +416,28 @@ if (username != null && username != "" && username != undefined) {
     document.getElementById("stats-per-cpu").innerHTML = "";
     for (let i = 0; i < threads; i++) {
         $("#stats-per-cpu").append(
-            `<div class="column" style="min-width:10rem !important;">
-                <p class="has-text-centered">
-                    <canvas id="CPU${i}-gauge" height="50rem" width="80rem"></canvas>
-                </p>
-                <p class="has-text-centered title is-size-5" id="CPU${i}-hashrate">
-                    0 kH/s
-                </p>
-                <p class="has-text-centered subtitle is-size-5">
-                    Thread ${i+1}
-                </p>
+            `<div class="column" style="min-width:10rem;">
+                <div class="columns is-mobile">
+                    <div class="column is-narrow">
+                        <p class="has-text-centered chartpos">
+                            <canvas id="CPU${i}-gauge" height="50rem" width="42rem"></canvas>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <p class="title is-size-5" id="CPU${i}-hashrate">
+                            0 kH/s
+                        </p>
+                        <p class="subtitle is-size-6">
+                            Thread ${i+1}
+                        </p>
+                    </div>
+                </div>
             </div>`
         );
         gauges[i] = new Gauge(document.getElementById(`CPU${i}-gauge`)).setOptions(mini_opts);
         gauges[i].maxValue = 150000;
         gauges[i].setMinValue(0);
-        gauges[i].animationSpeed = 16;
+        gauges[i].animationSpeed = 40;
         gauges[i].set(0);
     }
 
@@ -657,4 +506,30 @@ if (username != null && username != "" && username != undefined) {
         }
     }
 }
+
+
+/* On page loaded */
+$(window).on('load', function() {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach(el => {
+            el.addEventListener('click', () => {
+                const target = el.dataset.target;
+                const $target = document.getElementById(target);
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
+        });
+    }
+    $("#pageloader").fadeOut();
+
+    var svgContainer = document.getElementById('svgContainer');
+    var animItem = bodymovin.loadAnimation({
+        wrapper: svgContainer,
+        animType: 'svg',
+        autoplay: true,
+        loop: false,
+        path: 'assets/pick.json'
+    });
+});
 </script>
