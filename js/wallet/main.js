@@ -821,7 +821,7 @@ window.addEventListener('load', function() {
                             user_data(username, true);
                             window.setInterval(() => {
                                 user_data(username, false);
-                            }, 10 * 1000);
+                            }, 15 * 1000);
 
                             setTimeout(function() {
                                 $('#form').hide("drop", { direction: "down" }, 500, function() {
