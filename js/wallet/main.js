@@ -372,7 +372,7 @@ window.addEventListener('load', function() {
 
     //USER DATA FROM API
     const user_data = (username, first_open) => {
-        fetch(`https://server.duinocoin.com/v2/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
+        fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
             .then(response => response.json())
             .then(data => {
                 data = data.result;
