@@ -844,7 +844,7 @@ window.addEventListener('load', function() {
                                 });
                             }, 350);
                         } else {
-                            if (data.message === "This user doesn't exist") {
+                            if (data.message.includes("This user doesn't exist")) {
                                 $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                             } else {
                                 $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
