@@ -798,6 +798,8 @@ window.addEventListener('load', function() {
 
     $('#submit').click(function() {
         username = $('#usernameinput').val()
+        //trim the username field to remove extra spaces
+        username = username.replace(/^[ ]+|[ ]+$/g,'')
         password = $('#passwordinput').val()
 
         if (username && password) {
