@@ -890,3 +890,25 @@ window.addEventListener('load', function() {
         }
     }, 500)
 });
+
+// Fix the overflow on modal close
+
+let Modals = querySelectorAll('.modal')
+
+Modals.forEach((modal) => {
+    // If user clicks the X button
+
+    modal.querySelector('.modal-close').onclick = function() {
+        e.preventDefault();
+        document.querySelector('html').classList.remove('is-clipped');
+        modal.classList.remove('is-active');
+    }
+
+    // If user clicks the background
+
+    modal.querySelector('.modal-background').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector('html').classList.remove('is-clipped');
+        modal.classList.remove('is-active');
+    });
+});
