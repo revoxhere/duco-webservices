@@ -62,6 +62,7 @@ register.onclick = function(event) {
                         document.querySelector('html').classList.remove('is-clipped');
                         modal_error.classList.remove('is-active');
                     }
+                    hcaptcha.reset();
                 }
             });
     } else {

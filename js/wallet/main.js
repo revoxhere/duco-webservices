@@ -151,11 +151,6 @@ function send() {
                         `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_error.classList.add('is-active');
-
-                    document.querySelector('#modal_error .delete').onclick = function() {
-                        document.querySelector('html').classList.remove('is-clipped');
-                        modal_error.classList.remove('is-active');
-                    }
                 }
             })
     }
@@ -891,9 +886,9 @@ window.addEventListener('load', function() {
     }, 500)
 });
 
-// Fix the overflow on modal close
+// Fix the overflow on modal close (Fix the mistake)
 
-let Modals = querySelectorAll('.modal')
+let Modals = document.querySelectorAll('.modal');
 
 Modals.forEach((modal) => {
     // If user clicks the X button
