@@ -67,7 +67,7 @@ register.onclick = function(event) {
             })
             .fail(function() { 
             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                "<b>Don`t close the website tab.</b> Ask for help on the Discord [preferably to LDarki]<br/>" +
+                "<b>Don`t close this website.</b> Ask for help on the Discord<br/>" +
                 "With a ScreenShot of the developers console<br/>" + 
                 "(f12 > Console) - (ctrl + shift + c > Console)</p>";
             document.querySelector('html').classList.add('is-clipped');
