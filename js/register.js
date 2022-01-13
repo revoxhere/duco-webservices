@@ -64,7 +64,20 @@ register.onclick = function(event) {
                     }
                     hcaptcha.reset();
                 }
-            });
+            })
+            .fail(function() { 
+            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                "<b>Don`t close the website tab.</b> Ask for help on the Discord [preferably to LDarki]<br/>" +
+                "With a ScreenShot of the developers console<br/>" + 
+                "(f12 > Console) - (ctrl + shift + c > Console)</p>";
+            document.querySelector('html').classList.add('is-clipped');
+            modal_error.classList.add('is-active');
+
+            document.querySelector('#modal_error .delete').onclick = function() {
+                document.querySelector('html').classList.remove('is-clipped');
+                modal_error.classList.remove('is-active');
+            }
+        });
     } else {
         return false;
     }
