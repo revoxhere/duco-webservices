@@ -14,6 +14,9 @@ let notify_shown = false;
 let transaction_limit = 5;
 let first_launch = true;
 
+let start_time = Date.now();
+let start_balance = 0;
+
 const MD5 = function(d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
 function M(d) { for (var _, m = "0123456789ABCDEF", f = "", r = 0; r < d.length; r++) _ = d.charCodeAt(r), f += m.charAt(_ >>> 4 & 15) + m.charAt(15 & _); return f }
@@ -151,6 +154,11 @@ function send() {
                         `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_error.classList.add('is-active');
+
+                    document.querySelector('#modal_error .delete').onclick = function() {
+                        document.querySelector('html').classList.remove('is-clipped');
+                        modal_error.classList.remove('is-active');
+                    }
                 }
             })
     }
@@ -220,22 +228,23 @@ function round_to(precision, value) {
 
 /* Accurate daily calculator by Lukas */
 function calculdaily(newb, oldb) {
-    //Duco made in last seconds
-    let ducomadein = newb - oldb;
-    let time_passed = (Date.now() - start) / 1000;
-    let daily = 86400 * ducomadein / time_passed;
-
-    // Large values mean transaction or big block - ignore this value
-    if (daily > 0 && daily < 500) {
-        daily = round_to(1, daily)
-        update_element("estimatedprofit", `
+    // Ducos since start / time * day
+    if (start_balance == 0) {
+        start_balance = newb;
+        start_time = Date.now();
+    } else {
+        let daily = 86400000 * (newb - start_balance) / (Date.now() - start_time);
+        // Large values mean transaction or big block - ignore this value
+        if (daily > 0 && daily < 500) {
+            daily = round_to(2, daily)
+            update_element("estimatedprofit", `
                 <i class="far fa-star"></i>
                 Earning about <b>` + daily + ` ᕲ</b> daily`);
 
-        avgusd = round_to(3, daily * duco_price);
-        update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
+            avgusd = round_to(3, daily * duco_price);
+            update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
+        }
     }
-    start = Date.now()
 }
 
 let adBlockEnabled = false
