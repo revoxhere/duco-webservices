@@ -16,7 +16,7 @@ if(usern && hash)
                     document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
                         `${data.result}<br/>
                         New Password: <b>${data.password}</b><br/><br/>
-                        <p>Please consider change the password.</p>`;
+                        <p>Please consider changing the password.</p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_success.classList.add('is-active');
 
