@@ -47,7 +47,7 @@ if(usern && hash) {
             }
         }).catch(err => {
             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                `Maybe you are rate-limited.<br/>
+                `Server didn't respond properly or you are rate-limited for sending too many requests.<br/>
                 <b>Please try again later.</b><br/><br/>
                 ${err}`;
 
