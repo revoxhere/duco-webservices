@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <title>Duino-Coin | Web Wallet</title>
+    <meta name="apple-mobile-web-app-title" content="Duino-Coin | Web Wallet">
+    <meta name="application-name" content="Duino-Coin | Web Wallet">
+    <meta name="twitter:title" content="Duino-Coin | Web Wallet">
+    <meta property="og:title" content="Duino-Coin | Web Wallet">
+    <meta name="description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="twitter:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta property="og:description" content="Official online wallet for Duino-Coin (DUCO)">
+    <meta name="keywords" content="Duino-Coin, duco, Duino Coin, DUCO">
+    <meta name="author" content="revox from the Duino-Coin Team">
+    <meta property="og:url" content="https://wallet.duinocoin.com">
+    <meta name="msapplication-TileColor" content="#f0932b">
+    <meta name="theme-color" content="#f0932b">
+    <meta name="twitter:site" content="@DuinoCoin">
+    <meta name="twitter:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta property="og:image:url" content="https://wallet.duinocoin.com/img/banner_wallet.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Bulma -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preload" href="css/bulma.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma.min.css" type="text/css">
+    <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
+    <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css">
+    <!-- Preload Background Images -->
+    <link rel="preload" as="image" href="img/yenn-sea-1.jpg">
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
+        integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <style>
+        #background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-position: 50% 50%;
+            background-image: url("img/yenn-sea-1.jpg");
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background"></div>
+    <section class="hero is-fullheight">
+        <div id="modal_error" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-danger">
+                    <p class="modal-card-title"><b style="color: white">Error</b></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <p></p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div id="modal_success" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head has-background-success">
+                    <p class="modal-card-title"><b style="color: white">Success</b></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <p></p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="hero-body is-align-self-center">
+            <div class="container" style="max-width:30em">
+                <div class="login-content" class="mt-0">
+                    <form class="box blur" id="form">
+                        <p class="title is-size-5 mb-0">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
+                                </span>
+                                <span>
+                                    <span class="has-text-weight-bold">
+                                        Duino-Coin
+                                    </span>
+                                    <span class="has-text-weight-light">
+                                        Web Wallet
+                                    </span>
+                                </span>
+                            </span>
+                        </p>
+                        <br>
+                        <p class="title is-size-3 mb-5">
+                            <span class="has-text-weight-bold">
+                                Password
+                            </span>
+                            <span class="has-text-weight-normal">
+                                Recovery
+                            </span>
+                        </p>
+                        <div class="input-div one" id="usernamediv">
+                            <div class="i">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Username</h5>
+                                <input id="usernameinput" type="text" class="input" autocomplete="username" required>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" id="submit" class="btn button">Reset Password</button>
+                        </div>
+                        <a href="index.html">Back to login</a>
+                        <a href="register.html">Don't have a wallet?</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+<link rel="preload" as="script" href="js/recovery.js">
+<script type="text/javascript" src="js/recovery.js"></script>
