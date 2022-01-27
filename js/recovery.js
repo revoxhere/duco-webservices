@@ -14,8 +14,8 @@ if(usern && hash)
                 if(data.result.includes("new password"))
                 {
                     document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
-                        `<b>${data.result}</b><br/>
-                        <b>New Password: ${data.password}</b><br/><br/>
+                        `${data.result}<br/>
+                        New Password: <b>${data.password}</b><br/><br/>
                         <p>Please consider change the password.</p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_success.classList.add('is-active');
@@ -50,7 +50,7 @@ if(usern && hash)
             }        
         }).catch(err => {
             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                `<b>Maybe you are rate-limited.</b><br/>
+                `Maybe you are rate-limited.<br/>
                 <b>Please try again later.</b><br/><br/>
                 ${err}`;
 
@@ -110,7 +110,7 @@ const generatePassword = (e) => {
             }   
         }).catch(err => {
             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                `<b>Maybe you are rate-limited.</b><br/>
+                `Maybe you are rate-limited.<br/>
                 <b>Please try again later.</b><br/><br/>
                 ${err}`;
 
