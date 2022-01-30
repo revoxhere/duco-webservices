@@ -17,7 +17,7 @@ let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
 
-const MD5 = function(d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
+const MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
 function M(d) { for (var _, m = "0123456789ABCDEF", f = "", r = 0; r < d.length; r++) _ = d.charCodeAt(r), f += m.charAt(_ >>> 4 & 15) + m.charAt(15 & _); return f }
 
@@ -32,7 +32,8 @@ function Y(d, _) {
             t = f,
             g = r,
             e = i;
-        f = md5_ii(f = md5_ii(f = md5_ii(f = md5_ii(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_ff(f = md5_ff(f = md5_ff(f = md5_ff(f, r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 0], 7, -680876936), f, r, d[n + 1], 12, -389564586), m, f, d[n + 2], 17, 606105819), i, m, d[n + 3], 22, -1044525330), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 4], 7, -176418897), f, r, d[n + 5], 12, 1200080426), m, f, d[n + 6], 17, -1473231341), i, m, d[n + 7], 22, -45705983), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 8], 7, 1770035416), f, r, d[n + 9], 12, -1958414417), m, f, d[n + 10], 17, -42063), i, m, d[n + 11], 22, -1990404162), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 12], 7, 1804603682), f, r, d[n + 13], 12, -40341101), m, f, d[n + 14], 17, -1502002290), i, m, d[n + 15], 22, 1236535329), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 1], 5, -165796510), f, r, d[n + 6], 9, -1069501632), m, f, d[n + 11], 14, 643717713), i, m, d[n + 0], 20, -373897302), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 5], 5, -701558691), f, r, d[n + 10], 9, 38016083), m, f, d[n + 15], 14, -660478335), i, m, d[n + 4], 20, -405537848), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 9], 5, 568446438), f, r, d[n + 14], 9, -1019803690), m, f, d[n + 3], 14, -187363961), i, m, d[n + 8], 20, 1163531501), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 13], 5, -1444681467), f, r, d[n + 2], 9, -51403784), m, f, d[n + 7], 14, 1735328473), i, m, d[n + 12], 20, -1926607734), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 5], 4, -378558), f, r, d[n + 8], 11, -2022574463), m, f, d[n + 11], 16, 1839030562), i, m, d[n + 14], 23, -35309556), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 1], 4, -1530992060), f, r, d[n + 4], 11, 1272893353), m, f, d[n + 7], 16, -155497632), i, m, d[n + 10], 23, -1094730640), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 13], 4, 681279174), f, r, d[n + 0], 11, -358537222), m, f, d[n + 3], 16, -722521979), i, m, d[n + 6], 23, 76029189), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 9], 4, -640364487), f, r, d[n + 12], 11, -421815835), m, f, d[n + 15], 16, 530742520), i, m, d[n + 2], 23, -995338651), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 0], 6, -198630844), f, r, d[n + 7], 10, 1126891415), m, f, d[n + 14], 15, -1416354905), i, m, d[n + 5], 21, -57434055), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 12], 6, 1700485571), f, r, d[n + 3], 10, -1894986606), m, f, d[n + 10], 15, -1051523), i, m, d[n + 1], 21, -2054922799), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 8], 6, 1873313359), f, r, d[n + 15], 10, -30611744), m, f, d[n + 6], 15, -1560198380), i, m, d[n + 13], 21, 1309151649), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 4], 6, -145523070), f, r, d[n + 11], 10, -1120210379), m, f, d[n + 2], 15, 718787259), i, m, d[n + 9], 21, -343485551), m = safe_add(m, h), f = safe_add(f, t), r = safe_add(r, g), i = safe_add(i, e)    }
+        f = md5_ii(f = md5_ii(f = md5_ii(f = md5_ii(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_ff(f = md5_ff(f = md5_ff(f = md5_ff(f, r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 0], 7, -680876936), f, r, d[n + 1], 12, -389564586), m, f, d[n + 2], 17, 606105819), i, m, d[n + 3], 22, -1044525330), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 4], 7, -176418897), f, r, d[n + 5], 12, 1200080426), m, f, d[n + 6], 17, -1473231341), i, m, d[n + 7], 22, -45705983), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 8], 7, 1770035416), f, r, d[n + 9], 12, -1958414417), m, f, d[n + 10], 17, -42063), i, m, d[n + 11], 22, -1990404162), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 12], 7, 1804603682), f, r, d[n + 13], 12, -40341101), m, f, d[n + 14], 17, -1502002290), i, m, d[n + 15], 22, 1236535329), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 1], 5, -165796510), f, r, d[n + 6], 9, -1069501632), m, f, d[n + 11], 14, 643717713), i, m, d[n + 0], 20, -373897302), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 5], 5, -701558691), f, r, d[n + 10], 9, 38016083), m, f, d[n + 15], 14, -660478335), i, m, d[n + 4], 20, -405537848), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 9], 5, 568446438), f, r, d[n + 14], 9, -1019803690), m, f, d[n + 3], 14, -187363961), i, m, d[n + 8], 20, 1163531501), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 13], 5, -1444681467), f, r, d[n + 2], 9, -51403784), m, f, d[n + 7], 14, 1735328473), i, m, d[n + 12], 20, -1926607734), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 5], 4, -378558), f, r, d[n + 8], 11, -2022574463), m, f, d[n + 11], 16, 1839030562), i, m, d[n + 14], 23, -35309556), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 1], 4, -1530992060), f, r, d[n + 4], 11, 1272893353), m, f, d[n + 7], 16, -155497632), i, m, d[n + 10], 23, -1094730640), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 13], 4, 681279174), f, r, d[n + 0], 11, -358537222), m, f, d[n + 3], 16, -722521979), i, m, d[n + 6], 23, 76029189), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 9], 4, -640364487), f, r, d[n + 12], 11, -421815835), m, f, d[n + 15], 16, 530742520), i, m, d[n + 2], 23, -995338651), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 0], 6, -198630844), f, r, d[n + 7], 10, 1126891415), m, f, d[n + 14], 15, -1416354905), i, m, d[n + 5], 21, -57434055), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 12], 6, 1700485571), f, r, d[n + 3], 10, -1894986606), m, f, d[n + 10], 15, -1051523), i, m, d[n + 1], 21, -2054922799), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 8], 6, 1873313359), f, r, d[n + 15], 10, -30611744), m, f, d[n + 6], 15, -1560198380), i, m, d[n + 13], 21, 1309151649), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 4], 6, -145523070), f, r, d[n + 11], 10, -1120210379), m, f, d[n + 2], 15, 718787259), i, m, d[n + 9], 21, -343485551), m = safe_add(m, h), f = safe_add(f, t), r = safe_add(r, g), i = safe_add(i, e)
+    }
     return Array(m, f, r, i)
 }
 
@@ -83,8 +84,8 @@ function changepass() {
         update_element("changepass_text", "New passwords don't match")
     } else {
         fetch("https://server.duinocoin.com/changepass/" + encodeURIComponent(username) +
-                "?password=" + encodeURIComponent(old_pass) +
-                "&newpassword=" + encodeURIComponent(new_pass))
+            "?password=" + encodeURIComponent(old_pass) +
+            "&newpassword=" + encodeURIComponent(new_pass))
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -112,7 +113,7 @@ function send() {
             "&recipient=" + recipient +
             "&amount=" + amount +
             "&memo=" + memo,
-            function(data) {
+            function (data) {
                 document.getElementById("send_confirm").classList.remove("is-loading");
                 $('#recipientinput').val('');
                 $('#amountinput').val('');
@@ -135,7 +136,7 @@ function send() {
                         document.querySelector('html').classList.add('is-clipped');
                         modal_success.classList.add('is-active');
 
-                        document.querySelector('#modal_success .delete').onclick = function() {
+                        document.querySelector('#modal_success .delete').onclick = function () {
                             document.querySelector('html').classList.remove('is-clipped');
                             modal_success.classList.remove('is-active');
                         }
@@ -154,7 +155,7 @@ function send() {
                     document.querySelector('html').classList.add('is-clipped');
                     modal_error.classList.add('is-active');
 
-                    document.querySelector('#modal_error .delete').onclick = function() {
+                    document.querySelector('#modal_error .delete').onclick = function () {
                         document.querySelector('html').classList.remove('is-clipped');
                         modal_error.classList.remove('is-active');
                     }
@@ -168,9 +169,9 @@ function wrap() {
     address = document.getElementById("wrap_address").value;
 
     fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
-            "?password=" + encodeURIComponent(password) +
-            "&address=" + encodeURIComponent(address) +
-            "&amount=" + encodeURIComponent(amount))
+        "?password=" + encodeURIComponent(password) +
+        "&address=" + encodeURIComponent(address) +
+        "&amount=" + encodeURIComponent(amount))
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -185,7 +186,7 @@ function wrap() {
 
 function logout() {
     delcookie("username");
-    delcookie("password");
+    delcookie("authToken");
     window.location.reload(true);
 }
 
@@ -260,7 +261,7 @@ function update_element(element, value) {
     old_value = $(element).text()
 
     if ($("<div>" + value + "</div>").text() != old_value) {
-        $(element).fadeOut('fast', function() {
+        $(element).fadeOut('fast', function () {
             $(element).html(value);
             $(element).fadeIn('fast');
         });
@@ -306,13 +307,13 @@ function miner_notify() {
     document.querySelector('html').classList.add('is-clipped');
     modal_error.classList.add('is-active');
 
-    document.querySelector('#modal_error .delete').onclick = function() {
+    document.querySelector('#modal_error .delete').onclick = function () {
         document.querySelector('html').classList.remove('is-clipped');
         modal_error.classList.remove('is-active');
     }
 }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // CONSOLE WARNING
     console.log(`%cHold on!`, "color: red; font-size: 3em");
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
@@ -368,7 +369,7 @@ window.addEventListener('load', function() {
         return value;
     };
 
-    $('#txcount').on('change', function() {
+    $('#txcount').on('change', function () {
         transaction_limit = this.value;
         document.getElementById('txsel').classList.add("is-loading");
     });
@@ -446,7 +447,7 @@ window.addEventListener('load', function() {
                         }
                     }
 
-                    t_miners = t_miners.sort(function(a, b) {
+                    t_miners = t_miners.sort(function (a, b) {
                         if (a.identifier < b.identifier) { return -1; }
                         if (a.identifier > b.identifier) { return 1; }
                         return 0;
@@ -584,7 +585,7 @@ window.addEventListener('load', function() {
                                         ${accepted_rate}%
                                     </span>
                                     <span class="has-text-weight-normal">
-                                        (${miner_accepted}/${(miner_accepted+miner_rejected)})
+                                        (${miner_accepted}/${(miner_accepted + miner_rejected)})
                                     </span>
                                 </th>
                                 <th align="center">
@@ -680,14 +681,14 @@ window.addEventListener('load', function() {
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
                 } else {
-                    $("#minertable").fadeOut(function() {
+                    $("#minertable").fadeOut(function () {
                         $("#nominers").fadeIn();
                     });
                 }
 
-                $(function() {
+                $(function () {
                     $("td[colspan=5]").find(".content").hide();
-                    $(".fa-info-circle").click(function(event) {
+                    $(".fa-info-circle").click(function (event) {
                         let $target = $(event.target);
                         $target.closest("tr").next().find(".content").slideToggle(250);
                     });
@@ -781,85 +782,155 @@ window.addEventListener('load', function() {
                         it will take a few seconds until the transaction will appear here.
                     </p>
                 </div>`);
-            }).then(function() {
+            }).then(function () {
                 document.getElementById('txsel').classList.remove("is-loading");
             });
     }
 
     // ENTER KEY AS LOGIN
     let input_login = document.getElementById("submit");
-    input_login.addEventListener("keyup", function(event) {
+    input_login.addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
             document.getElementById("submit").click();
         }
     });
 
-    $('#form').submit(function() {
+
+    // If the user has the old password
+
+    if (getcookie("password") && getcookie("username")) {
+        delcookie("password");
+        delcookie("username");
+    }
+
+    // If the user has the auth-token
+
+    if (getcookie("authToken") && getcookie("username")) {
+        $('#usernameinput').val(getcookie("username"));
+        $('#passwordinput').val(getcookie("authToken"));
+
+        username = getcookie("username");
+        password = getcookie("authToken");
+
+        $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: getcookie("authToken") },
+            function (data) {
+                if (data.success == true) {
+                    $("#ducologo").addClass("rotate");
+
+                    $("#username").text(encodeURIComponent(username));
+                    $("#email").text(`(${data.result[1]})`);
+
+                    $("#useravatar").attr("src",
+                        `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                        `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+
+                    user_data(username, true);
+                    window.setInterval(() => {
+                        user_data(username, false);
+                    }, 10 * 1000);
+
+                    setTimeout(function () {
+                        $('#form').hide("drop", { direction: "down" }, 500, function () {
+                            $('#wallet').show("drop", { direction: "up" }, 500, function () {
+                                $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+
+                                if (adBlockEnabled) {
+                                    $("#adblocker_detected").fadeIn()
+                                } else {
+                                    try {
+                                        $("#adblocker_detected").fadeOut(function () {
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                        })
+
+                                    } catch (err) {
+                                        $("#adblocker_detected").fadeIn()
+                                    }
+                                }
+                            });
+                        });
+                    }, 350);
+                } else {
+                    if (data.message.includes("This user doesn't exist")) {
+                        $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    } else {
+                        $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    }
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+            })
+            .always(function () {
+                $("#submit").removeClass("is-loading");
+            });
+    }
+
+    $('#form').submit(function () {
         return false;
     });
 
-    $('#submit').click(function() {
+    $('#submit').click(function () {
         username = $('#usernameinput').val()
         //trim the username field to remove extra spaces
-        username = username.replace(/^[ ]+|[ ]+$/g,'')
+        username = username.replace(/^[ ]+|[ ]+$/g, '')
         password = $('#passwordinput').val()
 
         if (username && password) {
             $("#submit").addClass("is-loading");
 
             $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
-                    function(data) {
-                        if (data.success == true) {
-                            setcookie("username", encodeURIComponent(username));
-                            setcookie("password", encodeURIComponent(password));
+                function (data) {
+                    if (data.success == true) {
+                        setcookie("username", encodeURIComponent(username));
+                        setcookie("authToken", data.result[2]);
 
-                            $("#ducologo").addClass("rotate");
+                        $("#ducologo").addClass("rotate");
 
-                            $("#username").text(encodeURIComponent(username));
-                            $("#email").text(`(${data.result[1]})`);
+                        $("#username").text(encodeURIComponent(username));
+                        $("#email").text(`(${data.result[1]})`);
 
-                            $("#useravatar").attr("src",
-                                `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                                `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+                        $("#useravatar").attr("src",
+                            `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                            `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
-                            user_data(username, true);
-                            window.setInterval(() => {
-                                user_data(username, false);
-                            }, 10 * 1000);
+                        user_data(username, true);
+                        window.setInterval(() => {
+                            user_data(username, false);
+                        }, 10 * 1000);
 
-                            setTimeout(function() {
-                                $('#form').hide("drop", { direction: "down" }, 500, function() {
-                                    $('#wallet').show("drop", { direction: "up" }, 500, function() {
-                                        $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                        setTimeout(function () {
+                            $('#form').hide("drop", { direction: "down" }, 500, function () {
+                                $('#wallet').show("drop", { direction: "up" }, 500, function () {
+                                    $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
 
-                                        if (adBlockEnabled) {
+                                    if (adBlockEnabled) {
+                                        $("#adblocker_detected").fadeIn()
+                                    } else {
+                                        try {
+                                            $("#adblocker_detected").fadeOut(function () {
+                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                            })
+
+                                        } catch (err) {
                                             $("#adblocker_detected").fadeIn()
-                                        } else {
-                                            try {
-                                                $("#adblocker_detected").fadeOut(function() {
-                                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                                })
-
-                                            } catch (err) {
-                                                $("#adblocker_detected").fadeIn()
-                                            }
                                         }
-                                    });
+                                    }
                                 });
-                            }, 350);
+                            });
+                        }, 350);
+                    } else {
+                        if (data.message.includes("This user doesn't exist")) {
+                            $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                         } else {
-                            if (data.message.includes("This user doesn't exist")) {
-                                $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                            } else {
-                                $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                            }
+                            $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                         }
-                    })
-                .fail(function(jqXHR, textStatus, errorThrown) {
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
                     $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                 })
-                .always(function() {
+                .always(function () {
                     $("#submit").removeClass("is-loading");
                 });
         } else {
@@ -868,30 +939,20 @@ window.addEventListener('load', function() {
         }
     });
 
-    document.addEventListener('onautocomplete', function(e) {
-      if (e.target.hasAttribute('autocompleted')) {
-        if (e.target.id == "usernameinput") {
-            $('#usernamediv').addClass("focus");
+    document.addEventListener('onautocomplete', function (e) {
+        if (e.target.hasAttribute('autocompleted')) {
+            if (e.target.id == "usernameinput") {
+                $('#usernamediv').addClass("focus");
+            }
+            if (e.target.id == "passwordinput") {
+                $('#passworddiv').addClass("focus");
+            }
         }
-        if (e.target.id == "passwordinput") {
-            $('#passworddiv').addClass("focus");
-        }
-      }
     })
 
-    setInterval(function() {
+    setInterval(function () {
         $(".mcontainer").css("max-width", window.innerWidth - 80)
     }, 1000)
-
-    setTimeout(function() {
-        if (getcookie("password") && getcookie("username")) {
-            $('#usernamediv').addClass("focus");
-            $('#passworddiv').addClass("focus");
-            $('#usernameinput').val(getcookie("username"));
-            $('#passwordinput').val(getcookie("password"));
-            $('#submit').click();
-        }
-    }, 500)
 });
 
 // Fix the overflow on modal close (Fix the mistake)
@@ -901,7 +962,7 @@ let Modals = document.querySelectorAll('.modal');
 Modals.forEach((modal) => {
     // If user clicks the X button
 
-    modal.querySelector('.modal-close').onclick = function() {
+    modal.querySelector('.modal-close').onclick = function () {
         e.preventDefault();
         document.querySelector('html').classList.remove('is-clipped');
         modal.classList.remove('is-active');
@@ -909,7 +970,7 @@ Modals.forEach((modal) => {
 
     // If user clicks the background
 
-    modal.querySelector('.modal-background').addEventListener('click', function(e) {
+    modal.querySelector('.modal-background').addEventListener('click', function (e) {
         e.preventDefault();
         document.querySelector('html').classList.remove('is-clipped');
         modal.classList.remove('is-active');
