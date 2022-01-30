@@ -813,6 +813,8 @@ window.addEventListener('load', function () {
         username = getcookie("username");
         password = getcookie("authToken");
 
+        $("#submit").addClass("is-loading");
+
         $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: getcookie("authToken") },
             function (data) {
                 if (data.success == true) {
