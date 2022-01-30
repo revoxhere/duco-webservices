@@ -796,6 +796,13 @@ window.addEventListener('load', function () {
         }
     });
 
+    let rememberLogin = document.querySelector("#rememberinput");
+
+    // Fix bulma (click the text instead of the checkbox)
+
+    rememberLogin.parentElement.querySelector("p").addEventListener("click", function (evt) {
+        rememberLogin.checked = !rememberLogin.checked;
+    });
 
     // If the user has the old password
 
@@ -809,6 +816,7 @@ window.addEventListener('load', function () {
     if (getcookie("authToken") && getcookie("username")) {
         $('#usernameinput').val(getcookie("username"));
         $('#passwordinput').val(getcookie("authToken"));
+        rememberLogin.checked = true;
 
         username = getcookie("username");
         password = getcookie("authToken");
@@ -884,8 +892,10 @@ window.addEventListener('load', function () {
             $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
                 function (data) {
                     if (data.success == true) {
-                        setcookie("username", encodeURIComponent(username));
-                        setcookie("authToken", data.result[2]);
+                        if(rememberLogin.checked) {
+                            setcookie("username", encodeURIComponent(username));
+                            setcookie("authToken", data.result[2]);
+                        }
 
                         $("#ducologo").addClass("rotate");
 
