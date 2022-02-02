@@ -592,7 +592,7 @@ window.addEventListener('load', function () {
                                         <span class="icon-text">
                                             ${warning_icon}
                                         </span>
-                                        <span class="icon-text" style="cursor: pointer">
+                                        <span class="icon-text expand-btn" style="cursor: pointer">
                                             <i class="icon fa fa-info-circle"></i>
                                         </span>
                                 </th>
@@ -688,7 +688,7 @@ window.addEventListener('load', function () {
 
                 $(function () {
                     $("td[colspan=5]").find(".content").hide();
-                    $(".fa-info-circle").click(function (event) {
+                    $(".expand-btn").click(function (event) {
                         let $target = $(event.target);
                         $target.closest("tr").next().find(".content").slideToggle(250);
                     });
