@@ -542,7 +542,10 @@ window.addEventListener('load', function () {
                             thread_string = `(${miner_count} threads)`;
                         }
 
-                        let warning_icon = "";
+                        let warning_icon = `
+                        <span class="icon-text has-text-success" title="Operating normally">
+                            <i class="icon fa fa-check-circle"></i>
+                        </span>`;
                         if (miner_efficiency < 40) {
                             warning_icon = `
                         <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
@@ -553,6 +556,33 @@ window.addEventListener('load', function () {
                         <span class="icon-text has-text-danger" title="Too many rejected shares">
                             <i class="icon fa fa-times-circle animated faa-flash"></i>
                         </span>`
+                        }
+
+                        if (miner_type == "AVR (I²C)" && miner_hashrate > 250) {
+                            warning_icon = `
+                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
+                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            </span>`
+                        } else if (miner_type == "AVR (Normal)" && miner_hashrate > 250) {
+                            warning_icon = `
+                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
+                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            </span>`
+                        } else if (miner_type == "ESP8266" && miner_hashrate > 12000) {
+                            warning_icon = `
+                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
+                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            </span>`
+                        } else if (miner_type == "ESP8266" && miner_hashrate < 9000) {
+                            warning_icon = `
+                            <span class="icon-text has-text-warning-dark" title="Use 160 MHz clock for optimal hashrate">
+                                <i class="icon fa fa-exclamation-triangle animated faa-flash"></i>
+                            </span>`
+                        } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
+                            warning_icon = `
+                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
+                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            </span>`
                         }
 
                         miners_html += `
