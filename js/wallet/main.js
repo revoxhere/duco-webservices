@@ -568,12 +568,6 @@ window.addEventListener('load', function () {
                             icon_class_alt = "";
                             icon_class_animation_alt = "far fa-question-circle";
                         }
-                        else {
-                            icon_class = "has-text-warning-dark";
-                            icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
-                            icon_class_alt = "has-text-danger";
-                            icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
-                        }
 
                         let warning_icon = `
                         <span class="icon-text has-text-success" title="Operating normally">
