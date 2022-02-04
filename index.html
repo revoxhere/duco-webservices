@@ -97,10 +97,10 @@
                 </div>
             </div>
             <div class="field">
-                <label for="" class="checkbox is-flex is-justify-content-flex-start is-align-items-center mt-4" style="width: 100%;">
-                    <input class="checkbox" type="checkbox" id="rememberinput">
-                    <p style="margin-left:8px">&nbsp;Remember me (for 1 hour)</p>
-                </label>
+                <div class="is-flex is-justify-content-flex-start is-align-items-center mt-4" style="width: 100%;">
+                    <input class="is-checkbox is-small" type="checkbox" id="rememberinput">
+                    <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me (for 1 hour)</label>
+                </div>
             </div>
             <div>
                 <button type="submit" id="submit" class="btn button">Login</button>
@@ -153,6 +153,10 @@
                                     </span>
                                 </small>
                             </p>
+                            <div class="field mt-2">
+                                <input class="is-checkbox is-small" id="showWarnings" type="checkbox" checked>
+                                <label for="showWarnings">Hide Warnings</label>
+                            </div>
                         </div>
                     </article>
                 </div>

@@ -73,6 +73,21 @@ function get_user_color(username) {
 };
 
 
+const sWarningsBtn = document.querySelector("#showWarnings");
+
+if (getcookie("hideWarnings")) {
+    if(getcookie("hideWarnings") == "true") sWarningsBtn.checked = true;
+    else sWarningsBtn.checked = false;
+}
+
+sWarningsBtn.addEventListener("click", function () {
+    if (this.checked) {
+        setcookie("hideWarnings", "true");
+    } else {
+        setcookie("hideWarnings", "false");
+    }
+});
+
 const inputs = document.querySelectorAll(".input");
 
 function changepass() {
@@ -542,6 +557,18 @@ window.addEventListener('load', function () {
                             thread_string = `(${miner_count} threads)`;
                         }
 
+                        icon_class = ""
+                        icon_class_animation = ""
+
+                        if (getcookie("hideWarnings") == "true") {
+                            icon_class = "";
+                            icon_class_animation = "far fa-question-circle";
+                        }
+                        else {
+                            icon_class = "has-text-warning-dark";
+                            icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
+                        }
+
                         let warning_icon = `
                         <span class="icon-text has-text-success" title="Operating normally">
                             <i class="icon fa fa-check-circle"></i>
@@ -575,8 +602,8 @@ window.addEventListener('load', function () {
                             </span>`
                         } else if (miner_type == "ESP8266" && miner_hashrate < 9000) {
                             warning_icon = `
-                            <span class="icon-text has-text-warning-dark" title="Use 160 MHz clock for optimal hashrate">
-                                <i class="icon fa fa-exclamation-triangle animated faa-flash"></i>
+                            <span class="icon-text ${icon_class}" title="Use 160 MHz clock for optimal hashrate">
+                                <i class="icon ${icon_class_animation}"></i>
                             </span>`
                         } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
                             warning_icon = `
@@ -827,12 +854,6 @@ window.addEventListener('load', function () {
     });
 
     let rememberLogin = document.querySelector("#rememberinput");
-
-    // Fix bulma (click the text instead of the checkbox)
-
-    rememberLogin.parentElement.querySelector("p").addEventListener("click", function (evt) {
-        rememberLogin.checked = !rememberLogin.checked;
-    });
 
     // If the user has the old password
 
