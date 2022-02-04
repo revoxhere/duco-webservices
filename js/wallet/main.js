@@ -559,14 +559,20 @@ window.addEventListener('load', function () {
 
                         icon_class = ""
                         icon_class_animation = ""
+                        icon_class_alt = ""
+                        icon_class_animation_alt = ""
 
                         if (getcookie("hideWarnings") == "true") {
                             icon_class = "";
                             icon_class_animation = "far fa-question-circle";
+                            icon_class_alt = "";
+                            icon_class_animation_alt = "far fa-question-circle";
                         }
                         else {
                             icon_class = "has-text-warning-dark";
                             icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
+                            icon_class_alt = "has-text-danger";
+                            icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
                         }
 
                         let warning_icon = `
@@ -575,30 +581,30 @@ window.addEventListener('load', function () {
                         </span>`;
                         if (miner_efficiency < 40) {
                             warning_icon = `
-                        <span class="icon-text has-text-danger" title="Too many miners - low Kolka efficiency">
-                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        <span class="${icon_class_alt}" title="Too many miners - low Kolka efficiency">
+                            <i class="icon ${icon_class_animation_alt}"></i>
                         </span>`
                         } else if (accepted_rate < 50) {
                             warning_icon = `
-                        <span class="icon-text has-text-danger" title="Too many rejected shares">
-                            <i class="icon fa fa-times-circle animated faa-flash"></i>
+                        <span class="${icon_class_alt}" title="Too many rejected shares">
+                            <i class="icon ${icon_class_animation_alt}"></i>
                         </span>`
                         }
 
                         if (miner_type == "AVR (I²C)" && !(miner_hashrate > 245 && miner_hashrate < 265)) {
                             warning_icon = `
-                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
-                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                                <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                         } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 245 && miner_hashrate < 265)) {
                             warning_icon = `
-                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
-                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                                <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                         } else if (miner_type == "ESP8266" && miner_hashrate > 12000) {
                             warning_icon = `
-                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
-                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                                <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                         } else if (miner_type == "ESP8266" && miner_hashrate < 9000) {
                             warning_icon = `
@@ -607,8 +613,8 @@ window.addEventListener('load', function () {
                             </span>`
                         } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
                             warning_icon = `
-                            <span class="icon-text has-text-danger" title="Incorrect hashrate">
-                                <i class="icon fa fa-times-circle animated faa-flash"></i>
+                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                                <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                         }
 
