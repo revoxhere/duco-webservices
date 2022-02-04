@@ -557,10 +557,10 @@ window.addEventListener('load', function () {
                             thread_string = `(${miner_count} threads)`;
                         }
 
-                        icon_class = ""
-                        icon_class_animation = ""
-                        icon_class_alt = ""
-                        icon_class_animation_alt = ""
+                        icon_class = "has-text-warning-dark";
+                        icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
+                        icon_class_alt = "has-text-danger";
+                        icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
 
                         if (getcookie("hideWarnings") == "true") {
                             icon_class = "";
