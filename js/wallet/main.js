@@ -585,12 +585,12 @@ window.addEventListener('load', function () {
                         </span>`
                         }
 
-                        if (miner_type == "AVR (I²C)" && miner_hashrate > 250) {
+                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 245 && miner_hashrate < 265)) {
                             warning_icon = `
                             <span class="icon-text has-text-danger" title="Incorrect hashrate">
                                 <i class="icon fa fa-times-circle animated faa-flash"></i>
                             </span>`
-                        } else if (miner_type == "AVR (Normal)" && miner_hashrate > 250) {
+                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 245 && miner_hashrate < 265)) {
                             warning_icon = `
                             <span class="icon-text has-text-danger" title="Incorrect hashrate">
                                 <i class="icon fa fa-times-circle animated faa-flash"></i>
