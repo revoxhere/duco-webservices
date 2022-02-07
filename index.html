@@ -53,6 +53,16 @@
 <body>
     <div id="background"></div>
     <div class="login-content" class="mt-0">
+        <div class="box blur" style="max-width:260px;position:fixed;z-index:99">
+            <h1 class="heading is-size-5 has-text-danger-dark">Note</h1>
+            The web wallet is currently in maintenance mode (disabled) due to too many requests coming (presumably) from it to the servers, not letting us work on them.<br>
+            <b>See the <a href="https://status.duinocoin.com">status page</a> and <a href="https://discord.gg/kvBkccy">our Discord</a> for latest future announcements.</b>
+            <details align="left">
+                <summary>More info</summary>
+                Unless it's not obvious - the problem from yesterday (see Bilaboz's message above) happened again today and we're not quite sure what caused it. We're trying a few things so we will identify and fix the issue sooner or later.<br>
+                Bilaboz suggests closing any reconnecting miners, web wallets, explorers, mining dashboard tabs or anything making requests to the api.
+            </details>
+        </div>
         <form class="box blur" id="form">
             <p class="title is-size-5 mb-0">
                 <span class="icon-text">
@@ -98,12 +108,12 @@
             </div>
             <div class="field">
                 <div class="is-flex is-justify-content-flex-start is-align-items-center mt-4" style="width: 100%;">
-                    <input class="is-checkbox is-small" type="checkbox" id="rememberinput">
+                    <input disabled class="is-checkbox is-small" type="checkbox" id="rememberinput">
                     <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me (for 1 hour)</label>
                 </div>
             </div>
             <div>
-                <button type="submit" id="submit" class="btn button">Login</button>
+                <button disabled type="submit" title="Maintenance mode" id="submit" class="btn button" style="cursor: not-allowed !important;">Login</button>
             </div>
             <a href="recovery.html">Forgot your passphrase?</a>
             <a href="register.html">Don't have a wallet?</a>
