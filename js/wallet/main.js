@@ -13,6 +13,10 @@ let username, password;
 let notify_shown = false;
 let transaction_limit = 5;
 let first_launch = true;
+let bgSizeW = 0;
+let bgSizeH = 0;
+
+let image = new Image();
 
 let start_time = Date.now();
 let start_balance = 0;
@@ -51,6 +55,13 @@ function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + 
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
 
+function adjustBGSize() {
+    let ratio = Math.max($('#background').width() / bgSizeW, $('#background').height() / bgSizeH);
+    let bgW = Math.round(ratio * bgSizeW);
+    let bgH = Math.round(ratio * bgSizeH);
+
+    $("#background").css("background-size", `${bgW}px ${bgH + 200}px`); // Adjust the image size
+}
 
 function component_to_hex(c) {
     /* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
@@ -223,18 +234,26 @@ inputs.forEach(input => {
 });
 
 /* Parallax background */
+
 document.addEventListener("mousemove", parallax_bg);
 const elem = document.querySelector("#background");
 
 function parallax_bg(e) {
+
+    adjustBGSize();
+
     let width = window.innerWidth / 2;
     let height = window.innerHeight / 2;
     let mouse_x = e.clientX;
     let mouse_y = e.clientY;
+
     let depth = `${50 - (mouse_x - width) * 0.008}% ${50 - (mouse_y - height) * 0.008}%`;
     elem.style.backgroundPosition = depth;
 }
 
+window.addEventListener("resize", function() { // Adjust background size on resize
+    adjustBGSize();
+});
 
 function round_to(precision, value) {
     power_of_ten = 10 ** precision;
@@ -333,6 +352,17 @@ window.addEventListener('load', function () {
     console.log(`%cHold on!`, "color: red; font-size: 3em");
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
     console.log(`%cPlease proceed with caution.`, "color: orange; font-size: 1.5em;");
+
+    if(bgSizeW == 0 && bgSizeH == 0) {
+        // Get the size of the background image
+        image.src = "./" + elem.style.backgroundImage.slice(5, -2);
+
+        image.onload = function () {
+            bgSizeW = image.width,
+            bgSizeH = image.height;
+            adjustBGSize();
+        };
+    }
 
     const data = {
         labels: timestamps,

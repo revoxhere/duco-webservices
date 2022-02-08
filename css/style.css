@@ -368,7 +368,8 @@ input {
   height: 100%;
   overflow: hidden;
   background-position: 50% 50%;
-  background-size: 110%;
+  background-size: cover;
+  background-repeat: no-repeat;
   z-index: -777;
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);
