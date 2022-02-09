@@ -687,13 +687,14 @@ summary {
   background-color: #ff3860 !important;
 }
 
-#email {
+small#email {
   transition: 0.25s filter linear;
   -webkit-transition: 0.25s filter linear;
   -moz-transition: 0.25s filter linear;
   -o-transition: 0.25s filter linear;
   filter: blur(4px);
 }
-#email:hover {
+
+small#email:hover {
   filter: blur(0);
 }
