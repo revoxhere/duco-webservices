@@ -60,7 +60,7 @@ function adjustBGSize() {
     let bgW = Math.round(ratio * bgSizeW);
     let bgH = Math.round(ratio * bgSizeH);
 
-    $("#background").css("background-size", `${bgW}px ${bgH + 200}px`); // Adjust the image size
+    $("#background").css("background-size", `${bgW + 100}px ${bgH + 100}px`); // Adjust the image size
 }
 
 function component_to_hex(c) {
@@ -247,7 +247,7 @@ function parallax_bg(e) {
     let mouse_x = e.clientX;
     let mouse_y = e.clientY;
 
-    let depth = `${50 - (mouse_x - width) * 0.008}% ${50 - (mouse_y - height) * 0.008}%`;
+    let depth = `${50 - (mouse_x - width) * 0.010}% ${50 - (mouse_y - height) * 0.010}%`;
     elem.style.backgroundPosition = depth;
 }
 
