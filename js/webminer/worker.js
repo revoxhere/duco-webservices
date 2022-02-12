@@ -77,7 +77,7 @@ onmessage = function(event) {
 
             socket.onerror = function(event) {
                 console.error("CPU" + workerVer + "WebSocket error observed, trying to reconnect: ", event);
-                socket.close("Reason: Error occured in WebWorker.");
+                socket.close(1000, "Reason: Error occured in WebWorker.");
             }
 
             socket.onclose = function(event) {
