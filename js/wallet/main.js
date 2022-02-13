@@ -441,7 +441,7 @@ window.addEventListener('load', function () {
                 $("#ducousd_bch").html("$" + round_to(5, data.prices.bch));
                 $("#ducousd_trx").html("$" + round_to(5, data.prices.trx));
                 $("#ducousd_nano").html("$" + round_to(5, data.prices.nano));
-                $("#duco_nodes").html("$" + round_to(5, data.prices.nodes));
+                $("#duco_furim").html("$" + round_to(5, data.prices.furim));
                 $("#duco_justswap").html("$" + round_to(5, data.prices.justswap));
                 $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
                 $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
