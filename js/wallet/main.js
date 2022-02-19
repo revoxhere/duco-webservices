@@ -161,11 +161,6 @@ function send() {
                             `</a></p>`;
                         document.querySelector('html').classList.add('is-clipped');
                         modal_success.classList.add('is-active');
-
-                        document.querySelector('#modal_success .delete').onclick = function () {
-                            document.querySelector('html').classList.remove('is-clipped');
-                            modal_success.classList.remove('is-active');
-                        }
                     }
 
                 } else {
@@ -180,11 +175,6 @@ function send() {
                         `<b>An error has occurred while sending funds: </b>` + serverMessage[1] + `</b><br></p>`;
                     document.querySelector('html').classList.add('is-clipped');
                     modal_error.classList.add('is-active');
-
-                    document.querySelector('#modal_error .delete').onclick = function () {
-                        document.querySelector('html').classList.remove('is-clipped');
-                        modal_error.classList.remove('is-active');
-                    }
                 }
             })
     }
@@ -340,11 +330,6 @@ function miner_notify() {
         `<b>You're wasting power</b><br>Your total miner efficiency is <b>less than 20%</b>, because you're using too many miners.<br>Big farms are not good for Duino-Coin, as you won't earn more but only put more load on the servers. You can read more about it <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos" target="_blank">here</a>.<br>Consider making your rig smaller.</p>`;
     document.querySelector('html').classList.add('is-clipped');
     modal_error.classList.add('is-active');
-
-    document.querySelector('#modal_error .delete').onclick = function () {
-        document.querySelector('html').classList.remove('is-clipped');
-        modal_error.classList.remove('is-active');
-    }
 }
 
 window.addEventListener('load', function () {
@@ -1055,11 +1040,11 @@ let Modals = document.querySelectorAll('.modal');
 Modals.forEach((modal) => {
     // If user clicks the X button
 
-    modal.querySelector('.modal-close').onclick = function () {
+    modal.querySelector('.modal-close').addEventListener('click', function (e) {
         e.preventDefault();
         document.querySelector('html').classList.remove('is-clipped');
         modal.classList.remove('is-active');
-    }
+    });
 
     // If user clicks the background
 
