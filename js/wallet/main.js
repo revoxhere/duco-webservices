@@ -55,12 +55,24 @@ function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + 
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
 
-function adjustBGSize() {
-    let ratio = Math.max($('#background').width() / bgSizeW, $('#background').height() / bgSizeH);
-    let bgW = Math.round(ratio * bgSizeW);
-    let bgH = Math.round(ratio * bgSizeH);
+let configBGSize = {
+    width: 0,
+    height: 0
+};
 
-    $("#background").css("background-size", `${bgW + 100}px ${bgH + 100}px`); // Adjust the image size
+function adjustBGSize() {
+    if (configBGSize.width != $('#background').width() || configBGSize.height != $('#background').height()) {
+
+        let ratio = Math.max($('#background').width() / bgSizeW, $('#background').height() / bgSizeH);
+
+        configBGSize.width = $('#background').width();
+        configBGSize.height = $('#background').height();
+
+        let bgW = Math.round(ratio * bgSizeW);
+        let bgH = Math.round(ratio * bgSizeH);
+
+        $("#background").css("background-size", `${bgW + 100}px ${bgH + 100}px`); // Adjust the image size
+    }
 }
 
 function component_to_hex(c) {
@@ -238,6 +250,7 @@ function parallax_bg(e) {
     let mouse_y = e.clientY;
 
     let depth = `${50 - (mouse_x - width) * 0.010}% ${50 - (mouse_y - height) * 0.010}%`;
+
     elem.style.backgroundPosition = depth;
 }
 
@@ -340,7 +353,7 @@ window.addEventListener('load', function () {
 
     if(bgSizeW == 0 && bgSizeH == 0) {
         // Get the size of the background image
-        image.src = "./" + elem.style.backgroundImage.slice(5, -2);
+        image.src = elem.style.backgroundImage.slice(5, -2);
 
         image.onload = function () {
             bgSizeW = image.width,
