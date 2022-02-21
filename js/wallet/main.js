@@ -84,6 +84,7 @@ disableAnimsBtn.addEventListener("click", function () {
         setcookie("disableAnims", "true");
     } else {
         setcookie("disableAnims", "false");
+        backgroundAnimation = setAnimation(draw, canvas);
     }
 });
 
@@ -366,13 +367,6 @@ const draw = () => {
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(images.background, x, y, width + 50, height + 50);
-
-        // Show fps
-
-        ctx.font = "12px Arial";
-        ctx.shadowColor = "black";
-        ctx.fillStyle = "white";
-        ctx.fillText(`${fps} FPS`, 10, 20);
     }
 };
 
@@ -876,9 +870,9 @@ window.addEventListener('load', function () {
                     let minersTable = document.querySelector("#miners");
                     let minerIcon = minersTable.querySelector(".minerIcon");
 
-                    if(!minerIcon.querySelector("i")) { // If there is no icon
-                        minerIcon.innerHTML = ""; // remove img object
-                        minerIcon.appendChild(icon); // append image
+                    if(icon instanceof HTMLElement) {
+                        minerIcon.innerHTML = "";
+                        minerIcon.appendChild(icon);
                     }
 
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
