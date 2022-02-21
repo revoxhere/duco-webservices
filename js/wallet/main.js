@@ -330,8 +330,6 @@ let loadImages = () => {
 
     images = preloadImages({
             background: canvas.getAttribute('data-background'),
-            wemos: 'img/wemos.gif',
-            arduino: 'img/arduino.gif',
         }, () => {
             startTime = Date.now();
             backgroundAnimation = setAnimation(draw, canvas);
@@ -629,7 +627,7 @@ window.addEventListener('load', function () {
                         let percentage = 0.80;
                         let miner_type = "Other";
                         if (miner_software.includes("ESP8266")) {
-                            icon = images.wemos;
+                            icon = `<img src="img/wemos.gif">`;
                             color = "#F5515F";
                             miner_type = "ESP8266";
                             percentage = 0.96;
@@ -639,12 +637,12 @@ window.addEventListener('load', function () {
                             miner_type = "ESP32";
                             percentage = 0.96;
                         } else if (miner_software.includes("I2C")) {
-                            icon = images.arduino;
+                            icon = `<img src="img/arduino.gif">`;
                             color = "#B33771";
                             miner_type = "AVR (I²C)";
                             percentage = 0.96;
                         } else if (miner_software.includes("AVR")) {
-                            icon = images.arduino;
+                            icon = `<img src="img/arduino.gif">`;
                             color = "#B33771";
                             miner_type = "AVR (Normal)";
                             percentage = 0.96;
@@ -866,14 +864,6 @@ window.addEventListener('load', function () {
                     }
 
                     $("#miners").html(miners_html);
-
-                    let minersTable = document.querySelector("#miners");
-                    let minerIcon = minersTable.querySelector(".minerIcon");
-
-                    if(icon instanceof HTMLElement) {
-                        minerIcon.innerHTML = "";
-                        minerIcon.appendChild(icon);
-                    }
 
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
