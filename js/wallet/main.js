@@ -13,11 +13,6 @@ let username, password;
 let notify_shown = false;
 let transaction_limit = 5;
 let first_launch = true;
-let bgSizeW = 0;
-let bgSizeH = 0;
-
-let image = new Image();
-
 let start_time = Date.now();
 let start_balance = 0;
 
@@ -55,26 +50,6 @@ function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + 
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
 
-let configBGSize = {
-    width: 0,
-    height: 0
-};
-
-function adjustBGSize() {
-    if (configBGSize.width != $('#background').width() || configBGSize.height != $('#background').height()) {
-
-        let ratio = Math.max($('#background').width() / bgSizeW, $('#background').height() / bgSizeH);
-
-        configBGSize.width = $('#background').width();
-        configBGSize.height = $('#background').height();
-
-        let bgW = Math.round(ratio * bgSizeW);
-        let bgH = Math.round(ratio * bgSizeH);
-
-        $("#background").css("background-size", `${bgW + 100}px ${bgH + 100}px`); // Adjust the image size
-    }
-}
-
 function component_to_hex(c) {
     /* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
     var hex = c.toString(16);
@@ -97,9 +72,23 @@ function get_user_color(username) {
 
 
 const sWarningsBtn = document.querySelector("#showWarnings");
+const disableAnimsBtn = document.querySelector("#disableAnims");
+
+if (getcookie("disableAnims")) {
+    if (getcookie("disableAnims") == "true") disableAnimsBtn.checked = true;
+    else disableAnimsBtn.checked = false;
+}
+
+disableAnimsBtn.addEventListener("click", function () {
+    if (this.checked) {
+        setcookie("disableAnims", "true");
+    } else {
+        setcookie("disableAnims", "false");
+    }
+});
 
 if (getcookie("hideWarnings")) {
-    if(getcookie("hideWarnings") == "true") sWarningsBtn.checked = true;
+    if (getcookie("hideWarnings") == "true") sWarningsBtn.checked = true;
     else sWarningsBtn.checked = false;
 }
 
@@ -236,27 +225,156 @@ inputs.forEach(input => {
 });
 
 /* Parallax background */
+let canvas = document.getElementById('background');
+let ctx = canvas.getContext('2d');
+let mouse = { x: 0, y: 0 };
+let startTime = 0;
+let testForSlowBrowsers = true;
+let backgroundAnimation = null;
+let images = [];
+let fps = 0;
+let lastData = { x: 0, y: 0 };
+const times = [];
 
-document.addEventListener("mousemove", parallax_bg);
-const elem = document.querySelector("#background");
-
-function parallax_bg(e) {
-
-    adjustBGSize();
-
-    let width = window.innerWidth / 2;
-    let height = window.innerHeight / 2;
-    let mouse_x = e.clientX;
-    let mouse_y = e.clientY;
-
-    let depth = `${50 - (mouse_x - width) * 0.010}% ${50 - (mouse_y - height) * 0.010}%`;
-
-    elem.style.backgroundPosition = depth;
+const updateFPS = () => {
+  window.requestAnimationFrame(() => {
+    const now = performance.now();
+    while (times.length > 0 && times[0] <= now - 1000) {
+      times.shift();
+    }
+    times.push(now);
+    fps = times.length;
+    updateFPS();
+  });
 }
 
-window.addEventListener("resize", function() { // Adjust background size on resize
-    adjustBGSize();
+updateFPS();
+
+const preloadImages = (images, callback) => {
+    let remaining = 0;
+    let loaded = {};
+
+    let onloadCallback = (ev) => {
+        remaining--;
+        if (!remaining) {
+            callback(loaded);
+        }
+    };
+
+    for (let i in images) {
+        remaining++;
+        let img = new Image();
+        img.onload = onloadCallback;
+        img.src = images[i];
+        loaded[i] = img;
+    }
+
+    return loaded;
+};
+
+// Find vendor prefix, if any
+let vendors = ['ms', 'moz', 'webkit', 'o'];
+for (let i = 0; i < vendors.length && !window.requestAnimationFrame; i++) {
+    window.requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
+}
+
+// Use requestAnimationFrame if available
+if (window.requestAnimationFrame) {
+    let next = 1,
+        anims = {};
+
+    window.setAnimation = function (callback, element) {
+        let current = next++;
+        anims[current] = true;
+
+        let animate = () => {
+            if (!anims[current]) { return; }
+            window.requestAnimationFrame(animate, element);
+            callback();
+        };
+        window.requestAnimationFrame(animate, element);
+        return current;
+    };
+
+    window.clearAnimation = function (id) {
+        delete anims[id];
+    };
+}
+else // Make a interval timer
+{
+    window.setAnimation = function (callback, element) {
+        return window.setInterval(callback, 1000 / 60);
+    }
+    window.clearAnimation = window.clearInterval;
+}
+
+document.addEventListener('mousemove', (ev) => {
+    mouse.x = ev.clientX;
+    mouse.y = ev.clientY;
 });
+
+const canvasResize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    draw();
+};
+
+window.addEventListener('resize', canvasResize);
+
+let loadImages = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    images = preloadImages({
+            background: canvas.getAttribute('data-background'),
+            wemos: 'img/wemos.gif',
+            arduino: 'img/arduino.gif',
+        }, () => {
+            startTime = Date.now();
+            backgroundAnimation = setAnimation(draw, canvas);
+        }
+    );
+}
+
+const draw = () => {
+
+    if (getcookie("disableAnims") == "true") clearAnimation(backgroundAnimation);
+
+    if (fps > 29 && testForSlowBrowsers) {
+        if (fps < 30) { // If the user has less than 30 fps stop parallax bg
+            clearAnimation(backgroundAnimation);
+        }
+        testForSlowBrowsers = false;
+    }
+
+    let cw = canvas.width;
+    let ch = canvas.height;
+
+    let width = cw,
+        height = ch;
+
+    let x = (mouse.x - width) * 0.02;
+    let y = (mouse.y - height) * 0.02;
+
+    if (lastData.x != x || lastData.y != y) { // If the user move the mouse, update the background
+
+        lastData = { x: x, y: y };
+
+        // Draw BG
+        ctx.globalAlpha = 1;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(images.background, x, y, width + 50, height + 50);
+
+        // Show fps
+
+        ctx.font = "12px Arial";
+        ctx.shadowColor = "black";
+        ctx.fillStyle = "white";
+        ctx.fillText(`${fps} FPS`, 10, 20);
+    }
+};
 
 function round_to(precision, value) {
     power_of_ten = 10 ** precision;
@@ -298,10 +416,11 @@ function update_element(element, value) {
     old_value = $(element).text()
 
     if ($("<div>" + value + "</div>").text() != old_value) {
-        $(element).fadeOut('fast', function () {
+        if (getcookie("disableAnims") == "false") $(element).fadeOut('fast', function () {
             $(element).html(value);
             $(element).fadeIn('fast');
         });
+        else $(element).html(value);
         return true;
     }
     return false;
@@ -350,17 +469,6 @@ window.addEventListener('load', function () {
     console.log(`%cHold on!`, "color: red; font-size: 3em");
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
     console.log(`%cPlease proceed with caution.`, "color: orange; font-size: 1.5em;");
-
-    if(bgSizeW == 0 && bgSizeH == 0) {
-        // Get the size of the background image
-        image.src = elem.style.backgroundImage.slice(5, -2);
-
-        image.onload = function () {
-            bgSizeW = image.width,
-            bgSizeH = image.height;
-            adjustBGSize();
-        };
-    }
 
     const data = {
         labels: timestamps,
@@ -527,7 +635,7 @@ window.addEventListener('load', function () {
                         let percentage = 0.80;
                         let miner_type = "Other";
                         if (miner_software.includes("ESP8266")) {
-                            icon = `<img src="img/wemos.gif">`;
+                            icon = images.wemos;
                             color = "#F5515F";
                             miner_type = "ESP8266";
                             percentage = 0.96;
@@ -537,12 +645,12 @@ window.addEventListener('load', function () {
                             miner_type = "ESP32";
                             percentage = 0.96;
                         } else if (miner_software.includes("I2C")) {
-                            icon = `<img src="img/arduino.gif">`;
+                            icon = images.arduino;
                             color = "#B33771";
                             miner_type = "AVR (I²C)";
                             percentage = 0.96;
                         } else if (miner_software.includes("AVR")) {
-                            icon = `<img src="img/arduino.gif">`;
+                            icon = images.arduino;
                             color = "#B33771";
                             miner_type = "AVR (Normal)";
                             percentage = 0.96;
@@ -649,7 +757,7 @@ window.addEventListener('load', function () {
                                 </th>
                                 <th>
                                         <span class="icon-text">
-                                            <span class="icon" title="Miner type: ${miner_type}">
+                                            <span class="icon minerIcon" title="Miner type: ${miner_type}">
                                                 ${icon}
                                             </span>
                                         </span>
@@ -762,7 +870,17 @@ window.addEventListener('load', function () {
                                 </td>
                             </tr>`
                     }
+
                     $("#miners").html(miners_html);
+
+                    let minersTable = document.querySelector("#miners");
+                    let minerIcon = minersTable.querySelector(".minerIcon");
+
+                    if(!minerIcon.querySelector("i")) { // If there is no icon
+                        minerIcon.innerHTML = ""; // remove img object
+                        minerIcon.appendChild(icon); // append image
+                    }
+
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
                 } else {
@@ -971,7 +1089,7 @@ window.addEventListener('load', function () {
             $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
                 function (data) {
                     if (data.success == true) {
-                        if(rememberLogin.checked) {
+                        if (rememberLogin.checked) {
                             setcookie("username", encodeURIComponent(username));
                             setcookie("authToken", data.result[2]);
                         }

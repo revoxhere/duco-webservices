@@ -11,8 +11,8 @@ const backrounds = [
     "https://game-guide.fr/wp-content/uploads/2020/06/AmongTreesScreenshot5.jpg",
     "https://i.imgur.com/csou8q3.jpeg"
 ];
-$("#background").css("background-image", `url(${backrounds[Math.random() * backrounds.length | 0]})`);
-
+document.querySelector("#background").setAttribute("data-background", backrounds[Math.random() * backrounds.length | 0]);
+loadImages();
 
 function showcredits() {
     $("html").addClass("is-clipped");
