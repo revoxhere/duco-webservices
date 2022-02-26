@@ -265,6 +265,7 @@ const preloadImages = (images, callback) => {
     for (let i in images) {
         remaining++;
         let img = new Image();
+        if ("loading" in HTMLImageElement.prototype) img.loading = "lazy";
         img.onload = onloadCallback;
         img.src = images[i];
         loaded[i] = img;
