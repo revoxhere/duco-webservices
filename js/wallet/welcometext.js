@@ -15,11 +15,20 @@ function showcredits() {
     $("#modal").addClass("is-active");
 };
 
-window.addEventListener("load", () => {
-    // text
-    $("#welcometext").text(welcome_texts[Math.random() * welcome_texts.length | 0]);
+$("#welcometext").text(welcome_texts[Math.random() * welcome_texts.length | 0]);
 
-    // background
-    document.querySelector("#background").setAttribute("data-background", backrounds[Math.random() * backrounds.length | 0]);
-    loadImages();
-});
+// background
+
+let img = backrounds[Math.random() * backrounds.length | 0];
+
+document.querySelector("#background").setAttribute("data-background", img);
+
+// preload background image
+
+let preload = document.createElement('link');
+preload.rel = "preload";
+preload.as = "image";
+preload.href = img;
+document.head.appendChild(preload);
+
+loadImages();

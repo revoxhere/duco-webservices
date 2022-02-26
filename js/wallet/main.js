@@ -251,29 +251,6 @@ const updateFPS = () => {
 
 updateFPS();
 
-const preloadImages = (images, callback) => {
-    let remaining = 0;
-    let loaded = {};
-
-    let onloadCallback = (ev) => {
-        remaining--;
-        if (!remaining) {
-            callback(loaded);
-        }
-    };
-
-    for (let i in images) {
-        remaining++;
-        let img = new Image();
-        if ("loading" in HTMLImageElement.prototype) img.loading = "lazy";
-        img.onload = onloadCallback;
-        img.src = images[i];
-        loaded[i] = img;
-    }
-
-    return loaded;
-};
-
 // Find vendor prefix, if any
 let vendors = ['ms', 'moz', 'webkit', 'o'];
 for (let i = 0; i < vendors.length && !window.requestAnimationFrame; i++) {
@@ -329,13 +306,17 @@ let loadImages = () => {
 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    images = preloadImages({
-            background: canvas.getAttribute('data-background'),
-        }, () => {
-            startTime = Date.now();
-            backgroundAnimation = setAnimation(draw, canvas);
-        }
-    );
+    let img = new Image();
+    if ("loading" in HTMLImageElement.prototype) img.loading = "lazy";
+    img.src = canvas.getAttribute('data-background');
+    img.onload = () => {
+       startTime = Date.now();
+        backgroundAnimation = setAnimation(draw, canvas);
+    }
+
+    images = { 
+        background: img 
+    };
 }
 
 const draw = () => {
