@@ -494,6 +494,12 @@ summary {
   border: 0.1rem solid #b5b5b5;
 }
 
+@media (prefers-color-scheme: light) {
+  .is-checkbox[type=checkbox] + label::before {
+    border: 0.1rem solid black;
+  }
+} 
+
 .is-checkbox[type=checkbox] + label::after {
   position: absolute;
   display: none;
