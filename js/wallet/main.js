@@ -971,7 +971,7 @@ window.addEventListener('load', function () {
                                     </span>
                                 </p>
                                 <p class="subtitle is-size-7">
-                                    <span class="has-text-weight-bold">
+                                    <span>
                                         ${transaction_date}
                                     </span>
                                     <a href="https://explorer.duinocoin.com/?search=${transaction_hash_full}" target="_blank">
