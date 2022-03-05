@@ -231,7 +231,13 @@ function stake() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        update_element("stake_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
+                        update_element("stake_text", 
+                            `<a href='https://explorer.duinocoin.com/?search=${
+                                data.result.split(",")[1]
+                            }' target='_blank' class='has-text-success-dark'>
+                                ${data.result.split(",")[0]}
+                            </a>`
+                        );
                         $('#stake_amount').val('');
                     } else {
                         update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
