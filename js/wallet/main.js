@@ -15,6 +15,7 @@ let transaction_limit = 5;
 let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
+const STAKING_PERC = 1.5;
 
 const MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
@@ -183,23 +184,63 @@ function send() {
 }
 
 function wrap() {
-    amount = document.getElementById("wrap_amount").value;
+    wrap_amount = document.getElementById("wrap_amount").value;
     address = document.getElementById("wrap_address").value;
 
-    fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
-        "?password=" + encodeURIComponent(password) +
-        "&address=" + encodeURIComponent(address) +
-        "&amount=" + encodeURIComponent(amount))
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                update_element("wrap_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
-                $('#wrap_amount').val('');
-                $('#wrap_address').val('');
-            } else {
-                update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
-            }
-        });
+    if (wrap_amount >= 50) {
+        fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
+            "?password=" + encodeURIComponent(password) +
+            "&address=" + encodeURIComponent(address) +
+            "&amount=" + encodeURIComponent(wrap_amount))
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    update_element("wrap_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
+                    $('#wrap_amount').val('');
+                    $('#wrap_address').val('');
+                } else {
+                    update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+                }
+                setTimeout(function() {
+                    update_element("wrap_text", "")
+                }, 10000)
+            });
+    }
+}
+
+function stake_counter() {
+    stake_amount_text = document.getElementById("stake_amount_text")
+    stake_date_text = document.getElementById("stake_date_text");
+    stake_amount = document.getElementById("stake_amount").value;
+
+    if (!stake_amount || stake_amount < 0) stake_amount = 0;
+    else stake_amount = stake_amount * (1 + (STAKING_PERC/100))
+
+    stake_day = new Date(new Date().setDate(new Date().getDate() + 7));
+    update_element("stake_date_text", stake_day.toLocaleDateString());
+    update_element("stake_amount_text", `${round_to(2, stake_amount)} DUCO`);
+}
+
+function stake() {
+    stake_amount = document.getElementById("stake_amount").value;
+    stake_text = document.getElementById("stake_text");
+    if (stake_amount >= 20) {
+        fetch("https://server.duinocoin.com/stake/" + encodeURIComponent(username) +
+                "?password=" + encodeURIComponent(password) +
+                "&amount=" + encodeURIComponent(stake_amount))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        update_element("stake_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
+                        $('#stake_amount').val('');
+                    } else {
+                        update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+                    }
+                    setTimeout(function() {
+                         update_element("stake_text", "")
+                    }, 10000)
+                });
+    }
 }
 
 function logout() {
@@ -514,6 +555,36 @@ window.addEventListener('load', function () {
                 if (oldb != balance) {
                     calculdaily(balance, oldb);
                     oldb = balance;
+                }
+
+                if (data.balance.stake_amount) {
+                    update_element("stake_info",
+                        `<span>
+                            <i class="has-text-success-dark fa fa-layer-group"></i>
+                            Staking <b>${data.balance.stake_amount} DUCO</b>
+                        </span><br>
+                        <small>
+                            Ends on <b>${
+                                new Date(data.balance.stake_date*1000).toLocaleString()
+                            }<br>
+                            ${round_to(2, (
+                                data.balance.stake_amount * (
+                                    1 + (STAKING_PERC/100)
+                                ) - data.balance.stake_amount
+                            ))} DUCO
+                            <span class="has-text-weight-normal">
+                                est. reward
+                            </span>
+                        </small>`);
+                } else {
+                    update_element("stake_info", 
+                        `<span>
+                            <i class="fa fa-layer-group"></i>
+                            Not staking
+                        </span><br>
+                        <small>
+                            Click the <b>Stake coins</b> button to start
+                        </small>`);
                 }
 
                 $("#ducousd").html(" $" + round_to(5, duco_price));
@@ -1023,6 +1094,11 @@ window.addEventListener('load', function () {
                             });
                         });
                     }, 350);
+
+                    stake_counter();
+                    $('#stake_amount').on('input', function() {
+                        stake_counter();
+                    });
                 } else {
                     if (data.message.includes("This user doesn't exist")) {
                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
