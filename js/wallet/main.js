@@ -16,6 +16,7 @@ let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
 const STAKING_PERC = 1.5;
+const STAKE_DAYS = 14;
 
 const MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
@@ -216,7 +217,7 @@ function stake_counter() {
     if (!stake_amount || stake_amount < 0) stake_amount = 0;
     else stake_amount = stake_amount * (1 + (STAKING_PERC/100))
 
-    stake_day = new Date(new Date().setDate(new Date().getDate() + 7));
+    stake_day = new Date(new Date().setDate(new Date().getDate() + STAKE_DAYS));
     update_element("stake_date_text", stake_day.toLocaleDateString());
     update_element("stake_amount_text", `${round_to(2, stake_amount)} DUCO`);
 }
@@ -1101,10 +1102,9 @@ window.addEventListener('load', function () {
                         });
                     }, 350);
 
-                    stake_counter();
-                    $('#stake_amount').on('input', function() {
+                    setInterval(function() {
                         stake_counter();
-                    });
+                    }, 250);
                 } else {
                     if (data.message.includes("This user doesn't exist")) {
                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
