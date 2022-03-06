@@ -580,7 +580,7 @@ window.addEventListener('load', function () {
                                 ) - data.balance.stake_amount
                             ))} DUCO
                             <span class="has-text-weight-normal">
-                                est. reward
+                                estimated stake
                             </span>
                         </small>`);
                 } else {
