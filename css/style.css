@@ -693,14 +693,14 @@ summary {
   background-color: #ff3860 !important;
 }
 
-small#email {
-  transition: 0.25s filter linear;
-  -webkit-transition: 0.25s filter linear;
-  -moz-transition: 0.25s filter linear;
-  -o-transition: 0.25s filter linear;
+.hidden {
+  transition: 0.2s filter ease-in-out;
+  -webkit-transition: 0.2s filter ease-in-out;
+  -moz-transition: 0.2s filter ease-in-out;
+  -o-transition: 0.2s filter ease-in-out;
   filter: blur(4px);
 }
 
-small#email:hover {
+.hidden:hover {
   filter: blur(0);
 }
