@@ -132,7 +132,7 @@
                                         username
                                     </strong>
                                     <small id="verify">?</small>
-                                    <small id="email">(user@domain.com)</small>
+                                    <small id="email" class="hidden">(user@domain.com)</small>
                                 </p>
                             </div>
                             <div class="columns is-gapless">
@@ -196,15 +196,20 @@
                                     </span>
                                     <span>
                                             Your <strong>Miners</strong>
-                                            <span class="has-text-weight-normal">
-                                                (<span id="minercount">0</span>)
-                                            </span>
+                                            <small class="has-text-weight-normal">
+                                                (<span id="minercount">0</span>/50,
+                                                <b id="total_hashrate">0 H/s</b>)
+                                            </small>
                                     </span>
                                 </span>
                             </div>
                             <div class="column">
                                 <p class="subtitle is-size-6 has-text-right">
-                                    <b id="total_hashrate">0 H/s</b> total
+                                    Mining key:
+                                    <a class="modal-button" data-target="modal-mining-key">
+                                        <b style="text-transform: initial;"class="hidden" id="miner_pass">None</b>
+                                        <i class="fa fa-edit"></i>
+                                    </a>
                                 </p>
                             </div>
                         </div>
@@ -246,17 +251,14 @@
                             If you've turned them on recently it will take a minute
                             or two until their stats will appear here.
                         </span><br>
-                        <!--<span class="has-text-weight-normal">
+                        <p class="has-text-weight-normal mt-2">
                             <span class="has-text-weight-bold">
                                 Having problems?
                             </span>
-                            See the
-                            <span class="has-text-weight-bold">
-                                <a href="">
-                                    troubleshooting guide
-                                </a>
-                            </span>
-                        </span>-->
+                            Make sure you put the correct username (and mining key - if used) in the miner config (capitalization matters!).
+                            If the problem persists, check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for any ongoing maintenances.
+                            Join our <a href="https://www.reddit.com/r/Duinocoin/" target="_blank">Reddit</a> or <a href="https://discord.gg/kvBkccy" target="_blank">Discord</a> if you need more help.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -852,6 +854,48 @@
                     <div class="columns is-centered">
                         <div class="column is-full">
                             <span id="wrap_text" class="subtitle"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+    <div id="modal-mining-key" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-key"></i>
+                        </span>
+                        <span>Mining key setup</span>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-full content mb-0">
+                            <p>
+                                Here you can setup a mining key for additional account protection. After setting it, <b>only miners that have this key in the config file will be able to mine on your account</b>. <span class="has-text-success-dark">It's recommended to set this to a strong one</span> to prevent others mining on your account messing your Kolka drops and rewards. <b>Do not share it with anyone.</b>
+                            </p>
+                            <p class="mt-3">
+                                <span class="has-text-danger-dark">Note: old miner versions with no mining key support can still use the key authentication.</span>
+                                To do so, add the key after a colon in the rig name/id field,<br>e.g. <code>Home miner</code> becomes <code>Home miner:YOUR-KEY</code>
+                            </p>
+                        </div>
+                        <div class="column is-half">
+                            <input class="input" placeholder="None" type="text" id="mining_key">
+                        </div>
+                        <div class="column is-half">
+                            <button class="button is-fullwidth" onclick="set_mining_key()">
+                                Set
+                            </button>
+                        </div>
+                    </div>
+                    <div class="columns is-centered">
+                        <div class="column is-full">
+                            <span id="key_text" class="subtitle"></span>
                         </div>
                     </div>
                 </div>
