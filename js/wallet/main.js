@@ -250,6 +250,31 @@ function stake() {
     }
 }
 
+
+function set_mining_key() {
+    mining_key = document.getElementById("mining_key").value;
+    if (mining_key) {
+        fetch("https://server.duinocoin.com/mining_key" +
+                "?u=" + encodeURIComponent(username) +
+                "&password=" + encodeURIComponent(password) +
+                "&k=" + encodeURIComponent(mining_key),
+                {method: 'POST'})
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        update_element("key_text", data.result);
+                        $("#miner_pass").text(mining_key);
+                    } else {
+                        update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+                    }
+                    setTimeout(function() {
+                         update_element("key_text", "")
+                    }, 10000)
+                });
+    }
+}
+
+
 function logout() {
     delcookie("username");
     delcookie("authToken");
@@ -580,7 +605,7 @@ window.addEventListener('load', function () {
                                 ) - data.balance.stake_amount
                             ))} DUCO
                             <span class="has-text-weight-normal">
-                                estimated stake
+                                est. stake reward
                             </span>
                         </small>`);
                 } else {
@@ -1072,6 +1097,9 @@ window.addEventListener('load', function () {
                     $("#username").text(encodeURIComponent(username));
                     $("#email").text(`(${data.result[1]})`);
 
+                    $("#miner_pass").text(data.result[2]);
+                    $("#mining_key").val(data.result[2]);
+
                     $("#useravatar").attr("src",
                         `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
                         `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
@@ -1146,6 +1174,9 @@ window.addEventListener('load', function () {
 
                         $("#username").text(encodeURIComponent(username));
                         $("#email").text(`(${data.result[1]})`);
+
+                        $("#miner_pass").text(data.result[3]);
+                        $("#mining_key").val(data.result[3]);
 
                         $("#useravatar").attr("src",
                             `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
