@@ -83,9 +83,9 @@ if (getcookie("disableAnims")) {
 
 disableAnimsBtn.addEventListener("click", function () {
     if (this.checked) {
-        setcookie("disableAnims", "true");
+        setcookie("disableAnims", "true", 999);
     } else {
-        setcookie("disableAnims", "false");
+        setcookie("disableAnims", "false", 999);
         backgroundAnimation = setAnimation(draw, canvas);
     }
 });
@@ -97,9 +97,9 @@ if (getcookie("hideWarnings")) {
 
 sWarningsBtn.addEventListener("click", function () {
     if (this.checked) {
-        setcookie("hideWarnings", "true");
+        setcookie("hideWarnings", "true", 999);
     } else {
-        setcookie("hideWarnings", "false");
+        setcookie("hideWarnings", "false", 999);
     }
 });
 
@@ -396,8 +396,8 @@ const draw = () => {
 
     if (getcookie("disableAnims") == "true") clearAnimation(backgroundAnimation);
 
-    if (fps > 29 && testForSlowBrowsers) {
-        if (fps < 30) { // If the user has less than 30 fps stop parallax bg
+    if (fps > 59 && testForSlowBrowsers) {
+        if (fps < 60) { // If the user has less than 30 fps stop parallax bg
             clearAnimation(backgroundAnimation);
         }
         testForSlowBrowsers = false;
@@ -409,8 +409,11 @@ const draw = () => {
     let width = cw,
         height = ch;
 
-    let x = (mouse.x - width) * 0.02;
-    let y = (mouse.y - height) * 0.02;
+    let x = (mouse.x - width) * 0.01;
+    let y = (mouse.y - height) * 0.01;
+
+    const const_width = window.innerWidth/100;
+    const const_height = window.innerHeight/100;
 
     if (lastData.x != x || lastData.y != y) { // If the user move the mouse, update the background
 
@@ -419,13 +422,21 @@ const draw = () => {
         // Draw BG
         ctx.globalAlpha = 1;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(images.background, x, y, width + 50, height + 50);
+        ctx.drawImage(images.background, x, y, width + const_width, height + const_height);
     }
 };
 
 function round_to(precision, value) {
     power_of_ten = 10 ** precision;
     return Math.round(value * power_of_ten) / power_of_ten;
+}
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function key_from_value(object, value) {
+    return capitalize(Object.keys(object).find(key => object[key] === value));
 }
 
 /* Accurate daily calculator by Lukas */
@@ -579,6 +590,7 @@ window.addEventListener('load', function () {
             .then(data => {
                 data = data.result;
                 duco_price = data.prices.max;
+                delete data.prices.max;
 
                 balance = round_to(10, parseFloat(data.balance.balance));
                 if (first_open) $("#balance").html(balance);
@@ -605,7 +617,7 @@ window.addEventListener('load', function () {
                                 ) - data.balance.stake_amount
                             ))} DUCO
                             <span class="has-text-weight-normal">
-                                est. stake reward
+                                est. reward
                             </span>
                         </small>`);
                 } else {
@@ -625,13 +637,19 @@ window.addEventListener('load', function () {
                 $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
                 $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
                 $("#duco_furim").html("$" + round_to(5, data.prices.furim));
-                $("#duco_justswap").html("$" + round_to(5, data.prices.justswap));
+                $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
                 $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
                 $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
 
                 balanceusd = round_to(4, balance * duco_price);
-                if (first_open) $("#balancefiat").html(balanceusd);
-                else update_element("balancefiat", balanceusd);
+                if (first_open) {
+                    $("#balancefiat").html(balanceusd);
+                    $("#best_exchage").html(key_from_value(data.prices, duco_price));
+                }
+                else {
+                    update_element("balancefiat", balanceusd);
+                    update_element("best_exchage", key_from_value(data.prices, duco_price));
+                }
 
                 verified = data.balance.verified;
                 if (verified === "yes") {
@@ -1110,9 +1128,10 @@ window.addEventListener('load', function () {
                     }, 10 * 1000);
 
                     setTimeout(function () {
-                        $('#form').hide("drop", { direction: "down" }, 500, function () {
-                            $('#wallet').show("drop", { direction: "up" }, 500, function () {
+                        $('#form').hide("drop", { direction: "left" }, 500, function () {
+                            $('#wallet').show("drop", { direction: "right" }, 500, function () {
                                 $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                                $("iframe#news_iframe").fadeIn(2500)
 
                                 if (adBlockEnabled) {
                                     $("#adblocker_detected").fadeIn()
@@ -1166,7 +1185,7 @@ window.addEventListener('load', function () {
                 function (data) {
                     if (data.success == true) {
                         if (rememberLogin.checked) {
-                            setcookie("username", encodeURIComponent(username));
+                            setcookie("username", encodeURIComponent(username), 999);
                             setcookie("authToken", data.result[2]);
                         }
 
@@ -1188,9 +1207,10 @@ window.addEventListener('load', function () {
                         }, 10 * 1000);
 
                         setTimeout(function () {
-                            $('#form').hide("drop", { direction: "down" }, 500, function () {
-                                $('#wallet').show("drop", { direction: "up" }, 500, function () {
+                            $('#form').hide("drop", { direction: "left" }, 500, function () {
+                                $('#wallet').show("drop", { direction: "right" }, 500, function () {
                                     $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                                    $("iframe#news_iframe").fadeIn(2500)
 
                                     if (adBlockEnabled) {
                                         $("#adblocker_detected").fadeIn()
