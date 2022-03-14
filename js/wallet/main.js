@@ -436,7 +436,12 @@ function capitalize(string) {
 }
 
 function key_from_value(object, value) {
-    return capitalize(Object.keys(object).find(key => object[key] === value));
+    try {
+        return capitalize(Object.keys(object).find(key => object[key] === value));
+    } catch(err) {
+        console.log(err);
+        return 'Unknown';
+    }
 }
 
 /* Accurate daily calculator by Lukas */
