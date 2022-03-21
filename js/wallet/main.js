@@ -16,7 +16,7 @@ let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
 const STAKING_PERC = 1.5;
-const STAKE_DAYS = 14;
+const STAKE_DAYS = 21;
 
 const MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
