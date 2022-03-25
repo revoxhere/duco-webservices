@@ -1343,7 +1343,7 @@ const drawGraph = () => {
                 tooltip: {
                     callbacks: {
                         label: function(item, data) { // Value Fix
-                            return item.parsed.y;
+                            return item.parsed.y + ' $';
                         }
                     }
                 }
