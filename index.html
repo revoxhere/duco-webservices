@@ -36,6 +36,8 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/detect-autofill/dist/detect-autofill.js"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="preload" as="script" href="js/chart.js">
+    <script type="text/javascript" src="js/chart.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -110,8 +112,9 @@
     <div id="wallet" style="display:none;">
         <div class="tile is-ancestor">
             <div class="tile is-parent">
-                <div class="tile is-child box blur">
-                    <article class="media">
+                <div class="tile is-child box blur" style="padding: 0 !important;">
+                    <canvas id="historicPrices" class="is-clickable is-fullwidth is-hidden fadeIn"></canvas>
+                    <article class="media is-clickable" style="margin: 1.25rem;" id="userData">
                         <div class="media-left">
                             <figure class="image is-64x64" title="Synced with Gravatar">
                                 <img class="is-rounded" id="useravatar" alt="User avatar">
