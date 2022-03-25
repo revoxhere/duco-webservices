@@ -1304,7 +1304,7 @@ const historicPricesCtx = historicPrices.getContext('2d');
 let gradient = historicPricesCtx.createLinearGradient(0, 0, 0, 400);
 
 gradient.addColorStop(0, 'rgba(255, 180, 18, .5)');
-gradient.addColorStop(.4, 'rgba(171, 121, 12, 0)');
+gradient.addColorStop(.5, 'rgba(171, 121, 12, 0)');
 
 let hPricesDate = []
 let hPrices = [];
