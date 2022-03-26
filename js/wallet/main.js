@@ -9,6 +9,7 @@ let total_hashrate = 0;
 let start = Date.now();
 let timestamps = [];
 let balances = [];
+let user_items;
 let username, password;
 let notify_shown = false;
 let transaction_limit = 5;
@@ -207,12 +208,6 @@ function wrap() {
                 }, 10000)
             });
     }
-    else {
-        update_element("wrap_text", "<span class='has-text-danger-dark'>Amount must be at least 50 DUCO</span>");
-        setTimeout(function() {
-            update_element("wrap_text", "")
-        }, 10000)
-    }
 }
 
 function stake_counter() {
@@ -220,7 +215,7 @@ function stake_counter() {
     stake_date_text = document.getElementById("stake_date_text");
     stake_amount = document.getElementById("stake_amount").value;
 
-    if (!stake_amount || stake_amount < 0) stake_amount = 0;
+    if (!stake_amount || stake_amount < 20) stake_amount = 0;
     else stake_amount = stake_amount * (1 + (STAKING_PERC/100))
 
     stake_day = new Date(new Date().setDate(new Date().getDate() + STAKE_DAYS));
@@ -445,7 +440,6 @@ function key_from_value(object, value) {
     try {
         return capitalize(Object.keys(object).find(key => object[key] === value));
     } catch(err) {
-        // console.log(err);
         return 'Unknown';
     }
 }
@@ -533,6 +527,94 @@ function miner_notify() {
     modal_error.classList.add('is-active');
 }
 
+function shop_buy(item_name) {
+    $(`#${item_name}_button`).addClass("is-loading");
+    fetch("https://server.duinocoin.com/shop_buy/" + encodeURIComponent(username) +
+        "?item=" + item_name +
+        "&password=" + encodeURIComponent(password))
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                update_element("shop_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
+                user_items.push(item_name);
+                refresh_shop(user_items);
+            } else {
+                update_element("shop_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+            }
+            $(`#${item_name}_button`).removeClass("is-loading");
+            setTimeout(function() {
+                update_element("shop_text", "")
+            }, 10000)
+    });
+}
+
+function refresh_shop(user_items) {
+    fetch(`https://server.duinocoin.com/shop_items`)
+        .then(response => response.json())
+        .then(data => {
+            shop_items = data.result;
+
+            shop_items_final = "";
+            for (item in shop_items) {
+                if (user_items) {
+                    if (!shop_items[item]["display"] && !(user_items.includes(parseInt(item)))) continue;
+                }
+
+                shop_items_final += `
+                    <div class="column is-half">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img src="${shop_items[item]["icon"]}">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">
+                                            ${shop_items[item]["name"]}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    ${shop_items[item]["description"]}<br>
+                                    Price: <b>${shop_items[item]["price"]} DUCO</b>
+                                </div>`;
+                if (user_items && user_items.includes(parseInt(item))) {
+                                shop_items_final += `
+                                <button disabled class="button is-fullwidth">Owned</button>
+                            </div>
+                        </div>
+                    </div>`;
+                } else {
+                                shop_items_final += `
+                                <button id="${item}_button" onclick="shop_buy(${item})" class="button is-fullwidth">Buy</button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+            }
+
+            $("#shop_items").html(shop_items_final)
+        });
+
+    if (!user_items) return;
+
+    if (user_items.includes(0)) {
+        $("#useravatar").attr("src", "https://server.duinocoin.com/assets/items/0.png");
+    }
+
+    if (user_items.includes(1)) {
+        $("#hat").attr("src", "https://server.duinocoin.com/assets/items/1.png")
+        $("#hat").fadeIn();
+    }
+
+    if (user_items.includes(2)) {
+        $("#sunglasses ").attr("src", "https://server.duinocoin.com/assets/items/2.png")
+        $("#sunglasses ").fadeIn();
+    }
+}
+
 window.addEventListener('load', function () {
     // CONSOLE WARNING
     console.log(`%cHold on!`, "color: red; font-size: 3em");
@@ -602,6 +684,9 @@ window.addEventListener('load', function () {
                 data = data.result;
                 duco_price = data.prices.max;
                 delete data.prices.max;
+
+                user_items = data.items;
+                if (first_open) refresh_shop(user_items);
 
                 balance = round_to(10, parseFloat(data.balance.balance));
                 if (first_open) $("#balance").html(balance);
@@ -1238,6 +1323,10 @@ window.addEventListener('load', function () {
                                 });
                             });
                         }, 350);
+
+                        setInterval(function() {
+                            stake_counter();
+                        }, 250);
                     } else {
                         if (data.message.includes("This user doesn't exist")) {
                             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
@@ -1294,120 +1383,4 @@ Modals.forEach((modal) => {
         document.querySelector('html').classList.remove('is-clipped');
         modal.classList.remove('is-active');
     });
-});
-
-const userDiv = document.querySelector('#userData');
-const historicPrices = document.querySelector('#historicPrices');
-
-const historicPricesCtx = historicPrices.getContext('2d');
-
-let gradient = historicPricesCtx.createLinearGradient(0, 0, 0, 400);
-
-gradient.addColorStop(0, 'rgba(255, 180, 18, .5)');
-gradient.addColorStop(.5, 'rgba(171, 121, 12, 0)');
-
-let hPricesDate = []
-let hPrices = [];
-
-const drawGraph = () => {
-    new Chart(historicPricesCtx, {
-        type: 'line',
-        data: {
-            labels: hPricesDate,
-            datasets: [{
-                label: '',
-                data: hPrices,
-                fill: true,
-                backgroundColor: gradient,
-                borderColor: 'rgba(255, 180, 18, 1)',
-                borderJoinStyle: 'round',
-                borderCapStyle: 'round',
-                borderWidth: 3,
-                pointRadius: 0,
-                pointHitRadius: 10,
-                lineTension: .2,
-            }]
-        },
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Price History",
-                    position: "bottom",
-                    fullWidth: true,
-                    fontSize: 16
-                },
-                legend: {
-                    display: false,
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(item, data) { // Value Fix
-                            return item.parsed.y + ' $';
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                    scaleLabel: {
-                        display: false,
-                    },
-                    display: false
-                },
-                x: {
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                    scaleLabel: {
-                        display: false,
-                    },
-                    display: false
-                }
-            }
-        }
-    });
-}
-
-fetch('https://server.duinocoin.com/historic_prices?currency=max&limit=30').then(res => res.json()).then(response => {
-    let data = response.result;
-
-    for (day in data.reverse()) {
-        hPricesDate.push(data[day]["day"]);
-        hPrices.push(data[day]["price"])
-    }
-
-    drawGraph();
-}).catch(err => {
-
-    for(let i = 0; i < 30; i++) {
-        hPricesDate.push(new Date().toLocaleDateString());
-        hPrices.push(Math.random() * (100 - 1) + 1);
-    }
-
-    console.log(err);
-
-    drawGraph();
-});
-
-userDiv.addEventListener('click', function () {
-    $("#userData").fadeOut('slow', () => {
-        $("#historicPrices").fadeIn('slow', () => {
-            historicPrices.classList.remove('is-hidden');
-        });
-    });
-});
-
-historicPrices.addEventListener('click', function () {
-    historicPrices.classList.add('is-hidden');
-    $("#userData").fadeIn();
 });
