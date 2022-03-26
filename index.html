@@ -36,8 +36,6 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/detect-autofill/dist/detect-autofill.js"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <link rel="preload" as="script" href="js/chart.js">
-    <script type="text/javascript" src="js/chart.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -112,17 +110,21 @@
     <div id="wallet" style="display:none;">
         <div class="tile is-ancestor">
             <div class="tile is-parent">
-                <div class="tile is-child box blur" style="padding: 0 !important;">
-                    <canvas id="historicPrices" class="is-clickable is-fullwidth is-hidden fadeIn"></canvas>
-                    <article class="media is-clickable" style="margin: 1.25rem;" id="userData">
+                <div class="tile is-child box blur">
+                    <article class="media">
                         <div class="media-left">
                             <figure class="image is-64x64" title="Synced with Gravatar">
                                 <img class="is-rounded" id="useravatar" alt="User avatar">
                             </figure>
+                            <img id="hat" style="height:50px;width:50px;position:absolute;top:0;margin-left:10px;display:none">
+                            <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:10%;display:none">
                             <p class="mt-1 has-text-centered">
                                 <a class="modal-button" data-target="modal-settings">
                                     <i class="fa fa-cog" title="Settings"></i>
-                                </a>&nbsp;
+                                </a>
+                                <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
+                                    <i class="fa fa-shopping-bag" title="Shop"></i>
+                                </a>
                                 <a onclick="logout()">
                                     <i class="fa fa-sign-out-alt" title="Log out"></i>
                                 </a>
@@ -702,6 +704,40 @@
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
+    <div id="modal-shop" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-shopping-bag"></i>
+                        </span>
+                        <span>Item shop <small class="tag is-warning">BETA</small></span>
+                    </span>
+                    <div class="content">
+                        Here you can buy various <b>official</b> things with your Duino-Coins. Currently the products are only for cosmetic purposes, but more purchaseable utilities will be added in the future (e.g. upgradeable worker limits) - stay tuned.<br>
+                        <b>Please note</b> that purchased items cannot be returned.
+                    </div>
+                </p>
+                <div class="columns is-multiline" id="shop_items">
+                    <div class="columns is-centered">
+                        <div class="column"></div>
+                        <div class="column">
+                            <p class="title">Fetching data...</p>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                </div>
+                <div class="columns is-centered">
+                    <div class="column is-full">
+                        <span id="shop_text" class="subtitle"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
     <div id="modal_success" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -930,10 +966,10 @@
                         <div class="column is-full content mb-0">
                             <p>
                                 Duino-Coins can be frozen for a certain amount of time to earn passive rewards. Staking helps Duino control it's circulation. Currently, you can stake your coins for <b class="has-text-success-dark">21 days</b> to earn up to <b class="has-text-success-dark">1.5% interest rate</b> on them. The minimum stakeable amount is <b class="has-text-success-dark">20 DUCO</b>.<br>
-                                Example: by freezing 100 DUCO, after two weeks you will receive your initial 100 DUCO back plus the staked amount - 1.5 DUCO in this case.
+                                Example: by freezing 100 DUCO, after three weeks you will receive your initial 100 DUCO back plus the staked amount - 1.5 DUCO in this case.
                             </p>
                             <p class="mt-3 has-text-danger-dark">
-                                Staked DUCOs get frozen and can not be used while the staking process is active. Staking rewards get sent automatically after the 21 day period. Staking can't be cancelled.
+                                Staked DUCOs get frozen and can not be used while the staking process is active. Staking rewards get sent automatically after the staking period. Staking can't be cancelled.
                             </p>
                         </div>
                         <div class="column is-half">
