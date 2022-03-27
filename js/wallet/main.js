@@ -1384,3 +1384,122 @@ Modals.forEach((modal) => {
         modal.classList.remove('is-active');
     });
 });
+
+const userDiv = document.querySelector('#userData');
+const historicPrices = document.querySelector('#historicPrices');
+
+const historicPricesCtx = historicPrices.getContext('2d');
+
+let gradient = historicPricesCtx.createLinearGradient(0, 0, 0, 400);
+
+gradient.addColorStop(0, 'rgba(255, 180, 18, .5)');
+gradient.addColorStop(.5, 'rgba(171, 121, 12, 0)');
+
+let hPricesDate = []
+let hPrices = [];
+
+const drawGraph = () => {
+    new Chart(historicPricesCtx, {
+        type: 'line',
+        data: {
+            labels: hPricesDate,
+            datasets: [{
+                label: '',
+                data: hPrices,
+                fill: true,
+                backgroundColor: gradient,
+                borderColor: 'rgba(255, 180, 18, 1)',
+                borderJoinStyle: 'round',
+                borderCapStyle: 'round',
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHitRadius: 10,
+                lineTension: .2,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Price History",
+                    position: "bottom",
+                    fullWidth: true,
+                    fontSize: 16
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(item, data) { // Value Fix
+                            return item.parsed.y + ' $';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                    scaleLabel: {
+                        display: false,
+                    },
+                    display: false
+                },
+                x: {
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                    scaleLabel: {
+                        display: false,
+                    },
+                    display: false
+                }
+            }
+        }
+    });
+}
+
+fetch('https://server.duinocoin.com/historic_prices?currency=max&limit=30').then(res => res.json()).then(response => {
+    let data = response.result;
+
+    for (day in data.reverse()) {
+        hPricesDate.push(data[day]["day"]);
+        hPrices.push(data[day]["price"])
+    }
+
+    drawGraph();
+}).catch(err => {
+
+    for(let i = 0; i < 30; i++) {
+        hPricesDate.push(new Date().toLocaleDateString());
+        hPrices.push(Math.random() * (100 - 1) + 1);
+    }
+
+    console.log(err);
+
+    drawGraph();
+});
+
+userDiv.addEventListener('click', function () {
+    $("#userData").fadeOut('slow', () => {
+        $("#heightFix").removeClass("is-hidden");
+        $("#historicPrices").fadeIn('slow', () => {
+            historicPrices.classList.remove('is-hidden');
+        });
+    });
+});
+
+historicPrices.addEventListener('click', function () {
+    historicPrices.classList.add('is-hidden');
+     $("#heightFix").addClass("is-hidden");
+    $("#userData").fadeIn();
+});
