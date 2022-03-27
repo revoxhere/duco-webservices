@@ -33,11 +33,11 @@
     <link rel="preload" as="script" href="js/fontawesome.js">
     <script type="text/javascript" src="js/fontawesome.js"></script>
     <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    <link rel="preload" as="script" href="js/chart.js">
+    <script type="text/javascript" src="js/chart.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/detect-autofill/dist/detect-autofill.js"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <link rel="preload" as="script" href="js/chart.js">
-    <script type="text/javascript" src="js/chart.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -99,7 +99,7 @@
             <div class="field">
                 <div class="is-flex is-justify-content-flex-start is-align-items-center mt-4" style="width: 100%;">
                     <input class="is-checkbox is-small" type="checkbox" id="rememberinput">
-                    <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me (for 1 hour)</label>
+                    <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me</label>
                 </div>
             </div>
             <div>
@@ -114,24 +114,26 @@
             <div class="tile is-parent">
                 <div class="tile is-child box blur">
                     <article class="media">
-                        <div class="media-left">
-                            <figure class="image is-64x64" title="Synced with Gravatar">
-                                <img class="is-rounded" id="useravatar" alt="User avatar">
-                            </figure>
-                            <img id="hat" style="height:50px;width:50px;position:absolute;top:0;margin-left:10px;display:none">
-                            <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:10%;display:none">
-                            <p class="mt-1 has-text-centered">
-                                <a class="modal-button" data-target="modal-settings">
-                                    <i class="fa fa-cog" title="Settings"></i>
-                                </a>
-                                <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
-                                    <i class="fa fa-shopping-bag" title="Shop"></i>
-                                </a>
-                                <a onclick="logout()">
-                                    <i class="fa fa-sign-out-alt" title="Log out"></i>
-                                </a>
-                            </p>
-                        </div>
+                        <a href="https://gravatar.com" target="_blank">
+                            <div class="media-left">
+                                <figure class="image is-64x64" title="Synced with Gravatar">
+                                    <img class="is-rounded" id="useravatar" alt="User avatar">
+                                </figure>
+                                <img id="hat" style="height:50px;width:50px;position:absolute;top:0;margin-left:10px;display:none">
+                                <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:10%;display:none">
+                                <p class="mt-1 has-text-centered">
+                                    <a class="modal-button" data-target="modal-settings">
+                                        <i class="fa fa-cog" title="Settings"></i>
+                                    </a>
+                                    <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
+                                        <i class="fa fa-shopping-bag" title="Shop"></i>
+                                    </a>
+                                    <a onclick="logout()">
+                                        <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </a>
                         <div class="media-content" style="overflow-wrap: anywhere;">
                             <div class="content has-text-left mb-0">
                                 <p>
@@ -200,7 +202,7 @@
                             <div class="column">
                                 <span class="is-size-6">
                                     <span class="icon-text is-size-6">
-                                        <i class="icon fa fa-charging-station"></i>
+                                        <i class="icon mdi mdi-devices"></i>
                                     </span>
                                     <span>
                                             Your <strong>Miners</strong>
@@ -263,8 +265,9 @@
                             <span class="has-text-weight-bold">
                                 Having problems?
                             </span>
-                            Make sure you put the correct username (and mining key - if used) in the miner config (capitalization matters!).
-                            If the problem persists, check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for any ongoing maintenances.
+                            Make sure you put the correct username in the miner config - capitalization matters!<br>
+                            If you have enabled the mining key, make sure you also enter it in your miners - they won't be able to mine on your account with invalid key entered.<br>
+                            Facing connection issues? Check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for possible ongoing server maintenances.<br>
                             Join our <a href="https://www.reddit.com/r/Duinocoin/" target="_blank">Reddit</a> or <a href="https://discord.gg/kvBkccy" target="_blank">Discord</a> if you need more help.
                         </p>
                     </div>
@@ -534,7 +537,7 @@
                     <p class="subtitle mb-1">
                         Account and appearance
                     </p>
-                    <div class="columns">
+                    <div class="columns mb-0">
                         <div class="column">
                             <input class="is-checkbox" id="showWarnings" type="checkbox">
                             <label for="showWarnings">Hide warnings and errors)</label>
@@ -548,6 +551,14 @@
                                 <i class="icon is-small fa fa-key"></i>
                                 <span>Change password</span>
                             </a>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <p class="subtitle is-size-6 mt-0">Account creation date: <b id="account_creation"></b></p>
+                        </div>
+                        <div class="column is-narrow mt-0">
+                            <p class="subtitle is-size-6">Last login: <b id="last_login"></b></p>
                         </div>
                     </div>
                     <p class="subtitle mb-1">
@@ -577,6 +588,10 @@
                         <a href="https://furim.xyz/" target="_blank" class="button">
                             <img src="assets/furim_faucet.png" class="icon is-small">
                             <span>Furime Services</span>
+                        </a>
+                        <a href="https://magi.duinocoin.com/" target="_blank" class="button">
+                            <img src="assets/magi.png" class="icon is-small">
+                            <span>Duino-Coin x Coin Magi</span>
                         </a>
                     </div>
                     <p class="subtitle mb-1">
