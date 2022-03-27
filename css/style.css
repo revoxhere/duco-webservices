@@ -80,7 +80,7 @@ a {
   }
 
   .blur {
-    background-color: rgba(17, 25, 40, 0.8) !important;
+    background-color: rgba(17, 25, 40, 0.9) !important;
     box-shadow: 0 8px 25px 0 rgba(32, 32, 32, 0.7) !important;
     border: 1px solid rgba(255, 255, 255, 0.125) !important;
   }
@@ -101,7 +101,7 @@ a {
   }
 
   .blur {
-    background-color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
     box-shadow: 0 8px 25px 0 rgba(128, 128, 128, 0.6) !important;
     border: 1px solid rgba(209, 213, 219, 0.3) !important;
   }
@@ -117,8 +117,6 @@ a {
 }
 
 .blur {
-  backdrop-filter: blur(3px) !important;
-  -webkit-backdrop-filter: blur(3px) !important;
   border-radius: 25px !important;
 }
 
@@ -279,6 +277,22 @@ td {
   font-family: 'Lato', sans-serif;
 }
 
+.fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+  -webkit-animation: fadeIn 0.5s ease-in-out;
+  -moz-animation: fadeIn 0.5s ease-in-out;
+  -o-animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .input-div.pass {
   margin-bottom: 4px;
 }
@@ -384,7 +398,7 @@ input {
   -ms-transform: translateZ(0);
   -o-transform: translateZ(0);
   transform: translateZ(0);
-  will-change: opacity;
+  will-change:  all;
 }
 
 [data-tooltip]:after,
@@ -699,25 +713,9 @@ summary {
   -webkit-transition: 0.2s filter ease-in-out;
   -moz-transition: 0.2s filter ease-in-out;
   -o-transition: 0.2s filter ease-in-out;
-  filter: blur(4px);
+  filter: blur(5px);
 }
 
 .hidden:hover {
   filter: blur(0);
-}
-
-.fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
-  -webkit-animation: fadeIn 0.5s ease-in-out;
-  -moz-animation: fadeIn 0.5s ease-in-out;
-  -o-animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
