@@ -208,6 +208,13 @@ function wrap() {
                 }, 10000)
             });
     }
+    else 
+    {
+        update_element("wrap_text", "<span class='has-text-danger-dark'>Amount must be at least 50 DUCO</span>");
+        setTimeout(function() {
+            update_element("wrap_text", "");
+        }, 10000);
+    }
 }
 
 function stake_counter() {
