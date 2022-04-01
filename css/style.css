@@ -12,6 +12,28 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+/* Pageloader */
+#loader {
+  height: 256px;
+  width: 256px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+#pageloaders {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #ffffff; }
+
+@media (prefers-color-scheme: dark) {
+  #pageloaders {
+    background: #070707; } }
+
 .button,
 select,
 input {
