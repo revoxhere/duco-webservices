@@ -1052,15 +1052,16 @@ window.addEventListener('load', function () {
                                             ${miner_num}
                                         </span>
                                 </th>
-                                <th>
+                                <th style="word-break: break-all">
                                         <span class="icon-text">
                                             <span class="icon minerIcon" title="Miner type: ${miner_type}">
-                                                ${icon}
+                                                ${icon}<wbr>
                                             </span>
                                         </span>
-                                        <span class="has-text-weight-bold" title="Miner name">
-                                            ${miner_name}
-                                        </span>
+                                        
+                                            <span class="has-text-weight-bold" title="Miner name">
+                                                ${miner_name}
+                                            </span>
                                 </th>
                                 <th>
                                         <span class="has-text-weight-bold" title="Miner hashrate">
