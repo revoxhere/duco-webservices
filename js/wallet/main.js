@@ -713,6 +713,11 @@ function refresh_shop(user_items) {
         $("#sunglasses ").attr("src", "https://server.duinocoin.com/assets/items/2.png")
         $("#sunglasses ").fadeIn();
     }
+
+    if (user_items.includes(3)) {
+        $("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
+        $("#bowtie").fadeIn();
+    }
 }
 
 window.addEventListener('load', function () {
