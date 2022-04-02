@@ -938,7 +938,7 @@ window.addEventListener('load', function () {
                             percentage = 0.96;
                         } else if (miner_software.includes("ESP32")) {
                             color = "#5f27cd";
-                            icon = `<i class="fa fa-wifi" style="color:${color}"></i>`;
+                            icon = `<img src="img/esp32.gif">`;
                             miner_type = "ESP32";
                             percentage = 0.96;
                         } else if (miner_software.includes("I2C")) {
