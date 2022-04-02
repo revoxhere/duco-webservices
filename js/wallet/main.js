@@ -1003,8 +1003,8 @@ window.addEventListener('load', function () {
                         }
 
                         let warning_icon = `
-                        <span class="icon-text has-text-success" title="Operating normally">
-                            <i class="icon fa fa-check-circle"></i>
+                        <span class="icon-text has-text-success-dark" title="Operating normally">
+                            <i class="icon mdi mdi-check-all"></i>
                         </span>`;
                         if (miner_efficiency < 40) {
                             warning_icon = `
@@ -1208,7 +1208,7 @@ window.addEventListener('load', function () {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-right fa-fw has-text-danger"></i>
+                                    <i class="mdi mdi-arrow-top-right fa-fw has-text-danger"></i>
                                     <span class="has-text-weight-normal">
                                         Sent
                                         <span class="has-text-weight-bold">
@@ -1237,7 +1237,7 @@ window.addEventListener('load', function () {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-left fa-fw has-text-success-dark"></i>
+                                    <i class="mdi mdi-arrow-bottom-left fa-fw has-text-success-dark"></i>
                                     <span class="has-text-weight-normal">
                                         Received
                                         <span class="has-text-weight-bold">
