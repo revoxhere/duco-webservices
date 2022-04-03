@@ -556,7 +556,7 @@ function calculdaily(newb, oldb) {
         if (daily > 0 && daily < 500) {
             daily = round_to(2, daily)
             update_element("estimatedprofit", `
-                <i class="far fa-star"></i>
+                <i class="far fa-star fa-spin"></i>
                 Earning about <b>` + daily + ` ᕲ</b> daily`);
 
             avgusd = round_to(3, daily * duco_price);
