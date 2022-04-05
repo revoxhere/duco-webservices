@@ -35,7 +35,7 @@ function calculdaily(newb, oldb) {
                 Earning about <b>` + daily + ` ᕲ</b> daily`);
 
         avgusd = round_to(3, daily * duco_price);
-        update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
+        update_element("estimatedprofitusd", "(≈ m$" + avgusd*1000 + ")");
     }
     start = Date.now()
 }
@@ -343,7 +343,7 @@ window.addEventListener('load', function() {
                 $("#ducousd").html(" $" + round_to(5, data["Duco price"]));
                 duco_price = round_to(5, data["Duco price"]);
 
-                $("#ducousd_xmg").html("$" + round_to(5, data["Duco price XMG"]));
+                $("#ducousd_xmg.html("$" + round_to(5, data["Duco price XMG"]));
                 $("#ducousd_bch").html("$" + round_to(5, data["Duco price BCH"]));
                 $("#ducousd_trx").html("$" + round_to(5, data["Duco price TRX"]));
                 $("#ducousd_nano").html("$" + round_to(5, data["Duco price NANO"]));
@@ -387,7 +387,7 @@ window.addEventListener('load', function() {
                 if (first_launch) {
                     push_to_graph(balance);
                     $("#balance").prop('Counter', 0).animate({
-                        Counter: balance,
+                        Counter: balance*0.001,
                     }, {
                         duration: 750,
                         easing: 'swing',
@@ -398,7 +398,7 @@ window.addEventListener('load', function() {
                     first_launch = false;
                 } else {
                     $("#balance").prop('Counter', oldb).animate({
-                        Counter: balance,
+                        Counter: balance*0.001,
                     }, {
                         duration: 750,
                         easing: 'swing',
@@ -414,8 +414,8 @@ window.addEventListener('load', function() {
                 }
 
                 balanceusd = round_to(4, balanceusd);
-                if (first_open) $("#balanceusd").html("≈ $" + balanceusd);
-                else update_element("balanceusd", "≈ $" + balanceusd);
+                if (first_open) $("#balanceusd").html("≈ m$" + balanceusd*1000);
+                else update_element("balanceusd", "≈ m$" + balanceusd*1000);
 
                 if (first_open) {
                     verified = data.balance.verified;

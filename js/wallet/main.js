@@ -72,7 +72,124 @@ function get_user_color(username) {
 
     return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
 };
+const userDiv = document.querySelector('#userData');
+const historicPrices = document.querySelector('#historicPrices');
 
+const historicPricesCtx = historicPrices.getContext('2d');
+
+let gradient = historicPricesCtx.createLinearGradient(0, 0, 0, 400);
+
+gradient.addColorStop(0, 'rgba(255, 180, 18, .5)');
+gradient.addColorStop(.5, 'rgba(171, 121, 12, 0)');
+
+let hPricesDate = []
+let hPrices = [];
+
+const drawGraph = () => {
+    new Chart(historicPricesCtx, {
+        type: 'line',
+        data: {
+            labels: hPricesDate,
+            datasets: [{
+                label: '',
+                data: hPrices,
+                fill: true,
+                backgroundColor: gradient,
+                borderColor: 'rgba(255, 180, 18, 1)',
+                borderJoinStyle: 'round',
+                borderCapStyle: 'round',
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHitRadius: 10,
+                lineTension: .2,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: "Price History",
+                    position: "bottom",
+                    fullWidth: true,
+                    fontSize: 16
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(item, data) { // Value Fix
+                            return item.parsed.y + ' $';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                    scaleLabel: {
+                        display: false,
+                    },
+                    display: false
+                },
+                x: {
+                    ticks: {
+                        display: false
+                    },
+                    gridLines: {
+                        display: false,
+                    },
+                    scaleLabel: {
+                        display: false,
+                    },
+                    display: false
+                }
+            }
+        }
+    });
+}
+
+fetch('https://server.duinocoin.com/historic_prices?currency=max&limit=30').then(res => res.json()).then(response => {
+    let data = response.result;
+
+    for (day in data.reverse()) {
+        hPricesDate.push(data[day]["day"]);
+        hPrices.push(data[day]["price"])
+    }
+
+    drawGraph();
+}).catch(err => {
+
+    for(let i = 0; i < 30; i++) {
+        hPricesDate.push(new Date().toLocaleDateString());
+        hPrices.push(Math.random() * (100 - 1) + 1);
+    }
+
+    console.log(err);
+
+    drawGraph();
+});
+
+userDiv.addEventListener('click', function () {
+    $("#userData").fadeOut('slow', () => {
+        $("#heightFix").removeClass("is-hidden");
+        $("#historicPrices").fadeIn('slow', () => {
+            historicPrices.classList.remove('is-hidden');
+        });
+    });
+});
+
+historicPrices.addEventListener('click', function () {
+    historicPrices.classList.add('is-hidden');
+     $("#heightFix").addClass("is-hidden");
+    $("#userData").fadeIn();
+});
 
 const sWarningsBtn = document.querySelector("#showWarnings");
 const disableAnimsBtn = document.querySelector("#disableAnims");
@@ -207,9 +324,7 @@ function wrap() {
                     update_element("wrap_text", "")
                 }, 10000)
             });
-    }
-    else 
-    {
+    } else {
         update_element("wrap_text", "<span class='has-text-danger-dark'>Amount must be at least 50 DUCO</span>");
         setTimeout(function() {
             update_element("wrap_text", "");
@@ -311,26 +426,11 @@ let canvas = document.getElementById('background');
 let ctx = canvas.getContext('2d');
 let mouse = { x: 0, y: 0 };
 let startTime = 0;
-let testForSlowBrowsers = true;
 let backgroundAnimation = null;
 let images = [];
 let fps = 0;
 let lastData = { x: 0, y: 0 };
 const times = [];
-
-const updateFPS = () => {
-  window.requestAnimationFrame(() => {
-    const now = performance.now();
-    while (times.length > 0 && times[0] <= now - 1000) {
-      times.shift();
-    }
-    times.push(now);
-    fps = times.length;
-    updateFPS();
-  });
-}
-
-updateFPS();
 
 // Find vendor prefix, if any
 let vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -401,15 +501,7 @@ let loadImages = () => {
 }
 
 const draw = () => {
-
     if (getcookie("disableAnims") == "true") clearAnimation(backgroundAnimation);
-
-    if (fps > 59 && testForSlowBrowsers) {
-        if (fps < 60) { // If the user has less than 30 fps stop parallax bg
-            clearAnimation(backgroundAnimation);
-        }
-        testForSlowBrowsers = false;
-    }
 
     let cw = canvas.width;
     let ch = canvas.height;
@@ -435,6 +527,7 @@ const draw = () => {
 };
 
 function round_to(precision, value) {
+    if (precision < 1) precision = 1;
     power_of_ten = 10 ** precision;
     return Math.round(value * power_of_ten) / power_of_ten;
 }
@@ -463,7 +556,7 @@ function calculdaily(newb, oldb) {
         if (daily > 0 && daily < 500) {
             daily = round_to(2, daily)
             update_element("estimatedprofit", `
-                <i class="far fa-star"></i>
+                <i class="far fa-star fa-spin"></i>
                 Earning about <b>` + daily + ` ᕲ</b> daily`);
 
             avgusd = round_to(3, daily * duco_price);
@@ -620,6 +713,11 @@ function refresh_shop(user_items) {
         $("#sunglasses ").attr("src", "https://server.duinocoin.com/assets/items/2.png")
         $("#sunglasses ").fadeIn();
     }
+
+    if (user_items.includes(3)) {
+        $("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
+        $("#bowtie").fadeIn();
+    }
 }
 
 window.addEventListener('load', function () {
@@ -695,7 +793,9 @@ window.addEventListener('load', function () {
                 user_items = data.items;
                 if (first_open) refresh_shop(user_items);
 
-                balance = round_to(10, parseFloat(data.balance.balance));
+                console.log(12-parseFloat(data.balance.balance).toString().split(".")[0].length)
+                balance = round_to(12-parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
+
                 if (first_open) $("#balance").html(balance);
                 else update_element("balance", balance);
 
@@ -704,10 +804,14 @@ window.addEventListener('load', function () {
                     oldb = balance;
                 }
 
+                if (data.balance.created.includes("before")) data.balance.created += " (Welcome, OG member!)"
+                $("#account_creation").html(data.balance.created)
+                $("#last_login").html(new Date(data.balance.last_login*1000).toLocaleString())
+
                 if (data.balance.stake_amount) {
                     update_element("stake_info",
                         `<span>
-                            <i class="has-text-success-dark fa fa-layer-group"></i>
+                            <i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
                             Staking <b>${data.balance.stake_amount} DUCO</b>
                         </span><br>
                         <small>
@@ -763,7 +867,7 @@ window.addEventListener('load', function () {
                 } else {
                     $("#verify").html(
                         `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
-                            <i class="fa fa-times-circle animated faa-flash icon"></i>
+                            <i class="fa fa-times-circle animated faa-ring icon"></i>
                             <span>unverified</span>
                         </a>`);
                 }
@@ -839,7 +943,7 @@ window.addEventListener('load', function () {
                             percentage = 0.96;
                         } else if (miner_software.includes("ESP32")) {
                             color = "#5f27cd";
-                            icon = `<i class="fa fa-wifi" style="color:${color}"></i>`;
+                            icon = `<img src="img/esp32.gif">`;
                             miner_type = "ESP32";
                             percentage = 0.96;
                         } else if (miner_software.includes("I2C")) {
@@ -904,8 +1008,8 @@ window.addEventListener('load', function () {
                         }
 
                         let warning_icon = `
-                        <span class="icon-text has-text-success" title="Operating normally">
-                            <i class="icon fa fa-check-circle"></i>
+                        <span class="icon-text has-text-success-dark" title="Operating normally">
+                            <i class="icon mdi mdi-check-all"></i>
                         </span>`;
                         if (miner_efficiency < 40) {
                             warning_icon = `
@@ -934,7 +1038,7 @@ window.addEventListener('load', function () {
                             <span class="${icon_class_alt}" title="Incorrect hashrate">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                        } else if (miner_type == "ESP8266" && miner_hashrate < 9000) {
+                        } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
                             warning_icon = `
                             <span class="icon-text ${icon_class}" title="Use 160 MHz clock for optimal hashrate">
                                 <i class="icon ${icon_class_animation}"></i>
@@ -953,15 +1057,16 @@ window.addEventListener('load', function () {
                                             ${miner_num}
                                         </span>
                                 </th>
-                                <th>
+                                <th style="word-break: break-all">
                                         <span class="icon-text">
                                             <span class="icon minerIcon" title="Miner type: ${miner_type}">
-                                                ${icon}
+                                                ${icon}<wbr>
                                             </span>
                                         </span>
-                                        <span class="has-text-weight-bold" title="Miner name">
-                                            ${miner_name}
-                                        </span>
+                                        
+                                            <span class="has-text-weight-bold" title="Miner name">
+                                                ${miner_name}
+                                            </span>
                                 </th>
                                 <th>
                                         <span class="has-text-weight-bold" title="Miner hashrate">
@@ -1108,7 +1213,7 @@ window.addEventListener('load', function () {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-right fa-fw has-text-danger"></i>
+                                    <i class="mdi mdi-arrow-top-right fa-fw has-text-danger"></i>
                                     <span class="has-text-weight-normal">
                                         Sent
                                         <span class="has-text-weight-bold">
@@ -1137,7 +1242,7 @@ window.addEventListener('load', function () {
                             thtml = `
                             <div class="column is-full">
                                 <p class="title is-size-6">
-                                    <i class="fa fa-arrow-left fa-fw has-text-success-dark"></i>
+                                    <i class="mdi mdi-arrow-bottom-left fa-fw has-text-success-dark"></i>
                                     <span class="has-text-weight-normal">
                                         Received
                                         <span class="has-text-weight-bold">
@@ -1300,7 +1405,7 @@ window.addEventListener('load', function () {
                     if (data.success == true) {
                         if (rememberLogin.checked) {
                             setcookie("username", encodeURIComponent(username), 999);
-                            setcookie("authToken", data.result[2]);
+                            setcookie("authToken", data.result[2], 3);
                         }
 
                         $("#ducologo").addClass("rotate");
@@ -1412,123 +1517,4 @@ Modals.forEach((modal) => {
         document.querySelector('html').classList.remove('is-clipped');
         modal.classList.remove('is-active');
     });
-});
-
-const userDiv = document.querySelector('#userData');
-const historicPrices = document.querySelector('#historicPrices');
-
-const historicPricesCtx = historicPrices.getContext('2d');
-
-let gradient = historicPricesCtx.createLinearGradient(0, 0, 0, 400);
-
-gradient.addColorStop(0, 'rgba(255, 180, 18, .5)');
-gradient.addColorStop(.5, 'rgba(171, 121, 12, 0)');
-
-let hPricesDate = []
-let hPrices = [];
-
-const drawGraph = () => {
-    new Chart(historicPricesCtx, {
-        type: 'line',
-        data: {
-            labels: hPricesDate,
-            datasets: [{
-                label: '',
-                data: hPrices,
-                fill: true,
-                backgroundColor: gradient,
-                borderColor: 'rgba(255, 180, 18, 1)',
-                borderJoinStyle: 'round',
-                borderCapStyle: 'round',
-                borderWidth: 3,
-                pointRadius: 0,
-                pointHitRadius: 10,
-                lineTension: .2,
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Price History",
-                    position: "bottom",
-                    fullWidth: true,
-                    fontSize: 16
-                },
-                legend: {
-                    display: false,
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(item, data) { // Value Fix
-                            return item.parsed.y + ' $';
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                    scaleLabel: {
-                        display: false,
-                    },
-                    display: false
-                },
-                x: {
-                    ticks: {
-                        display: false
-                    },
-                    gridLines: {
-                        display: false,
-                    },
-                    scaleLabel: {
-                        display: false,
-                    },
-                    display: false
-                }
-            }
-        }
-    });
-}
-
-fetch('https://server.duinocoin.com/historic_prices?currency=max&limit=30').then(res => res.json()).then(response => {
-    let data = response.result;
-
-    for (day in data.reverse()) {
-        hPricesDate.push(data[day]["day"]);
-        hPrices.push(data[day]["price"])
-    }
-
-    drawGraph();
-}).catch(err => {
-
-    for(let i = 0; i < 30; i++) {
-        hPricesDate.push(new Date().toLocaleDateString());
-        hPrices.push(Math.random() * (100 - 1) + 1);
-    }
-
-    console.log(err);
-
-    drawGraph();
-});
-
-userDiv.addEventListener('click', function () {
-    $("#userData").fadeOut('slow', () => {
-        $("#heightFix").removeClass("is-hidden");
-        $("#historicPrices").fadeIn('slow', () => {
-            historicPrices.classList.remove('is-hidden');
-        });
-    });
-});
-
-historicPrices.addEventListener('click', function () {
-    historicPrices.classList.add('is-hidden');
-     $("#heightFix").addClass("is-hidden");
-    $("#userData").fadeIn();
 });

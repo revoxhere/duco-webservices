@@ -28,16 +28,18 @@
     <meta property="og:image:url" content="https://wallet.duinocoin.com/img/banner_wallet.png">
     <meta name="twitter:card" content="summary_large_image">
     <!-- JS -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js"></script>
     <link rel="preload" as="script" href="js/jquery-3.6.0.min.js">
     <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
     <link rel="preload" as="script" href="js/fontawesome.js">
     <script type="text/javascript" src="js/fontawesome.js"></script>
     <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    <link rel="preload" as="script" href="js/chart.js">
+    <script type="text/javascript" src="js/chart.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js" integrity="sha256-hlKLmzaRlE8SCJC1Kw8zoUbU8BxA+8kR3gseuKfMjxA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/detect-autofill/dist/detect-autofill.js"></script>
     <script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <link rel="preload" as="script" href="js/chart.js">
-    <script type="text/javascript" src="js/chart.js"></script>
     <!-- Bulma -->
     <link rel="preload" href="css/style.css" as="style">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -51,6 +53,9 @@
 </head>
 
 <body>
+    <div id="pageloaders">
+        <div id="loader"></div>
+    </div>
     <canvas id="background"></canvas>
     <div class="login-content" class="mt-0">
         <form class="box blur" id="form">
@@ -59,10 +64,11 @@
                     <span class="icon">
                         <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
                     </span>
-                    <span>
+                    <span style="word-break: break-all;">
                         <span class="has-text-weight-bold">
                             Duino-Coin
                         </span>
+                        <wbr>
                         <span class="has-text-weight-light">
                             Web Wallet
                         </span>
@@ -99,7 +105,7 @@
             <div class="field">
                 <div class="is-flex is-justify-content-flex-start is-align-items-center mt-4" style="width: 100%;">
                     <input class="is-checkbox is-small" type="checkbox" id="rememberinput">
-                    <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me (for 1 hour)</label>
+                    <label for="rememberinput" style="margin-left:8px; font-size: 1em;">&nbsp;Remember me</label>
                 </div>
             </div>
             <div>
@@ -114,24 +120,27 @@
             <div class="tile is-parent">
                 <div class="tile is-child box blur">
                     <article class="media">
-                        <div class="media-left">
-                            <figure class="image is-64x64" title="Synced with Gravatar">
-                                <img class="is-rounded" id="useravatar" alt="User avatar">
-                            </figure>
-                            <img id="hat" style="height:50px;width:50px;position:absolute;top:0;margin-left:10px;display:none">
-                            <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:10%;display:none">
-                            <p class="mt-1 has-text-centered">
-                                <a class="modal-button" data-target="modal-settings">
-                                    <i class="fa fa-cog" title="Settings"></i>
-                                </a>
-                                <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
-                                    <i class="fa fa-shopping-bag" title="Shop"></i>
-                                </a>
-                                <a onclick="logout()">
-                                    <i class="fa fa-sign-out-alt" title="Log out"></i>
-                                </a>
-                            </p>
-                        </div>
+                        <a href="https://gravatar.com" target="_blank">
+                            <div class="media-left">
+                                <figure class="image is-64x64" title="Synced with Gravatar">
+                                    <img class="is-rounded" id="useravatar" alt="User avatar">
+                                </figure>
+                                <img id="hat" style="height:50px;width:50px;position:absolute;top:0;margin-left:10px;display:none;pointer-events: none;opacity:0.9">
+                                <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:10%;display:none;pointer-events: none;opacity:0.9">
+                                <img id="bowtie" style="height:44px;width:44px;position:absolute;top:60px;left:30px;display:none;pointer-events: none;opacity:0.9">
+                                <p class="mt-1 has-text-centered">
+                                    <a class="modal-button" data-target="modal-settings">
+                                        <i class="fa fa-cog" title="Settings"></i>
+                                    </a>
+                                    <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
+                                        <i class="fa fa-shopping-bag" title="Shop"></i>
+                                    </a>
+                                    <a onclick="logout()">
+                                        <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </a>
                         <div class="media-content" style="overflow-wrap: anywhere;">
                             <div class="content has-text-left mb-0">
                                 <p>
@@ -200,7 +209,7 @@
                             <div class="column">
                                 <span class="is-size-6">
                                     <span class="icon-text is-size-6">
-                                        <i class="icon fa fa-charging-station"></i>
+                                        <i class="icon mdi mdi-devices"></i>
                                     </span>
                                     <span>
                                             Your <strong>Miners</strong>
@@ -225,25 +234,29 @@
                     <div class="mcontainer">
                         <table class="table is-fullwidth" id="minertable">
                             <thead>
-                                <th></th>
-                                <th>
-                                    <p>Miner</p>
+                                <th colspan="2" style="word-break: break-all">
+                                    <span>Miner</span>
+                                    <span class="icon-text">
+                                        <span class="icon" style="color:#6c5ce7">
+                                            <i class="mdi mdi-counter"></i>
+                                        </span>
+                                    </span>
                                 </th>
-                                <th>
+                                <th style="word-break: break-all">
                                     <span>Hashrate</span>
-                                    <p class="icon-text">
+                                    <span class="icon-text">
                                         <span class="icon" style="color:#f0932b">
                                             <i class="mdi mdi-pickaxe animated faa-slow faa-wrench"></i>
                                         </span>
-                                    </p>
+                                    </span>
                                 </th>
-                                <th>
-                                    <span>Correct shares</span>
-                                    <p class="icon-text">
+                                <th style="word-break: break-all">
+                                    <span>Accuracy</span>
+                                    <span class="icon-text">
                                         <span class="icon has-text-success-dark">
-                                            <i class="fa fa-spell-check"></i>
+                                            <i class="mdi mdi-check-underline"></i>
                                         </span>
-                                    </p>
+                                    </span>
                                 </th>
                                 <th></th>
                             </thead>
@@ -263,8 +276,9 @@
                             <span class="has-text-weight-bold">
                                 Having problems?
                             </span>
-                            Make sure you put the correct username (and mining key - if used) in the miner config (capitalization matters!).
-                            If the problem persists, check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for any ongoing maintenances.
+                            Make sure you put the correct username in the miner config - capitalization matters!<br>
+                            If you have enabled the mining key, make sure you also enter it in your miners - they won't be able to mine on your account with invalid key entered.<br>
+                            Facing connection issues? Check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for possible ongoing server maintenances.<br>
                             Join our <a href="https://www.reddit.com/r/Duinocoin/" target="_blank">Reddit</a> or <a href="https://discord.gg/kvBkccy" target="_blank">Discord</a> if you need more help.
                         </p>
                     </div>
@@ -534,7 +548,7 @@
                     <p class="subtitle mb-1">
                         Account and appearance
                     </p>
-                    <div class="columns">
+                    <div class="columns mb-0">
                         <div class="column">
                             <input class="is-checkbox" id="showWarnings" type="checkbox">
                             <label for="showWarnings">Hide warnings and errors)</label>
@@ -548,6 +562,14 @@
                                 <i class="icon is-small fa fa-key"></i>
                                 <span>Change password</span>
                             </a>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <p class="subtitle is-size-6 mt-0">Account creation date: <b id="account_creation"></b></p>
+                        </div>
+                        <div class="column is-narrow mt-0">
+                            <p class="subtitle is-size-6">Last login: <b id="last_login"></b></p>
                         </div>
                     </div>
                     <p class="subtitle mb-1">
@@ -577,6 +599,10 @@
                         <a href="https://furim.xyz/" target="_blank" class="button">
                             <img src="assets/furim_faucet.png" class="icon is-small">
                             <span>Furime Services</span>
+                        </a>
+                        <a href="https://magi.duinocoin.com/" target="_blank" class="button">
+                            <img src="assets/magi.png" class="icon is-small">
+                            <span>Duino-Coin x Coin Magi</span>
                         </a>
                     </div>
                     <p class="subtitle mb-1">
@@ -1020,5 +1046,20 @@
 <script type="text/javascript" src="js/wallet/welcometext.js"></script>
 <link rel="preload" as="script" href="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js">
 <script type="text/javascript" src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
+<script>
+const pageloader = document.getElementById('loader');
+
+bodymovin.loadAnimation({
+    wrapper: pageloader,
+    animType: 'svg',
+    autoplay: true,
+    loop: true,
+    path: 'assets/loader.json'
+});
+/* On page loaded */
+$(window).on('load', function() {
+    $("#pageloaders").fadeOut();
+});
+</script>
 
 </html>
