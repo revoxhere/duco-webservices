@@ -951,7 +951,7 @@
                             <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
                         </div>
                         <div class="column is-full">
-                            <button class="button is-fullwidth" onclick="wrap()">
+                            <button class="button is-fullwidth" id="wrap_confirm" onclick="wrap()">
                                 Wrap
                             </button>
                         </div>
@@ -996,7 +996,7 @@
                             <input class="input" placeholder="None" type="text" id="mining_key">
                         </div>
                         <div class="column is-half">
-                            <button class="button is-fullwidth" onclick="set_mining_key()">
+                            <button class="button is-fullwidth" id="mkey_confirm" onclick="set_mining_key()">
                                 Set
                             </button>
                         </div>
@@ -1038,7 +1038,7 @@
                             <input class="input" placeholder="Amount" type="number" id="stake_amount">
                         </div>
                         <div class="column is-half">
-                            <button class="button is-fullwidth" onclick="stake()">
+                            <button class="button is-fullwidth" id="stake_confirm" onclick="stake()">
                                 Stake
                             </button>
                         </div>
