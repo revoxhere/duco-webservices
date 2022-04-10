@@ -339,6 +339,7 @@ function wrap() {
     address = document.getElementById("wrap_address").value;
 
     if (wrap_amount >= 50) {
+        document.getElementById("wrap_confirm").classList.add("is-loading");
         fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
             "?password=" + encodeURIComponent(password) +
             "&address=" + encodeURIComponent(address) +
@@ -352,6 +353,7 @@ function wrap() {
                 } else {
                     update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
                 }
+                document.getElementById("wrap_confirm").classList.remove("is-loading");
                 setTimeout(function() {
                     update_element("wrap_text", "")
                 }, 10000)
@@ -381,6 +383,7 @@ function stake() {
     stake_amount = document.getElementById("stake_amount").value;
     stake_text = document.getElementById("stake_text");
     if (stake_amount >= 20) {
+        document.getElementById("stake_confirm").classList.add("is-loading");
         fetch("https://server.duinocoin.com/stake/" + encodeURIComponent(username) +
                 "?password=" + encodeURIComponent(password) +
                 "&amount=" + encodeURIComponent(stake_amount))
@@ -398,6 +401,7 @@ function stake() {
                     } else {
                         update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
                     }
+                    document.getElementById("stake_confirm").classList.remove("is-loading");
                     setTimeout(function() {
                          update_element("stake_text", "")
                     }, 10000)
@@ -409,6 +413,7 @@ function stake() {
 function set_mining_key() {
     mining_key = document.getElementById("mining_key").value;
     if (mining_key) {
+        document.getElementById("mkey_confirm").classList.add("is-loading");
         fetch("https://server.duinocoin.com/mining_key" +
                 "?u=" + encodeURIComponent(username) +
                 "&password=" + encodeURIComponent(password) +
@@ -422,6 +427,7 @@ function set_mining_key() {
                     } else {
                         update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
                     }
+                    document.getElementById("mkey_confirm").classList.remove("is-loading");
                     setTimeout(function() {
                          update_element("key_text", "")
                     }, 10000)
