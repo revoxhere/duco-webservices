@@ -193,11 +193,43 @@ historicPrices.addEventListener('click', function () {
 
 const sWarningsBtn = document.querySelector("#showWarnings");
 const disableAnimsBtn = document.querySelector("#disableAnims");
+const disableIoTBtn = document.querySelector("#disableIoT");
 
 if (getcookie("disableAnims")) {
     if (getcookie("disableAnims") == "true") disableAnimsBtn.checked = true;
     else disableAnimsBtn.checked = false;
 }
+
+if (getcookie("disableIoT")) {
+    if (getcookie("disableIoT") == "true") {
+        $("#iotbox").fadeOut(function() {
+            $("#mcontainer").css("max-height", "20em");
+        });
+        disableIoTBtn.checked = true;
+    }
+    else {
+        $("#mcontainer").css("max-height", "10em");
+        setTimeout(function() {
+            $("#iotbox").fadeIn();
+        }, 300)
+        disableIoTBtn.checked = false;
+    }
+}
+
+disableIoTBtn.addEventListener("click", function () {
+    if (this.checked) {
+        setcookie("disableIoT", "true", 999);
+        $("#iotbox").fadeOut(function() {
+            $("#mcontainer").css("max-height", "20em");
+        });
+    } else {
+        setcookie("disableIoT", "false", 999);
+        $("#mcontainer").css("max-height", "10em");
+        setTimeout(function() {
+            $("#iotbox").fadeIn();
+        }, 300)
+    }
+});
 
 disableAnimsBtn.addEventListener("click", function () {
     if (this.checked) {
@@ -793,9 +825,7 @@ window.addEventListener('load', function () {
                 user_items = data.items;
                 if (first_open) refresh_shop(user_items);
 
-                console.log(12-parseFloat(data.balance.balance).toString().split(".")[0].length)
                 balance = round_to(12-parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
-
                 if (first_open) $("#balance").html(balance);
                 else update_element("balance", balance);
 
@@ -875,6 +905,7 @@ window.addEventListener('load', function () {
                 user_miners = data.miners;
                 total_hashrate = 0;
                 t_miners = []
+                iot_devices = []
                 if (user_miners.length) {
                     $("#nominers").fadeOut(0);
                     $("#minertable").fadeIn(0)
@@ -890,12 +921,28 @@ window.addEventListener('load', function () {
                             t_miners[miner_wallet_id] = user_miners[miner];
                             t_miners[miner_wallet_id]["threads"] = 1;
                             t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
+                            
+                            if (user_miners[miner]["it"] != null) {
+                                iot_devices.push({
+                                    "name": user_miners[miner]["identifier"],
+                                    "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
+                                    "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
+                                })
+                            }
                             continue;
                         } else if (t_miners[miner_wallet_id]) {
                             t_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
                             t_miners[miner_wallet_id]["rejected"] += miner_rejected;
                             t_miners[miner_wallet_id]["accepted"] += miner_accepted;
                             t_miners[miner_wallet_id]["threads"] += 1;
+
+                            if (user_miners[miner]["it"] != null) {
+                                iot_devices.push({
+                                    "name": user_miners[miner]["identifier"],
+                                    "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
+                                    "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
+                                })
+                            }
                             continue;
                         }
                     }
@@ -922,6 +969,10 @@ window.addEventListener('load', function () {
                         miner_algo = t_miners[miner]["algorithm"];
                         miner_count = t_miners[miner]["threads"];
                         miner_ki = t_miners[miner]["ki"];
+
+                        iot_tag = ``
+                        if (t_miners[miner]["it"])
+                            iot_tag = `<small title="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
 
                         if (!miner_identifier || miner_identifier === "None") {
                             miner_name = miner_software;
@@ -1063,10 +1114,9 @@ window.addEventListener('load', function () {
                                                 ${icon}<wbr>
                                             </span>
                                         </span>
-                                        
-                                            <span class="has-text-weight-bold" title="Miner name">
-                                                ${miner_name}
-                                            </span>
+                                        <span class="has-text-weight-bold" title="Miner name">
+                                            ${miner_name}
+                                        </span>
                                 </th>
                                 <th>
                                         <span class="has-text-weight-bold" title="Miner hashrate">
@@ -1091,6 +1141,7 @@ window.addEventListener('load', function () {
                                         <span class="icon-text expand-btn" style="cursor: pointer">
                                             <i class="icon fa fa-info-circle"></i>
                                         </span>
+                                        ${iot_tag}
                                 </th>
                             </tr>
                             <tr>
@@ -1173,15 +1224,73 @@ window.addEventListener('load', function () {
                                 </td>
                             </tr>`
                     }
-
+                    
+                    if (iot_devices.length > 0) {
+                        iot_html = ``;
+                        for (let device in iot_devices) {
+                            iot_html += `
+                                <div class="columns is-multiline is-gapless">
+                                    <div class="column">
+                                        <div class="divider my-0">${iot_devices[device]['name']}</div>
+                                    </div>
+                                    <div class="column is-full">
+                                        <div class="columns is-mobile">
+                                            <div class="column has-text-centered">
+                                                <div>
+                                                    <p class="heading mb-0">
+                                                        <i class="mdi mdi-thermometer"></i>
+                                                        Temperature
+                                                    </p>
+                                                    <p class="title">${iot_devices[device]['temp']}°C</p>
+                                                </div>
+                                            </div>
+                                            <div class="column has-text-centered">
+                                                <div>
+                                                    <p class="heading mb-0">
+                                                        <i class="mdi mdi-water"></i>
+                                                        Humidity
+                                                    </p>
+                                                    <p class="title">${iot_devices[device]['hum']}%</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                        }
+                        $("#iot").html(iot_html);
+                    } else {
+                        $("#iot").html(`
+                            <div class="content">
+                                <span class="has-text-weight-bold">
+                                    No IoT devices detected.
+                                </span>
+                                <p class="has-text-weight-normal">
+                                    Check your sensor wirings and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
+                                </p>
+                            </div>`
+                        );
+                    }
                     $("#miners").html(miners_html);
-
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
+
+                    if (first_open && user_miners.length >= 45) miner_notify();
                 } else {
                     $("#minertable").fadeOut(function () {
                         $("#nominers").fadeIn();
                     });
+                    $("#minercount").html("0");
+                    $("#iot").html(`
+                            <div class="content">
+                                <span class="has-text-weight-bold">
+                                    No IoT devices detected.
+                                </span>
+                                <p class="has-text-weight-normal">
+                                    Check the wiring of your sensors and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
+                                </p>
+                            </div>`
+                        );
                 }
 
                 $(function () {
@@ -1363,18 +1472,7 @@ window.addEventListener('load', function () {
                 } else {
                     if (data.message.includes("This user doesn't exist")) {
                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    } 
-                    else if (data.message.includes("banned")) {
-                        let modal_error = document.querySelector('#modal_error');
-                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                            `Your account is <b>BANNED</b>.<br>
-                            Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                            If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
-                            </p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_error.classList.add('is-active');
-                    }
-                    else {
+                    } else {
                         $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                     }
                 }
@@ -1453,18 +1551,7 @@ window.addEventListener('load', function () {
                     } else {
                         if (data.message.includes("This user doesn't exist")) {
                             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                        }
-                        else if (data.message.includes("banned")) {
-                            let modal_error = document.querySelector('#modal_error');
-                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                `Your account is <b>BANNED</b>.<br>
-                                Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                                If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
-                                </p>`;
-                            document.querySelector('html').classList.add('is-clipped');
-                            modal_error.classList.add('is-active');
-                        }
-                        else {
+                        } else {
                             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                         }
                     }
@@ -1493,7 +1580,7 @@ window.addEventListener('load', function () {
     })
 
     setInterval(function () {
-        $(".mcontainer").css("max-width", window.innerWidth - 80)
+        $("#mcontainer").css("max-width", window.innerWidth - 80)
     }, 1000)
 });
 
