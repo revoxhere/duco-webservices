@@ -197,10 +197,10 @@ td {
   border: none !important;
 }
 
-.mcontainer {
-  overflow-y: auto !important;
-  overflow-x: auto !important;
-  max-height: 20em !important;
+#mcontainer {
+  transition: 0.3s height;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 0px !important;
   border-radius: 0px 0px 10px 10px !important;
 }
@@ -210,17 +210,31 @@ td {
     border-collapse: collapse !important;
   }
 
+  #mcontainer {
+    overflow-x: auto;
+  }
+
   td {
     min-width: 40em !important;
   }
 }
 
 .tcontainer {
-  height: 100%;
-  max-height: 17em !important;
+  max-height: 21em;
+  flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 0px 0px 10px 10px !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .transactionscontainer {
+      left:1em;
+      right:1em;
+      bottom:1em;
+      width:auto;
+      margin:0 auto;
+  }
 }
 
 .login-content .input-div.one {
