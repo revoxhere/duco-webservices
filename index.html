@@ -48,6 +48,7 @@
     <link rel="preload" href="css/bulma-prefers-dark.min.css" as="style">
     <link rel="stylesheet" href="css/bulma-prefers-dark.min.css" type="text/css">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-divider@1.1.0/dist/bulma-divider.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.4.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@1.1.1/css/font-awesome-animation.min.css">
 </head>
@@ -203,84 +204,101 @@
         </div>
         <div class="tile is-ancestor">
             <div class="tile is-parent">
-                <div class="tile is-child box blur">
-                    <div class="heading">
-                        <div class="columns is-mobile">
-                            <div class="column">
-                                <span class="is-size-6">
-                                    <span class="icon-text is-size-6">
-                                        <i class="icon mdi mdi-devices"></i>
-                                    </span>
-                                    <span>
-                                            Your <strong>Miners</strong>
-                                            <small class="has-text-weight-normal">
-                                                (<span id="minercount">0</span>/50,
-                                                <b id="total_hashrate">0 H/s</b>)
-                                            </small>
-                                    </span>
-                                </span>
+                <div class="columns is-multiline">
+                    <div class="column is-full" style="display: flex;flex-flow: column;">
+                        <div class="tile is-child box blur" style="flex: 1;">
+                            <div class="heading">
+                                <div class="columns is-mobile">
+                                    <div class="column">
+                                        <span class="is-size-6">
+                                            <span class="icon-text is-size-6">
+                                                <i class="icon mdi mdi-24px mdi-devices"></i>
+                                            </span>
+                                            <span>
+                                                    Your <strong>Miners</strong>
+                                                    <small class="has-text-weight-normal">
+                                                        (<span id="minercount">0</span>/50,
+                                                        <b id="total_hashrate">0 H/s</b>)
+                                                    </small>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        <p class="subtitle is-size-6 has-text-right">
+                                            Mining key:
+                                            <a class="modal-button" data-target="modal-mining-key">
+                                                <b style="text-transform: initial;"class="hidden" id="miner_pass">None</b>
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="column">
-                                <p class="subtitle is-size-6 has-text-right">
-                                    Mining key:
-                                    <a class="modal-button" data-target="modal-mining-key">
-                                        <b style="text-transform: initial;"class="hidden" id="miner_pass">None</b>
-                                        <i class="fa fa-edit"></i>
-                                    </a>
+                            <div id="mcontainer">
+                                <table class="table is-fullwidth" id="minertable">
+                                    <thead>
+                                        <th colspan="2" style="word-break: break-all">
+                                            <span>Miner</span>
+                                            <span class="icon-text">
+                                                <span class="icon" style="color:#6c5ce7">
+                                                    <i class="mdi mdi-counter"></i>
+                                                </span>
+                                            </span>
+                                        </th>
+                                        <th style="word-break: break-all">
+                                            <span>Hashrate</span>
+                                            <span class="icon-text">
+                                                <span class="icon" style="color:#f0932b">
+                                                    <i class="mdi mdi-pickaxe animated faa-slow faa-wrench"></i>
+                                                </span>
+                                            </span>
+                                        </th>
+                                        <th style="word-break: break-all">
+                                            <span>Accuracy</span>
+                                            <span class="icon-text">
+                                                <span class="icon has-text-success-dark">
+                                                    <i class="mdi mdi-check-underline"></i>
+                                                </span>
+                                            </span>
+                                        </th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody id="miners">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content" id="nominers">
+                                <span class="has-text-weight-bold">
+                                    No miners detected.
+                                </span>
+                                <span class="has-text-weight-normal">
+                                    If you've turned them on recently it will take a minute
+                                    or two until their stats will appear here.
+                                </span><br>
+                                <p class="has-text-weight-normal mt-2">
+                                    <span class="has-text-weight-bold">
+                                        Having problems?
+                                    </span>
+                                    Make sure you put the correct username in the miner config - capitalization matters!<br>
+                                    If you have enabled the mining key, make sure you also enter it in your miners - they won't be able to mine on your account with invalid key entered.<br>
+                                    Facing connection issues? Check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for possible ongoing server maintenances.<br>
+                                    Join our <a href="https://www.reddit.com/r/Duinocoin/" target="_blank">Reddit</a> or <a href="https://discord.gg/kvBkccy" target="_blank">Discord</a> if you need more help.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="mcontainer">
-                        <table class="table is-fullwidth" id="minertable">
-                            <thead>
-                                <th colspan="2" style="word-break: break-all">
-                                    <span>Miner</span>
-                                    <span class="icon-text">
-                                        <span class="icon" style="color:#6c5ce7">
-                                            <i class="mdi mdi-counter"></i>
-                                        </span>
-                                    </span>
-                                </th>
-                                <th style="word-break: break-all">
-                                    <span>Hashrate</span>
-                                    <span class="icon-text">
-                                        <span class="icon" style="color:#f0932b">
-                                            <i class="mdi mdi-pickaxe animated faa-slow faa-wrench"></i>
-                                        </span>
-                                    </span>
-                                </th>
-                                <th style="word-break: break-all">
-                                    <span>Accuracy</span>
-                                    <span class="icon-text">
-                                        <span class="icon has-text-success-dark">
-                                            <i class="mdi mdi-check-underline"></i>
-                                        </span>
-                                    </span>
-                                </th>
-                                <th></th>
-                            </thead>
-                            <tbody id="miners">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="content" id="nominers">
-                        <span class="has-text-weight-bold">
-                            No miners detected.
-                        </span>
-                        <span class="has-text-weight-normal">
-                            If you've turned them on recently it will take a minute
-                            or two until their stats will appear here.
-                        </span><br>
-                        <p class="has-text-weight-normal mt-2">
-                            <span class="has-text-weight-bold">
-                                Having problems?
+                    <div class="column" id="iotbox">
+                        <div class="box blur">
+                            <span class="is-size-6 heading">
+                                <span class="icon-text is-size-6">
+                                    <i class="icon mdi mdi-24px mdi-access-point-network"></i>
+                                </span>
+                                <span>
+                                    Duino <strong>IoT</strong> <small class="tag is-info">Beta</small>
+                                </span>
                             </span>
-                            Make sure you put the correct username in the miner config - capitalization matters!<br>
-                            If you have enabled the mining key, make sure you also enter it in your miners - they won't be able to mine on your account with invalid key entered.<br>
-                            Facing connection issues? Check the <a href="https://status.duinocoin.com" target="_blank">server status page</a> for possible ongoing server maintenances.<br>
-                            Join our <a href="https://www.reddit.com/r/Duinocoin/" target="_blank">Reddit</a> or <a href="https://discord.gg/kvBkccy" target="_blank">Discord</a> if you need more help.
-                        </p>
+                            <div id="iot"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -311,7 +329,7 @@
                         </div>
                     </div>
                     <div class="columns is-gapless is-multiline">
-                        <div class="column is-full tcontainer">
+                        <div class="column is-full mb-0 tcontainer">
                             <div id="transactions_table" class="columns is-multiline">
                                 <div class="column is-full">
                                     <p class="title is-size-6">
@@ -320,22 +338,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="column is-full">
-                            <div class="columns">
-                                <div class="column">
-                                    <a class="button is-fullwidth mt-3 modal-button" data-target="modal-send">
-                                        Send coins
-                                    </a>
-                                </div>
-                                <div class="column">
-                                    <a class="button is-fullwidth mt-3 modal-button" data-target="modal-wrap">
-                                        Wrap coins
-                                    </a>
-                                </div>
-                                <div class="column">
-                                    <a class="button is-fullwidth mt-3 modal-button" data-target="modal-stake">
-                                        Stake coins
-                                    </a>
+                        <div class="column is-full mt-0">
+                            <div class="transactionscontainer">
+                                <div class="columns is-multiline mt-0">
+                                    <div class="column">
+                                        <a class="button is-fullwidth modal-button" data-target="modal-send">
+                                            <i class="fa fa-paper-plane"></i>&nbsp;
+                                            <span>Send coins</span>
+                                        </a>
+                                    </div>
+                                    <div class="column">
+                                        <a class="button is-fullwidth modal-button" data-target="modal-wrap">
+                                            <i class="mdi mdi-vector-link"></i>&nbsp;
+                                            <span>Wrap coins</span>
+                                        </a>
+                                    </div>
+                                    <div class="column">
+                                        <a class="button is-fullwidth modal-button" data-target="modal-stake">
+                                            <i class="fa fa-layer-group"></i>&nbsp;
+                                            <span>Stake coins</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -370,7 +393,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="iframe-container">
+                    <div class="iframe-container" style="height: 100%;max-height:90%">
                         <iframe id="news_iframe" style="display: none" frameborder="0" allowtransparency="true">Please wait</iframe>
                     </div>
                 </div>
@@ -548,16 +571,20 @@
                     <p class="subtitle mb-1">
                         Account and appearance
                     </p>
-                    <div class="columns mb-0">
-                        <div class="column">
+                    <div class="columns is-multiline mb-0">
+                        <div class="column is-half">
                             <input class="is-checkbox" id="showWarnings" type="checkbox">
                             <label for="showWarnings">Hide warnings and errors)</label>
                         </div>
-                        <div class="column">
+                        <div class="column is-half">
                             <input class="is-checkbox" id="disableAnims" type="checkbox">
                             <label for="disableAnims">Disable background animations</label>
                         </div>
-                        <div class="column">
+                        <div class="column is-half">
+                            <input class="is-checkbox" id="disableIoT" type="checkbox">
+                            <label for="disableIoT">Disable Duino IoT</label>
+                        </div>
+                        <div class="column is-half">
                             <a class="button modal-button" data-target="modal-changepass" class="button">
                                 <i class="icon is-small fa fa-key"></i>
                                 <span>Change password</span>
@@ -658,7 +685,7 @@
                         </a>
                         <a href="https://store.duinocoin.com" target="_blank" class="button">
                             <i class="fa fa-fw fa-tshirt icon is-small" style="color:#6ab04c;"></i>
-                            <span>Our store</span>
+                            <span>Duino merch</span>
                         </a>
                     </div>
                 </div>
@@ -730,7 +757,7 @@
                         </a>
                     </span>
                     <p>
-                        MIT licensed &bull; 2019-2021 the Duino-Coin Project
+                        MIT licensed &bull; 2019-2022 the Duino-Coin Project
                     </p>
                 </div>
             </div>
@@ -808,7 +835,9 @@
                         <span class="icon">
                             <i class="fa fa-paper-plane"></i>
                         </span>
-                        <span>Send coins</span>
+                        <span>
+                            Send coins
+                        </span>
                     </span>
                 </p>
                 <div class="content">
