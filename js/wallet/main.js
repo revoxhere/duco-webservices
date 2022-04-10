@@ -1223,7 +1223,7 @@ window.addEventListener('load', function () {
                             </tr>`
                     }
                     
-                    if (iot_devices) {
+                    if (Object.keys(iot_devices).length) {
                         iot_html = ``;
                         for (let device in iot_devices) {
                             iot_html += `
