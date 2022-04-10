@@ -905,7 +905,7 @@ window.addEventListener('load', function () {
                 user_miners = data.miners;
                 total_hashrate = 0;
                 t_miners = []
-                iot_devices = []
+                iot_devices = {}
                 if (user_miners.length) {
                     $("#nominers").fadeOut(0);
                     $("#minertable").fadeIn(0)
@@ -923,11 +923,10 @@ window.addEventListener('load', function () {
                             t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
                             
                             if (user_miners[miner]["it"] != null) {
-                                iot_devices.push({
-                                    "name": user_miners[miner]["identifier"],
+                                iot_devices[user_miners[miner]["identifier"]] = {
                                     "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
                                     "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
-                                })
+                                }
                             }
                             continue;
                         } else if (t_miners[miner_wallet_id]) {
@@ -937,11 +936,10 @@ window.addEventListener('load', function () {
                             t_miners[miner_wallet_id]["threads"] += 1;
 
                             if (user_miners[miner]["it"] != null) {
-                                iot_devices.push({
-                                    "name": user_miners[miner]["identifier"],
+                                iot_devices[user_miners[miner]["identifier"]] = {
                                     "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
                                     "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
-                                })
+                                }
                             }
                             continue;
                         }
@@ -1225,13 +1223,13 @@ window.addEventListener('load', function () {
                             </tr>`
                     }
                     
-                    if (iot_devices.length > 0) {
+                    if (iot_devices) {
                         iot_html = ``;
                         for (let device in iot_devices) {
                             iot_html += `
                                 <div class="columns is-multiline is-gapless">
                                     <div class="column">
-                                        <div class="divider my-0">${iot_devices[device]['name']}</div>
+                                        <div class="divider my-0">${device}</div>
                                     </div>
                                     <div class="column is-full">
                                         <div class="columns is-mobile">
@@ -1241,7 +1239,7 @@ window.addEventListener('load', function () {
                                                         <i class="mdi mdi-thermometer"></i>
                                                         Temperature
                                                     </p>
-                                                    <p class="title">${iot_devices[device]['temp']}°C</p>
+                                                    <p class="title">${iot_devices[device]["temp"]}°C</p>
                                                 </div>
                                             </div>
                                             <div class="column has-text-centered">
@@ -1250,7 +1248,7 @@ window.addEventListener('load', function () {
                                                         <i class="mdi mdi-water"></i>
                                                         Humidity
                                                     </p>
-                                                    <p class="title">${iot_devices[device]['hum']}%</p>
+                                                    <p class="title">${iot_devices[device]["hum"]}%</p>
                                                 </div>
                                             </div>
                                         </div>
