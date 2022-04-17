@@ -44,6 +44,7 @@
     <style>
         #background {
             position: fixed;
+            background-attachment: fixed;
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -109,7 +110,7 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            Choose a strong password and save it in a safe place. There is no way to recover it if it gets lost because we don't store them for security reasons.
+                            Choose a strong password and save it in a safe place.
                         </p>
                     </div>
                     <div class="field">
@@ -125,6 +126,22 @@
                         </div>
                     </div>
                     <div class="field">
+                        <label for="" class="label">Miner password (optional)</label>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input class="input" id="miner_key" type="text" placeholder="None">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <small class="has-text-danger"></small>
+                            </p>
+                        </div>
+                        <p class="subtitle is-size-6 has-text-info">
+                            <i class="fa fa-info-circle"></i>
+                            Optional: setup a key that you will put in your miners so that other people can't mine on your account and mess with your Kolka efficiency drops. <b>You can leave that field blank and enable it in the future in settings.</b>
+                        </p>
+                    </div>
+                    <div class="field">
                         <label for="" class="label">E-Mail</label>
                         <div class="field">
                             <p class="control has-icons-left">
@@ -137,10 +154,10 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            Please provide a real e-mail as it will be used to confirm exchanges and receive updates about your account.
+                            <b>Please provide a real e-mail</b> as it will be used to confirm exchanges and receive updates about your account. We will delete your account if the e-mail is invalid.
                         </p>
                     </div>
-                    <div class="field">
+                    <div class="field has-text-centered">
                         <div class="h-captcha" data-theme="dark" data-sitekey="1c77cf53-13bc-46a2-b358-84c6766be2bc"></div>
                         <small id="captchainfo" class="has-text-danger"></small>
                     </div>
