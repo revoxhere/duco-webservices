@@ -4,6 +4,7 @@ const modal_error = document.querySelector('#modal_error');
 const modal_success = document.querySelector('#modal_success');
 const username = document.getElementById('username');
 const email = document.getElementById('email');
+const miner_key = document.getElementById('miner_key');
 const password = document.getElementById('password');
 const passwordConfirm = document.getElementById('passwordconfirm');
 const captchainfo = document.getElementById('captchainfo');
@@ -13,13 +14,15 @@ let version_received;
 
 // RANDOM BACKGROUND
 const bg_list = [
-    'backgrounds/wallet/yenn-sea-1.jpg',
-    'backgrounds/wallet/yenn-sea-2.jpg',
-    'backgrounds/wallet/yenn-mountains-1.jpg',
-    'backgrounds/wallet/hge-sea-1.jpg'
+    "img/yenn-sea-1.jpg",
+    "backgrounds/wallet/yenn-mountains-1.jpg",
+    "backgrounds/wallet/atar-field-1.jpg",
+    "backgrounds/wallet/atar-field-2.jpg",
+    "backgrounds/wallet/atar-field-3.jpg",
+    "backgrounds/wallet/atar-sky-1.jpg",
 ]
 let num = Math.floor(Math.random() * bg_list.length)
-document.body.background = bg_list[num];
+document.getElementById('background').style.backgroundImage = `url(${bg_list[num]})`;
 
 register.onclick = function(event) {
     captcha = grecaptcha.getResponse();
@@ -31,6 +34,7 @@ register.onclick = function(event) {
             '?username=' + encodeURIComponent(username.value.trim()) +
             '&password=' + encodeURIComponent(password.value) +
             '&email=' + encodeURIComponent(email.value.trim()) +
+            '&key=' + encodeURIComponent(miner_key.value.trim()) +
             '&captcha=' + encodeURIComponent(captcha)).then(data => data.json()).then(
             (data) => {
 
