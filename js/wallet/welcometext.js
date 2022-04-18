@@ -14,10 +14,6 @@ const welcome_texts = [
 const backrounds = [
     "img/yenn-sea-1.jpg",
     "backgrounds/wallet/yenn-mountains-1.jpg",
-    "backgrounds/wallet/atar-field-1.jpg",
-    "backgrounds/wallet/atar-field-2.jpg",
-    "backgrounds/wallet/atar-field-3.jpg",
-    "backgrounds/wallet/atar-sky-1.jpg",
     "img/AmongTreesScreenshot5.jpg",
     "img/csou8q3.jpeg"
 ];
