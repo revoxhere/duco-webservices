@@ -855,7 +855,7 @@ window.addEventListener('load', function () {
                 $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
                 $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
                 $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
-                $("#duco_furim").html("$" + round_to(5, data.prices.furim));
+                $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
                 $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
                 $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
                 $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
