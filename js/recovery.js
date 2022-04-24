@@ -88,8 +88,8 @@ const generatePassword = (e) => {
                 document.querySelector('html').classList.remove('is-clipped');
                 modal_error.classList.remove('is-active');
             }
-            submit.classList.remove('is-loading');
         });
+        submit.classList.remove('is-loading');
     }
 }
 
@@ -98,14 +98,16 @@ const generatePassword = (e) => {
 const inputs = document.querySelectorAll(".input");
 
 const addcl = () => {
-    const parent = this.parentNode.parentNode;
+    const parent = document.getElementById("usernamediv");
     parent.classList.add("focus");
 }
 
 const remcl = () => {
-    const parent = this.parentNode.parentNode;
-    if (this.value == "") {
-        parent.classList.remove("focus");
+    const parent = document.getElementById("usernamediv");
+    if (!this.value) {
+        if (!document.getElementById("usernameinput").value) {
+            parent.classList.remove("focus");
+        }
     }
 }
 
