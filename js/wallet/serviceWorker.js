@@ -11,6 +11,7 @@ const contentToCache = [
     '../../assets/sushi.png',
     '../../assets/sunswap.png',
     '../../assets/pancake.png',
+    '../../assets/ubeswap.png',
     '../../assets/ducoexchange.png',
 
     '../../assets/explorer.png',
