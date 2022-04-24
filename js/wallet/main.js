@@ -1476,7 +1476,18 @@ window.addEventListener('load', function () {
                 } else {
                     if (data.message.includes("This user doesn't exist")) {
                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    } else {
+                    } 
+                    else if (data.message.includes("banned")) {
+                        let modal_error = document.querySelector('#modal_error');
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `Your account is <b>BANNED</b>.<br>
+                            Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                            If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                            </p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
+                    }
+                    else {
                         $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                     }
                 }
@@ -1555,7 +1566,18 @@ window.addEventListener('load', function () {
                     } else {
                         if (data.message.includes("This user doesn't exist")) {
                             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                        } else {
+                        } 
+                        else if (data.message.includes("banned")) {
+                            let modal_error = document.querySelector('#modal_error');
+                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                `Your account is <b>BANNED</b>.<br>
+                                Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                                If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                                </p>`;
+                            document.querySelector('html').classList.add('is-clipped');
+                            modal_error.classList.add('is-active');
+                        }
+                        else {
                             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                         }
                     }
