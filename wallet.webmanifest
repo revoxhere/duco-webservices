@@ -1,0 +1,15 @@
+{
+    "name": "Duino-Coin Web Wallet",
+    "short_name": "wallet",
+    "description": "Duino-Coin Web Wallet",
+    "icons": [
+        {
+            "src": "/assets/duco.svg",
+            "sizes": "400x400",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "theme_color": "#f79f1f"
+}

@@ -75,7 +75,9 @@ const generatePassword = (e) => {
             }
         }).catch(err => {
             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                `Maybe you are rate-limited.<br/>
+                `An error occurred.<br/>
+                Try disabling chrome extensions or using the <b>incognito mode</b>.<br/><br/>
+                If that doesn't work, maybe you are <b>rate-limited</b>.<br/>
                 <b>Please try again later.</b><br/><br/>
                 ${err}`;
 

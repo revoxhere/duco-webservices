@@ -72,6 +72,12 @@ function get_user_color(username) {
 
     return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
 };
+
+// Registering Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/js/wallet/serviceWorker.js');
+}
+
 const userDiv = document.querySelector('#userData');
 const historicPrices = document.querySelector('#historicPrices');
 
@@ -195,13 +201,13 @@ const sWarningsBtn = document.querySelector("#showWarnings");
 const disableAnimsBtn = document.querySelector("#disableAnims");
 const disableIoTBtn = document.querySelector("#disableIoT");
 
-if (getcookie("disableAnims")) {
-    if (getcookie("disableAnims") == "true") disableAnimsBtn.checked = true;
+if (localStorage.getItem("disableAnims")) {
+    if (localStorage.getItem("disableAnims") == "true") disableAnimsBtn.checked = true;
     else disableAnimsBtn.checked = false;
 }
 
-if (getcookie("disableIoT")) {
-    if (getcookie("disableIoT") == "true") {
+if (localStorage.getItem("disableIoT")) {
+    if (localStorage.getItem("disableIoT") == "true") {
         $("#iotbox").fadeOut(function() {
             $("#mcontainer").css("max-height", "20em");
         });
@@ -218,12 +224,12 @@ if (getcookie("disableIoT")) {
 
 disableIoTBtn.addEventListener("click", function () {
     if (this.checked) {
-        setcookie("disableIoT", "true", 999);
+        localStorage.setItem("disableIoT", "true");
         $("#iotbox").fadeOut(function() {
             $("#mcontainer").css("max-height", "20em");
         });
     } else {
-        setcookie("disableIoT", "false", 999);
+        localStorage.setItem("disableIoT", "false");
         $("#mcontainer").css("max-height", "10em");
         setTimeout(function() {
             $("#iotbox").fadeIn();
@@ -233,23 +239,23 @@ disableIoTBtn.addEventListener("click", function () {
 
 disableAnimsBtn.addEventListener("click", function () {
     if (this.checked) {
-        setcookie("disableAnims", "true", 999);
+        localStorage.setItem("disableAnims", "true");
     } else {
-        setcookie("disableAnims", "false", 999);
+        localStorage.setItem("disableAnims", "false");
         backgroundAnimation = setAnimation(draw, canvas);
     }
 });
 
-if (getcookie("hideWarnings")) {
-    if (getcookie("hideWarnings") == "true") sWarningsBtn.checked = true;
+if (localStorage.getItem("hideWarnings")) {
+    if (localStorage.getItem("hideWarnings") == "true") sWarningsBtn.checked = true;
     else sWarningsBtn.checked = false;
 }
 
 sWarningsBtn.addEventListener("click", function () {
     if (this.checked) {
-        setcookie("hideWarnings", "true", 999);
+        localStorage.setItem("hideWarnings", "true");
     } else {
-        setcookie("hideWarnings", "false", 999);
+        localStorage.setItem("hideWarnings", "false");
     }
 });
 
@@ -437,8 +443,8 @@ function set_mining_key() {
 
 
 function logout() {
-    delcookie("username");
-    delcookie("authToken");
+    localStorage.removeItem("username");
+    localStorage.removeItem("authToken");
     window.location.reload(true);
 }
 
@@ -539,7 +545,7 @@ let loadImages = () => {
 }
 
 const draw = () => {
-    if (getcookie("disableAnims") == "true") clearAnimation(backgroundAnimation);
+    if (localStorage.getItem("disableAnims") == "true") clearAnimation(backgroundAnimation);
 
     let cw = canvas.width;
     let ch = canvas.height;
@@ -617,7 +623,7 @@ function update_element(element, value) {
     old_value = $(element).text()
 
     if ($("<div>" + value + "</div>").text() != old_value) {
-        if (getcookie("disableAnims") == "false") $(element).fadeOut('fast', function () {
+        if (localStorage.getItem("disableAnims") == "false") $(element).fadeOut('fast', function () {
             $(element).html(value);
             $(element).fadeIn('fast');
         });
@@ -625,36 +631,6 @@ function update_element(element, value) {
         return true;
     }
     return false;
-}
-
-function setcookie(name, value, days) {
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        var expires = "; expires=" + date.toGMTString();
-    } else
-        var expires = "";
-    document.cookie = name + "=" + value + expires + ";path=/";
-}
-
-function getcookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return undefined;
-}
-
-function delcookie(name) {
-    document.cookie = name + '=; Max-Age=-99999999;';
 }
 
 function miner_notify() {
@@ -1055,7 +1031,7 @@ window.addEventListener('load', function () {
                         icon_class_alt = "has-text-danger";
                         icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
 
-                        if (getcookie("hideWarnings") == "true") {
+                        if (localStorage.getItem("hideWarnings") == "true") {
                             icon_class = "";
                             icon_class_animation = "far fa-question-circle";
                             icon_class_alt = "";
@@ -1411,24 +1387,24 @@ window.addEventListener('load', function () {
 
     // If the user has the old password
 
-    if (getcookie("password") && getcookie("username")) {
-        delcookie("password");
-        delcookie("username");
+    if (localStorage.getItem("password") && localStorage.getItem("username")) {
+        localStorage.removeItem("password");
+        localStorage.removeItem("username");
     }
 
     // If the user has the auth-token
 
-    if (getcookie("authToken") && getcookie("username")) {
-        $('#usernameinput').val(getcookie("username"));
-        $('#passwordinput').val(getcookie("authToken"));
+    if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
+        $('#usernameinput').val(localStorage.getItem("username"));
+        $('#passwordinput').val(localStorage.getItem("authToken"));
         rememberLogin.checked = true;
 
-        username = getcookie("username");
-        password = getcookie("authToken");
+        username = localStorage.getItem("username");
+        password = localStorage.getItem("authToken");
 
         $("#submit").addClass("is-loading");
 
-        $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: getcookie("authToken") },
+        $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken") },
             function (data) {
                 if (data.success == true) {
                     $("#ducologo").addClass("rotate");
@@ -1474,6 +1450,9 @@ window.addEventListener('load', function () {
                         stake_counter();
                     }, 250);
                 } else {
+
+                    localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
+
                     if (data.message.includes("This user doesn't exist")) {
                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                     } 
@@ -1517,8 +1496,8 @@ window.addEventListener('load', function () {
                 function (data) {
                     if (data.success == true) {
                         if (rememberLogin.checked) {
-                            setcookie("username", encodeURIComponent(username), 999);
-                            setcookie("authToken", data.result[2], 3);
+                            localStorage.setItem("username", encodeURIComponent(username));
+                            localStorage.setItem("authToken", data.result[2]);
                         }
 
                         $("#ducologo").addClass("rotate");
