@@ -341,31 +341,60 @@ function send() {
 }
 
 function wrap() {
+    wrap_network = document.getElementById("wrap_network").value;
     wrap_amount = document.getElementById("wrap_amount").value;
     address = document.getElementById("wrap_address").value;
 
     if (wrap_amount >= 50) {
         document.getElementById("wrap_confirm").classList.add("is-loading");
-        fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
-            "?password=" + encodeURIComponent(password) +
-            "&address=" + encodeURIComponent(address) +
-            "&amount=" + encodeURIComponent(wrap_amount))
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    update_element("wrap_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
-                    $('#wrap_amount').val('');
-                    $('#wrap_address').val('');
-                } else {
-                    update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
-                }
-                document.getElementById("wrap_confirm").classList.remove("is-loading");
-                setTimeout(function() {
-                    update_element("wrap_text", "")
-                }, 10000)
-            });
+
+        if (wrap_network == "wDUCO (Tron, TRX)") {
+            fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
+                "?password=" + encodeURIComponent(password) +
+                "&address=" + encodeURIComponent(address) +
+                "&amount=" + encodeURIComponent(wrap_amount))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        update_element("wrap_text", "<span class='has-text-success-dark'>" + data.result + "</span>");
+                        $('#wrap_amount').val('');
+                        $('#wrap_address').val('');
+                    } else {
+                        update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+                    }
+                    document.getElementById("wrap_confirm").classList.remove("is-loading");
+                    setTimeout(function() {
+                        update_element("wrap_text", "")
+                    }, 10000)
+                });
+        } else {
+            if (wrap_network == "bscDUCO (Binance Smart Chain, BSC)") recipient = "bscDUCO";
+            else if (wrap_network == "maticDUCO (Polygon, MATIC)") recipient = "maticDUCO";
+            else if (wrap_network == "celoDUCO (Celo)") recipient = "celoDUCO";
+
+            fetch("https://server.duinocoin.com/transaction/" +
+                "?username=" + encodeURIComponent(username) +
+                "&password=" + encodeURIComponent(password) +
+                "&recipient=" + encodeURIComponent(recipient) +
+                "&memo=" + encodeURIComponent(address) +
+                "&amount=" + encodeURIComponent(wrap_amount))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        update_element("wrap_text", "<span class='has-text-success-dark'>Successful wrapping</span>");
+                        $('#wrap_amount').val('');
+                        $('#wrap_address').val('');
+                    } else {
+                        update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message.split(",")[1] + "</span>");
+                    }
+                    document.getElementById("wrap_confirm").classList.remove("is-loading");
+                    setTimeout(function() {
+                        update_element("wrap_text", "")
+                    }, 10000)
+                });
+        }
     } else {
-        update_element("wrap_text", "<span class='has-text-danger-dark'>Amount must be at least 50 DUCO</span>");
+        update_element("wrap_text", "<span class='has-text-danger-dark'>Minimum wrappable amount is 50 DUCO</span>");
         setTimeout(function() {
             update_element("wrap_text", "");
         }, 10000);
