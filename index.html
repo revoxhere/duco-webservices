@@ -942,25 +942,46 @@
                     <div class="columns is-multiline">
                         <div class="column is-full content mb-0">
                             <p>
-                                <b>Duino-Coin is a hybrid currency</b>, meaning that it can be sent to a chain of another network. Here you can wrap <b>DUCO</b> to <b>wDUCO</b> - Duino wrapped on the <b>Tron</b> network as a decentralized token. You can read more about it
+                                <b>Duino-Coin is a hybrid currency</b>, meaning that it can be sent to a chain of another network where it will be stored in a decentralized form. You can read more about tokenized versions of Duin-Coin
                                 <a href="https://github.com/revoxhere/duino-coin/wiki/wDUCO-tutorial" target="_blank">
                                     here.
-                                </a>
+                                </a><br>
+                                To wrap your coins, simply enter your wallet address, select the destination network and the wrapped amount.
+                                <br>
                             </p>
-                            <p class="has-text-info">
-                                To wrap DUCO onto a different network, see the <a href="https://github.com/revoxhere/duino-coin/wiki/bscDUCO-Tutorial" target="_blank">Wiki pages</a>.
+                            <p class="has-text-info-dark mt-3">
+                                <b>Note:</b> fees may apply: bscDUCO: 500 DUCO, maticDUCO: 0 DUCO, celoDUCO: 0 DUCO, wDUCO: 0 DUCO
                             </p>
                             <p class="has-text-danger-dark mt-3">
-                                Warning: make sure your Tron wallet supports TRC20 tokens!
+                                <b>Warning:</b> make sure you're using the correct wallet and it supports tokens!
                             </p>
                         </div>
                         <div class="column is-half">
-                            <input class="input" placeholder="Amount" type="number" id="wrap_amount">
+                            <input class="input" placeholder="Tron address" type="text" id="wrap_address">
                         </div>
                         <div class="column is-half">
-                            <input class="input" placeholder="Tron addresss" type="text" id="wrap_address">
+                            <div class="select">
+                              <select id="wrap_network">
+                                <option selected>wDUCO (Tron, TRX)</option>
+                                <option>bscDUCO (Binance Smart Chain, BSC)</option>
+                                <option>maticDUCO (Polygon, MATIC)</option>
+                                <option>celoDUCO (Celo)</option>
+                              </select>
+                            </div>
                         </div>
-                        <div class="column is-full">
+                        <div class="column is-half">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input style="border-radius: 25px 0 0 25px !important;" class="input" placeholder="Amount" value="50" type="number" id="wrap_amount">
+                                </div>
+                                <div class="control">
+                                    <div disabled style="border-radius: 0 25px 25px 0 !important;" class="button is-info">
+                                        DUCO
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
                             <button class="button is-fullwidth" id="wrap_confirm" onclick="wrap()">
                                 Wrap
                             </button>
