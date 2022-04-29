@@ -547,16 +547,16 @@ document.addEventListener('mousemove', (ev) => {
 });
 
 const canvasResize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = 1920;
+    canvas.height = 1080;
     draw();
 };
 
 window.addEventListener('resize', canvasResize);
 
 let loadImages = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = 1920;
+    canvas.height = 1080;
 
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
