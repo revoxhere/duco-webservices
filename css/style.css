@@ -755,3 +755,19 @@ summary {
 .hidden:hover {
   filter: blur(0);
 }
+
+/* Dropdown fix */
+
+.dropdown-menu {
+  text-align: left;
+  left: -5em !important;
+}
+
+.blur {
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+  will-change:  all;
+}

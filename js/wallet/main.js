@@ -1250,7 +1250,7 @@ window.addEventListener('load', function () {
                                                         <i class="mdi mdi-thermometer"></i>
                                                         Temperature
                                                     </p>
-                                                    <p class="title">${iot_devices[device]["temp"]}°C</p>
+                                                    <p class="title">${parseTemperature(iot_devices[device]["temp"])}</p>
                                                 </div>
                                             </div>
                                             <div class="column has-text-centered">
@@ -1639,3 +1639,43 @@ Modals.forEach((modal) => {
         modal.classList.remove('is-active');
     });
 });
+
+
+/*
+    Temperature Unit changer
+*/
+
+const dropdown = document.querySelector('.dropdown-trigger');
+dropdown.addEventListener('click', function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  dropdown.parentElement.classList.toggle('is-active');
+});
+
+const selectedUnit = document.querySelector('#temp-unit');
+
+selectedUnit.innerHTML = localStorage.getItem("tempUnit") || "Celcius";
+
+document.querySelectorAll('#temp-unit-select a').forEach((elm) => {
+    elm.addEventListener('click', function(event) {
+        event.preventDefault();
+        selectedUnit.innerHTML = elm.innerHTML;
+        localStorage.setItem("tempUnit", elm.innerHTML);
+        dropdown.parentElement.classList.remove('is-active');
+    });
+});
+
+function parseTemperature(temp) {
+    let unit = localStorage.getItem("tempUnit") || "Celcius";
+
+    switch (unit) {
+        case "Celcius":
+            return temp + "°C";
+        case "Fahrenheit":
+            return ((temp * 1.8) + 32) + "°F";
+        case "Kelvin":
+            return (temp + 273.15) + "°K";
+        default:
+            return temp + "°C";
+    }
+}
