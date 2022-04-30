@@ -1678,4 +1678,4 @@ function parseTemperature(temp) {
         default:
             return temp + "°C";
     }
-}
+} 
