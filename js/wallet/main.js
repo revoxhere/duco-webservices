@@ -1674,7 +1674,7 @@ function parseTemperature(temp) {
         case "Fahrenheit":
             return ((temp * 1.8) + 32) + "°F";
         case "Kelvin":
-            return (temp + 273.15) + "°K";
+            return (temp + 273.15) + "K";
         default:
             return temp + "°C";
     }
