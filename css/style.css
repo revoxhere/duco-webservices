@@ -771,3 +771,14 @@ summary {
   transform: none;
   will-change:  all;
 }
+
+/* Selector fix */
+
+@media (prefers-color-scheme: dark) {
+  .select select {
+    background-color: #0a0a0a !important;
+    border-color: #1d1f21 !important;
+    color: #dbdbdb !important;
+    box-shadow: none !important;
+  }
+}
