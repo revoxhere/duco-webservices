@@ -1675,6 +1675,8 @@ function parseTemperature(temp) {
             return ((temp * 1.8) + 32) + "°F";
         case "Kelvin":
             return (temp + 273.15) + "K";
+        case "Rankine":
+            return ((temp + 273.15) * 1.8) + "°Ra";
         default:
             return temp + "°C";
     }
