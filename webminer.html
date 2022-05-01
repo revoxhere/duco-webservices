@@ -323,7 +323,12 @@ bodymovin.loadAnimation({
 let url = new URL(window.location);
 let username = url.searchParams.get("username");
 let rigid = url.searchParams.get("rigid");
-let miner_key = url.searchParams.get("keyinput");
+let miner_key = url.searchParams.get("keyinput") || ""; 
+
+// if url.searchParams.get("keyinput") is null
+// and you use "" + miner_key
+// it will be "null" string
+
 let threads = url.searchParams.get("threads");
 let hashrate_text = document.getElementById("hashrate");
 
