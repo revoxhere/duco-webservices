@@ -964,6 +964,26 @@ window.addEventListener('load', function () {
 
                     miner_num = 0;
                     miners_html = "";
+
+                    let minersOrder = JSON.parse(sessionStorage.getItem('minersOrder')) || [];
+
+                    for (let orderIndex in minersOrder) {
+                        let MinerData;
+                        try { // if the element doesn't exist just ignore it
+                            MinerData = t_miners.find( miner => miner.threadid == minersOrder[orderIndex].threadid);
+                        }
+                        catch (e) {
+                            continue;
+                        }
+
+                        if (!MinerData || MinerData == -1) continue; // prevent bugs
+
+                        let Oldindex = t_miners.indexOf(MinerData);
+
+                        t_miners.splice(Oldindex, 1); // change element order
+                        t_miners.splice(minersOrder[orderIndex].order, 0, MinerData);
+                    }
+
                     for (let miner in t_miners) {
                         miner_num += 1;
                         miner_threadid = t_miners[miner]["threadid"];
@@ -1111,7 +1131,7 @@ window.addEventListener('load', function () {
                         }
 
                         miners_html += `
-                            <tr>
+                            <tr data-index="${miner_num}" draggable="true" class="is-draggable">
                                 <th align="right">
                                         <span class="has-text-grey">
                                             ${miner_num}
@@ -1125,6 +1145,9 @@ window.addEventListener('load', function () {
                                         </span>
                                         <span class="has-text-weight-bold" title="Miner name">
                                             ${miner_name}
+                                        </span>
+                                        <span title="Thread Id" class="is-hidden"><!-- This is because i need the thread id -->
+                                        ${miner_threadid}           
                                         </span>
                                 </th>
                                 <th>
@@ -1283,6 +1306,10 @@ window.addEventListener('load', function () {
                     $("#miners").html(miners_html);
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
+
+                    // We fill the dragListItems variable with the latest elements
+
+                    dragListItems = minersList.querySelectorAll('tr.is-draggable'); 
 
                     if (first_open && user_miners.length >= 45) miner_notify();
                 } else {
@@ -1681,3 +1708,112 @@ function parseTemperature(temp) {
             return temp + "°C";
     }
 } 
+
+/* Sortable Miners List */
+
+const minersList = document.getElementById('miners');
+var dragListItems = minersList.querySelectorAll('tr.is-draggable');
+
+const getMouseOffset = (evt) => {
+  const targetRect = evt.target.getBoundingClientRect()
+  const offset = {
+    x: evt.pageX - targetRect.left,
+    y: evt.pageY - targetRect.top
+  }
+  return offset
+}
+
+const getElementVerticalCenter = (el) => {
+  const rect = el.getBoundingClientRect()
+  return (rect.bottom - rect.top) / 2
+}
+
+var dragEl;
+
+function orderExists(json, elm)  // Check if the order value already exists
+{
+    for (let i = 0; i < json.length; i++) {
+        if (json[i].threadid == elm) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function onDragOver(evt) {
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'move';
+    
+    let target = evt.target.closest('tr.is-draggable');
+
+    if (target && target !== dragEl) {
+
+        const idx = target.dataset.index;
+
+        const offset = getMouseOffset(evt);
+        const middleY = getElementVerticalCenter(evt.target);
+        const placeholder = dragListItems[idx-1];
+        const draggedElm = dragEl.closest('tr.is-draggable');
+
+        let lastOrder = {
+            order: idx-1,
+            threadid: draggedElm.querySelector('span[Title="Thread Id"]').innerHTML.replace(/\n/g,'').trim(), // get thread id and remove new line
+        };
+
+        let minersOrder = sessionStorage.getItem('minersOrder');
+
+        if (minersOrder) {
+            minersOrder = JSON.parse(minersOrder);
+            if(orderExists(minersOrder, lastOrder.threadid)) // if element exists in the list
+            {
+                for (let i = 0; i < minersOrder.length; i++) {
+                    if (minersOrder[i].threadid == lastOrder.threadid) { // change the order
+                        minersOrder[i].order = lastOrder.order;
+                    }
+                }
+            }
+            else {
+                minersOrder.push(lastOrder); // else just add it
+            }
+
+        } else { // if the list doesn't exist make a empty list
+            minersOrder = [];
+            minersOrder.push(lastOrder);
+        }
+
+        sessionStorage.setItem('minersOrder', JSON.stringify(minersOrder)); // save the list
+
+        placeholder.classList.add('placeholder'); // add dashed border
+
+        if (offset.y > middleY) { // change the item position on drop
+            minersList.insertBefore(draggedElm, placeholder)
+        } else if (dragListItems[idx + 1]) {
+            minersList.insertBefore(draggedElm.nextSibling || draggedElm, placeholder)
+        }
+    }
+}
+
+function onDragEnd(evt){
+    evt.preventDefault();
+    
+    dragEl.classList.remove('ghost');
+
+    dragListItems.forEach((elm) => {
+        elm.classList.remove('placeholder');
+    });
+
+    minersList.removeEventListener('dragover', onDragOver, false);
+    minersList.removeEventListener('dragend', onDragEnd, false);
+}
+
+minersList.addEventListener('dragstart', function (evt){
+    dragEl = evt.target; 
+
+    evt.dataTransfer.effectAllowed = 'move';
+    evt.dataTransfer.setData('Text', dragEl.textContent);
+
+    minersList.addEventListener('dragover', onDragOver, false);
+    minersList.addEventListener('dragend', onDragEnd, false);
+
+    dragEl.classList.add('ghost'); // change element opacity
+}, false);

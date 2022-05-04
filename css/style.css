@@ -782,3 +782,17 @@ summary {
     box-shadow: none !important;
   }
 }
+
+/* Sortable list */
+
+.placeholder {
+  border: 1px dashed #b5b5b5;
+}
+
+.is-draggable {
+  cursor: move !important;
+}
+
+.ghost {
+  opacity: .4;
+}
