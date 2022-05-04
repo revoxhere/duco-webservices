@@ -1123,12 +1123,17 @@ window.addEventListener('load', function () {
                             <span class="icon-text ${icon_class}" title="Use 160 MHz clock for optimal hashrate">
                                 <i class="icon ${icon_class_animation}"></i>
                             </span>`
+                        } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
+                            warning_icon = `
+                            <span class="icon-text ${icon_class}" title="Use the newest ESP32 library for optimal hashrate">
+                                <i class="icon ${icon_class_animation}"></i>
+                            </span>`
                         } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
                             warning_icon = `
                             <span class="${icon_class_alt}" title="Incorrect hashrate">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                        }
+                        } 
 
                         miners_html += `
                             <tr data-index="${miner_num}" draggable="true" class="is-draggable">
@@ -1260,6 +1265,11 @@ window.addEventListener('load', function () {
                     if (Object.keys(iot_devices).length) {
                         iot_html = ``;
                         for (let device in iot_devices) {
+                            temp = parseTemperature(iot_devices[device]["temp"]);
+
+                            hum = iot_devices[device]["hum"];
+                            if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+                            else hum += "%"
                             iot_html += `
                                 <div class="columns is-multiline is-gapless">
                                     <div class="column">
@@ -1273,7 +1283,7 @@ window.addEventListener('load', function () {
                                                         <i class="mdi mdi-thermometer"></i>
                                                         Temperature
                                                     </p>
-                                                    <p class="title">${parseTemperature(iot_devices[device]["temp"])}</p>
+                                                    <p class="title">${temp}</p>
                                                 </div>
                                             </div>
                                             <div class="column has-text-centered">
@@ -1282,7 +1292,7 @@ window.addEventListener('load', function () {
                                                         <i class="mdi mdi-water"></i>
                                                         Humidity
                                                     </p>
-                                                    <p class="title">${iot_devices[device]["hum"]}%</p>
+                                                    <p class="title">${hum}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1459,7 +1469,7 @@ window.addEventListener('load', function () {
         password = localStorage.getItem("authToken");
 
         $("#submit").addClass("is-loading");
-
+        setTimeout(function() {
         $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken") },
             function (data) {
                 if (data.success == true) {
@@ -1481,8 +1491,8 @@ window.addEventListener('load', function () {
                     }, 10 * 1000);
 
                     setTimeout(function () {
-                        $('#form').hide("drop", { direction: "left" }, 500, function () {
-                            $('#wallet').show("drop", { direction: "right" }, 500, function () {
+                        $('#form').hide("drop", { direction: "up" }, 300, function () {
+                            $('#wallet').show("drop", { direction: "down" }, 300, function () {
                                 $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
                                 $("iframe#news_iframe").fadeIn(2500)
 
@@ -1516,7 +1526,7 @@ window.addEventListener('load', function () {
                         let modal_error = document.querySelector('#modal_error');
                         document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                             `Your account is <b>BANNED</b>.<br>
-                            Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                            You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
                             If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
                             </p>`;
                         document.querySelector('html').classList.add('is-clipped');
@@ -1533,6 +1543,7 @@ window.addEventListener('load', function () {
             .always(function () {
                 $("#submit").removeClass("is-loading");
             });
+        }, 500);
     }
 
     $('#form').submit(function () {
@@ -1547,82 +1558,83 @@ window.addEventListener('load', function () {
 
         if (username && password) {
             $("#submit").addClass("is-loading");
+            setTimeout(function() {
+                $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
+                    function (data) {
+                        if (data.success == true) {
+                            if (rememberLogin.checked) {
+                                localStorage.setItem("username", encodeURIComponent(username));
+                                localStorage.setItem("authToken", data.result[2]);
+                            }
 
-            $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
-                function (data) {
-                    if (data.success == true) {
-                        if (rememberLogin.checked) {
-                            localStorage.setItem("username", encodeURIComponent(username));
-                            localStorage.setItem("authToken", data.result[2]);
-                        }
+                            $("#ducologo").addClass("rotate");
 
-                        $("#ducologo").addClass("rotate");
+                            $("#username").text(encodeURIComponent(username));
+                            $("#email").text(`(${data.result[1]})`);
 
-                        $("#username").text(encodeURIComponent(username));
-                        $("#email").text(`(${data.result[1]})`);
+                            $("#miner_pass").text(data.result[3]);
+                            $("#mining_key").val(data.result[3]);
 
-                        $("#miner_pass").text(data.result[3]);
-                        $("#mining_key").val(data.result[3]);
+                            $("#useravatar").attr("src",
+                                `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                                `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
-                        $("#useravatar").attr("src",
-                            `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                            `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+                            user_data(username, true);
+                            window.setInterval(() => {
+                                user_data(username, false);
+                            }, 10 * 1000);
 
-                        user_data(username, true);
-                        window.setInterval(() => {
-                            user_data(username, false);
-                        }, 10 * 1000);
+                            setTimeout(function () {
+                                $('#form').hide("drop", { direction: "up" }, 300, function () {
+                                    $('#wallet').show("drop", { direction: "down" }, 300, function () {
+                                        $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                                        $("iframe#news_iframe").fadeIn(2500)
 
-                        setTimeout(function () {
-                            $('#form').hide("drop", { direction: "left" }, 500, function () {
-                                $('#wallet').show("drop", { direction: "right" }, 500, function () {
-                                    $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                    $("iframe#news_iframe").fadeIn(2500)
-
-                                    if (adBlockEnabled) {
-                                        $("#adblocker_detected").fadeIn()
-                                    } else {
-                                        try {
-                                            $("#adblocker_detected").fadeOut(function () {
-                                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                            })
-
-                                        } catch (err) {
+                                        if (adBlockEnabled) {
                                             $("#adblocker_detected").fadeIn()
-                                        }
-                                    }
-                                });
-                            });
-                        }, 350);
+                                        } else {
+                                            try {
+                                                $("#adblocker_detected").fadeOut(function () {
+                                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                                })
 
-                        setInterval(function() {
-                            stake_counter();
-                        }, 250);
-                    } else {
-                        if (data.message.includes("This user doesn't exist")) {
-                            $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                        } 
-                        else if (data.message.includes("banned")) {
-                            let modal_error = document.querySelector('#modal_error');
-                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                `Your account is <b>BANNED</b>.<br>
-                                Remember read our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                                If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
-                                </p>`;
-                            document.querySelector('html').classList.add('is-clipped');
-                            modal_error.classList.add('is-active');
+                                            } catch (err) {
+                                                $("#adblocker_detected").fadeIn()
+                                            }
+                                        }
+                                    });
+                                });
+                            }, 350);
+
+                            setInterval(function() {
+                                stake_counter();
+                            }, 250);
+                        } else {
+                            if (data.message.includes("This user doesn't exist")) {
+                                $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            } 
+                            else if (data.message.includes("banned")) {
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `Your account is <b>BANNED</b>.<br>
+                                    You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                                    If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                                    </p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
+                            }
+                            else {
+                                $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            }
                         }
-                        else {
-                            $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                        }
-                    }
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                })
-                .always(function () {
-                    $("#submit").removeClass("is-loading");
-                });
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    })
+                    .always(function () {
+                        $("#submit").removeClass("is-loading");
+                    });
+            }, 500);
         } else {
             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
@@ -1694,6 +1706,7 @@ document.querySelectorAll('#temp-unit-select a').forEach((elm) => {
 
 function parseTemperature(temp) {
     let unit = localStorage.getItem("tempUnit") || "Celcius";
+    if (!temp) return `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
 
     switch (unit) {
         case "Celcius":
