@@ -965,7 +965,7 @@ window.addEventListener('load', function () {
                     miner_num = 0;
                     miners_html = "";
 
-                    let minersOrder = JSON.parse(sessionStorage.getItem('minersOrder')) || [];
+                    let minersOrder = JSON.parse(localStorage.getItem('minersOrder')) || [];
 
                     for (let orderIndex in minersOrder) {
                         let MinerData;
@@ -1747,48 +1747,52 @@ function onDragOver(evt) {
     let target = evt.target.closest('tr.is-draggable');
 
     if (target && target !== dragEl) {
+        try {
+            const idx = target.dataset.index;
 
-        const idx = target.dataset.index;
+            const offset = getMouseOffset(evt);
+            const middleY = getElementVerticalCenter(evt.target);
+            const placeholder = dragListItems[idx-1];
+            const draggedElm = dragEl.closest('tr.is-draggable');
 
-        const offset = getMouseOffset(evt);
-        const middleY = getElementVerticalCenter(evt.target);
-        const placeholder = dragListItems[idx-1];
-        const draggedElm = dragEl.closest('tr.is-draggable');
+            let lastOrder = {
+                order: idx-1,
+                threadid: draggedElm.querySelector('span[Title="Thread Id"]').innerHTML.replace(/\n/g,'').trim(), // get thread id and remove new line
+            };
 
-        let lastOrder = {
-            order: idx-1,
-            threadid: draggedElm.querySelector('span[Title="Thread Id"]').innerHTML.replace(/\n/g,'').trim(), // get thread id and remove new line
-        };
+            let minersOrder = localStorage.getItem('minersOrder');
 
-        let minersOrder = sessionStorage.getItem('minersOrder');
-
-        if (minersOrder) {
-            minersOrder = JSON.parse(minersOrder);
-            if(orderExists(minersOrder, lastOrder.threadid)) // if element exists in the list
-            {
-                for (let i = 0; i < minersOrder.length; i++) {
-                    if (minersOrder[i].threadid == lastOrder.threadid) { // change the order
-                        minersOrder[i].order = lastOrder.order;
+            if (minersOrder) {
+                minersOrder = JSON.parse(minersOrder);
+                if(orderExists(minersOrder, lastOrder.threadid)) // if element exists in the list
+                {
+                    for (let i = 0; i < minersOrder.length; i++) {
+                        if (minersOrder[i].threadid == lastOrder.threadid) { // change the order
+                            minersOrder[i].order = lastOrder.order;
+                        }
                     }
                 }
-            }
-            else {
-                minersOrder.push(lastOrder); // else just add it
+                else {
+                    minersOrder.push(lastOrder); // else just add it
+                }
+
+            } else { // if the list doesn't exist make a empty list
+                minersOrder = [];
+                minersOrder.push(lastOrder);
             }
 
-        } else { // if the list doesn't exist make a empty list
-            minersOrder = [];
-            minersOrder.push(lastOrder);
+            localStorage.setItem('minersOrder', JSON.stringify(minersOrder)); // save the list
+
+            placeholder.classList.add('placeholder'); // add dashed border
+
+            if (offset.y > middleY) { // change the item position on drop
+                minersList.insertBefore(draggedElm, placeholder)
+            } else if (dragListItems[idx + 1]) {
+                minersList.insertBefore(draggedElm.nextSibling || draggedElm, placeholder)
+            }
         }
-
-        sessionStorage.setItem('minersOrder', JSON.stringify(minersOrder)); // save the list
-
-        placeholder.classList.add('placeholder'); // add dashed border
-
-        if (offset.y > middleY) { // change the item position on drop
-            minersList.insertBefore(draggedElm, placeholder)
-        } else if (dragListItems[idx + 1]) {
-            minersList.insertBefore(draggedElm.nextSibling || draggedElm, placeholder)
+        catch(err) {
+            console.log(err);
         }
     }
 }
