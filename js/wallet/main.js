@@ -1151,7 +1151,7 @@ window.addEventListener('load', function () {
                                         <span class="has-text-weight-bold" title="Miner name">
                                             ${miner_name}
                                         </span>
-                                        <span title="Thread Id" class="is-hidden"><!-- This is because i need the thread id -->
+                                        <span title="Thread Id" class="is-hidden">
                                         ${miner_threadid}           
                                         </span>
                                 </th>
