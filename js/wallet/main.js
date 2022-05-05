@@ -1706,7 +1706,7 @@ document.querySelectorAll('#temp-unit-select a').forEach((elm) => {
 
 function parseTemperature(temp) {
     let unit = localStorage.getItem("tempUnit") || "Celcius";
-    if (!temp) return `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+    if (!temp) return `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
 
     switch (unit) {
         case "Celcius":
