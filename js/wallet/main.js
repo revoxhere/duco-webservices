@@ -18,6 +18,7 @@ let start_time = Date.now();
 let start_balance = 0;
 const STAKING_PERC = 1.5;
 const STAKE_DAYS = 21;
+const date_opt = {day: 'numeric', month: "long", year: 'numeric'};
 
 const MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
 
@@ -857,7 +858,7 @@ window.addEventListener('load', function () {
                         </span><br>
                         <small>
                             Ends on <b>${
-                                new Date(data.balance.stake_date*1000).toLocaleString()
+                                new Date(data.balance.stake_date*1000).toLocaleString("default", date_opt)
                             }<br>
                             ${round_to(2, (
                                 data.balance.stake_amount * (
