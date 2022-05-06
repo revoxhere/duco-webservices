@@ -1269,7 +1269,7 @@ window.addEventListener('load', function () {
                             temp = parseTemperature(iot_devices[device]["temp"]);
 
                             hum = iot_devices[device]["hum"];
-                            if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+                            if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
                             else hum += "%"
                             iot_html += `
                                 <div class="columns is-multiline is-gapless">
