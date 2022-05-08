@@ -935,9 +935,24 @@ window.addEventListener('load', function () {
                             t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
                             
                             if (user_miners[miner]["it"] != null) {
-                                iot_devices[user_miners[miner]["identifier"]] = {
-                                    "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
-                                    "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
+                                if (!user_miners[miner]["it"].includes(":")) {
+                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                    hum = user_miners[miner]["it"].split("@")[1];
+                                    
+                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
+                                    else hum += "%";
+
+                                    iot_devices[user_miners[miner]["identifier"]] = {
+                                        "Temperature": temp,
+                                        "Humidity": hum
+                                    }
+                                } else {
+                                    iot_devices[user_miners[miner]["identifier"]] = {}
+                                    for (entry in user_miners[miner]["it"].split("@")) {
+                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
+                                    }
                                 }
                             }
                             continue;
@@ -948,9 +963,24 @@ window.addEventListener('load', function () {
                             t_miners[miner_wallet_id]["threads"] += 1;
 
                             if (user_miners[miner]["it"] != null) {
-                                iot_devices[user_miners[miner]["identifier"]] = {
-                                    "temp": parseFloat(user_miners[miner]["it"].split("@")[0]),
-                                    "hum": parseFloat(user_miners[miner]["it"].split("@")[1])
+                                if (!user_miners[miner]["it"].includes(":")) {
+                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                    hum = user_miners[miner]["it"].split("@")[1];
+                                    
+                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+                                    else hum += "%";
+
+                                    iot_devices[user_miners[miner]["identifier"]] = {
+                                        "Temperature": temp,
+                                        "Humidity": hum
+                                    }
+                                } else {
+                                    iot_devices[user_miners[miner]["identifier"]] = {}
+                                    for (entry in user_miners[miner]["it"].split("@")) {
+                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
+                                    }
                                 }
                             }
                             continue;
@@ -1266,40 +1296,37 @@ window.addEventListener('load', function () {
                     if (Object.keys(iot_devices).length) {
                         iot_html = ``;
                         for (let device in iot_devices) {
-                            temp = parseTemperature(iot_devices[device]["temp"]);
+                            if (device == "None") device_name = "IoT Reading";
+                            else device_name = device;
 
-                            hum = iot_devices[device]["hum"];
-                            if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
-                            else hum += "%"
-                            iot_html += `
-                                <div class="columns is-multiline is-gapless">
-                                    <div class="column">
-                                        <div class="divider my-0">${device}</div>
-                                    </div>
-                                    <div class="column is-full">
-                                        <div class="columns is-mobile">
-                                            <div class="column has-text-centered">
-                                                <div>
-                                                    <p class="heading mb-0">
-                                                        <i class="mdi mdi-thermometer"></i>
-                                                        Temperature
-                                                    </p>
-                                                    <p class="title">${temp}</p>
+                            iot_html += `<div class="columns is-multiline is-gapless">
+                                            <div class="column is-full">
+                                                <div class="divider my-0">${device_name}</div>
+                                            </div>`
+                            for (let key in iot_devices[device]) {
+                                if (key.toLowerCase().includes("temp")) icon = "mdi mdi-thermometer";
+                                else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
+                                else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
+                                else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
+                                else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
+                                else icon = "fa fa-tachometer";
+
+                                iot_html += `
+                                        <div class="column">
+                                            <div class="columns is-mobile">
+                                                <div class="column has-text-centered">
+                                                    <div>
+                                                        <p class="heading mb-0">
+                                                            <i class="${icon}"></i>
+                                                            ${key}
+                                                        </p>
+                                                        <p class="title">${iot_devices[device][key]}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="column has-text-centered">
-                                                <div>
-                                                    <p class="heading mb-0">
-                                                        <i class="mdi mdi-water"></i>
-                                                        Humidity
-                                                    </p>
-                                                    <p class="title">${hum}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                `;
+                                        </div>`;
+                                }
+                            iot_html += "</div>"
                         }
                         $("#iot").html(iot_html);
                     } else {
@@ -1493,22 +1520,19 @@ window.addEventListener('load', function () {
 
                     setTimeout(function () {
                         $('#form').hide("drop", { direction: "up" }, 300, function () {
+                            if (adBlockEnabled) {
+                                $("#adblocker_detected").fadeIn(0);
+                            } else {
+                                try {
+                                    $("#adblocker_detected").fadeOut(0);
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                } catch (err) {
+                                    $("#adblocker_detected").fadeIn(0);
+                                }
+                            }
                             $('#wallet').show("drop", { direction: "down" }, 300, function () {
                                 $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                $("iframe#news_iframe").fadeIn(2500)
-
-                                if (adBlockEnabled) {
-                                    $("#adblocker_detected").fadeIn()
-                                } else {
-                                    try {
-                                        $("#adblocker_detected").fadeOut(function () {
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
-                                        })
-
-                                    } catch (err) {
-                                        $("#adblocker_detected").fadeIn()
-                                    }
-                                }
+                                $("iframe#news_iframe").fadeIn(2500);
                             });
                         });
                     }, 350);
