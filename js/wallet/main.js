@@ -1525,8 +1525,9 @@ window.addEventListener('load', function () {
                                     $("#adblocker_detected").fadeIn();
                                 } else {
                                     try {
-                                        $("#adblocker_detected").fadeOut();
-                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                        $("#adblocker_detected").fadeOut(function() {
+                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                        });
                                     } catch (err) {
                                         $("#adblocker_detected").fadeIn();
                                     }
