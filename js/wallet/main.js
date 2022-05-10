@@ -1156,7 +1156,7 @@ window.addEventListener('load', function () {
                             </span>`
                         } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
                             warning_icon = `
-                            <span class="icon-text ${icon_class}" title="Use the newest ESP32 library for optimal hashrate">
+                            <span class="icon-text ${icon_class}" title="Use the 2.0.1 version of ESP32 library for optimal hashrate">
                                 <i class="icon ${icon_class_animation}"></i>
                             </span>`
                         } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
