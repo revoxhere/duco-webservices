@@ -402,6 +402,10 @@ function wrap() {
     }
 }
 
+document.querySelector("#stake_max").addEventListener("click", function() {
+    document.getElementById("stake_amount").value = round_to(2, balance);
+});
+
 function stake_counter() {
     stake_amount_text = document.getElementById("stake_amount_text")
     stake_date_text = document.getElementById("stake_date_text");

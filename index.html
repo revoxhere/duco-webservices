@@ -1081,7 +1081,12 @@
                             </p>
                         </div>
                         <div class="column is-half">
-                            <input class="input" placeholder="Amount" type="number" id="stake_amount">
+                            <div class="control has-icons-right">
+                                <input class="input" placeholder="Amount" type="number" id="stake_amount">
+                                <span class="icon has-text-white is-small is-right is-clickable" id="stake_max">
+                                    Max
+                                </span>
+                            </div>
                         </div>
                         <div class="column is-half">
                             <button class="button is-fullwidth" id="stake_confirm" onclick="stake()">
