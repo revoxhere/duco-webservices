@@ -403,7 +403,7 @@ function wrap() {
 }
 
 document.querySelector("#stake_max").addEventListener("click", function() {
-    document.getElementById("stake_amount").value = round_to(2, balance);
+    document.getElementById("stake_amount").value = balance;
 });
 
 function stake_counter() {
