@@ -635,10 +635,10 @@ function calculdaily(newb, oldb) {
             daily = round_to(2, daily)
             update_element("estimatedprofit", `
                 <i class="far fa-star fa-spin"></i>
-                Earning about <b>` + daily + ` ᕲ</b> daily`);
+                Earning about <b>` + daily + `</b> ᕲ a day`);
 
-            avgusd = round_to(3, daily * duco_price);
-            update_element("estimatedprofitusd", "(≈ $" + avgusd + ")");
+            avgusd = round_to(4, daily * duco_price);
+            update_element("estimatedprofitusd", "(≈<b>$" + avgusd + "</b>)");
         }
     }
 }
@@ -831,645 +831,670 @@ window.addEventListener('load', function () {
 
     //USER DATA FROM API
     const user_data = (username, first_open) => {
-        fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
-            .then(response => response.json())
-            .then(data => {
-                data = data.result;
-                duco_price = data.prices.max;
-                delete data.prices.max;
+        try {
+            fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
+                .then(response => response.json())
+                .then(data => {
+                    data = data.result;
+                    duco_price = data.prices.max;
+                    delete data.prices.max;
 
-                user_items = data.items;
-                if (first_open) refresh_shop(user_items);
+                    user_items = data.items;
+                    if (first_open) refresh_shop(user_items);
 
-                balance = round_to(12-parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
-                if (first_open) $("#balance").html(balance);
-                else update_element("balance", balance);
+                    balance = round_to(12-parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
+                    if (first_open) $("#balance").html(balance);
+                    else update_element("balance", balance);
 
-                if (oldb != balance) {
-                    calculdaily(balance, oldb);
-                    oldb = balance;
-                }
-
-                if (data.balance.created.includes("before")) data.balance.created += " (Welcome, OG member!)"
-                $("#account_creation").html(data.balance.created)
-                $("#last_login").html(new Date(data.balance.last_login*1000).toLocaleString())
-
-                if (data.balance.stake_amount) {
-                    update_element("stake_info",
-                        `<span>
-                            <i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
-                            Staking <b>${data.balance.stake_amount} DUCO</b>
-                        </span><br>
-                        <small>
-                            Ends on <b>${
-                                new Date(data.balance.stake_date*1000).toLocaleString("default", date_opt)
-                            }<br>
-                            ${round_to(2, (
-                                data.balance.stake_amount * (
-                                    1 + (STAKING_PERC/100)
-                                ) - data.balance.stake_amount
-                            ))} DUCO
-                            <span class="has-text-weight-normal">
-                                est. reward
-                            </span>
-                        </small>`);
-                } else {
-                    update_element("stake_info", 
-                        `<span>
-                            <i class="fa fa-layer-group"></i>
-                            Not staking
-                        </span><br>
-                        <small>
-                            Click the <b>Stake coins</b> button to start
-                        </small>`);
-                }
-
-                $("#ducousd").html(" $" + round_to(5, duco_price));
-                $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
-                $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
-                $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
-                $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
-                $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
-                $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
-                $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
-                $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
-
-                balanceusd = round_to(4, balance * duco_price);
-                if (first_open) {
-                    $("#balancefiat").html(balanceusd);
-                    $("#best_exchage").html(key_from_value(data.prices, duco_price));
-                }
-                else {
-                    update_element("balancefiat", balanceusd);
-                    update_element("best_exchage", key_from_value(data.prices, duco_price));
-                }
-
-                verified = data.balance.verified;
-                if (verified === "yes") {
-                    $("#verify").html(
-                        `<span class="icon-text has-text-success-dark" title="Your account is verified">
-                            <i class="fa fa-check-circle icon"></i>
-                        </span>`);
-                } else {
-                    $("#verify").html(
-                        `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
-                            <i class="fa fa-times-circle animated faa-ring icon"></i>
-                            <span>unverified</span>
-                        </a>`);
-                }
-
-                user_miners = data.miners;
-                total_hashrate = 0;
-                t_miners = []
-                iot_devices = {}
-                if (user_miners.length) {
-                    $("#nominers").fadeOut(0);
-                    $("#minertable").fadeIn(0)
-                    for (let miner in user_miners) {
-                        let miner_wallet_id = user_miners[miner]["wd"];
-                        if (!miner_wallet_id) miner_wallet_id = Math.floor(Math.random() * 2812);
-                        const miner_hashrate = user_miners[miner]["hashrate"];
-                        const miner_rejected = user_miners[miner]["rejected"];
-                        const miner_accepted = user_miners[miner]["accepted"];
-                        total_hashrate += miner_hashrate;
-
-                        if (!t_miners[miner_wallet_id]) {
-                            t_miners[miner_wallet_id] = user_miners[miner];
-                            t_miners[miner_wallet_id]["threads"] = 1;
-                            t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
-                            
-                            if (user_miners[miner]["it"] != null) {
-                                if (!user_miners[miner]["it"].includes(":")) {
-                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
-                                    hum = user_miners[miner]["it"].split("@")[1];
-                                    
-                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
-                                    else hum += "%";
-
-                                    iot_devices[user_miners[miner]["identifier"]] = {
-                                        "Temperature": temp,
-                                        "Humidity": hum
-                                    }
-                                } else {
-                                    iot_devices[user_miners[miner]["identifier"]] = {}
-                                    for (entry in user_miners[miner]["it"].split("@")) {
-                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
-                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
-                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
-                                    }
-                                }
-                            }
-                            continue;
-                        } else if (t_miners[miner_wallet_id]) {
-                            t_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
-                            t_miners[miner_wallet_id]["rejected"] += miner_rejected;
-                            t_miners[miner_wallet_id]["accepted"] += miner_accepted;
-                            t_miners[miner_wallet_id]["threads"] += 1;
-
-                            if (user_miners[miner]["it"] != null) {
-                                if (!user_miners[miner]["it"].includes(":")) {
-                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
-                                    hum = user_miners[miner]["it"].split("@")[1];
-                                    
-                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
-                                    else hum += "%";
-
-                                    iot_devices[user_miners[miner]["identifier"]] = {
-                                        "Temperature": temp,
-                                        "Humidity": hum
-                                    }
-                                } else {
-                                    iot_devices[user_miners[miner]["identifier"]] = {}
-                                    for (entry in user_miners[miner]["it"].split("@")) {
-                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
-                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
-                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
-                                    }
-                                }
-                            }
-                            continue;
+                    if (oldb != balance) {
+                        if (data.miners.length) {
+                            calculdaily(balance, oldb);
+                            oldb = balance;
+                            window.setTimeout(() => {
+                                user_data(username, false);
+                            }, 7.5 * 1000);
+                        } else {
+                            update_element("estimatedprofit", `
+                                <i class="fa fa-times-circle"></i> No miners detected`);
+                            window.setTimeout(() => {
+                                user_data(username, false);
+                            }, 15 * 1000);
                         }
+                    } else {
+                        window.setTimeout(() => {
+                            user_data(username, false);
+                        }, 10 * 1000);
                     }
 
-                    t_miners = t_miners.sort(function (a, b) {
-                        if (a.identifier < b.identifier) { return -1; }
-                        if (a.identifier > b.identifier) { return 1; }
-                        return 0;
-                    });
+                    if (data.balance.created.includes("before")) data.balance.created += " (Welcome, OG member!)"
+                    $("#account_creation").html(data.balance.created)
+                    $("#last_login").html(new Date(data.balance.last_login*1000).toLocaleString())
 
-                    miner_num = 0;
-                    miners_html = "";
-
-                    let minersOrder = JSON.parse(localStorage.getItem('minersOrder')) || [];
-
-                    for (let orderIndex in minersOrder) {
-                        let MinerData;
-                        try { // if the element doesn't exist just ignore it
-                            MinerData = t_miners.find( miner => miner.threadid == minersOrder[orderIndex].threadid);
-                        }
-                        catch (e) {
-                            continue;
-                        }
-
-                        if (!MinerData || MinerData == -1) continue; // prevent bugs
-
-                        let Oldindex = t_miners.indexOf(MinerData);
-
-                        t_miners.splice(Oldindex, 1); // change element order
-                        t_miners.splice(minersOrder[orderIndex].order, 0, MinerData);
+                    if (data.balance.stake_amount) {
+                        update_element("stake_info",
+                            `<span>
+                                <i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
+                                Staking <b>${round_to(2, data.balance.stake_amount)} DUCO</b>
+                            </span><br>
+                            <small>
+                                Ends on <b>${
+                                    new Date(data.balance.stake_date*1000).toLocaleString("default", date_opt)
+                                }<br>
+                                ${round_to(2, (
+                                    data.balance.stake_amount * (
+                                        1 + (STAKING_PERC/100)
+                                    ) - data.balance.stake_amount
+                                ))} DUCO
+                                <span class="has-text-weight-normal">
+                                    est. reward
+                                </span>
+                            </small>`);
+                    } else {
+                        update_element("stake_info", 
+                            `<span>
+                                <i class="fa fa-layer-group"></i>
+                                Not staking
+                            </span><br>
+                            <small>
+                                Click the <b>Stake coins</b> button to start
+                            </small>`);
                     }
 
-                    for (let miner in t_miners) {
-                        miner_num += 1;
-                        miner_threadid = t_miners[miner]["threadid"];
-                        miner_hashrate = t_miners[miner]["hashrate"];
-                        miner_identifier = t_miners[miner]["identifier"];
-                        miner_software = t_miners[miner]["software"];
-                        miner_diff = t_miners[miner]["diff"];
-                        miner_rejected = t_miners[miner]["rejected"];
-                        miner_accepted = t_miners[miner]["accepted"];
-                        miner_sharetime = t_miners[miner]["sharetime"];
-                        miner_pool = t_miners[miner]["pool"];
-                        miner_algo = t_miners[miner]["algorithm"];
-                        miner_count = t_miners[miner]["threads"];
-                        miner_ki = t_miners[miner]["ki"];
+                    $("#ducousd").html(" $" + round_to(5, duco_price));
+                    $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
+                    $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
+                    $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
+                    $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
+                    $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
+                    $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
+                    $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
+                    $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
 
-                        iot_tag = ``
-                        if (t_miners[miner]["it"])
-                            iot_tag = `<small title="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
+                    balanceusd = round_to(4, balance * duco_price);
+                    if (first_open) {
+                        $("#balancefiat").html(balanceusd);
+                        $("#best_exchage").html(key_from_value(data.prices, duco_price));
+                    }
+                    else {
+                        update_element("balancefiat", balanceusd);
+                        update_element("best_exchage", key_from_value(data.prices, duco_price));
+                    }
 
-                        if (!miner_identifier || miner_identifier === "None") {
-                            miner_name = miner_software;
-                            miner_soft = "";
-                        } else {
-                            miner_name = miner_identifier;
-                            miner_soft = miner_software + ", ";
+                    verified = data.balance.verified;
+                    if (verified === "yes") {
+                        $("#verify").html(
+                            `<span class="icon-text has-text-success-dark" title="Your account is verified">
+                                <i class="fa fa-check-circle icon"></i>
+                            </span>`);
+                    } else {
+                        $("#verify").html(
+                            `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
+                                <i class="fa fa-times-circle animated faa-ring icon"></i>
+                                <span>unverified</span>
+                            </a>`);
+                    }
+
+                    user_miners = data.miners;
+                    total_hashrate = 0;
+                    t_miners = []
+                    iot_devices = {}
+                    if (user_miners.length) {
+                        $("#nominers").fadeOut(0);
+                        $("#minertable").fadeIn(0)
+                        for (let miner in user_miners) {
+                            let miner_wallet_id = user_miners[miner]["wd"];
+                            if (!miner_wallet_id) miner_wallet_id = Math.floor(Math.random() * 2812);
+                            const miner_hashrate = user_miners[miner]["hashrate"];
+                            const miner_rejected = user_miners[miner]["rejected"];
+                            const miner_accepted = user_miners[miner]["accepted"];
+                            total_hashrate += miner_hashrate;
+
+                            if (!t_miners[miner_wallet_id]) {
+                                t_miners[miner_wallet_id] = user_miners[miner];
+                                t_miners[miner_wallet_id]["threads"] = 1;
+                                t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
+                                
+                                if (user_miners[miner]["it"] != null) {
+                                    if (!user_miners[miner]["it"].includes(":")) {
+                                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                        hum = user_miners[miner]["it"].split("@")[1];
+                                        
+                                        if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
+                                        else hum += "%";
+
+                                        iot_devices[user_miners[miner]["identifier"]] = {
+                                            "Temperature": temp,
+                                            "Humidity": hum
+                                        }
+                                    } else {
+                                        iot_devices[user_miners[miner]["identifier"]] = {}
+                                        for (entry in user_miners[miner]["it"].split("@")) {
+                                            key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                            value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                            iot_devices[user_miners[miner]["identifier"]][key] = value;
+                                        }
+                                    }
+                                }
+                                continue;
+                            } else if (t_miners[miner_wallet_id]) {
+                                t_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
+                                t_miners[miner_wallet_id]["rejected"] += miner_rejected;
+                                t_miners[miner_wallet_id]["accepted"] += miner_accepted;
+                                t_miners[miner_wallet_id]["threads"] += 1;
+
+                                if (user_miners[miner]["it"] != null) {
+                                    if (!user_miners[miner]["it"].includes(":")) {
+                                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                        hum = user_miners[miner]["it"].split("@")[1];
+                                        
+                                        if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+                                        else hum += "%";
+
+                                        iot_devices[user_miners[miner]["identifier"]] = {
+                                            "Temperature": temp,
+                                            "Humidity": hum
+                                        }
+                                    } else {
+                                        iot_devices[user_miners[miner]["identifier"]] = {}
+                                        for (entry in user_miners[miner]["it"].split("@")) {
+                                            key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                            value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                            iot_devices[user_miners[miner]["identifier"]][key] = value;
+                                        }
+                                    }
+                                }
+                                continue;
+                            }
                         }
 
-                        let miner_diff_str = scientific_prefix(miner_diff)
-                        let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
+                        t_miners = t_miners.sort(function (a, b) {
+                            if (a.identifier < b.identifier) { return -1; }
+                            if (a.identifier > b.identifier) { return 1; }
+                            return 0;
+                        });
 
-                        let percentage = 0.80;
-                        let miner_type = "Other";
-                        if (miner_software.includes("ESP8266")) {
-                            icon = `<img src="img/wemos.gif">`;
-                            color = "#F5515F";
-                            miner_type = "ESP8266";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("ESP32")) {
-                            color = "#5f27cd";
-                            icon = `<img src="img/esp32.gif">`;
-                            miner_type = "ESP32";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("I2C")) {
-                            icon = `<img src="img/arduino.gif">`;
-                            color = "#B33771";
-                            miner_type = "AVR (I²C)";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("AVR")) {
-                            icon = `<img src="img/arduino.gif">`;
-                            color = "#B33771";
-                            miner_type = "AVR (Normal)";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("PC")) {
-                            color = "#F97F51";
-                            icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
-                            miner_type = "PC (Normal)";
-                        } else if (miner_software.includes("Web")) {
-                            color = "#009432";
-                            icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
-                            miner_type = "PC (Web)";
-                        } else if (miner_software.includes("Android") || miner_software.includes("Phone")) {
-                            color = "#fa983a";
-                            icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
-                            miner_type = "Mobile";
-                        } else {
-                            color = "#16a085";
-                            icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
-                            miner_type = "Unknown!";
+                        miner_num = 0;
+                        miners_html = "";
+
+                        let minersOrder = JSON.parse(localStorage.getItem('minersOrder')) || [];
+
+                        for (let orderIndex in minersOrder) {
+                            let MinerData;
+                            try { // if the element doesn't exist just ignore it
+                                MinerData = t_miners.find( miner => miner.threadid == minersOrder[orderIndex].threadid);
+                            }
+                            catch (e) {
+                                continue;
+                            }
+
+                            if (!MinerData || MinerData == -1) continue; // prevent bugs
+
+                            let Oldindex = t_miners.indexOf(MinerData);
+
+                            t_miners.splice(Oldindex, 1); // change element order
+                            t_miners.splice(minersOrder[orderIndex].order, 0, MinerData);
                         }
 
-                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
-                        let efficiency_color = "has-text-warning-dark";
-                        if (miner_efficiency < 40) {
-                            efficiency_color = "has-text-danger-dark";
-                        } else if (miner_efficiency > 80) {
-                            efficiency_color = "has-text-success-dark";
-                        }
+                        for (let miner in t_miners) {
+                            miner_num += 1;
+                            miner_threadid = t_miners[miner]["threadid"];
+                            miner_hashrate = t_miners[miner]["hashrate"];
+                            miner_identifier = t_miners[miner]["identifier"];
+                            miner_software = t_miners[miner]["software"];
+                            miner_diff = t_miners[miner]["diff"];
+                            miner_rejected = t_miners[miner]["rejected"];
+                            miner_accepted = t_miners[miner]["accepted"];
+                            miner_sharetime = t_miners[miner]["sharetime"];
+                            miner_pool = t_miners[miner]["pool"];
+                            miner_algo = t_miners[miner]["algorithm"];
+                            miner_count = t_miners[miner]["threads"];
+                            miner_ki = t_miners[miner]["ki"];
+
+                            iot_tag = ``
+                            if (t_miners[miner]["it"])
+                                iot_tag = `<small title="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
+
+                            if (!miner_identifier || miner_identifier === "None") {
+                                miner_name = miner_software;
+                                miner_soft = "";
+                            } else {
+                                miner_name = miner_identifier;
+                                miner_soft = miner_software + ", ";
+                            }
+
+                            let miner_diff_str = scientific_prefix(miner_diff)
+                            let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
+
+                            let percentage = 0.80;
+                            let miner_type = "Other";
+                            if (miner_software.includes("ESP8266")) {
+                                icon = `<img src="img/wemos.gif">`;
+                                color = "#F5515F";
+                                miner_type = "ESP8266";
+                                percentage = 0.96;
+                            } else if (miner_software.includes("ESP32")) {
+                                color = "#5f27cd";
+                                icon = `<img src="img/esp32.gif">`;
+                                miner_type = "ESP32";
+                                percentage = 0.96;
+                            } else if (miner_software.includes("I2C")) {
+                                icon = `<img src="img/arduino.gif">`;
+                                color = "#B33771";
+                                miner_type = "AVR (I²C)";
+                                percentage = 0.96;
+                            } else if (miner_software.includes("AVR")) {
+                                icon = `<img src="img/arduino.gif">`;
+                                color = "#B33771";
+                                miner_type = "AVR (Normal)";
+                                percentage = 0.96;
+                            } else if (miner_software.includes("PC")) {
+                                color = "#F97F51";
+                                icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
+                                miner_type = "PC (Normal)";
+                            } else if (miner_software.includes("Web")) {
+                                color = "#009432";
+                                icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
+                                miner_type = "PC (Web)";
+                            } else if (miner_software.includes("Android") || miner_software.includes("Phone")) {
+                                color = "#fa983a";
+                                icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
+                                miner_type = "Mobile";
+                            } else {
+                                color = "#16a085";
+                                icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
+                                miner_type = "Unknown!";
+                            }
+
+                            let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
+                            let efficiency_color = "has-text-warning-dark";
+                            if (miner_efficiency < 40) {
+                                efficiency_color = "has-text-danger-dark";
+                            } else if (miner_efficiency > 80) {
+                                efficiency_color = "has-text-success-dark";
+                            }
 
 
-                        let accept_color = "has-text-warning-dark";
-                        if (accepted_rate < 50) {
-                            accept_color = "has-text-danger-dark";
-                        } else if (accepted_rate > 95) {
-                            accept_color = "has-text-success-dark";
-                        }
+                            let accept_color = "has-text-warning-dark";
+                            if (accepted_rate < 50) {
+                                accept_color = "has-text-danger-dark";
+                            } else if (accepted_rate > 95) {
+                                accept_color = "has-text-success-dark";
+                            }
 
-                        let thread_string = "";
-                        if (miner_count > 1) {
-                            thread_string = `(${miner_count} threads)`;
-                        }
+                            let thread_string = "";
+                            if (miner_count > 1) {
+                                thread_string = `(${miner_count} threads)`;
+                            }
 
-                        icon_class = "has-text-warning-dark";
-                        icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
-                        icon_class_alt = "has-text-danger";
-                        icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
+                            icon_class = "has-text-warning-dark";
+                            icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
+                            icon_class_alt = "has-text-danger";
+                            icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
 
-                        if (localStorage.getItem("hideWarnings") == "true") {
-                            icon_class = "";
-                            icon_class_animation = "far fa-question-circle";
-                            icon_class_alt = "";
-                            icon_class_animation_alt = "far fa-question-circle";
-                        }
+                            if (localStorage.getItem("hideWarnings") == "true") {
+                                icon_class = "";
+                                icon_class_animation = "far fa-question-circle";
+                                icon_class_alt = "";
+                                icon_class_animation_alt = "far fa-question-circle";
+                            }
 
-                        let warning_icon = `
-                        <span class="icon-text has-text-success-dark" title="Operating normally">
-                            <i class="icon mdi mdi-check-all"></i>
-                        </span>`;
-                        if (miner_efficiency < 40) {
-                            warning_icon = `
-                        <span class="${icon_class_alt}" title="Too many miners - low Kolka efficiency">
-                            <i class="icon ${icon_class_animation_alt}"></i>
-                        </span>`
-                        } else if (accepted_rate < 50) {
-                            warning_icon = `
-                        <span class="${icon_class_alt}" title="Too many rejected shares">
-                            <i class="icon ${icon_class_animation_alt}"></i>
-                        </span>`
-                        }
-
-                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                            let warning_icon = `
+                            <span class="icon-text has-text-success-dark" style="cursor: pointer;" title="Operating normally">
+                                <i class="icon mdi mdi-check-all"></i>
+                            </span>`;
+                            if (miner_efficiency < 40) {
+                                warning_icon = `
+                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Too many miners - low Kolka efficiency">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                            } else if (accepted_rate < 50) {
+                                warning_icon = `
+                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Too many rejected shares">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                        } else if (miner_type == "ESP8266" && miner_hashrate > 12000) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" title="Incorrect hashrate">
+                            } else if (miner_type == "Unknown!") {
+                                warning_icon = `
+                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Unknown miner">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                        } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
-                            warning_icon = `
-                            <span class="icon-text ${icon_class}" title="Use 160 MHz clock for optimal hashrate">
-                                <i class="icon ${icon_class_animation}"></i>
-                            </span>`
-                        } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
-                            warning_icon = `
-                            <span class="icon-text ${icon_class}" title="Use the 2.0.1 version of ESP32 library for optimal hashrate">
-                                <i class="icon ${icon_class_animation}"></i>
-                            </span>`
-                        } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" title="Incorrect hashrate">
-                                <i class="icon ${icon_class_animation_alt}"></i>
-                            </span>`
-                        } 
+                            }
 
-                        miners_html += `
-                            <tr data-index="${miner_num}" draggable="true" class="is-draggable">
-                                <th align="right">
-                                        <span class="has-text-grey">
-                                            ${miner_num}
-                                        </span>
-                                </th>
-                                <th style="word-break: break-all">
-                                        <span class="icon-text">
-                                            <span class="icon minerIcon" title="Miner type: ${miner_type}">
-                                                ${icon}<wbr>
+                            if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                                warning_icon = `
+                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                    <i class="icon ${icon_class_animation_alt}"></i>
+                                </span>`
+                            } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                                warning_icon = `
+                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                    <i class="icon ${icon_class_animation_alt}"></i>
+                                </span>`
+                            } else if (miner_type == "ESP8266" && miner_hashrate > 13000) {
+                                warning_icon = `
+                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                    <i class="icon ${icon_class_animation_alt}"></i>
+                                </span>`
+                            } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
+                                warning_icon = `
+                                <span class="icon-text ${icon_class}" style="cursor: pointer;" title="Use 160 MHz clock for optimal hashrate">
+                                    <i class="icon ${icon_class_animation}"></i>
+                                </span>`
+                            } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
+                                warning_icon = `
+                                <span class="icon-text ${icon_class}" style="cursor: pointer;" title="Use the 2.0.1 version of ESP32 library for optimal hashrate">
+                                    <i class="icon ${icon_class_animation}"></i>
+                                </span>`
+                            } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
+                                warning_icon = `
+                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                    <i class="icon ${icon_class_animation_alt}"></i>
+                                </span>`
+                            } 
+
+                            miners_html += `
+                                <tr data-index="${miner_num}" draggable="true" class="is-draggable">
+                                    <th align="right">
+                                            <span class="has-text-grey">
+                                                ${miner_num}
                                             </span>
+                                    </th>
+                                    <th style="word-break: break-all">
+                                            <span class="icon-text">
+                                                <span class="icon minerIcon" title="Miner type: ${miner_type}">
+                                                    ${icon}<wbr>
+                                                </span>
+                                            </span>
+                                            <span class="has-text-weight-bold" title="Miner name">
+                                                ${miner_name}
+                                            </span>
+                                            <span title="Thread Id" class="is-hidden">
+                                            ${miner_threadid}           
+                                            </span>
+                                    </th>
+                                    <th>
+                                            <span class="has-text-weight-bold" title="Miner hashrate">
+                                                ${scientific_prefix(miner_hashrate)}H/s
+                                            </span>
+                                            <span class="has-text-weight-normal" title="Threads/cores">
+                                                ${thread_string}
+                                            </span>
+                                    </th>
+                                    <th>
+                                        <span class="${accept_color}">
+                                            ${accepted_rate}%
                                         </span>
-                                        <span class="has-text-weight-bold" title="Miner name">
-                                            ${miner_name}
+                                        <span class="has-text-weight-normal">
+                                            (${miner_accepted}/${(miner_accepted + miner_rejected)})
                                         </span>
-                                        <span title="Thread Id" class="is-hidden">
-                                        ${miner_threadid}           
-                                        </span>
-                                </th>
-                                <th>
-                                        <span class="has-text-weight-bold" title="Miner hashrate">
-                                            ${scientific_prefix(miner_hashrate)}H/s
-                                        </span>
-                                        <span class="has-text-weight-normal" title="Threads/cores">
-                                            ${thread_string}
-                                        </span>
-                                </th>
-                                <th>
-                                    <span class="${accept_color}">
-                                        ${accepted_rate}%
-                                    </span>
-                                    <span class="has-text-weight-normal">
-                                        (${miner_accepted}/${(miner_accepted + miner_rejected)})
-                                    </span>
-                                </th>
-                                <th align="center">
-                                        <span class="icon-text">
-                                            ${warning_icon}
-                                        </span>
-                                        <span class="icon-text expand-btn" style="cursor: pointer">
-                                            <i class="icon fa fa-info-circle"></i>
-                                        </span>
-                                        ${iot_tag}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td colspan="5" style="border: none;margin:none;padding:0;">
-                                    <div class="content" style="display:none;">
-                                        <div class="columns is-mobile">
-                                            <div class="column">
-                                                <ul class="my-1">
-                                                    <li title="Miner software">
-                                                        <span style="color:${color}">
-                                                            ${miner_software}
-                                                        </span>
-                                                    </li>
-                                                    <li title="Time it took to find the latest result">
-                                                        <span class="has-text-weight-normal">
-                                                            Last share:
-                                                        </span>
-                                                        <span class="has-text-weight-bold">
-                                                            ${round_to(2, miner_sharetime)}s
-                                                        </span>
-                                                    </li>
-                                                    <li title="Server your miner is connected to">
-                                                        <span class="has-text-weight-normal">
-                                                            Node: 
-                                                        </span>
-                                                        <span class="has-text-weight-bold">
-                                                            ${miner_pool}
-                                                        </span>
-                                                    </li>
-                                                    <li title="How hard is it to mine">
-                                                        <span class="has-text-weight-normal">
-                                                            Difficulty: 
-                                                        </span>
-                                                        <span class="has-text-weight-bold">
-                                                            ${miner_diff_str}
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="column">
-                                                <ul class="my-1">
-                                                    <li title="Used hashing algorithm">
-                                                        <span class="has-text-weight-normal">
-                                                            Algorithm:
-                                                        </span>
-                                                        <span class="has-text-weight-bold">
-                                                            ${miner_algo}
-                                                        </span>
-                                                    </li>
-                                                    <li title="Identifier used to separate miners in the API">
-                                                        <span class="has-text-weight-normal">
-                                                            Thread ID:
-                                                        </span>
-                                                        <span class="has-text-weight-bold" >
-                                                            ${miner_threadid} (${miner})
-                                                        </span>
-                                                    </li>
-                                                    <li title="Identifier used to group same threads">
-                                                        <span class="has-text-weight-normal">
-                                                            Miner type:
-                                                        </span>
-                                                        <span class="has-text-weight-bold">
-                                                            ${miner_type}
-                                                        </span>
-                                                    </li>
-                                                    <li title="Kolka efficiency drop">
-                                                        <span class="has-text-weight-normal">
-                                                            Earnings
-                                                            <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
-                                                               target="_blank">(Kolka eff. drop)</a>:
-                                                        </span>
-                                                        <span class="has-text-weight-bold ${efficiency_color}">
-                                                            ${miner_efficiency}%
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>`
-                    }
-                    
-                    if (Object.keys(iot_devices).length) {
-                        iot_html = ``;
-                        for (let device in iot_devices) {
-                            if (device == "None") device_name = "IoT Reading";
-                            else device_name = device;
-
-                            iot_html += `<div class="columns is-multiline is-gapless">
-                                            <div class="column is-full">
-                                                <div class="divider my-0">${device_name}</div>
-                                            </div>`
-                            for (let key in iot_devices[device]) {
-                                if (key.toLowerCase().includes("temp")) icon = "mdi mdi-thermometer";
-                                else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
-                                else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
-                                else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
-                                else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
-                                else icon = "fa fa-tachometer";
-
-                                iot_html += `
-                                        <div class="column">
+                                    </th>
+                                    <th align="center">
+                                            <span class="icon-text">
+                                                ${warning_icon}
+                                            </span>
+                                            <span class="icon-text expand-btn" style="cursor: pointer">
+                                                <i class="icon fa fa-info-circle"></i>
+                                            </span>
+                                            ${iot_tag}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" style="border: none;margin:none;padding:0;">
+                                        <div class="content" style="display:none;">
                                             <div class="columns is-mobile">
-                                                <div class="column has-text-centered">
-                                                    <div>
-                                                        <p class="heading mb-0">
-                                                            <i class="${icon}"></i>
-                                                            ${key}
-                                                        </p>
-                                                        <p class="title">${iot_devices[device][key]}</p>
-                                                    </div>
+                                                <div class="column">
+                                                    <ul class="my-1">
+                                                        <li title="Miner software">
+                                                            <span style="color:${color}">
+                                                                ${miner_software}
+                                                            </span>
+                                                        </li>
+                                                        <li title="Time it took to find the latest result">
+                                                            <span class="has-text-weight-normal">
+                                                                Last share:
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${round_to(2, miner_sharetime)}s
+                                                            </span>
+                                                        </li>
+                                                        <li title="Server your miner is connected to">
+                                                            <span class="has-text-weight-normal">
+                                                                Node: 
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${miner_pool}
+                                                            </span>
+                                                        </li>
+                                                        <li title="How hard is it to mine">
+                                                            <span class="has-text-weight-normal">
+                                                                Difficulty: 
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${miner_diff_str}
+                                                            </span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="column">
+                                                    <ul class="my-1">
+                                                        <li title="Used hashing algorithm">
+                                                            <span class="has-text-weight-normal">
+                                                                Algorithm:
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${miner_algo}
+                                                            </span>
+                                                        </li>
+                                                        <li title="Identifier used to separate miners in the API">
+                                                            <span class="has-text-weight-normal">
+                                                                Thread ID:
+                                                            </span>
+                                                            <span class="has-text-weight-bold" >
+                                                                ${miner_threadid} (${miner})
+                                                            </span>
+                                                        </li>
+                                                        <li title="Identifier used to group same threads">
+                                                            <span class="has-text-weight-normal">
+                                                                Miner type:
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${miner_type}
+                                                            </span>
+                                                        </li>
+                                                        <li title="Kolka efficiency drop">
+                                                            <span class="has-text-weight-normal">
+                                                                Earnings
+                                                                <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
+                                                                   target="_blank">(Kolka eff. drop)</a>:
+                                                            </span>
+                                                            <span class="has-text-weight-bold ${efficiency_color}">
+                                                                ${miner_efficiency}%
+                                                            </span>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        </div>`;
-                                }
-                            iot_html += "</div>"
+                                        </div>
+                                    </td>
+                                </tr>`
                         }
-                        $("#iot").html(iot_html);
-                    } else {
-                        $("#iot").html(`
-                            <div class="content">
-                                <span class="has-text-weight-bold">
-                                    No IoT devices detected.
-                                </span>
-                                <p class="has-text-weight-normal">
-                                    Check your sensor wirings and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
-                                </p>
-                            </div>`
-                        );
-                    }
-                    $("#miners").html(miners_html);
-                    $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
-                    $("#minercount").html(user_miners.length);
+                        
+                        if (Object.keys(iot_devices).length) {
+                            iot_html = ``;
+                            for (let device in iot_devices) {
+                                if (device == "None") device_name = "IoT Reading";
+                                else device_name = device;
 
-                    // We fill the dragListItems variable with the latest elements
+                                iot_html += `<div class="columns is-multiline is-gapless">
+                                                <div class="column is-full">
+                                                    <div class="divider my-0">${device_name}</div>
+                                                </div>`
+                                for (let key in iot_devices[device]) {
+                                    if (key.toLowerCase().includes("temp")) icon = "mdi mdi-thermometer";
+                                    else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
+                                    else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
+                                    else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
+                                    else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
+                                    else icon = "fa fa-tachometer";
 
-                    dragListItems = minersList.querySelectorAll('tr.is-draggable'); 
-
-                    if (first_open && user_miners.length >= 45) miner_notify();
-                } else {
-                    $("#minertable").fadeOut(function () {
-                        $("#nominers").fadeIn();
-                    });
-                    $("#minercount").html("0");
-                    $("#iot").html(`
-                            <div class="content">
-                                <span class="has-text-weight-bold">
-                                    No IoT devices detected.
-                                </span>
-                                <p class="has-text-weight-normal">
-                                    Check the wiring of your sensors and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
-                                </p>
-                            </div>`
-                        );
-                }
-
-                $(function () {
-                    $("td[colspan=5]").find(".content").hide();
-                    $(".expand-btn").click(function (event) {
-                        let $target = $(event.target);
-                        $target.closest("tr").next().find(".content").slideToggle(250);
-                    });
-                });
-
-                user_transactions = data.transactions.reverse();
-                if (user_transactions.length > 0) {
-                    transactions_html = "";
-                    for (let i in user_transactions) {
-                        transaction_date = user_transactions[i]["datetime"];
-                        transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
-                        transaction_hash_full = user_transactions[i]["hash"];
-                        transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 16);
-                        transaction_memo = user_transactions[i]["memo"];
-                        transaction_recipient = user_transactions[i]["recipient"];
-                        transaction_sender = user_transactions[i]["sender"];
-
-                        if (transaction_memo == "None")
-                            transaction_memo = "";
-                        else
-                            transaction_memo = "\"" + transaction_memo + "\""
-
-                        if (transaction_sender == username) {
-                            thtml = `
-                            <div class="column is-full">
-                                <p class="title is-size-6">
-                                    <i class="mdi mdi-arrow-top-right fa-fw has-text-danger"></i>
-                                    <span class="has-text-weight-normal">
-                                        Sent
-                                        <span class="has-text-weight-bold">
-                                            ${transaction_amount} DUCO
-                                        </span>
-                                        to
-                                    </span>
-                                    <a href="https://explorer.duinocoin.com/?search=${transaction_recipient}" target="_blank">
-                                        ${transaction_recipient}
-                                    </a>
-                                    <span class="has-text-weight-normal">
-                                        ${transaction_memo}
-                                    </span>
-                                </p>
-                                <p class="subtitle is-size-7">
-                                    <span>
-                                        ${transaction_date}
-                                    </span>
-                                    <a href="https://explorer.duinocoin.com/?search=${transaction_hash_full}" target="_blank">
-                                        ${transaction_hash}
-                                    </a>
-                                </p>
-                            </div>`;
-                            transactions_html += thtml;
+                                    iot_html += `
+                                            <div class="column">
+                                                <div class="columns is-mobile">
+                                                    <div class="column has-text-centered">
+                                                        <div>
+                                                            <p class="heading mb-0">
+                                                                <i class="${icon}"></i>
+                                                                ${key}
+                                                            </p>
+                                                            <p class="title">${iot_devices[device][key]}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+                                    }
+                                iot_html += "</div>"
+                            }
+                            $("#iot").html(iot_html);
                         } else {
-                            thtml = `
-                            <div class="column is-full">
-                                <p class="title is-size-6">
-                                    <i class="mdi mdi-arrow-bottom-left fa-fw has-text-success-dark"></i>
-                                    <span class="has-text-weight-normal">
-                                        Received
-                                        <span class="has-text-weight-bold">
-                                            ${transaction_amount} DUCO
-                                        </span>
-                                        from
+                            $("#iot").html(`
+                                <div class="content">
+                                    <span class="has-text-weight-bold">
+                                        No IoT devices detected.
                                     </span>
-                                    <a href="https://explorer.duinocoin.com/?search=${transaction_sender}" target="_blank">
-                                        ${transaction_sender}
-                                    </a>
-                                    <span class="has-text-weight-normal">
-                                        ${transaction_memo}
-                                    </span>
-                                </p>
-                                <p class="subtitle is-size-7">
-                                    <span>
-                                        ${transaction_date}
-                                    </span>
-                                    <a href="https://explorer.duinocoin.com/?search=${transaction_hash_full}" target="_blank">
-                                        ${transaction_hash}
-                                    </a>
-                                </p>
-                            </div>`;
-                            transactions_html += thtml;
+                                    <p class="has-text-weight-normal">
+                                        Check your sensor wirings and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
+                                    </p>
+                                </div>`
+                            );
                         }
+                        $("#miners").html(miners_html);
+                        $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
+                        $("#minercount").html(user_miners.length);
+
+                        // We fill the dragListItems variable with the latest elements
+
+                        dragListItems = minersList.querySelectorAll('tr.is-draggable'); 
+
+                        if (first_open && user_miners.length >= 45) miner_notify();
+                    } else {
+                        $("#minertable").fadeOut(function () {
+                            $("#nominers").fadeIn();
+                        });
+                        $("#minercount").html("0");
+                        $("#iot").html(`
+                                <div class="content">
+                                    <span class="has-text-weight-bold">
+                                        No IoT devices detected.
+                                    </span>
+                                    <p class="has-text-weight-normal">
+                                        Check the wiring of your sensors and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
+                                    </p>
+                                </div>`
+                            );
                     }
-                    update_element("transactions_table", transactions_html);
-                } else
-                    update_element("transactions_table", `<div class="column is-full">
-                    <p class="title is-size-6">
-                        No transactions yet or they're temporarily unavailable
-                    </p>
-                    <p class='subtitle is-size-6'>
-                        If you have sent funds recently,
-                        it will take a few seconds until the transaction will appear here.
-                    </p>
-                </div>`);
-            }).then(function () {
-                document.getElementById('txsel').classList.remove("is-loading");
-            });
+
+                    $(function () {
+                        $("td[colspan=5]").find(".content").hide();
+                        $(".expand-btn").click(function (event) {
+                            let $target = $(event.target);
+                            $target.closest("tr").next().find(".content").slideToggle(250);
+                        });
+                    });
+
+                    user_transactions = data.transactions.reverse();
+                    if (user_transactions.length > 0) {
+                        transactions_html = "";
+                        for (let i in user_transactions) {
+                            transaction_date = user_transactions[i]["datetime"];
+                            transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
+                            transaction_hash_full = user_transactions[i]["hash"];
+                            transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 16);
+                            transaction_memo = user_transactions[i]["memo"];
+                            transaction_recipient = user_transactions[i]["recipient"];
+                            transaction_sender = user_transactions[i]["sender"];
+
+                            if (transaction_memo == "None")
+                                transaction_memo = "";
+                            else
+                                transaction_memo = "\"" + transaction_memo + "\""
+
+                            if (transaction_sender == username) {
+                                thtml = `
+                                <div class="column is-full">
+                                    <p class="title is-size-6">
+                                        <i class="mdi mdi-arrow-top-right fa-fw has-text-danger"></i>
+                                        <span class="has-text-weight-normal">
+                                            Sent
+                                            <span class="has-text-weight-bold">
+                                                ${transaction_amount} DUCO
+                                            </span>
+                                            to
+                                        </span>
+                                        <a href="https://explorer.duinocoin.com/?search=${transaction_recipient}" target="_blank">
+                                            ${transaction_recipient}
+                                        </a>
+                                        <span class="has-text-weight-normal">
+                                            ${transaction_memo}
+                                        </span>
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        <span>
+                                            ${transaction_date}
+                                        </span>
+                                        <a href="https://explorer.duinocoin.com/?search=${transaction_hash_full}" target="_blank">
+                                            ${transaction_hash}
+                                        </a>
+                                    </p>
+                                </div>`;
+                                transactions_html += thtml;
+                            } else {
+                                thtml = `
+                                <div class="column is-full">
+                                    <p class="title is-size-6">
+                                        <i class="mdi mdi-arrow-bottom-left fa-fw has-text-success-dark"></i>
+                                        <span class="has-text-weight-normal">
+                                            Received
+                                            <span class="has-text-weight-bold">
+                                                ${transaction_amount} DUCO
+                                            </span>
+                                            from
+                                        </span>
+                                        <a href="https://explorer.duinocoin.com/?search=${transaction_sender}" target="_blank">
+                                            ${transaction_sender}
+                                        </a>
+                                        <span class="has-text-weight-normal">
+                                            ${transaction_memo}
+                                        </span>
+                                    </p>
+                                    <p class="subtitle is-size-7">
+                                        <span>
+                                            ${transaction_date}
+                                        </span>
+                                        <a href="https://explorer.duinocoin.com/?search=${transaction_hash_full}" target="_blank">
+                                            ${transaction_hash}
+                                        </a>
+                                    </p>
+                                </div>`;
+                                transactions_html += thtml;
+                            }
+                        }
+                        update_element("transactions_table", transactions_html);
+                    } else
+                        update_element("transactions_table", `<div class="column is-full">
+                        <p class="title is-size-6">
+                            No transactions yet or they're temporarily unavailable
+                        </p>
+                        <p class='subtitle is-size-6'>
+                            If you have sent funds recently,
+                            it will take a few seconds until the transaction will appear here.
+                        </p>
+                    </div>`);
+                }).then(function () {
+                    document.getElementById('txsel').classList.remove("is-loading");
+                });
+        } catch (err) {
+            console.error(err);
+            user_data(username, false);
+        }
     }
 
     // ENTER KEY AS LOGIN
@@ -1518,9 +1543,6 @@ window.addEventListener('load', function () {
                         `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
                     user_data(username, true);
-                    window.setInterval(() => {
-                        user_data(username, false);
-                    }, 10 * 1000);
 
                     setTimeout(function () {
                         $('#form').hide("drop", { direction: "up" }, 300, function () {
@@ -1610,9 +1632,6 @@ window.addEventListener('load', function () {
                                 `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
                             user_data(username, true);
-                            window.setInterval(() => {
-                                user_data(username, false);
-                            }, 10 * 1000);
 
                             setTimeout(function () {
                                 $('#form').hide("drop", { direction: "up" }, 300, function () {
