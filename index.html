@@ -582,6 +582,19 @@
             </a>
         </div>
     </div>
+    <style>
+        .notification {
+            width: 300px;
+            position: fixed;
+            right: 1em;
+            bottom: 0.5em;
+        }
+    </style>
+    <div id="magi_notify" class="notification is-info" style="display:none">
+      <button class="delete" onclick="$(this).parent().fadeOut();"></button>
+      <b>Are you a CPU miner?</b><br>
+      Maybe our sister coin will suit your needs better - check out <a href="https://magi.duinocoin.com">Coin Magi</a>, also maintained by the Duino Team
+    </div>
     <div id="modal-settings" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -746,12 +759,10 @@
                         shot by
                         <a href="https://www.instagram.com/vlegle/">
                             Yennefer
-                        </a>,
-                        <a href="https://www.instagram.com/ataraxy1337/">
-                            ataraxy
                         </a>
                         <span class="has-text-weight-normal">
-                            and from the game</span>
+                            and from the game
+                        </span>
                         Firewatch 📸
                     </span><br><br>
                     Made with the
