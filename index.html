@@ -139,6 +139,7 @@
                                     </a>
                                     <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
                                         <i class="fa fa-shopping-bag" title="Shop"></i>
+                                        <span class="red-dot"></span>
                                     </a>
                                     <a onclick="logout()">
                                         <i class="fa fa-sign-out-alt" title="Log out"></i>
@@ -588,6 +589,15 @@
             position: fixed;
             right: 1em;
             bottom: 0.5em;
+        }
+        .red-dot {
+            height: 10px;
+            width: 10px;
+            background: red;
+            border-radius: 50%;
+            opacity: 0.9;
+            position: absolute;
+            right: 35%;
         }
     </style>
     <div id="magi_notify" class="notification is-info" style="display:none">
