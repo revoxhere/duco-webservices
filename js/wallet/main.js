@@ -74,6 +74,129 @@ function get_user_color(username) {
     return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
 };
 
+const genQrCode = () => {
+
+    const qrCode = new QRCodeStyling({
+        width: 250,
+        height: 250,
+        type: "svg",
+        data: `duco:${username}`,
+        dotsOptions: {
+            color: "#ff9326",
+            type: "square"
+        },
+        backgroundOptions: {
+            color: "#ffffff",
+        },
+        cornersDotOptions: {
+            type:"square",
+            color:"#ff4662"
+        }, 
+        cornersSquareOptions: {
+            type:"square",
+            color:"#ff4662"
+        },
+    });
+
+    qrCode.getRawData("svg").then((buffer) => {
+        let objectURL = URL.createObjectURL(buffer);
+        document.getElementById("qrcode").src = objectURL;
+    }).catch((err) => {
+        console.error(err);
+        document.getElementById("qrcode").src = `./assets/loadfailed.jpg`;
+    });
+}
+
+let qrCanvas = document.querySelector('#qrscanner');
+let qrVideo = document.createElement("video");
+let qrCtx = qrCanvas.getContext("2d");
+
+document.getElementById('qrFile').addEventListener('change', handleFileSelect, false);
+
+function handleFileSelect(e) {
+    if (e.target.files.length) {
+        document.querySelector("#qrFile-name").innerHTML = e.target.files[0].name;
+        let cnv = document.createElement('canvas');
+        let ctx = cnv.getContext('2d');
+
+        let img = new Image();
+
+        img.src = window.URL.createObjectURL(e.target.files[0]);
+        img.onload = () => {
+            cnv.width = 250;
+            cnv.height = 250;
+            ctx.drawImage(img, 0, 0);
+            imageData = ctx.getImageData(0, 0, 250, 250);
+
+            let code = jsQR(imageData.data, 250, 250, {
+                inversionAttempts: "attemptBoth",
+            });
+
+            if (code) {
+                let modal = document.querySelector('#modal-qrcode-scanner');
+                let html = document.querySelector('html');
+                modal.classList.remove('is-active');
+                html.classList.remove('is-clipped');
+
+                document.getElementById('recipientinput').value = code.data.split(':')[1];
+
+                stopCamera();
+            }
+            
+        }
+    }
+}
+
+const checkRights = () => {
+    let constraints = {video: {facingMode: 'environment'}};
+    let cameraFeedPromise = navigator.mediaDevices.getUserMedia(constraints);
+
+    cameraFeedPromise.then((mediaStream) => {
+        window.localStream = mediaStream;
+        qrVideo.srcObject = mediaStream;
+        qrVideo.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+        qrVideo.play();
+        requestAnimationFrame(tick);
+    });
+    cameraFeedPromise.catch(function(err) {
+        console.log(err.name);
+    });
+}
+
+function stopCamera () {
+    localStream.getTracks().forEach(track => track.stop())
+}
+
+function tick() {
+    if (qrVideo.readyState === qrVideo.HAVE_ENOUGH_DATA) {
+
+        qrCanvas.style.width = '100%';
+        qrCanvas.style.height = '100%';
+        qrCanvas.width  = qrCanvas.offsetWidth;
+        qrCanvas.height = qrCanvas.width * (9 / 16);
+
+        qrCtx.drawImage(qrVideo, 0, 0, qrCanvas.width, qrCanvas.height);
+
+        let imageData = qrCtx.getImageData(0, 0, qrCanvas.width, qrCanvas.height);
+
+        let code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: "dontInvert",
+        });
+
+        if (code) {
+            let modal = document.querySelector('#modal-qrcode-scanner');
+            let html = document.querySelector('html');
+            modal.classList.remove('is-active');
+            html.classList.remove('is-clipped');
+
+            document.getElementById('recipientinput').value = code.data.split(':')[1];
+
+            stopCamera();
+        }
+    }
+    requestAnimationFrame(tick);
+}
+
 // Registering Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/js/wallet/serviceWorker.js');
@@ -1705,6 +1828,7 @@ window.addEventListener('load', function () {
     setInterval(function () {
         $("#mcontainer").css("max-width", window.innerWidth - 80)
     }, 1000)
+    genQrCode();
 });
 
 // Fix the overflow on modal close (Fix the mistake)

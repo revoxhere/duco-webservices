@@ -37,6 +37,10 @@
     <script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
     <link rel="preload" as="script" href="js/fontawesome.js">
     <script type="text/javascript" src="js/fontawesome.js"></script>
+    <link rel="preload" as="script" href="js/qr-scanner.js">
+    <script type="text/javascript" src="js/qr-scanner.js"></script>
+    <link rel="preload" as="script" href="js/qr-code-styling.js">
+    <script type="text/javascript" src="js/qr-code-styling.js"></script>
     <link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
     <link rel="preload" as="script" href="js/chart.js">
     <script type="text/javascript" src="js/chart.js"></script>
@@ -143,6 +147,9 @@
                                     </a>
                                     <a onclick="logout()">
                                         <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                    </a>
+                                    <a class="modal-button" data-target="modal-qrcode">
+                                        <i class="fa fa-qrcode" title="View QR Code"></i>
                                     </a>
                                 </p>
                             </div>
@@ -885,6 +892,9 @@
                             Send coins
                         </span>
                     </span>
+                    <a class="modal-button is-block is-pulled-right mr-2 mb-5" data-target="modal-qrcode-scanner" onclick="checkRights()">
+                        <i class="fa fa-qrcode" title="Scan QR Code"></i>
+                    </a>
                 </p>
                 <div class="content">
                     <div class="columns is-multiline">
@@ -1137,6 +1147,77 @@
             </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <div id="modal-qrcode" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-qrcode"></i>
+                        </span>
+                        <span>My QR Code</span> <small class="tag is-info ml-2">Beta</small>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-full content mb-0">
+                            <p>
+                                QR code payment is a contactless payment method where payment is performed by scanning a QR code from a mobile app.
+                            </p>
+                        </div>
+                        <div class="column is-full content is-centered">
+                            <img class="is-block m-auto" id="qrcode" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <div id="modal-qrcode-scanner" class="modal modal-fx-fadeInScale">
+        <div class="modal-background" onclick="stopCamera()"></div>
+        <div class="modal-content">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-qrcode"></i>
+                        </span>
+                        <span>QR Code Scanner</span> <small class="tag is-info ml-2">Beta</small>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="columns is-multiline">
+                        <div class="column is-full content is-centered">
+                            <div class="file has-name is-fullwidth">
+                            <label class="file-label">
+                                <input type="file" class="file-input" accept="image/*" id="qrFile" name="files" />
+                                <span class="file-cta">
+                                <span class="file-icon">
+                                    <i class="fas fa-upload"></i>
+                                </span>
+                                <span class="file-label">
+                                    Choose a file…
+                                </span>
+                                </span>
+                                <span class="file-name" id="qrFile-name">
+                                    Example File.svg
+                                </span>
+                            </label>
+                            </div>
+                        </div>
+                        <div class="column is-full content is-centered">
+                            <canvas id="qrscanner" class="is-block m-auto"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" onclick="stopCamera()" aria-label="close"></button>
     </div>
 </body>
 <!-- Wallet Script -->

@@ -30,6 +30,10 @@ const contentToCache = [
     '../fontawesome.js',
     '../chart.js',
     '../jquery-ui.min.js',
+    '../qr-code-styling.js',
+    '../qr-scanner.js',
+
+    '../../assets/loadfailed.jpg',
 
     '../../img/esp32.gif',
     '../../img/wemos.gif',
