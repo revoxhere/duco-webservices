@@ -1214,7 +1214,7 @@ window.addEventListener('load', function () {
                                 color = "#F97F51";
                                 icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
                                 miner_type = "PC (Normal)";
-                                if (Math.floor(Math.random() * 30) == 1) $("#magi_notify").fadeIn();
+                                if (Math.floor(Math.random() * 5) == 1) $("#magi_notify").fadeIn();
                             } else if (miner_software.includes("Web")) {
                                 color = "#009432";
                                 icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
