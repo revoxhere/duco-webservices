@@ -216,7 +216,6 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/js/wallet/serviceWorker.js');
 }
 
-const userDiv = document.querySelector('#userData');
 const historicPrices = document.querySelector('#historicPrices');
 
 const historicPricesCtx = historicPrices.getContext('2d');
@@ -320,20 +319,27 @@ fetch('https://server.duinocoin.com/historic_prices?currency=max&limit=30').then
     drawGraph();
 });
 
-userDiv.addEventListener('click', function () {
-    $("#userData").fadeOut('slow', () => {
-        $("#heightFix").removeClass("is-hidden");
-        $("#historicPrices").fadeIn('slow', () => {
-            historicPrices.classList.remove('is-hidden');
-        });
-    });
-});
+let graphToggled = false;
 
-historicPrices.addEventListener('click', function () {
-    historicPrices.classList.add('is-hidden');
-     $("#heightFix").addClass("is-hidden");
-    $("#userData").fadeIn();
-});
+const toggleGraph = () => {
+    if(graphToggled)
+    {
+        historicPrices.classList.add('is-hidden');
+        $("#heightFix").addClass("is-hidden");
+        $("#userData").fadeIn();
+        graphToggled = false;
+    }
+    else 
+    {
+        $("#userData").fadeOut('slow', () => {
+            $("#heightFix").removeClass("is-hidden");
+            $("#historicPrices").fadeIn('slow', () => {
+                historicPrices.classList.remove('is-hidden');
+            });
+        });
+        graphToggled = true;
+    }
+}
 
 const sWarningsBtn = document.querySelector("#showWarnings");
 const disableAnimsBtn = document.querySelector("#disableAnims");
@@ -1037,7 +1043,6 @@ window.addEventListener('load', function () {
                             </small>`);
                     }
 
-                    $("#ducousd").html(" $" + round_to(5, duco_price));
                     $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
                     $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
                     $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
@@ -2022,3 +2027,4 @@ minersList.addEventListener('dragstart', function (evt){
 
     dragEl.classList.add('ghost'); // change element opacity
 }, false);
+
