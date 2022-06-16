@@ -119,14 +119,27 @@ function handleFileSelect(e) {
         let cnv = document.createElement('canvas');
         let ctx = cnv.getContext('2d');
 
-        let img = new Image();
-
-        img.src = window.URL.createObjectURL(e.target.files[0]);
-        img.onload = () => {
+        let file = e.target.files[0],                 
+            url = URL.createObjectURL(file),          
+            img = new Image();                         
+            
+        img.onload = function() {                
+            URL.revokeObjectURL(this.src);     
             cnv.width = 250;
             cnv.height = 250;
-            ctx.drawImage(img, 0, 0);
+            ctx.drawImage(this, 0, 0);  
+
             imageData = ctx.getImageData(0, 0, 250, 250);
+
+            for(let y = 0; y < imageData.height; y++){ // convert any color to black and white
+                for(let x = 0; x < imageData.width; x++){
+                    let i = (y * 4) * imageData.width + x * 4;
+                    let avg = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
+                    imageData.data[i] = avg;
+                    imageData.data[i + 1] = avg;
+                    imageData.data[i + 2] = avg;
+                }
+            }
 
             let code = jsQR(imageData.data, 250, 250, {
                 inversionAttempts: "attemptBoth",
@@ -142,8 +155,9 @@ function handleFileSelect(e) {
 
                 stopCamera();
             }
-            
-        }
+        };
+
+        img.src = url; 
     }
 }
 
