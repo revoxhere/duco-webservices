@@ -74,19 +74,32 @@ function get_user_color(username) {
     return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
 };
 
+let qrUser = "";
+
 const genQrCode = () => {
 
-    if(username == undefined)
+    qrUser = username;
+
+    if((!qrUser || qrUser.length === 0 )) // if it's empty try with form data
     {
-        username = $('#usernameinput').val();
-        username = username.replace(/^[ ]+|[ ]+$/g, '');
+        qrUser = $('#usernameinput').val();
+        qrUser = qrUser.replace(/^[ ]+|[ ]+$/g, '');
+
+        if((!qrUser || qrUser.length === 0 )) // if it's empty try with localStorage data
+        {
+            qrUser = localStorage.getItem('username');
+        }
+        else if((!qrUser || qrUser.length === 0 )) // else just use Error
+        {
+            qrUser = "Error";
+        }
     }
 
     const qrCode = new QRCodeStyling({
         width: 250,
         height: 250,
         type: "svg",
-        data: `duco:${username}`,
+        data: `duco:${qrUser}`,
         dotsOptions: {
             color: "#ff9326",
             type: "square"
