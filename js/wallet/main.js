@@ -1699,106 +1699,19 @@ window.addEventListener('load', function () {
         password = localStorage.getItem("authToken");
 
         $("#submit").addClass("is-loading");
-        setTimeout(function() {
-        $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken") },
-            function (data) {
-                if (data.success == true) {
-                    $("#ducologo").addClass("rotate");
-
-                    $("#username").text(encodeURIComponent(username));
-                    $("#email").text(`(${data.result[1]})`);
-
-                    $("#miner_pass").text(data.result[2]);
-                    $("#mining_key").val(data.result[2]);
-
-                    $("#useravatar").attr("src",
-                        `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                        `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
-
-                    user_data(username, true);
-
-                    setTimeout(function () {
-                        $('#form').hide("drop", { direction: "up" }, 300, function () {
-                            $('#wallet').show("drop", { direction: "down" }, 300, function () {
-                                if (adBlockEnabled) {
-                                    $("#adblocker_detected").fadeIn();
-                                } else {
-                                    try {
-                                        $("#adblocker_detected").fadeOut(function() {
-                                            (adsbygoogle = window.adsbygoogle || []).push({});
-                                        });
-                                    } catch (err) {
-                                        $("#adblocker_detected").fadeIn();
-                                    }
-                                }
-                                $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                $("iframe#news_iframe").fadeIn(2500);
-                            });
-                        });
-                    }, 350);
-
-                    setInterval(function() {
-                        stake_counter();
-                    }, 250);
-                } else {
-
-                    localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
-
-                    if (data.message.includes("This user doesn't exist")) {
-                        $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    } 
-                    else if (data.message.includes("banned")) {
-                        let modal_error = document.querySelector('#modal_error');
-                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                            `Your account is <b>BANNED</b>.<br>
-                            You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                            If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
-                            </p>`;
-                        document.querySelector('html').classList.add('is-clipped');
-                        modal_error.classList.add('is-active');
-                    }
-                    else {
-                        $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    }
-                }
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-            })
-            .always(function () {
-                $("#submit").removeClass("is-loading");
-            });
-        }, 500);
-    }
-
-    $('#form').submit(function () {
-        return false;
-    });
-
-    $('#submit').click(function () {
-        username = $('#usernameinput').val()
-        //trim the username field to remove extra spaces
-        username = username.replace(/^[ ]+|[ ]+$/g, '')
-        password = $('#passwordinput').val()
-
-        if (username && password) {
-            $("#submit").addClass("is-loading");
-            setTimeout(function() {
-                $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))) },
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
+                setTimeout(function() {
+                $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
                     function (data) {
                         if (data.success == true) {
-                            if (rememberLogin.checked) {
-                                localStorage.setItem("username", encodeURIComponent(username));
-                                localStorage.setItem("authToken", data.result[2]);
-                            }
-
                             $("#ducologo").addClass("rotate");
 
                             $("#username").text(encodeURIComponent(username));
                             $("#email").text(`(${data.result[1]})`);
 
-                            $("#miner_pass").text(data.result[3]);
-                            $("#mining_key").val(data.result[3]);
+                            $("#miner_pass").text(data.result[2]);
+                            $("#mining_key").val(data.result[2]);
 
                             $("#useravatar").attr("src",
                                 `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
@@ -1809,21 +1722,19 @@ window.addEventListener('load', function () {
                             setTimeout(function () {
                                 $('#form').hide("drop", { direction: "up" }, 300, function () {
                                     $('#wallet').show("drop", { direction: "down" }, 300, function () {
-                                        $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                        $("iframe#news_iframe").fadeIn(2500)
-
                                         if (adBlockEnabled) {
-                                            $("#adblocker_detected").fadeIn()
+                                            $("#adblocker_detected").fadeIn();
                                         } else {
                                             try {
-                                                $("#adblocker_detected").fadeOut(function () {
+                                                $("#adblocker_detected").fadeOut(function() {
                                                     (adsbygoogle = window.adsbygoogle || []).push({});
-                                                })
-
+                                                });
                                             } catch (err) {
-                                                $("#adblocker_detected").fadeIn()
+                                                $("#adblocker_detected").fadeIn();
                                             }
                                         }
+                                        $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                                        $("iframe#news_iframe").fadeIn(2500);
                                     });
                                 });
                             }, 350);
@@ -1832,6 +1743,9 @@ window.addEventListener('load', function () {
                                 stake_counter();
                             }, 250);
                         } else {
+
+                            localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
+
                             if (data.message.includes("This user doesn't exist")) {
                                 $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                             } 
@@ -1856,7 +1770,101 @@ window.addEventListener('load', function () {
                     .always(function () {
                         $("#submit").removeClass("is-loading");
                     });
-            }, 500);
+                }, 500);
+            });
+        });
+    }
+
+    $('#form').submit(function () {
+        return false;
+    });
+
+    $('#submit').click(function () {
+        username = $('#usernameinput').val()
+        //trim the username field to remove extra spaces
+        username = username.replace(/^[ ]+|[ ]+$/g, '')
+        password = $('#passwordinput').val()
+
+        if (username && password) {
+            $("#submit").addClass("is-loading");
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
+                    setTimeout(function() {
+                        $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
+                            function (data) {
+                                if (data.success == true) {
+                                    if (rememberLogin.checked) {
+                                        localStorage.setItem("username", encodeURIComponent(username));
+                                        localStorage.setItem("authToken", data.result[2]);
+                                    }
+
+                                    $("#ducologo").addClass("rotate");
+
+                                    $("#username").text(encodeURIComponent(username));
+                                    $("#email").text(`(${data.result[1]})`);
+
+                                    $("#miner_pass").text(data.result[3]);
+                                    $("#mining_key").val(data.result[3]);
+
+                                    $("#useravatar").attr("src",
+                                        `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                                        `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+
+                                    user_data(username, true);
+
+                                    setTimeout(function () {
+                                        $('#form').hide("drop", { direction: "up" }, 300, function () {
+                                            $('#wallet').show("drop", { direction: "down" }, 300, function () {
+                                                $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
+                                                $("iframe#news_iframe").fadeIn(2500)
+
+                                                if (adBlockEnabled) {
+                                                    $("#adblocker_detected").fadeIn()
+                                                } else {
+                                                    try {
+                                                        $("#adblocker_detected").fadeOut(function () {
+                                                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                                        })
+
+                                                    } catch (err) {
+                                                        $("#adblocker_detected").fadeIn()
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    }, 350);
+
+                                    setInterval(function() {
+                                        stake_counter();
+                                    }, 250);
+                                } else {
+                                    if (data.message.includes("This user doesn't exist")) {
+                                        $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                                    } 
+                                    else if (data.message.includes("banned")) {
+                                        let modal_error = document.querySelector('#modal_error');
+                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                            `Your account is <b>BANNED</b>.<br>
+                                            You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                                            If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                                            </p>`;
+                                        document.querySelector('html').classList.add('is-clipped');
+                                        modal_error.classList.add('is-active');
+                                    }
+                                    else {
+                                        $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                                    }
+                                }
+                            })
+                            .fail(function (jqXHR, textStatus, errorThrown) {
+                                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            })
+                            .always(function () {
+                                $("#submit").removeClass("is-loading");
+                            });
+                    }, 500);
+                });
+            });
         } else {
             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
