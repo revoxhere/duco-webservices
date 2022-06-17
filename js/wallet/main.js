@@ -76,6 +76,12 @@ function get_user_color(username) {
 
 const genQrCode = () => {
 
+    if(username == undefined)
+    {
+        username = $('#usernameinput').val();
+        username = username.replace(/^[ ]+|[ ]+$/g, '');
+    }
+
     const qrCode = new QRCodeStyling({
         width: 250,
         height: 250,
@@ -105,6 +111,17 @@ const genQrCode = () => {
         console.error(err);
         document.getElementById("qrcode").src = `./assets/loadfailed.jpg`;
     });
+}
+
+const downloadQR = () => {
+    let data = document.getElementById("qrcode").src;
+    let filename = `Duco_QRCode_${username}.svg`;
+    const elem = window.document.createElement('a');
+    elem.href = data;
+    elem.download = filename;        
+    document.body.appendChild(elem);
+    elem.click();        
+    document.body.removeChild(elem);
 }
 
 let qrCanvas = document.querySelector('#qrscanner');
