@@ -1748,7 +1748,17 @@ window.addEventListener('load', function () {
 
                             if (data.message.includes("This user doesn't exist")) {
                                 $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                            } 
+                            }
+                            else if (data.message.includes("captcha")) {
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `Incorrect captcha score.<br>
+                                    Google's reCaptcha didn't like your browser for some reason.<br>
+                                    Try refreshing the page or trying a different one<br>
+                                    (unless you're a robot, in that case go away!).</p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
+                            }
                             else if (data.message.includes("banned")) {
                                 let modal_error = document.querySelector('#modal_error');
                                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
@@ -1840,7 +1850,17 @@ window.addEventListener('load', function () {
                                 } else {
                                     if (data.message.includes("This user doesn't exist")) {
                                         $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                    } 
+                                    }
+                                    else if (data.message.includes("captcha")) {
+                                        let modal_error = document.querySelector('#modal_error');
+                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                            `Incorrect captcha score.<br>
+                                            Google's reCaptcha didn't like your browser for some reason.<br>
+                                            Try refreshing the page or trying a different one<br>
+                                            (unless you're a robot, in that case go away!).</p>`;
+                                        document.querySelector('html').classList.add('is-clipped');
+                                        modal_error.classList.add('is-active');
+                                    }
                                     else if (data.message.includes("banned")) {
                                         let modal_error = document.querySelector('#modal_error');
                                         document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
