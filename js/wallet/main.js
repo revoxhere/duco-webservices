@@ -1748,10 +1748,10 @@ window.addEventListener('load', function () {
                             else if (data.message.includes("captcha")) {
                                 let modal_error = document.querySelector('#modal_error');
                                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                    `Incorrect captcha score.<br>
-                                    Google's reCaptcha didn't like your browser for some reason.<br>
-                                    Try refreshing the page or trying a different one<br>
-                                    (unless you're a robot, in that case go away!).</p>`;
+                                    `<b>Incorrect captcha score</b><br>
+                                    ReCaptcha didn't like your browser or your behavior.<br>
+                                    If you're not a robot, just try again.<br>
+                                    If the issue persists, try using a different network or browser.</p>`;
                                 document.querySelector('html').classList.add('is-clipped');
                                 modal_error.classList.add('is-active');
                             }
@@ -1850,10 +1850,10 @@ window.addEventListener('load', function () {
                                     else if (data.message.includes("captcha")) {
                                         let modal_error = document.querySelector('#modal_error');
                                         document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                            `Incorrect captcha score.<br>
-                                            Google's reCaptcha didn't like your browser for some reason.<br>
-                                            Try refreshing the page or trying a different one<br>
-                                            (unless you're a robot, in that case go away!).</p>`;
+                                            `<b>Incorrect captcha score</b><br>
+                                            ReCaptcha didn't like your browser or your behavior.<br>
+                                            If you're not a robot, just try again.<br>
+                                            If the issue persists, try using a different network or browser.</p>`;
                                         document.querySelector('html').classList.add('is-clipped');
                                         modal_error.classList.add('is-active');
                                     }
