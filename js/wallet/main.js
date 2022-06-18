@@ -80,18 +80,14 @@ const genQrCode = () => {
 
     qrUser = username;
 
-    if((!qrUser || qrUser.length === 0 )) // if it's empty try with form data
+    if((!qrUser || qrUser.length === 0 ) || (qrUser == null || qrUser == "null")) // if it's empty try with form data
     {
         qrUser = $('#usernameinput').val();
         qrUser = qrUser.replace(/^[ ]+|[ ]+$/g, '');
 
-        if((!qrUser || qrUser.length === 0 )) // if it's empty try with localStorage data
+        if((!qrUser || qrUser.length === 0 ) || (qrUser == null || qrUser == "null")) // if it's empty try with localStorage data
         {
-            qrUser = localStorage.getItem('username');
-        }
-        else if((!qrUser || qrUser.length === 0 )) // else just use Error
-        {
-            qrUser = "Error";
+            qrUser = localStorage.getItem('username') || "Error";
         }
     }
 
@@ -2086,3 +2082,71 @@ minersList.addEventListener('dragstart', function (evt){
     dragEl.classList.add('ghost'); // change element opacity
 }, false);
 
+/* Favorites Table */
+
+const favoriteInput = document.getElementById('favoriteInput'),
+    addFavorite = document.getElementById('addFavorite'),
+    favoriteTable = document.getElementById('favoritesTable');
+
+let favorites = localStorage.getItem('favorites') || "[]";
+let favoritesJson = JSON.parse(favorites) || [];
+
+const updateFavoritesTable = () => {
+    if (favoritesJson) {
+        favoriteTable.innerHTML = "";
+        favoritesJson.forEach((elm) => {
+            const tr = document.createElement('tr');
+            let id = favoritesJson.indexOf(elm);
+
+            tr.setAttribute('id', id);
+            tr.classList.add("is-clickable");
+            tr.onclick = () => useFavorite(id);
+
+            tr.innerHTML = `
+                <th>${elm["Username"]}</th>
+                <th class="is-pulled-right">
+                    <i class="fa fa-trash mr-2 is-clickable" onclick="removeFavorite(${id})"></i>
+                </th>
+            `;
+            favoriteTable.appendChild(tr);
+        });
+    }
+}
+
+const useFavorite = (id) => {
+    let modal = document.querySelector('#modal-favorites');
+    let html = document.querySelector('html');
+    modal.classList.remove('is-active');
+    html.classList.remove('is-clipped');
+
+    document.getElementById('recipientinput').value = favoritesJson[id].Username;
+};
+
+const removeFavorite = (id) => {
+    favoritesJson.splice(id, 1);
+    localStorage.setItem('favorites', JSON.stringify(favoritesJson));
+    favoriteTable.removeChild(favoriteTable.querySelector(`tr[id="${id}"]`));
+    updateFavoritesTable();
+};
+
+addFavorite.addEventListener('click', () => {
+    if (favoriteInput.value) {
+        if (favoritesJson) {
+            if (favoritesJson.indexOf(favoriteInput.value) == -1) {
+                favoritesJson.push({
+                    "Username": favoriteInput.value
+                });
+            }
+        } else {
+            favoritesJson = [];
+            favoritesJson.push({
+                "Username": favoriteInput.value
+            });
+        }
+        localStorage.setItem('favorites', JSON.stringify(favoritesJson));
+        favoriteInput.value = '';
+        updateFavoritesTable();
+    }
+});
+
+updateFavoritesTable();

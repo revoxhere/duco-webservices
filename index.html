@@ -898,9 +898,14 @@
                             Send coins
                         </span>
                     </span>
-                    <a class="modal-button is-block is-pulled-right mr-2 mb-5" data-target="modal-qrcode-scanner" onclick="checkRights()">
-                        <i class="fa fa-qrcode" title="Scan QR Code"></i>
-                    </a>
+                    <span class="is-block is-pulled-right">
+                        <a class="modal-button mr-2" data-target="modal-favorites">
+                            <i class="fa fa-users" title="My Favorite Users"></i> 
+                        </a>
+                        <a class="modal-button mr-2" data-target="modal-qrcode-scanner" onclick="checkRights()">
+                            <i class="fa fa-qrcode" title="Scan QR Code"></i>
+                        </a>
+                    </span>
                 </p>
                 <div class="content">
                     <div class="columns is-multiline">
@@ -1148,6 +1153,50 @@
                         <div class="column is-full">
                             <span id="stake_text" class="subtitle"></span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <div id="modal-favorites" class="modal modal-fx-fadeInScale">
+        <div class="modal-background"></div>
+        <div class="modal-content" style="overflow: hidden !important;">
+            <div class="box blur">
+                <p class="modal-card-title mb-5">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa fa-users"></i>
+                        </span>
+                        <span>My Favorite Users</span> <small class="tag is-info ml-2">Beta</small>
+                    </span>
+                </p>
+                <div class="content">
+                    <div class="column is-full is-justify-content-space-around is-flex">
+                        <div class="field has-addons">
+                            <div class="control has-icons-left">
+                                <input type="text" id="favoriteInput" class="input" placeholder="Add a new Favorite...">
+                                <span class="icon is-medium is-left">
+                                    <i style="color: #777" class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <div class="control">
+                                <a class="button" id="addFavorite">Add</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-full is-justify-content-space-around is-flex table-container mt-4">
+                        <table class="table is-hoverable" style="width: 80%;">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="favoritesTable" class="is-scrollable is-block" style="max-height: 20em;">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

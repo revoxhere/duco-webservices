@@ -876,3 +876,26 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* Favorites List */
+
+.is-scrollable {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+.is-scrollable tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#addFavorite {
+  border-top-left-radius: 0 !important; 
+  border-bottom-left-radius: 0 !important;
+}
+
+#favoriteInput {
+  border-top-right-radius: 0 !important; 
+  border-bottom-right-radius: 0 !important;
+}
