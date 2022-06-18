@@ -879,15 +879,19 @@ input:checked + .slider:before {
 
 /* Favorites List */
 
+.is-tbody-scrollable thead {
+  display: block;
+}
+
 .is-scrollable {
   overflow-y: scroll !important;
   overflow-x: hidden !important;
 }
 
 .is-scrollable tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
+  display: table !important;
+  width: 100% !important;
+  table-layout: fixed !important;
 }
 
 #addFavorite {

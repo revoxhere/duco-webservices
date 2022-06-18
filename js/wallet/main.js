@@ -2109,7 +2109,7 @@ const updateFavoritesTable = () => {
             tr.innerHTML = `
                 <th>${elm["Username"]}</th>
                 <th class="is-pulled-right">
-                    <i class="fa fa-trash mr-2 is-clickable" onclick="removeFavorite(${id})"></i>
+                    <i class="fa fa-trash mr-2 is-clickable" onclick="removeFavorite(${id}); event.stopPropagation();"></i>
                 </th>
             `;
             favoriteTable.appendChild(tr);
