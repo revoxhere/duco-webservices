@@ -87,7 +87,11 @@ const genQrCode = () => {
 
         if((!qrUser || qrUser.length === 0 ) || (qrUser == null || qrUser == "null")) // if it's empty try with localStorage data
         {
-            qrUser = localStorage.getItem('username') || "Error";
+            qrUser = localStorage.getItem('username');
+            if((!qrUser || qrUser.length === 0 ) || (qrUser == null || qrUser == "null")) // if it's empty try with username div
+            {
+                qrUser = $("#username").text() || "Error";
+            }
         }
     }
 
