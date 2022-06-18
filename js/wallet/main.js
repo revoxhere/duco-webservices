@@ -1695,9 +1695,9 @@ window.addEventListener('load', function () {
         password = localStorage.getItem("authToken");
 
         $("#submit").addClass("is-loading");
-        grecaptcha.ready(function() {
-            grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
-                setTimeout(function() {
+        setTimeout(function() {
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
                 $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
                     function (data) {
                         if (data.success == true) {
@@ -1776,9 +1776,9 @@ window.addEventListener('load', function () {
                     .always(function () {
                         $("#submit").removeClass("is-loading");
                     });
-                }, 500);
+                });
             });
-        });
+       }, 500);
     }
 
     $('#form').submit(function () {
@@ -1793,9 +1793,9 @@ window.addEventListener('load', function () {
 
         if (username && password) {
             $("#submit").addClass("is-loading");
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
-                    setTimeout(function() {
+            setTimeout(function() {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
                         $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
                             function (data) {
                                 if (data.success == true) {
@@ -1877,10 +1877,10 @@ window.addEventListener('load', function () {
                             })
                             .always(function () {
                                 $("#submit").removeClass("is-loading");
-                            });
-                    }, 500);
+                         });
+                    });
                 });
-            });
+            }, 500);
         } else {
             $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
             $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
