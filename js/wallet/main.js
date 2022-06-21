@@ -1718,6 +1718,7 @@ window.addEventListener('load', function () {
                                 `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
                             user_data(username, true);
+                            genQrCode();
 
                             setTimeout(function () {
                                 $('#form').hide("drop", { direction: "up" }, 300, function () {
@@ -1821,6 +1822,7 @@ window.addEventListener('load', function () {
                                         `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
                                     user_data(username, true);
+                                    genQrCode();
 
                                     setTimeout(function () {
                                         $('#form').hide("drop", { direction: "up" }, 300, function () {
@@ -1905,7 +1907,6 @@ window.addEventListener('load', function () {
     setInterval(function () {
         $("#mcontainer").css("max-width", window.innerWidth - 80)
     }, 1000)
-    genQrCode();
 });
 
 // Fix the overflow on modal close (Fix the mistake)
