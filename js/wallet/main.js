@@ -1763,9 +1763,9 @@ window.addEventListener('load', function () {
                             else if (data.message.includes("banned")) {
                                 let modal_error = document.querySelector('#modal_error');
                                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                    `Your account is <b>BANNED</b>.<br>
+                                    `Your account is <b>banned</b>.<br>
                                     You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                                    If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                                    We don't want to see you here again.
                                     </p>`;
                                 document.querySelector('html').classList.add('is-clipped');
                                 modal_error.classList.add('is-active');
@@ -1866,9 +1866,9 @@ window.addEventListener('load', function () {
                                     else if (data.message.includes("banned")) {
                                         let modal_error = document.querySelector('#modal_error');
                                         document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                            `Your account is <b>BANNED</b>.<br>
+                                            `Your account is <b>banned</b>.<br>
                                             You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                                            If you think this is a mistake, please contact us at <a href="mailto:duino.coin@gmail.com">duino.coin@gmail.com</a>
+                                            We don't want to see you here again.
                                             </p>`;
                                         document.querySelector('html').classList.add('is-clipped');
                                         modal_error.classList.add('is-active');
