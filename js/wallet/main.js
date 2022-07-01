@@ -126,6 +126,47 @@ const genQrCode = () => {
     });
 }
 
+const srcToFile = (src) => { 
+    return (fetch(src)
+        .then((res) => {return res.arrayBuffer();})
+    );
+}
+
+const shareQR = async () => {
+    try {
+        const url = document.getElementById("qrcode").src;
+        const blob = await fetch(url).then(r => r.blob());
+
+        let image = new Image(); // get the svg blob and conver it to png file
+        image.onload = async () => {
+        
+            let canvas = document.createElement('canvas');
+            
+            canvas.widht = 250;
+            canvas.height = 250;
+
+            let context = canvas.getContext('2d');
+
+            context.drawImage(image, 0, 0);
+
+            let img = canvas.toDataURL('image/png'); // get dataURL
+
+            let file = new File([await (srcToFile(img))], 'qrcode.png', { type: "image/png" }); // make a new File object
+
+            navigator.share({ 
+                title: 'Hello',
+                text: 'This is my Duino-Coin QR Code!',
+                files: [file],
+            }); // Share :)
+        };
+
+        image.src = URL.createObjectURL(blob);
+    }
+    catch (e) {
+        console.log(`Error trying to share the QR Code: ${e}`);
+    }
+}
+
 const downloadQR = () => {
     let data = document.getElementById("qrcode").src;
     let filename = `Duco_QRCode_${username}.svg`;
