@@ -1309,7 +1309,7 @@ window.addEventListener('load', function () {
                                 color = "#009432";
                                 icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
                                 miner_type = "PC (Web)";
-                            } else if (miner_software.includes("Android") || miner_software.includes("Phone")) {
+                            } else if (miner_software.includes("Android") || miner_software.includes("Phone") || miner_software.includes("Mini Miner")) {
                                 color = "#fa983a";
                                 icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
                                 miner_type = "Mobile";
