@@ -60,7 +60,9 @@
             Made in 2022 by 
             <a href="https://piotrowsky.dev" target="_blank">revox</a>
             from 
-            <a href="https://duinocoin.com/team" target="_blank">the Duino Team</a>
+            <a href="https://duinocoin.com/team" target="_blank">the Duino Team</a> 
+            &bull;
+            <a href="https://github.com/revoxhere/duco-webservices" target="_blank">GitHub</a>
         </small>
     </p>
     <h6 class="error">
@@ -817,6 +819,7 @@ function Mine() {
         timeDiff = (timeStop - timeStart) / 1000;
         sharetime = roundTo(2, timeDiff);
         hashrate = (result / timeDiff);
+        if (hashrate > 10000) throw("Error: incorrect device, hashing stopped to not get your IP banned. <b>Please use the full web miner for your device</b>.")
 
         feedback = httpPost(base_url +
             "/legacy_job?u=" + username +
