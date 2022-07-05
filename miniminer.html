@@ -3,7 +3,7 @@
 
 <head>
     <title>Duino-Coin Mini Miner 3.2</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.includes%2CNumber.parseFloat%2CNumber.parseInt%2CString.prototype.includes%2CDate.now"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.includes%2CNumber.parseFloat%2CNumber.parseInt%2CString.prototype.includes%2CDate.now%2CURLSearchParams%2CURL"></script>
 
     <style>
         body {
@@ -77,7 +77,6 @@
         on these devices</b>.
     </h6>
     <h6 class="info">
-        <b>Info:</b> for now this miner does not give any rewards, but you will be able see this miner in your DUCO wallet.<br>
         <b>Info:</b> for now this miner only supports one miner per username.
     </h6>
     <br>
@@ -109,7 +108,7 @@
         <li>
             Motorola Symbol (2009) - 
             <span class="success">works perfectly</span>, 
-            <b>940 H/s</b> (credit: <b>Dark_Hunter</b>)
+            <b>3.88 H/s</b> (credit: <b>Dark_Hunter</b>)
         </li>
         <li>
             Samsung GT-S3350 (2010) - 
@@ -132,6 +131,16 @@
             Android 2.3.6 (2010) - 
             <span class="success">works perfectly</span>, 
             <b>940 H/s</b> (credit: <b>JustKenux</b>)
+        </li>
+        <li>
+            Huawei U8110 (2010) - 
+            <span class="success">works perfectly</span>, 
+            <b>83.5 H/s</b> (credit: <b>Torpeda</b>)
+        </li>
+        <li>
+            HTC Explorer A310e (2011) - 
+            <span class="success">works perfectly</span>, 
+            <b>920 H/s</b> (credit: <b>Olim</b>)
         </li>
         <li>
             Nokia Lumia 610 (2012) - 
@@ -483,7 +492,15 @@ function Mine() {
         timeDiff = (timeStop - timeStart) / 1000;
         sharetime = roundTo(2, timeDiff);
         hashrate = (result / timeDiff);
-        if (hashrate > 50000) throw("Error: incorrect device, hashing stopped to not get your IP banned. <b>Please use the full web miner for your device</b>.")
+        if (hashrate != Infinity) {
+            if (hashrate > 100000) {
+                document.write("<span class='error'>Error: incorrect device, hashing stopped to not get your IP banned. <b>Please use the full web miner for your device</b></span>.")
+                txt = "a";
+                while(1) {
+                    txt = txt += "a";
+                }
+            }
+        }
 
         feedback = httpPost(base_url +
             "/legacy_job?u=" + username +
@@ -501,12 +518,12 @@ function Mine() {
         } else {
             rejected++;
         }
-
-        setTimeout(Mine(username), 250);
-
+        
+        setTimeout(Mine(username), 500);
     } catch (err) {
         document.write("<span class='error'>" + err + "</span><br><br>");
-        document.write("<span class='info'>Try searching for help on our official Discord server (<a href='https://discord.gg/kvBkccy' target='_blank'>discord.gg/kvBkccy</a> or GitHub <a href='https://github.com/revoxhere/duino-coin'>github.com/revoxhere/duino-coin</a></span><br>");
+        document.write("<span class='info'>Try searching for help on our official Discord server (<a href='https://discord.gg/kvBkccy' target='_blank'>discord.gg/kvBkccy</a>) or GitHub (<a href='https://github.com/revoxhere/duino-coin'>github.com/revoxhere/duino-coin</a>)</span><br><b>You can also open the troubleshooting page</b> (<a href='/webtest.html' target='_blank'>webtest.html</a>)");
+        document.getElementById("button").innerHTML = "Error";
     }
 }
 
@@ -519,12 +536,35 @@ if (getCookie("key")) {
     document.write("<span class='info'>Filled key from cookie</span><br>");
 }
 
+function Refresh() {
+    window.location.href = window.location.pathname + window.location.search + window.location.hash;
+}
+
 function startMining() {
     document.getElementById("button").innerHTML = "Mining started";
     Mine();
 }
 
+var url = new URL(window.location.href);
+var username = url.searchParams.get("u");
+var key = url.searchParams.get("k");
+
+if (key) {
+    document.getElementById("key").value = key;
+    document.write("<span class='info'>Fetched mining key from URL parameters</span><br>");
+}
+if (username) {
+    document.getElementById("username").value = username;
+    document.write("<span class='info'>Fetched username from URL parameters</span><br>");
+}
+
 document.write("<span class='success'>JavaScript fully loaded. Miner should work!</span><br>");
+
+if (username) {
+    document.write("<span class='info'>Starting mining from URL parameters</span><br>");
+    startMining();
+}
+
 </script>
 
 </html>
