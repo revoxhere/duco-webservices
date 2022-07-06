@@ -70,11 +70,10 @@
         </small>
     </p>
     <h6 class="error">
-        <b>Warning:</b> please don't start this miner if you're on a PC or a modern smartphone. Your browser <b>will</b> freeze and that may cause your device to not respond.<br>
-        Miner can create many connections and you will get temporarily banned from the Duino-Coin network.<br>
+        <b>Warning:</b> please be careful when starting this miner if you're on a PC or a modern smartphone. Your browser <b>may</b> freeze.<br>
         <b>Use the 
         <a href="https://server.duinocoin.com/webminer.html">full web miner</a>
-        on these devices</b>.
+        on modern devices</b>.
     </h6>
     <h6 class="info">
         <b>Info:</b> for now this miner only supports one miner per username.
@@ -91,6 +90,7 @@
     Rejected: <span id="rejected">0</span><br>
     Hashrate: <span id="hashrate">0 H/s</span><br>
     Last share: <span id="sharetime">0</span>s<br>
+    Difficulty (Kolka): <span id="difficulty">0</span><br>
     <br>
     <h3 class='heading'>Tested devices (and browsers)</h3>
     <ul align="left">
@@ -447,6 +447,7 @@ accepted = 0;
 rejected = 0;
 hashrate = 0;
 sharetime = 0;
+difficulty = 0;
 
 function Mine() {
     username = document.getElementById("username").value;
@@ -464,6 +465,7 @@ function Mine() {
     document.getElementById("accepted").innerHTML = accepted;
     document.getElementById("rejected").innerHTML = rejected;
     document.getElementById("sharetime").innerHTML = sharetime;
+    document.getElementById("difficulty").innerHTML = difficulty;
 
     base_url = "http://51.15.127.80";
     if (window.location.href.indexOf("https") > -1) {
@@ -492,15 +494,6 @@ function Mine() {
         timeDiff = (timeStop - timeStart) / 1000;
         sharetime = roundTo(2, timeDiff);
         hashrate = (result / timeDiff);
-        if (hashrate != Infinity) {
-            if (hashrate > 100000) {
-                document.write("<span class='error'>Error: incorrect device, hashing stopped to not get your IP banned. <b>Please use the full web miner for your device</b></span>.")
-                txt = "a";
-                while(1) {
-                    txt = txt += "a";
-                }
-            }
-        }
 
         feedback = httpPost(base_url +
             "/legacy_job?u=" + username +
@@ -542,28 +535,41 @@ function Refresh() {
 
 function startMining() {
     document.getElementById("button").innerHTML = "Mining started";
+    setTimeout(function() { Refresh() }, restart_min*60*1000);
     Mine();
 }
 
-var url = new URL(window.location.href);
-var username = url.searchParams.get("u");
-var key = url.searchParams.get("k");
+try {
+    var url = new URL(window.location.href);
+    var username = url.searchParams.get("u");
+    var restart_min = url.searchParams.get("r");
+    var key = url.searchParams.get("k");
+    if (!restart_min) restart_min = 20;
 
-if (key) {
-    document.getElementById("key").value = key;
-    document.write("<span class='info'>Fetched mining key from URL parameters</span><br>");
-}
-if (username) {
-    document.getElementById("username").value = username;
-    document.write("<span class='info'>Fetched username from URL parameters</span><br>");
+    if (key) {
+        document.getElementById("key").value = key;
+        document.write("<span class='info'>Fetched mining key from URL parameters</span><br>");
+    }
+    if (username) {
+        document.getElementById("username").value = username;
+        document.write("<span class='info'>Fetched username from URL parameters</span><br>");
+    }
+} catch (err) {
+    document.write("<span class='error'>URL parameters unsupported, use input boxes (" + err + ")</span><br>");
 }
 
 document.write("<span class='success'>JavaScript fully loaded. Miner should work!</span><br>");
 
 if (username) {
     document.write("<span class='info'>Starting mining from URL parameters</span><br>");
-    startMining();
+    setTimeout(function() { startMining() }, 1000);
+} else {
+    if (document.getElementById("username").value) {
+        document.write("<span class='info'>Starting mining from pre-filled input boxes</span><br>");
+        setTimeout(function() { startMining() }, 1000);
+    }
 }
+
 
 </script>
 
