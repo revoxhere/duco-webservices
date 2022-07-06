@@ -2,9 +2,8 @@
 <html>
 
 <head>
-    <title>Duino-Coin Mini Miner 3.2</title>
+    <title>Duino-Coin Mini Miner 3.2.1</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.includes%2CNumber.parseFloat%2CNumber.parseInt%2CString.prototype.includes%2CDate.now%2CURLSearchParams%2CURL"></script>
-
     <style>
         body {
         background-color: #FFFFCC;
@@ -61,23 +60,23 @@
         A web miner for devices with limited functionality<br>
         <small>(HTML 4.0, only basic JavaScript and styling)</small><br>
         <small class="info">
-            Made in 2022 by 
+            Made in 2022 by
             <a href="https://piotrowsky.dev" target="_blank">revox</a>
-            from 
-            <a href="https://duinocoin.com/team" target="_blank">the Duino Team</a> 
+            from
+            <a href="https://duinocoin.com/team" target="_blank">the Duino Team</a>
             &bull;
             <a href="https://github.com/revoxhere/duco-webservices" target="_blank">GitHub</a>
         </small>
     </p>
-    <h6 class="error">
+    <h4 class="error">
         <b>Warning:</b> please be careful when starting this miner if you're on a PC or a modern smartphone. Your browser <b>may</b> freeze.<br>
-        <b>Use the 
-        <a href="https://server.duinocoin.com/webminer.html">full web miner</a>
-        on modern devices</b>.
-    </h6>
-    <h6 class="info">
+        <b>Use the
+            <a href="https://server.duinocoin.com/webminer.html">full web miner</a>
+            on modern devices</b>.
+    </h4>
+    <h4 class="info">
         <b>Info:</b> for now this miner only supports one miner per username.
-    </h6>
+    </h4>
     <br>
     <label for="username">Username</label><br>
     <input id="username" placeholder="Username">
@@ -90,72 +89,72 @@
     Rejected: <span id="rejected">0</span><br>
     Hashrate: <span id="hashrate">0 H/s</span><br>
     Last share: <span id="sharetime">0</span>s<br>
-    Difficulty (Kolka): <span id="difficulty">0</span><br>
+    Difficulty <small>(Kolka 3)</small>: <span id="difficulty">0</span><br>
     <br>
     <h3 class='heading'>Tested devices (and browsers)</h3>
     <ul align="left">
         <li>
-            Samsung SGH-L700 (2008) - 
-            (NetFront 3.4) - 
-            <span class="success">works with ocassional freezes</span>, 
+            Samsung SGH-L700 (2008) -
+            (NetFront 3.4) -
+            <span class="success">works with ocassional freezes</span>,
             <b>2.7 H/s</b> (credit: <b>Techcrafter</b>)
         </li>
         <li>
-            Nintendo DSi XL (2009) - 
-            <span class="success">works perfectly</span>, 
+            Nintendo DSi XL (2009) -
+            <span class="success">works perfectly</span>,
             <b>9.3 H/s</b> (credit: <b>lsadf</b>)
         </li>
         <li>
-            Motorola Symbol (2009) - 
-            <span class="success">works perfectly</span>, 
+            Motorola Symbol (2009) -
+            <span class="success">works perfectly</span>,
             <b>3.88 H/s</b> (credit: <b>Dark_Hunter</b>)
         </li>
         <li>
-            Samsung GT-S3350 (2010) - 
-            (NetFront 3.5) - 
+            Samsung GT-S3350 (2010) -
+            (NetFront 3.5) -
             <span class="success">works perfectly</span>,
             <b>3.5 H/s</b> (credit: <b>revox</b>)
         </li>
         <li>
-            Samsung GT-S3350 (2010) - 
-            (Opera Mini) - 
-            <span class="info">works for a limited time (Opera limitation)</span>, 
+            Samsung GT-S3350 (2010) -
+            (Opera Mini) -
+            <span class="info">works for a limited time (Opera limitation)</span>,
             <b>5 kH/s</b> (credit: <b>revox</b>)
         </li>
         <li>
-            Nokia X2-00 (2010) - 
-            <span class="error">not working (XMLHttpRequest error)</span>, 
+            Nokia X2-00 (2010) -
+            <span class="error">not working (XMLHttpRequest error)</span>,
             (credit: <b>ACoTam2</b>)
         </li>
         <li>
-            Android 2.3.6 (2010) - 
-            <span class="success">works perfectly</span>, 
+            Android 2.3.6 (2010) -
+            <span class="success">works perfectly</span>,
             <b>940 H/s</b> (credit: <b>JustKenux</b>)
         </li>
         <li>
-            Huawei U8110 (2010) - 
-            <span class="success">works perfectly</span>, 
+            Huawei U8110 (2010) -
+            <span class="success">works perfectly</span>,
             <b>83.5 H/s</b> (credit: <b>Torpeda</b>)
         </li>
         <li>
-            HTC Explorer A310e (2011) - 
-            <span class="success">works perfectly</span>, 
+            HTC Explorer A310e (2011) -
+            <span class="success">works perfectly</span>,
             <b>920 H/s</b> (credit: <b>Olim</b>)
         </li>
         <li>
-            Nokia Lumia 610 (2012) - 
-            (IE Mobile 9.0) - 
-            <span class="success">works with ocassional freezes</span>, 
+            Nokia Lumia 610 (2012) -
+            (IE Mobile 9.0) -
+            <span class="success">works with ocassional freezes</span>,
             <b>400 H/s</b> (credit: <b>revox</b>)
         </li>
         <li>
-            Nintendo 2DS (2013) - 
-            <span class="info">possibly working, script message pops up</span>, 
+            Nintendo 2DS (2013) -
+            <span class="info">possibly working, script message pops up</span>,
             (credit: <b>lsadf</b>)
         </li>
         <li>
             Apple Watch SE (2020) -
-            <span class="success">works perfectly</span>, 
+            <span class="success">works perfectly</span>,
             <b>3.4 kH/s</b> (credit: <b>JustinKopf</b>)
         </li>
     </ul>
@@ -511,7 +510,7 @@ function Mine() {
         } else {
             rejected++;
         }
-        
+
         setTimeout(Mine(username), 500);
     } catch (err) {
         document.write("<span class='error'>" + err + "</span><br><br>");
@@ -535,7 +534,7 @@ function Refresh() {
 
 function startMining() {
     document.getElementById("button").innerHTML = "Mining started";
-    setTimeout(function() { Refresh() }, restart_min*60*1000);
+    setTimeout(function() { Refresh() }, restart_min * 60 * 1000);
     Mine();
 }
 
@@ -565,12 +564,10 @@ if (username) {
     setTimeout(function() { startMining() }, 1000);
 } else {
     if (document.getElementById("username").value) {
-        document.write("<span class='info'>Starting mining from pre-filled input boxes</span><br>");
-        setTimeout(function() { startMining() }, 1000);
+        document.write("<span class='info'>Starting mining in 5s from pre-filled input boxes</span><br>");
+        setTimeout(function() { startMining() }, 5000);
     }
 }
-
-
 </script>
 
 </html>
