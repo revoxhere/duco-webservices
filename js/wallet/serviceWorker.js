@@ -19,6 +19,7 @@ const contentToCache = [
     '../../assets/ducominingdashboarddark.png',
     '../../assets/ducopcgeek.png',
     '../../assets/magi.png',
+    '../../assets/pastelfaucet.png',
 
     '../../assets/amogus_faucet.png',
     '../../assets/duco_square.png',
