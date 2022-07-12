@@ -972,8 +972,8 @@ function refresh_shop(user_items) {
     }
 
     if (user_items.includes(2)) {
-        $("#sunglasses ").attr("src", "https://server.duinocoin.com/assets/items/2.png")
-        $("#sunglasses ").fadeIn();
+        $("#sunglasses").attr("src", "https://server.duinocoin.com/assets/items/2.png")
+        $("#sunglasses").fadeIn();
     }
 
     if (user_items.includes(3)) {
