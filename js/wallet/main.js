@@ -837,7 +837,7 @@ function key_from_value(object, value) {
 }
 
 /* Accurate daily calculator by Lukas */
-function calculdaily(newb, oldb) {
+function calculdaily(newb, oldb, user_items) {
     // Ducos since start / time * day
     if (start_balance == 0) {
         start_balance = newb;
@@ -846,12 +846,40 @@ function calculdaily(newb, oldb) {
         let daily = 86400000 * (newb - start_balance) / (Date.now() - start_time);
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500) {
-            daily = round_to(2, daily)
-            update_element("estimatedprofit", `
-                <i class="far fa-star fa-spin"></i>
-                Earning about <b>` + daily + `</b> ᕲ a day`);
+            daily = round_to(3, daily)
 
-            avgusd = round_to(4, daily * duco_price);
+            if (user_items.includes(3) && user_items.includes(4)) {
+                // Both upgrades, 20%
+                no_upgrade_earning = round_to(3, daily / 1.20);
+                upgrade_earning = round_to(4, daily - no_upgrade_earning);
+                update_element("estimatedprofit", `
+                    <i class="far fa-star fa-spin"></i>
+                    Earning about <b>` + no_upgrade_earning + `</b> ᕲ a day
+                    <span class="has-text-success-dark">(+${upgrade_earning} ᕲ)`);
+            } else if ((user_items.includes(3))) {
+                // 5%
+                no_upgrade_earning = round_to(3, daily / 1.05);
+                upgrade_earning = round_to(4, daily - no_upgrade_earning);
+                update_element("estimatedprofit", `
+                    <i class="far fa-star fa-spin"></i>
+                    Earning about <b>` + no_upgrade_earning + `</b> ᕲ a day
+                    <span class="has-text-success-dark">(+${upgrade_earning} ᕲ)`);
+            } else if ((user_items.includes(3))) {
+                // 15%
+                no_upgrade_earning = round_to(3, daily / 1.15);
+                upgrade_earning = round_to(4, daily - no_upgrade_earning);
+                update_element("estimatedprofit", `
+                    <i class="far fa-star fa-spin"></i>
+                    Earning about <b>` + no_upgrade_earning + `</b> ᕲ a day
+                    <span class="has-text-success-dark">(+${upgrade_earning} ᕲ)`);
+            } else {
+                // No upgrade
+                update_element("estimatedprofit", `
+                    <i class="far fa-star fa-spin"></i>
+                    Earning about <b>` + daily + `</b> ᕲ a day`);
+            }
+
+            avgusd = round_to(5, daily * duco_price);
             update_element("estimatedprofitusd", "(≈<b>$" + avgusd + "</b>)");
         }
     }
@@ -1074,17 +1102,18 @@ window.addEventListener('load', function () {
 
                     if (oldb != balance) {
                         if (data.miners.length) {
-                            calculdaily(balance, oldb);
+                            calculdaily(balance, oldb, user_items);
                             oldb = balance;
                             window.setTimeout(() => {
                                 user_data(username, false);
-                            }, 7.5 * 1000);
+                            }, 5 * 1000);
                         } else {
                             update_element("estimatedprofit", `
                                 <i class="fa fa-times-circle"></i> No miners detected`);
+                            update_element("estimatedprofitusd", ``);
                             window.setTimeout(() => {
                                 user_data(username, false);
-                            }, 15 * 1000);
+                            }, 10 * 1000);
                         }
                     } else {
                         window.setTimeout(() => {
