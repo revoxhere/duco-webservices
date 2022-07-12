@@ -600,7 +600,7 @@ function wrap() {
                         $('#wrap_amount').val('');
                         $('#wrap_address').val('');
                     } else {
-                        update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message.split(",")[1] + "</span>");
+                        update_element("wrap_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
                     }
                     document.getElementById("wrap_confirm").classList.remove("is-loading");
                     setTimeout(function() {
