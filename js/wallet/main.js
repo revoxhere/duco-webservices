@@ -980,6 +980,18 @@ function refresh_shop(user_items) {
         $("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
         $("#bowtie").fadeIn();
     }
+
+    if (user_items.includes(10)) {
+        update_element("maxminercount", "75");
+    }
+
+    if (user_items.includes(11)) {
+        update_element("maxminercount", "100");
+    }
+
+    if (user_items.includes(11) && user_items.includes(10)) {
+        update_element("maxminercount", "125");
+    }
 }
 
 window.addEventListener('load', function () {
