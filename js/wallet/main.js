@@ -1336,10 +1336,15 @@ window.addEventListener('load', function () {
                                 color = "#B33771";
                                 miner_type = "AVR (I²C)";
                                 percentage = 0.96;
-                            } else if (miner_software.includes("AVR")) {
+                            } else if (miner_software.includes("AVR") && (!miner_diff==96 && !miner_diff==256)) {
                                 icon = `<img src="img/arduino.gif">`;
                                 color = "#B33771";
                                 miner_type = "AVR (Normal)";
+                                percentage = 0.96;
+                            } else if (miner_software.includes("AVR") && (miner_diff==96 || miner_diff==256)) {
+                                icon = `<img src="img/pico.gif">`;
+                                color = "#16a085";
+                                miner_type = "AVR (Pico)";
                                 percentage = 0.96;
                             } else if (miner_software.includes("PC")) {
                                 color = "#F97F51";
