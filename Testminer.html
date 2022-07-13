@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Duino-Coin Test Miner  </title>
+
+</head>
+
+<body>
+  <style>
+   body {backgroung-image = url("https://replit.com/@IliasShimonto/DUCOMiner#duino.png");
+        }
+  </style>
+    </p>
+    <br>
+    <label for="username">Username</label><br>
+    <input id="username" placeholder="Username">
+    <br>
+    <label for="key">Mining key (if any)</label><br>
+    <input id="key" show="*" type="password" placeholder="Mining key (if any)">
+    <br>
+    <button id="button" onclick="startMining()">Start mining</button><br>
+    Accepted: <span id="accepted">0</span><br>
+    Rejected: <span id="rejected">0</span><br>
+    Hashrate: <span id="hashrate">0 H/s</span><br>
+    Last share: <span id="sharetime">0</span>s<br>
+    Difficulty <small>(Kolka 3)</small>: <span id="difficulty">0</span><br>
+    <br>
+<script>
+window.sha1 = (function() {
+    function rawToHex(raw) {
+        var hex = "";
+        var hexChars = "0123456789abcdef";
+        for (var i = 0; i < raw.length; i++) {
+            var c = raw.charCodeAt(i);
+            hex += (
+                hexChars.charAt((c >>> 4) & 0x0f) +
+                hexChars.charAt(c & 0x0f));
+        }
+        return hex;
+    }
+
+    // Calculate the SHA1 of a raw string
+    function sha1Raw(raw) {
+        return binaryToRaw(sha1Binary(rawToBinary(raw), raw.length * 8));
+    }
+
+    /*
+     * Convert an array of big-endian words to a string
+     */
+    function binaryToRaw(bin) {
+        var raw = "";
+        for (var i = 0, il = bin.length * 32; i < il; i += 8) {
+            raw += String.fromCharCode((bin[i >> 5] >>> (24 - i % 32)) & 0xff);
+        }
+        return raw;
+    }
+
+    /*
+     * Calculate the SHA-1 of an array of big-endian words, and a bit length
+     */
+    function sha1Binary(bin, len) {
+        // append padding
+        bin[len >> 5] |= 0x80 << (24 - len % 32);
+        bin[((len + 64 >> 9) << 4) + 15] = len;
+
+        var w = new Array(80);
+        var a = 1732584193;
+        var b = -271733879;
+        var c = -1732584194;
+        var d = 271733878;
+        var e = -1009589776;
+
+        for (var i = 0, il = bin.length; i < il; i += 16) {
+            var _a = a;
+            var _b = b;
+            var _c = c;
+            var _d = d;
+            var _e = e;
+
+            for (var j = 0; j < 80; j++) {
+                if (j < 16) {
+                    w[j] = bin[i + j];
+                } else {
+                    w[j] = _rotateLeft(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
+                }
+                var t = _add(_add(_rotateLeft(a, 5), _ft(j, b, c, d)),
+                    _add(_add(e, w[j]), _kt(j)));
+                e = d;
+                d = c;
+                c = _rotateLeft(b, 30);
+                b = a;
+                a = t;
+            }
+
+            a = _add(a, _a);
+            b = _add(b, _b);
+            c = _add(c, _c);
+            d = _add(d, _d);
+            e = _add(e, _e);
+        }
+        return [a, b, c, d, e];
+    }
+
+    // Add integers, wrapping at 2^32. This uses 16-bit operations internally
+    // to work around bugs in some JS interpreters.
+    function _add(x, y) {
+        var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return (msw << 16) | (lsw & 0xFFFF);
+    }
+
+    /*
+     * Bitwise rotate a 32-bit number to the left.
+     */
+    function _rotateLeft(n, count) {
+        return (n << count) | (n >>> (32 - count));
+    }
+
+    /*
+     * Perform the appropriate triplet combination function for the current
+     * iteration
+     */
+    function _ft(t, b, c, d) {
+        if (t < 20) {
+            return (b & c) | ((~b) & d);
+        } else if (t < 40) {
+            return b ^ c ^ d;
+        } else if (t < 60) {
+            return (b & c) | (b & d) | (c & d);
+        } else {
+            return b ^ c ^ d;
+        }
+    }
+
+    /*
+     * DeterMine the appropriate additive constant for the current iteration
+     */
+    function _kt(t) {
+        if (t < 20) {
+            return 1518500249;
+        } else if (t < 40) {
+            return 1859775393;
+        } else if (t < 60) {
+            return -1894007588;
+        } else {
+            return -899497514;
+        }
+    }
+
+    // Convert a raw string to an array of big-endian words.
+    // Characters >255 have their high-byte silently ignored.
+    function rawToBinary(raw) {
+        var binary = new Array(raw.length >> 2);
+        for (var i = 0, il = binary.length; i < il; i++) {
+            binary[i] = 0;
+        }
+        for (i = 0, il = raw.length * 8; i < il; i += 8) {
+            binary[i >> 5] |= (raw.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
+        }
+        return binary;
+    }
+
+    // Encode a string as UTF-8.
+    // For efficiency, this assumes the input is valid UTF-16.
+    function stringToRaw(string) {
+        var raw = "",
+            x, y;
+        var i = -1;
+        var il = string.length;
+        while (++i < il) {
+            // decode UTF-16 surrogate pairs
+            x = string.charCodeAt(i);
+            y = i + 1 < il ? string.charCodeAt(i + 1) : 0;
+            if (0xd800 <= x && x <= 0xdbff && 0xdc00 <= y && y <= 0xdfff) {
+                x = 0x10000 + ((x & 0x03ff) << 10) + (y & 0x03ff);
+                ++i;
+            }
+            // encode output as UTF-8
+            if (x <= 0x7f) {
+                raw += String.fromCharCode(x);
+            } else if (x <= 0x7ff) {
+                raw += String.fromCharCode(0xc0 | ((x >>> 6) & 0x1f),
+                    0x80 | (x & 0x3f));
+            } else if (x <= 0xffff) {
+                raw += String.fromCharCode(0xe0 | ((x >>> 12) & 0x0f),
+                    0x80 | ((x >>> 6) & 0x3f),
+                    0x80 | (x & 0x3f));
+            } else if (x <= 0x1fffff) {
+                raw += String.fromCharCode(0xf0 | ((x >>> 18) & 0x07),
+                    0x80 | ((x >>> 12) & 0x3f),
+                    0x80 | ((x >>> 6) & 0x3f),
+                    0x80 | (x & 0x3f));
+            }
+        }
+        return raw;
+    }
+
+    // Calculate the HMAC-SHA1 of a key and some data (raw strings)
+    function hmacRaw(key, data) {
+        var binaryKey = rawToBinary(key);
+        if (binaryKey.length > 16) {
+            binaryKey = sha1Binary(binaryKey, key.length * 8);
+        }
+        var ipad = new Array(16);
+        var opad = new Array(16);
+        for (var i = 0; i < 16; i++) {
+            ipad[i] = binaryKey[i] ^ 0x36363636;
+            opad[i] = binaryKey[i] ^ 0x5c5c5c5c;
+        }
+        var hash = sha1Binary(ipad.concat(rawToBinary(data)), 512 + data.length * 8);
+        return binaryToRaw(sha1Binary(opad.concat(hash), 512 + 160));
+    }
+
+    return {
+        sha1: function(s) {
+            return rawToHex(sha1Raw(stringToRaw(s)));
+        },
+
+        sha1Hex: function(value) {
+            return rawToHex(sha1Raw(this.hexToString(value)));
+        },
+
+        hmac: function(k, d) {
+            return rawToHex(hmacRaw(stringToRaw(k), stringToRaw(d)));
+        },
+
+        hexToString: function(hex) {
+            var str = '';
+            for (var i = 0, il = hex.length; i < il; i += 2) {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            return str;
+        },
+    };
+
+})();
+
+function httpGet(theUrl) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, false);
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
+}
+
+function httpPost(theUrl) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", theUrl, false);
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function roundTo(precision, value) {
+    power_of_ten = 10 * (precision * precision);
+    return Math.round(value * power_of_ten) / power_of_ten;
+}
+
+function getPrefix(value) {
+    value = parseFloat(value);
+    if (value / 1000000 > 0.5)
+        value = roundTo(4, value / 1000000) + " M";
+    else if (value / 1000 > 0.5)
+        value = roundTo(3, value / 1000) + " k";
+    else
+        value = roundTo(2, value) + " ";
+    return value;
+}
+
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+accepted = 0;
+rejected = 0;
+hashrate = 0;
+sharetime = 0;
+difficulty = 0;
+
+function Mine() {
+    username = document.getElementById("username").value;
+    key = document.getElementById("key").value;
+
+    if (!username) {
+        alert("Please enter your username");
+        return;
+    }
+
+    setCookie("username", username, 14);
+    setCookie("key", key, 14);
+
+    document.getElementById("hashrate").innerHTML = getPrefix(hashrate) + " H/s";
+    document.getElementById("accepted").innerHTML = accepted;
+    document.getElementById("rejected").innerHTML = rejected;
+    document.getElementById("sharetime").innerHTML = sharetime;
+    document.getElementById("difficulty").innerHTML = difficulty;
+  
+    if (window.location.href.indexOf("https") > -1) {
+        base_url = "https://server.duinocoin.com";
+    }
+
+    try {
+        job = httpGet(base_url +
+            "/legacy_job?u=" + username +
+            "&i=" + navigator.userAgent +
+            "&nocache=" + new Date().getTime());
+
+        last_block_hash = job.split(",")[0];
+        expected_hash = job.split(",")[1];
+        difficulty = job.split(",")[2];
+
+        timeStart = new Date().getTime();
+        for (result = 0; result < difficulty * 100; result++) {
+            current_hash = sha1.sha1(last_block_hash + result)
+            if (current_hash == expected_hash) {
+                break;
+            }
+        }
+        timeStop = new Date().getTime();
+
+        timeDiff = (timeStop - timeStart) / 1000;
+        sharetime = roundTo(2, timeDiff);
+        hashrate = (result / timeDiff);
+
+        feedback = httpPost(base_url +
+            "/legacy_job?u=" + username +
+            "&r=" + result +
+            "&k=" + key +
+            "&s=Official Mini Miner 3.2" +
+            "&j=" + expected_hash +
+            "&i=" + navigator.userAgent +
+            "&h=" + hashrate +
+            "&b=" + sharetime +
+            "&nocache=" + new Date().getTime());
+
+        if (feedback == "GOOD") {
+            accepted++;
+        } else {
+            rejected++;
+        }
+
+        setTimeout(Mine(username), 500);
+    } catch (err) {
+        document.write("<span class='error'>" + err + "</span><br><br>");
+        document.getElementById("button").innerHTML = "Error";
+    }
+}
+
+if (getCookie("username")) {
+    document.getElementById("username").value = getCookie("username");
+    document.write("<span class='info'>Filled username from cookie</span><br>");
+}
+if (getCookie("key")) {
+    document.getElementById("key").value = getCookie("key");
+    document.write("<span class='info'>Filled key from cookie</span><br>");
+}
+
+function Refresh() {
+    window.location.href = window.location.pathname + window.location.search + window.location.hash;
+}
+
+function startMining() {
+    document.getElementById("button").innerHTML = "Mining started";
+    setTimeout(function() { Refresh() }, restart_min * 60 * 1000);
+    Mine();
+}
+
+try {
+    var url = new URL(window.location.href);
+    var username = url.searchParams.get("u");
+    var restart_min = url.searchParams.get("r");
+    var key = url.searchParams.get("k");
+    if (!restart_min) restart_min = 20;
+
+    if (key) {
+        document.getElementById("key").value = key;
+        document.write("<span class='info'>Fetched mining key from URL parameters</span><br>");
+    }
+    if (username) {
+        document.getElementById("username").value = username;
+        document.write("<span class='info'>Fetched username from URL parameters</span><br>");
+    }
+} catch (err) {
+    document.write("<span class='error'>URL parameters unsupported, use input boxes (" + err + ")</span><br>");
+}
+
+document.write("<span class='success'>JavaScript fully loaded. Miner should work!</span><br>");
+
+if (username) {
+    document.write("<span class='info'>Starting mining from URL parameters</span><br>");
+    setTimeout(function() { startMining() }, 1000);
+} else {
+    if (document.getElementById("username").value) {
+        document.write("<span class='info'>Starting mining in 5s from pre-filled input boxes</span><br>");
+        setTimeout(function() { startMining() }, 5000);
+    }
+}
+</script>
+
+</html>
