@@ -776,11 +776,9 @@ window.addEventListener('resize', canvasResize);
 let loadImages = () => {
     canvas.width = 1920;
     canvas.height = 1080;
-
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     let img = new Image();
-    if ("loading" in HTMLImageElement.prototype) img.loading = "lazy";
     img.src = canvas.getAttribute('data-background');
     img.onload = () => {
        startTime = Date.now();
