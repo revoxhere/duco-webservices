@@ -1174,18 +1174,26 @@ window.addEventListener('load', function () {
                         update_element("best_exchage", key_from_value(data.prices, duco_price));
                     }
 
-                    verified = data.balance.verified;
-                    if (verified === "yes") {
-                        $("#verify").html(
-                            `<span class="icon-text has-text-success-dark" title="Your account is verified">
-                                <i class="fa fa-check-circle icon"></i>
-                            </span>`);
+                    if (data.balance.warnings < 1) {
+                        verified = data.balance.verified;
+                        if (verified === "yes") {
+                            $("#verify").html(
+                                `<span class="icon-text has-text-success-dark" title="Your account is verified">
+                                    <i class="fa fa-check-circle icon"></i>
+                                </span>`);
+                        } else {
+                            $("#verify").html(
+                                `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
+                                    <i class="fa fa-times-circle animated faa-ring faa-slow icon"></i>
+                                    <span>unverified</span>
+                                </a>`);
+                        }
                     } else {
                         $("#verify").html(
-                            `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
-                                <i class="fa fa-times-circle animated faa-ring icon"></i>
-                                <span>unverified</span>
-                            </a>`);
+                                `<span class="icon-text has-text-warning-dark" title="Your account received ${data.balance.warnings} warning(s)">
+                                    <i class="fa fa-exclamation-triangle icon"></i>
+                                    <span>suspicious</span>
+                                </span>`);
                     }
 
                     user_miners = data.miners;
