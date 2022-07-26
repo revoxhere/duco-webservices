@@ -138,25 +138,25 @@
                     <article class="media">
                         <a href="https://gravatar.com" target="_blank">
                             <div class="media-left is-relative">
-                                <figure class="image is-64x64" title="Synced with Gravatar">
+                                <figure class="image is-64x64" data-tooltip="Synced with Gravatar">
                                     <img class="is-rounded" id="useravatar" alt="User avatar">
                                 </figure>
                                 <img id="hat" style="height:50px;width:50px;position:absolute;top:-1.75em;margin-left:10px;display:none;pointer-events: none;opacity:0.9">
                                 <img id="sunglasses" style="height:64px;width:64px;position:absolute;top:-0.25em;display:none;pointer-events: none;opacity:0.9">
                                 <img id="bowtie" style="height:44px;width:44px;position:absolute;top:2.3em;left:.6em;display:none;pointer-events: none;opacity:0.9">
                                 <p class="mt-1 has-text-centered">
-                                    <a class="modal-button" data-target="modal-settings">
-                                        <i class="fa fa-cog" title="Settings"></i>
+                                    <a class="modal-button" data-tooltip="Settings" data-target="modal-settings">
+                                        <i class="fa fa-cog"></i>
                                     </a>
-                                    <a onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
-                                        <i class="fa fa-shopping-bag" title="Shop"></i>
+                                    <a data-tooltip="Item shop" onclick="refresh_shop(user_items)" class="modal-button" data-target="modal-shop">
+                                        <i class="fa fa-shopping-bag"></i>
                                         <!--<span class="red-dot"></span>-->
                                     </a>
-                                    <a onclick="logout()">
-                                        <i class="fa fa-sign-out-alt" title="Log out"></i>
+                                    <a data-tooltip="Log out" onclick="logout()">
+                                        <i class="fa fa-sign-out-alt"></i>
                                     </a>
-                                    <a class="modal-button" data-target="modal-qrcode">
-                                        <i class="fa fa-qrcode" title="View QR Code"></i>
+                                    <a data-tooltip="QR Code" class="modal-button" data-target="modal-qrcode">
+                                        <i class="fa fa-qrcode"></i>
                                     </a>
                                 </p>
                             </div>
@@ -912,11 +912,11 @@
                         </span>
                     </span>
                     <span class="is-block is-pulled-right">
-                        <a class="modal-button mr-2" data-target="modal-favorites">
-                            <i class="fa fa-users" title="My Favorite Users"></i> 
+                        <a data-tooltip="My Favorite Users" class="modal-button mr-2" data-target="modal-favorites">
+                            <i class="fa fa-users"></i> 
                         </a>
-                        <a class="modal-button mr-2" data-target="modal-qrcode-scanner" onclick="checkRights()">
-                            <i class="fa fa-qrcode" title="Scan QR Code"></i>
+                        <a data-tooltip="Scan QR Code" class="modal-button mr-2" data-target="modal-qrcode-scanner" onclick="checkRights()">
+                            <i class="fa fa-qrcode"></i>
                         </a>
                     </span>
                 </p>
@@ -1228,11 +1228,11 @@
                         </span>
                         <span>My QR Code</span> <small class="tag is-info ml-2">Beta</small>
                     </span>
-                    <a class="is-block is-pulled-right mr-2 mb-5" onclick="shareQR()">
-                        <i class="fas fa-share" title="Share QR Code"></i>
+                    <a data-tooltip="Share QR Code" class="is-block is-pulled-right mr-2 mb-5" onclick="shareQR()">
+                        <i class="fas fa-share"></i>
                     </a>
-                    <a class="is-block is-pulled-right mr-2 mb-5" onclick="downloadQR()">
-                        <i class="fa fa-download" title="Download QR Code"></i>
+                    <a data-tooltip="Download QR Code" class="is-block is-pulled-right mr-2 mb-5" onclick="downloadQR()">
+                        <i class="fa fa-download"></i>
                     </a>
                 </p>
                 <div class="content">
