@@ -1176,7 +1176,7 @@ window.addEventListener('load', function () {
                         verified = data.balance.verified;
                         if (verified === "yes") {
                             $("#verify").html(
-                                `<span class="icon-text has-text-success-dark" title="Your account is verified">
+                                `<span class="icon-text has-text-success-dark" data-tooltip="Your account is verified">
                                     <i class="fa fa-check-circle icon"></i>
                                 </span>`);
                         } else {
@@ -1188,7 +1188,7 @@ window.addEventListener('load', function () {
                         }
                     } else {
                         $("#verify").html(
-                                `<span class="icon-text has-text-warning-dark" title="Your account received ${data.balance.warnings} warning(s)">
+                                `<span class="icon-text has-text-warning-dark" data-tooltip="Your account received ${data.balance.warnings} warning(s)">
                                     <i class="fa fa-exclamation-triangle icon"></i>
                                     <span>suspicious</span>
                                 </span>`);
@@ -1312,7 +1312,7 @@ window.addEventListener('load', function () {
 
                             iot_tag = ``
                             if (t_miners[miner]["it"])
-                                iot_tag = `<small title="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
+                                iot_tag = `<small data-tooltip="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
 
                             if (!miner_identifier || miner_identifier === "None") {
                                 miner_name = miner_software;
@@ -1405,54 +1405,54 @@ window.addEventListener('load', function () {
                             }
 
                             let warning_icon = `
-                            <span class="icon-text has-text-success-dark" style="cursor: pointer;" title="Operating normally">
+                            <span class="icon-text has-text-success-dark" style="cursor: pointer;" data-tooltip="Operating normally">
                                 <i class="icon mdi mdi-check-all"></i>
                             </span>`;
                             if (miner_efficiency < 40) {
                                 warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Too many miners - low Kolka efficiency">
+                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many miners - low Kolka efficiency">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                             } else if (accepted_rate < 50) {
                                 warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Too many rejected shares">
+                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many rejected shares">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                             } else if (miner_type == "Unknown!") {
                                 warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" title="Unknown miner">
+                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Unknown miner">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
                             }
 
                             if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
                                 warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
                             } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
                                 warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
                             } else if (miner_type == "ESP8266" && miner_hashrate > 13000) {
                                 warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
                             } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
                                 warning_icon = `
-                                <span class="icon-text ${icon_class}" style="cursor: pointer;" title="Use 160 MHz clock for optimal hashrate">
+                                <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use 160 MHz clock for optimal hashrate">
                                     <i class="icon ${icon_class_animation}"></i>
                                 </span>`
                             } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
                                 warning_icon = `
-                                <span class="icon-text ${icon_class}" style="cursor: pointer;" title="Use the 2.0.1 version of ESP32 library for optimal hashrate">
+                                <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use the 2.0.1 version of ESP32 library for optimal hashrate">
                                     <i class="icon ${icon_class_animation}"></i>
                                 </span>`
                             } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
                                 warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" title="Incorrect hashrate">
+                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
                             } 
@@ -1466,22 +1466,22 @@ window.addEventListener('load', function () {
                                     </th>
                                     <th style="word-break: break-all">
                                             <span class="icon-text">
-                                                <span class="icon minerIcon" title="Miner type: ${miner_type}">
+                                                <span class="icon minerIcon">
                                                     ${icon}<wbr>
                                                 </span>
                                             </span>
-                                            <span class="has-text-weight-bold" title="Miner name">
+                                            <span class="has-text-weight-bold"">
                                                 ${miner_name}
                                             </span>
-                                            <span title="Thread Id" class="is-hidden">
-                                            ${miner_threadid}           
+                                            <span class="is-hidden" title="Thread Id">
+                                                ${miner_threadid}           
                                             </span>
                                     </th>
                                     <th>
-                                            <span class="has-text-weight-bold" title="Miner hashrate">
+                                            <span class="has-text-weight-bold" data-tooltip="Calculations per second">
                                                 ${scientific_prefix(miner_hashrate)}H/s
                                             </span>
-                                            <span class="has-text-weight-normal" title="Threads/cores">
+                                            <span class="has-text-weight-normal" data-tooltip="Threads/cores">
                                                 ${thread_string}
                                             </span>
                                     </th>
@@ -1509,12 +1509,12 @@ window.addEventListener('load', function () {
                                             <div class="columns is-mobile">
                                                 <div class="column">
                                                     <ul class="my-1">
-                                                        <li title="Miner software">
+                                                        <li data-tooltip="Miner software">
                                                             <span style="color:${color}">
                                                                 ${miner_software}
                                                             </span>
                                                         </li>
-                                                        <li title="Time it took to find the latest result">
+                                                        <li data-tooltip="Time it took to find the latest result">
                                                             <span class="has-text-weight-normal">
                                                                 Last share:
                                                             </span>
@@ -1522,7 +1522,7 @@ window.addEventListener('load', function () {
                                                                 ${round_to(2, miner_sharetime)}s
                                                             </span>
                                                         </li>
-                                                        <li title="Server your miner is connected to">
+                                                        <li data-tooltip="Server your miner is connected to">
                                                             <span class="has-text-weight-normal">
                                                                 Node: 
                                                             </span>
@@ -1530,7 +1530,7 @@ window.addEventListener('load', function () {
                                                                 ${miner_pool}
                                                             </span>
                                                         </li>
-                                                        <li title="How hard is it to mine">
+                                                        <li data-tooltip="How hard is it to mine">
                                                             <span class="has-text-weight-normal">
                                                                 Difficulty: 
                                                             </span>
@@ -1542,7 +1542,7 @@ window.addEventListener('load', function () {
                                                 </div>
                                                 <div class="column">
                                                     <ul class="my-1">
-                                                        <li title="Used hashing algorithm">
+                                                        <li data-tooltip="Used hashing algorithm">
                                                             <span class="has-text-weight-normal">
                                                                 Algorithm:
                                                             </span>
@@ -1550,15 +1550,15 @@ window.addEventListener('load', function () {
                                                                 ${miner_algo}
                                                             </span>
                                                         </li>
-                                                        <li title="Identifier used to separate miners in the API">
+                                                        <li data-tooltip="Identifier used to separate miners in the API">
                                                             <span class="has-text-weight-normal">
                                                                 Thread ID:
                                                             </span>
-                                                            <span class="has-text-weight-bold" >
+                                                            <span class="has-text-weight-bold" title="Thread Id">
                                                                 ${miner_threadid} (${miner})
                                                             </span>
                                                         </li>
-                                                        <li title="Identifier used to group same threads">
+                                                        <li data-tooltip="Identifier used to group same threads">
                                                             <span class="has-text-weight-normal">
                                                                 Miner type:
                                                             </span>
@@ -1566,7 +1566,7 @@ window.addEventListener('load', function () {
                                                                 ${miner_type}
                                                             </span>
                                                         </li>
-                                                        <li title="Kolka efficiency drop">
+                                                        <li data-tooltip="Kolka efficiency drop">
                                                             <span class="has-text-weight-normal">
                                                                 Earnings
                                                                 <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
@@ -2115,7 +2115,7 @@ function onDragOver(evt) {
 
             let lastOrder = {
                 order: idx-1,
-                threadid: draggedElm.querySelector('span[Title="Thread Id"]').innerHTML.replace(/\n/g,'').trim(), // get thread id and remove new line
+                threadid: draggedElm.querySelector('span[title="Thread Id"]').innerHTML.replace(/\n/g,'').trim(), // get thread id and remove new line
             };
 
             let minersOrder = localStorage.getItem('minersOrder');
