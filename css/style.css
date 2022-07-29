@@ -200,8 +200,8 @@ td {
 
 #mcontainer {
   transition: 0.3s height;
-  overflow-y: visible;
-  overflow-x: visible;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 0px !important;
   border-radius: 0px 0px 10px 10px !important;
 }
