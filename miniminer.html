@@ -4,6 +4,8 @@
 <head>
     <title>Duino-Coin Mini Miner 3.2.1</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.includes%2CNumber.parseFloat%2CNumber.parseInt%2CString.prototype.includes%2CDate.now%2CURLSearchParams%2CURL"></script>
+    <link rel="icon" type="image/x-icon" href="/assets/miniminer.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/miniminer.ico">
     <style>
         body {
         background-color: #FFFFCC;
@@ -136,6 +138,10 @@
             <span class="success">works perfectly</span>,
             <b>83.5 H/s</b> (credit: <b>Torpeda</b>)
         </li>
+        <li>
+            Ipad 1st gen v5.1.1 (2010)
+            <span class="success">works perfectly</span>
+            (credit: <b>farfadet46</b>)
         <li>
             HTC Explorer A310e (2011) -
             <span class="success">works perfectly</span>,
@@ -452,10 +458,10 @@ function Mine() {
     username = document.getElementById("username").value;
     key = document.getElementById("key").value;
 
-    if (!username) {
-        alert("Please enter your username");
-        return;
-    }
+    //if (!username) {
+    //    alert("Please enter your username");
+    //    return;
+    //}
 
     setCookie("username", username, 14);
     setCookie("key", key, 14);
