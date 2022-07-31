@@ -1435,7 +1435,7 @@ window.addEventListener('load', function () {
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                            } else if (miner_type == "ESP8266" && miner_hashrate > 13000) {
+                            } else if (miner_type == "ESP8266" && miner_hashrate > 30000) {
                                 warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
