@@ -10,6 +10,7 @@ let start = Date.now();
 let timestamps = [];
 let balances = [];
 let user_items;
+let cache_miners = 0;
 let username, password;
 let notify_shown = false;
 let transaction_limit = 5;
@@ -1250,6 +1251,14 @@ window.addEventListener('load', function () {
                     }
 
                     user_miners = data.miners;
+
+                    if(cache_miners != user_miners.length) {
+
+                        calculdaily(balance, oldb, user_items);     
+                        cache_miners = data.miners.length;
+                        oldb = balance;
+                    }
+
                     total_hashrate = 0;
                     t_miners = []
                     iot_devices = {}
