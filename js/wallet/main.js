@@ -722,6 +722,7 @@ let backgroundAnimation = null;
 let images = [];
 let fps = 0;
 let lastData = { x: 0, y: 0 };
+let resized = false;
 const times = [];
 
 // Find vendor prefix, if any
@@ -768,6 +769,7 @@ document.addEventListener('mousemove', (ev) => {
 const canvasResize = () => {
     canvas.width = 1920;
     canvas.height = 1080;
+    resized = true;
     draw();
 };
 
@@ -805,7 +807,9 @@ const draw = () => {
     const const_width = window.innerWidth/100;
     const const_height = window.innerHeight/100;
 
-    if (lastData.x != x || lastData.y != y) { // If the user move the mouse, update the background
+    if (lastData.x != x || lastData.y != y || resized) { // If the user move the mouse, update the background
+
+        if(resized) resized = false;
 
         lastData = { x: x, y: y };
 
