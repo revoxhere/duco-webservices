@@ -907,6 +907,9 @@ function update_element(element, value) {
     return false;
 }
 
+const categories = document.querySelector("#categories");
+const sortPrices = document.querySelector("#sortPrices");
+
 function miner_notify() {
     let modal_error = document.querySelector('#modal_error');
     document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
@@ -936,7 +939,57 @@ function shop_buy(item_name) {
     });
 }
 
+sortPrices.addEventListener("change", (evt) => {
+    evt.preventDefault();
+    try {
+        let filter = evt.target.value;
+
+        let elements = document.querySelectorAll("[data-categories]");
+        let elms = [];
+        let sorted = [];
+
+        elements.forEach((elm)=> {
+            elms.push(elm);
+        })
+
+        if(filter == "asc") sorted = elms.sort((a, b) => { return parseInt(a.dataset.price) + parseInt(b.dataset.price); });
+        else sorted = elms.sort((a, b) => { return parseInt(a.dataset.price) - parseInt(b.dataset.price); });
+
+        sorted.forEach((elm) => {
+            let parent = elm.parentNode;
+            parent.insertBefore(elm, parent.firstChild);
+        })
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
+
+
+categories.addEventListener('change', (evt) => {
+    try {
+        evt.preventDefault();
+        let filter = evt.target.value;
+
+        let elements = document.querySelectorAll("[data-categories]");
+
+        elements.forEach((elm) => {
+            if(elm.dataset.categories.includes(filter))
+            {
+                let parent = elm.parentNode;
+                parent.insertBefore(elm, parent.firstChild);
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+});
+
 function refresh_shop(user_items) {
+
+    let prices = [];
+
     fetch(`https://server.duinocoin.com/shop_items`)
         .then(response => response.json())
         .then(data => {
@@ -948,8 +1001,10 @@ function refresh_shop(user_items) {
                     if (!shop_items[item]["display"] && !(user_items.includes(parseInt(item)))) continue;
                 }
 
+                prices.push(shop_items[item]["price"]);
+
                 shop_items_final += `
-                    <div class="column is-half">
+                    <div class="column is-half fadeIn" data-price="${shop_items[item]["price"]}" data-categories="${shop_items[item]["category"]}">
                         <div class="card">
                             <div class="card-content">
                                 <div class="media">
