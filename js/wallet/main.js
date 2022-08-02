@@ -988,8 +988,6 @@ categories.addEventListener('change', (evt) => {
 
 function refresh_shop(user_items) {
 
-    let prices = [];
-
     fetch(`https://server.duinocoin.com/shop_items`)
         .then(response => response.json())
         .then(data => {
@@ -1000,8 +998,6 @@ function refresh_shop(user_items) {
                 if (user_items) {
                     if (!shop_items[item]["display"] && !(user_items.includes(parseInt(item)))) continue;
                 }
-
-                prices.push(shop_items[item]["price"]);
 
                 shop_items_final += `
                     <div class="column is-half fadeIn" data-price="${shop_items[item]["price"]}" data-categories="${shop_items[item]["category"]}">
