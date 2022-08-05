@@ -718,10 +718,8 @@ inputs.forEach(input => {
 let canvas = document.getElementById('background');
 let ctx = canvas.getContext('2d');
 let mouse = { x: 0, y: 0 };
-let startTime = 0;
 let backgroundAnimation = null;
 let images = [];
-let fps = 0;
 let lastData = { x: 0, y: 0 };
 let resized = false;
 const times = [];
@@ -784,8 +782,11 @@ let loadImages = () => {
     let img = new Image();
     img.src = canvas.getAttribute('data-background');
     img.onload = () => {
-       startTime = Date.now();
         backgroundAnimation = setAnimation(draw, canvas);
+    }
+
+    img.onerror = () => {
+        loadImages(); // If the image fails to load then load it again
     }
 
     images = { 
@@ -808,16 +809,23 @@ const draw = () => {
     const const_width = window.innerWidth/100;
     const const_height = window.innerHeight/100;
 
+    if(!images.background) loadImages(); // if the image isn't loaded then load it
+
     if (lastData.x != x || lastData.y != y || resized) { // If the user move the mouse, update the background
 
         if(resized) resized = false;
 
         lastData = { x: x, y: y };
 
-        // Draw BG
-        ctx.globalAlpha = 1;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(images.background, x, y, width + const_width, height + const_height);
+        try {
+            // Draw BG
+            ctx.globalAlpha = 1;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(images.background, x, y, width + const_width, height + const_height);
+        }
+        catch (err) {
+            console.log(`Failed to draw background image: ${err}`);
+        }
     }
 };
 
