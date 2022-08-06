@@ -1381,6 +1381,7 @@ window.addEventListener('load', function () {
                             miner_algo = t_miners[miner]["algorithm"];
                             miner_count = t_miners[miner]["threads"];
                             miner_ki = t_miners[miner]["ki"];
+                            miner_ping = t_miners[miner]["pg"];
 
                             iot_tag = ``
                             if (t_miners[miner]["it"])
@@ -1608,6 +1609,15 @@ window.addEventListener('load', function () {
                                                             </span>
                                                             <span class="has-text-weight-bold">
                                                                 ${miner_diff_str}
+                                                            </span>
+                                                        </li>
+                                                        <li data-tooltip="Ping (network delay) is exluded from calculations">
+                                                            <span class="has-text-weight-normal">
+                                                                Ping: 
+                                                            </span>
+                                                            <span class="has-text-weight-bold">
+                                                                ${miner_ping}ms 
+                                                                <span class="has-text-success-dark">(compensated)</span>
                                                             </span>
                                                         </li>
                                                     </ul>
