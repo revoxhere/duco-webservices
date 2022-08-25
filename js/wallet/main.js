@@ -1909,8 +1909,9 @@ window.addEventListener('load', function () {
                                                 $("#adblocker_detected").fadeIn();
                                             }
                                         }
-                                        $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                        $("iframe#news_iframe").fadeIn(2500);
+                                        $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
+                                        $("iframe#news_iframe").attr('name', Date.now());
+                                        $("iframe#news_iframe").fadeIn(1000);
                                     });
                                 });
                             }, 350);
