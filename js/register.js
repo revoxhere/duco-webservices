@@ -16,10 +16,6 @@ let version_received;
 const bg_list = [
     "img/yenn-sea-1.jpg",
     "backgrounds/wallet/yenn-mountains-1.jpg",
-    "backgrounds/wallet/atar-field-1.jpg",
-    "backgrounds/wallet/atar-field-2.jpg",
-    "backgrounds/wallet/atar-field-3.jpg",
-    "backgrounds/wallet/atar-sky-1.jpg",
 ]
 let num = Math.floor(Math.random() * bg_list.length)
 document.getElementById('background').style.backgroundImage = `url(${bg_list[num]})`;
@@ -158,3 +154,7 @@ function setSuccessFor(input) {
 function isEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }
+
+$(window).on('load', function() {
+    $("#pageloader").fadeOut();
+});
