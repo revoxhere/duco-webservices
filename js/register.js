@@ -27,62 +27,72 @@ register.onclick = function(event) {
         $("#logincheck").hide(1);
         $("#loginload").show(1);
         fetch('https://server.duinocoin.com/register/' +
-            '?username=' + encodeURIComponent(username.value.trim()) +
-            '&password=' + encodeURIComponent(password.value) +
-            '&email=' + encodeURIComponent(email.value.trim()) +
-            '&key=' + encodeURIComponent(miner_key.value.trim()) +
-            '&captcha=' + encodeURIComponent(captcha)).then(data => data.json()).then(
-            (data) => {
+                '?username=' + encodeURIComponent(username.value.trim()) +
+                '&password=' + encodeURIComponent(password.value) +
+                '&email=' + encodeURIComponent(email.value.trim()) +
+                '&key=' + encodeURIComponent(miner_key.value.trim()) +
+                '&captcha=' + encodeURIComponent(captcha)).then(data => data.json()).then(
+                (data) => {
 
-                if (data.success == true) {
-                    $("#logintext").text("Create a new wallet");
-                    document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
-                        `<b>Your wallet has been sucessfully created.</b>`
-                        + `<br>You can now go to the login page and authenticate with your credentials.`
-                        + `<br>Soon you'll also receive an e-mail confirming the registration process.`
-                        + `<br><b>Have fun using Duino-Coin!</b><br></p>`;
-                    document.querySelector('html').classList.add('is-clipped');
-                    modal_success.classList.add('is-active');
+                    if (data.success == true) {
+                        $("#logintext").text("Create a new wallet");
+                        document.querySelector('#modal_success .modal-card-body .content p').innerHTML =
+                            `<b>Your wallet has been sucessfully created.</b>` +
+                            `<br>You can now go to the login page and authenticate with your credentials.` +
+                            `<br>Soon you'll also receive an e-mail confirming the registration process.` +
+                            `<br><b>Have fun using Duino-Coin!</b><br></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_success.classList.add('is-active');
 
-                    document.querySelector('#modal_success .delete').onclick = function() {
-                        document.querySelector('html').classList.remove('is-clipped');
-                        modal_success.classList.remove('is-active');
+                        document.querySelector('#modal_success .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_success.classList.remove('is-active');
+                        }
+                    } else {
+                        server_message = data.message
+                        $("#logincheck").show(1);
+                        $("#loginload").hide(1);
+                        $("#logintext").text("Create a new wallet");
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `<b>` + server_message + `. Please try again</b><br></p>`;
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
+
+                        document.querySelector('#modal_error .delete').onclick = function() {
+                            document.querySelector('html').classList.remove('is-clipped');
+                            modal_error.classList.remove('is-active');
+                        }
+                        hcaptcha.reset();
                     }
-                } else {
-                    server_message = data.message
-                    $("#logincheck").show(1);
-                    $("#loginload").hide(1);
-                    $("#logintext").text("Create a new wallet");
-                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                        `<b>` + server_message + `. Please try again</b><br></p>`;
-                    document.querySelector('html').classList.add('is-clipped');
-                    modal_error.classList.add('is-active');
+                })
+            .catch((error) => {
+                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                    "<b>An error has ocurred.</b><br/>" +
+                    "There may be issues with the servers. Please try again later.<br/><br/>" +
+                    "If you are still having problems, please contact us on Discord with the following data:<br/>" +
+                    `<br/><br/>Error: ${error}</p>`;
+                document.querySelector('html').classList.add('is-clipped');
+                modal_error.classList.add('is-active');
 
-                    document.querySelector('#modal_error .delete').onclick = function() {
-                        document.querySelector('html').classList.remove('is-clipped');
-                        modal_error.classList.remove('is-active');
-                    }
-                    hcaptcha.reset();
+                document.querySelector('#modal_error .delete').onclick = function() {
+                    document.querySelector('html').classList.remove('is-clipped');
+                    modal_error.classList.remove('is-active');
                 }
-            })
-            .catch(( error ) => {
-            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                "<b>An error has ocurred.</b><br/>" + 
-                "There may be issues with the servers. Please try again later.<br/><br/>" +
-                "If you are still having problems, please contact us on Discord with the following data:<br/>" +
-                `<br/><br/>Error: ${error}</p>`;
-            document.querySelector('html').classList.add('is-clipped');
-            modal_error.classList.add('is-active');
-
-            document.querySelector('#modal_error .delete').onclick = function() {
-                document.querySelector('html').classList.remove('is-clipped');
-                modal_error.classList.remove('is-active');
-            }
-        });
+            });
     } else {
         return false;
     }
 }
+
+$(username).focusout(function() {
+    fetch('https://server.duinocoin.com/users/' +
+        encodeURIComponent(username.value.trim())
+    ).then(data => data.json()).then(
+        (data) => {
+            if (data.success) setErrorFor(username, 'Username already taken');
+        });
+
+});
 
 function checkInputs() {
     // trim to remove the whitespaces
