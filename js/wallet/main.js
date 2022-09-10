@@ -1887,13 +1887,15 @@ window.addEventListener('load', function() {
                                                 if (adBlockEnabled) {
                                                     $("#adblocker_detected").fadeIn();
                                                 } else {
-                                                    try {
-                                                        $("#adblocker_detected").fadeOut(function() {
-                                                            (adsbygoogle = window.adsbygoogle || []).push({});
-                                                        });
-                                                    } catch (err) {
-                                                        $("#adblocker_detected").fadeIn();
-                                                    }
+                                                    setTimeout(function() {
+                                                        try {
+                                                            $("#adblocker_detected").fadeOut(function() {
+                                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                            });
+                                                        } catch (err) {
+                                                            $("#adblocker_detected").fadeIn();
+                                                        }
+                                                    }, 3000);
                                                 }
                                                 $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
                                                 $("iframe#news_iframe").attr('name', Date.now());
