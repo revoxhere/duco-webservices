@@ -17,8 +17,8 @@ let transaction_limit = 5;
 let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
-const STAKING_PERC = 1.5;
-const STAKE_DAYS = 21;
+const STAKING_PERC = 0.5;
+const STAKE_DAYS = 7;
 const date_opt = { day: 'numeric', month: "long", year: 'numeric' };
 
 const MD5 = function(d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
