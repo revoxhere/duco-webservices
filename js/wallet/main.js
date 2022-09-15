@@ -17,8 +17,8 @@ let transaction_limit = 5;
 let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
-const STAKING_PERC = 0.5;
-const STAKE_DAYS = 7;
+const STAKING_PERC = 1.5;
+const STAKE_DAYS = 21;
 const date_opt = { day: 'numeric', month: "long", year: 'numeric' };
 
 const MD5 = function(d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
@@ -989,7 +989,6 @@ categories.addEventListener('change', (evt) => {
 });
 
 function refresh_shop(user_items) {
-
     fetch(`https://server.duinocoin.com/shop_items`)
         .then(response => response.json())
         .then(data => {
@@ -1073,6 +1072,75 @@ function refresh_shop(user_items) {
     }
 }
 
+function refresh_achievements(user_achievements) {
+    fetch(`https://server.duinocoin.com/achievements`)
+        .then(response => response.json())
+        .then(data => {
+            achievements = data.result;
+
+            achievements_final = "";
+            for (achievement in achievements) {
+                if (user_achievements && user_achievements.includes(parseInt(achievement))) {
+                    achievements_final += `
+                    <div class="column is-half">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img src="${achievements[achievement]["icon"]}">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">
+                                            ${achievements[achievement]["name"]}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    ${achievements[achievement]["description"]}<br>
+                                </div>
+                                <p class="content has-text-success-dark">
+                                    Achieved <i class="fa fa-check-circle"></i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>`;
+                } else {
+                    achievements_final += `
+                    <div class="column is-half">
+                        <div class="card" style="opacity:0.5">
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <figure class="image is-48x48">
+                                            <img src="${achievements[achievement]["icon"]}">
+                                        </figure>
+                                    </div>
+                                    <div class="media-content">
+                                        <p class="title is-4">
+                                            ${achievements[achievement]["name"]}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    ${achievements[achievement]["description"]}<br>
+                                </div>
+                                <p class="content has-text-grey">
+                                    Yet to be achieved...
+                                </p>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+            }
+
+            $("#achievements").html(achievements_final)
+        });
+
+    if (!user_achievements) return;
+}
+
 window.addEventListener('load', function() {
     // CONSOLE WARNING
     console.log(`%cHold on!`, "color: red; font-size: 3em");
@@ -1146,6 +1214,9 @@ window.addEventListener('load', function() {
 
                     user_items = data.items;
                     if (first_open) refresh_shop(user_items);
+
+                    user_achievements = data.achievements;
+                    if (first_open) refresh_achievements(user_achievements);
 
                     balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
                     if (first_open) $("#balance").html(balance);
@@ -1887,26 +1958,19 @@ window.addEventListener('load', function() {
                                                 if (adBlockEnabled) {
                                                     $("#adblocker_detected").fadeIn();
                                                 } else {
-                                                    setTimeout(function() {
-                                                        try {
-                                                            $("#adblocker_detected").fadeOut(function() {
-                                                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                                            });
-                                                        } catch (err) {
-                                                            $("#adblocker_detected").fadeIn();
-                                                        }
-                                                    }, 3000);
+                                                    $("#adblocker_detected").fadeOut();
+                                                    (adsbygoogle = window.adsbygoogle || []).push({});
                                                 }
                                                 $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
                                                 $("iframe#news_iframe").attr('name', Date.now());
                                                 $("iframe#news_iframe").fadeIn(1000);
                                             });
                                         });
-                                    }, 350);
+                                    }, 500);
 
                                     setInterval(function() {
                                         stake_counter();
-                                    }, 250);
+                                    }, 300);
                                 } else {
 
                                     localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
