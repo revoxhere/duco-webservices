@@ -1216,7 +1216,7 @@ window.addEventListener('load', function() {
                     if (first_open) refresh_shop(user_items);
 
                     user_achievements = data.achievements;
-                    if (first_open) refresh_achievements(user_achievements);
+                    refresh_achievements(user_achievements);
 
                     balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
                     if (first_open) $("#balance").html(balance);
