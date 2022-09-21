@@ -970,3 +970,136 @@ input:checked + .slider:before {
   padding: 5px 10px;
   margin-left: 8px;
 }
+
+/* Achievements tree */
+
+.tf-tree {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.tf-tree * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.tf-tree li {
+  width: 100%;
+}
+
+.tf-tree ul {
+  width: 100%;
+  display: inline-flex;
+}
+
+.tf-tree li {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.tf-tree li ul {
+  margin: 1em 0;
+}
+
+.img-gray {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.tf-tree li li:before {
+  border-top: 0.1em solid #ff4112;
+  content: "";
+  display: block;
+  height: 0.0625em;
+  left: -0.03125em;
+  position: absolute;
+  top: -1.03125em;
+  width: 100%;
+}
+
+.tf-tree li li:first-child:before {
+  left: 50%;
+  min-width: 50%;
+}
+
+.tf-tree li li:last-child:before {
+  left: auto;
+  min-width: 50%;
+  right: 50%;
+}
+
+.tf-tree li li:only-child:before {
+  display: none;
+}
+
+.tf-tree li li:only-child > .tf-nc:before {
+  height: 1em;
+  top: -1em;
+}
+
+.tf-tree .tf-nc {
+  text-align:center;
+  cursor: help;
+  display: inline-block;
+  padding: 0.5em 1em;
+  position: relative;
+}
+
+.tf-tree .tf-nc:before {
+  top: -1.03125em;
+}
+
+.tf-tree .tf-nc:after,
+.tf-tree .tf-nc:before {
+  border-left: 0.1em solid #ff4112;
+  content: "";
+  display: block;
+  height: 1em;
+  left: 50%;
+  position: absolute;
+  width: 0.0625em;
+}
+
+.tf-tree .tf-nc:after {
+  top: 100%;
+}
+
+.tf-tree .tf-nc img {
+  background: rgba(0, 0, 0, .1) !important;
+  border: 0.1em solid rgba(0, 0, 0, .2) !important;
+}
+
+.tf-tree .tf-nc img.is-rewarded {
+  border: 0.1em solid rgba(255, 215, 0, .3) !important;
+}
+
+.tf-tree .tf-nc:only-child:after,
+.tf-tree > ul > li > .tf-nc:before {
+  display: none;
+}
+
+.tooltip {
+  position: absolute !important;
+  max-width: 25vw;
+  z-index: 999;
+  font-size: 16px;
+  display: block;
+  line-height: 20px;
+  padding: 5px;
+  visibility: hidden;
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition:
+    opacity 0.3s,
+    visiblity 0s;
+}
+
+.is-100 {
+  width: 100%;
+}

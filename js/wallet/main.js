@@ -1072,71 +1072,238 @@ function refresh_shop(user_items) {
     }
 }
 
+function Node(name) {
+    this.name = name;
+    this.children = [];
+}
+
+function Tree(name) {
+    this.tree = new Node(name);
+}
+
+Tree.prototype.addChild = function (parent, child) {
+    function findParent(node) {
+        var found;
+        if (node.name === parent) return node;
+        node.children.some(n => found = findParent(n));
+        return found;
+    }
+    var node = findParent(this.tree) || this.tree;
+    node.children.push(new Node(child));
+};
+
+const findAchievementIdByName = (obj, name) => {
+    for (elm in obj) {
+        if(obj[elm].name == name) return elm;
+    }
+}       
+
+const findAchievementByName = (obj, name) => {
+    for(elm in obj)
+    {
+        if(obj[elm].name == name) return obj[elm];
+    }
+}
+
+function findAchivementImage (name) {
+    let border = "";
+
+    if (findAchievementByName(achievements, name).reward > 0) border = "is-rewarded";
+
+    if (user_achievements && user_achievements.includes(parseInt(findAchievementIdByName(achievements, name)))) {
+        return `
+            <img class="image is-48x48 ${border}" src="${findAchievementByName(achievements, name).icon}"/>
+        `;
+    } else { // not reached
+        return `
+            <img class="image is-48x48 img-gray ${border}" src="${findAchievementByName(achievements, name).icon}"/>
+        `;
+    }
+}
+
 function refresh_achievements(user_achievements) {
     fetch(`https://server.duinocoin.com/achievements`)
         .then(response => response.json())
         .then(data => {
             achievements = data.result;
 
-            achievements_final = "";
+            achievements_final = `<div class="tf-tree">`;
+
+            /* 
+                Note: if the parent don't exist it will use the -1 position
+               -1 => First Child
+                0 => After Professional photographer
+                1 => After Freshman
+                2 => After Rising star
+                3 => After Steak? Nah, it's a stake!
+                4 => After Entrepreneur
+                7 => After Beginner investor
+            */
+
+            let achievements_hierarchy = {
+                "Professional photographer": -1,
+                "Freshman": 0,
+                "Steak? Nah, it's a stake!": 0,
+                "Rising star": 1,
+                "Entrepreneur": 2,
+                "Kolkastart": 4,
+                "Mining expert": 4,
+                "Beginner investor": 3,
+                "For better future": 7,
+                "Coming soon": 7
+            }
+
+            let achievement_tree = new Tree("Achievements");
+
             for (achievement in achievements) {
-                if (user_achievements && user_achievements.includes(parseInt(achievement))) {
-                    achievements_final += `
-                    <div class="column is-half">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-48x48">
-                                            <img src="${achievements[achievement]["icon"]}">
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <p class="title is-4">
-                                            ${achievements[achievement]["name"]}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="content">
-                                    ${achievements[achievement]["description"]}<br>
-                                </div>
-                                <p class="content has-text-success-dark">
-                                    Achieved <i class="fa fa-check-circle"></i>
-                                </p>
-                            </div>
-                        </div>
-                    </div>`;
-                } else {
-                    achievements_final += `
-                    <div class="column is-half">
-                        <div class="card" style="opacity:0.5">
-                            <div class="card-content">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <figure class="image is-48x48">
-                                            <img src="${achievements[achievement]["icon"]}">
-                                        </figure>
-                                    </div>
-                                    <div class="media-content">
-                                        <p class="title is-4">
-                                            ${achievements[achievement]["name"]}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="content">
-                                    ${achievements[achievement]["description"]}<br>
-                                </div>
-                                <p class="content has-text-grey">
-                                    Yet to be achieved...
-                                </p>
-                            </div>
-                        </div>
-                    </div>`;
+                let herarchy_number = parseInt(achievements_hierarchy[achievements[achievement].name]);
+
+                switch(herarchy_number)
+                {
+                    case -1:
+                        achievement_tree.addChild("Achievements", achievements[achievement].name);
+                        continue;
+                    case 0:
+                        achievement_tree.addChild("Professional photographer", achievements[achievement].name);
+                        continue;
+                    case 1:
+                        achievement_tree.addChild("Freshman", achievements[achievement].name);
+                        continue;
+                    case 2:
+                        achievement_tree.addChild("Rising star", achievements[achievement].name);
+                        continue;
+                    case 3:
+                        achievement_tree.addChild("Steak? Nah, it's a stake!", achievements[achievement].name);
+                        continue;
+                    case 4:
+                        achievement_tree.addChild("Entrepreneur", achievements[achievement].name);
+                        continue;
+                    case 7:
+                        achievement_tree.addChild("Beginner investor", achievements[achievement].name);
+                        continue;
                 }
             }
 
+            function getChildrens (parent) {
+                return parent["children"] || [];
+            }
+
+            function getChildrensHTML (parentAchievement) {
+                let html = "";
+
+                for(elm in getChildrens(parentAchievement)) {
+                    let achievement = getChildrens(parentAchievement)[elm];
+                    if(getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0)
+                    {
+                        html += `
+                        <li>
+                            <div class="tf-nc" tip="${achievement.name}">
+                                ${findAchivementImage(achievement.name)}
+                            </div>
+                            <ul>
+                                ${getChildrensHTML(achievement)}
+                            </ul>
+                        </li>`;
+                    }
+                    else {
+                        html += `
+                        <li>
+                            <div class="tf-nc" tip="${achievement.name}">
+                                ${findAchivementImage(achievement.name)}
+                            </div>
+                        </li>`;
+                    }
+                }
+
+                return html;
+            }
+
+            console.log(achievement_tree)
+
+            let childs = "";
+
+            for(elm in getChildrens(achievement_tree["tree"])) {
+                let achievement = getChildrens(achievement_tree["tree"])[elm];
+                if(getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0)
+                {
+                    childs += `
+                    <li>
+                        <div class="tf-nc" tip="${achievement.name}">
+                            ${findAchivementImage(achievement.name)}
+                        </div>
+                        <ul>
+                            ${getChildrensHTML(achievement)}
+                        </ul>
+                    </li>`;
+                }
+                else {
+                    childs += `
+                    <li>
+                        <div class="tf-nc" tip="${achievement.name}">
+                            ${findAchivementImage(achievement.name)}
+                        </div>
+                    </li>`;
+                }
+            }
+
+            achievements_final += `
+            <ul>
+                <li>
+                    <ul>
+                        ${childs}
+                    </ul>
+                </li>
+            </ul>
+            </div>`;
+
             $("#achievements").html(achievements_final)
         });
+
+        setTimeout(() => {
+            Array.from(document.querySelectorAll('[tip]')).forEach(el => {
+                let tip = document.querySelector('#tooltipFixed');
+
+                el.addEventListener("mouseover", (evt) => {
+                    evt.preventDefault();
+
+                    tip.innerHTML = `
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        ${findAchivementImage(el.getAttribute('tip'))}
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-4">${el.getAttribute('tip')}</p>
+                                </div>
+                            </div>
+    
+                            <div class="content">
+                                ${findAchievementByName(achievements, el.getAttribute('tip')).description}
+                            </div>
+                        </div>
+                    </div>`;
+
+                    let { x, y } = el.getBoundingClientRect();
+
+                    if(tip.style.top != (y+46)) {
+                        tip.style.left = (x+46) + 'px'
+                        tip.style.top = (y+46) + 'px';
+                        tip.style.visibility = "visible";
+                        tip.style.opacity = 1;
+                    }
+                })
+
+                el.addEventListener("mouseout", (evt) => {
+                    evt.preventDefault();
+                    tip.style.visibility = "hidden";
+                    tip.style.opacity = 0;
+                })
+
+            });
+        }, 250);
 
     if (!user_achievements) return;
 }
