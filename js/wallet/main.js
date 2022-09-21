@@ -1260,6 +1260,17 @@ function refresh_achievements(user_achievements) {
     if (!user_achievements) return;
 }
 
+const isElementXPercentInViewport = function(el, percentVisible) {
+    let
+        rect = el.getBoundingClientRect(),
+        windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+
+    return !(
+        Math.floor(100 - (((rect.top >= 0 ? 0 : rect.top) / +-rect.height) * 100)) < percentVisible ||
+        Math.floor(100 - ((rect.bottom - windowHeight) / rect.height) * 100) < percentVisible
+    )
+};
+
 const updateToolTips = () => {
     Array.from(document.querySelectorAll('[tip]')).forEach(el => {
         let tip = document.querySelector('#tooltipFixed');
@@ -1289,12 +1300,25 @@ const updateToolTips = () => {
 
             let { x, y } = el.getBoundingClientRect();
 
-            if(tip.style.top != (y+46)) {
-                tip.style.left = (x+46) + 'px'
-                tip.style.top = (y+46) + 'px';
-                tip.style.visibility = "visible";
-                tip.style.opacity = 1;
+            if(tip.style.visibility == "visible") return;
+
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || "ontouchstart" in document.documentElement || typeof window.orientation !== 'undefined')
+            { // if is phone use static position
+                tip.style.left = `25%`;
+                tip.style.top = `25%`;
             }
+            else {
+                // If is out of the screen change position
+                if(!isElementXPercentInViewport(tip, 95)) {
+                    tip.style.left = x - tip.offsetWidth  + 'px';
+                    tip.style.top = y - tip.offsetHeight +  'px';
+                } else { // Default position (Achievement pos + 46px)
+                    tip.style.left = (x+46)  + 'px';
+                    tip.style.top = (y+46) +  'px';
+                }
+            }
+            tip.style.visibility = "visible";
+            tip.style.opacity = 1;
         })
 
         el.addEventListener("mouseout", (evt) => {

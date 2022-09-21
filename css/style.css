@@ -1071,6 +1071,7 @@ input:checked + .slider:before {
 }
 
 .tf-tree .tf-nc img {
+  min-width: 48px;
   background: rgba(0, 0, 0, .1) !important;
   border: 0.1em solid rgba(0, 0, 0, .2) !important;
 }
@@ -1088,16 +1089,41 @@ input:checked + .slider:before {
   position: absolute !important;
   max-width: 25vw;
   z-index: 999;
-  font-size: 16px;
+  font-size: 12px;
   display: block;
   line-height: 20px;
   padding: 5px;
   visibility: hidden;
   box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
   opacity: 0;
-  transition:
-    opacity 0.3s,
-    visiblity 0s;
+  transition: opacity 0.3s, visibility 0s;
+}
+
+.tooltip .card, .tooltip .card-content {
+  min-width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .tooltip {
+    min-width: 75vw;
+    position: fixed;
+  }
+
+  .tooltip .content {
+    font-size: 14px;
+  }
+
+  .tf-tree ul:only-child {
+    flex-wrap: wrap;
+  }
+
+  #modal-achievements .modal-content {
+    overflow-x: hidden !important;
+  }
+
+  .columns:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .is-100 {
