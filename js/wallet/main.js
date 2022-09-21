@@ -1218,8 +1218,6 @@ function refresh_achievements(user_achievements) {
                 return html;
             }
 
-            console.log(achievement_tree)
-
             let childs = "";
 
             for(elm in getChildrens(achievement_tree["tree"])) {
@@ -1259,54 +1257,57 @@ function refresh_achievements(user_achievements) {
             $("#achievements").html(achievements_final)
         });
 
-        setTimeout(() => {
-            Array.from(document.querySelectorAll('[tip]')).forEach(el => {
-                let tip = document.querySelector('#tooltipFixed');
-
-                el.addEventListener("mouseover", (evt) => {
-                    evt.preventDefault();
-
-                    tip.innerHTML = `
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-left">
-                                    <figure class="image is-48x48">
-                                        ${findAchivementImage(el.getAttribute('tip'))}
-                                    </figure>
-                                </div>
-                                <div class="media-content">
-                                    <p class="title is-4">${el.getAttribute('tip')}</p>
-                                </div>
-                            </div>
-    
-                            <div class="content">
-                                ${findAchievementByName(achievements, el.getAttribute('tip')).description}
-                            </div>
-                        </div>
-                    </div>`;
-
-                    let { x, y } = el.getBoundingClientRect();
-
-                    if(tip.style.top != (y+46)) {
-                        tip.style.left = (x+46) + 'px'
-                        tip.style.top = (y+46) + 'px';
-                        tip.style.visibility = "visible";
-                        tip.style.opacity = 1;
-                    }
-                })
-
-                el.addEventListener("mouseout", (evt) => {
-                    evt.preventDefault();
-                    tip.style.visibility = "hidden";
-                    tip.style.opacity = 0;
-                })
-
-            });
-        }, 250);
-
     if (!user_achievements) return;
 }
+
+const updateToolTips = () => {
+    Array.from(document.querySelectorAll('[tip]')).forEach(el => {
+        let tip = document.querySelector('#tooltipFixed');
+
+        el.addEventListener("mouseover", (evt) => {
+            evt.preventDefault();
+
+            tip.innerHTML = `
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                ${findAchivementImage(el.getAttribute('tip'))}
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">${el.getAttribute('tip')}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        ${findAchievementByName(achievements, el.getAttribute('tip')).description}
+                    </div>
+                </div>
+            </div>`;
+
+            let { x, y } = el.getBoundingClientRect();
+
+            if(tip.style.top != (y+46)) {
+                tip.style.left = (x+46) + 'px'
+                tip.style.top = (y+46) + 'px';
+                tip.style.visibility = "visible";
+                tip.style.opacity = 1;
+            }
+        })
+
+        el.addEventListener("mouseout", (evt) => {
+            evt.preventDefault();
+            tip.style.visibility = "hidden";
+            tip.style.opacity = 0;
+        })
+
+    });
+}
+
+// On html change refresh the tooltips
+$('#achievements').on('DOMSubtreeModified', updateToolTips);
 
 window.addEventListener('load', function() {
     // CONSOLE WARNING
