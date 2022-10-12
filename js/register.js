@@ -90,8 +90,8 @@ $(username).focusout(function() {
     ).then(data => data.json()).then(
         (data) => {
             if (data.success) setErrorFor(username, 'Username already taken');
+            else setSuccessFor(username);
         });
-
 });
 
 function checkInputs() {
