@@ -61,6 +61,17 @@ function component_to_hex(c) {
     return hex.length == 1 ? "0" + hex : hex;
 };
 
+let minertableexpanded = 0
+function toggleexpand() {
+    if (!minertableexpanded) {
+        document.getElementById("mcontainer").style.maxHeight = "100%"
+        minertableexpanded = 1
+    } else {
+        document.getElementById("mcontainer").style.maxHeight = "150px"
+        minertableexpanded = 0
+    }
+}
+
 function get_user_color(username) {
     /* https://www.cluemediator.com/create-a-random-color-based-on-a-string-using-javascript */
     const firstAlphabet = username.charAt(0).toLowerCase();
