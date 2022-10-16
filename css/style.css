@@ -202,6 +202,7 @@ td {
   transition: 0.3s height;
   overflow-y: auto;
   overflow-x: hidden;
+  max-height: 150px;
   margin-bottom: 0px !important;
   border-radius: 0px 0px 10px 10px !important;
 }
@@ -220,9 +221,12 @@ td {
   }
 }
 
+.tparent {
+  min-height: 100%;
+}
+
 .tcontainer {
   max-height: 21em;
-  flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 0px 0px 10px 10px !important;
