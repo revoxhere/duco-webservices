@@ -227,7 +227,7 @@
                     <div class="column is-full" style="display: flex;flex-flow: column;">
                         <div class="tile is-child box blur" style="flex: 1;">
                             <div class="heading">
-                                <div class="columns is-mobile">
+                                <div class="columns is-mobile is-multiline">
                                     <div class="column">
                                         <span class="is-size-6">
                                             <span class="icon-text is-size-6">
@@ -238,12 +238,12 @@
                                                 <small class="has-text-weight-normal">
                                                     (<span id="minercount">0</span>/<span id="maxminercount">50</span>,
                                                     <b id="total_hashrate">0 H/s</b>)
-                                                    <a><i class="fa fa-expand-alt" onclick="toggleexpand()"></i></a>
                                                 </small>
+                                                <a data-tooltip="Expand"><i class="fa fa-expand-alt" onclick="toggleexpand()"></i></a>
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="column">
+                                    <div class="column is-narrow">
                                         <p class="subtitle is-size-6 has-text-right">
                                             Mining key:
                                             <a class="modal-button" data-target="modal-mining-key">
@@ -312,7 +312,7 @@
                     </div>
                     <div class="column" id="iotbox">
                         <div class="box blur">
-                            <div class="columns is-mobile" bis_skin_checked="1">
+                            <div class="columns is-mobile is-multiline" bis_skin_checked="1">
                                 <div class="column" bis_skin_checked="1">
                                     <span class="icon-text is-size-6">
                                         <i class="icon mdi mdi-24px mdi-access-point-network"></i>
@@ -351,61 +351,97 @@
                 </div>
             </div>
             <div class="tile is-parent">
-                <div class="tile is-child box blur">
-                    <div class="heading">
-                        <div class="columns is-mobile">
-                            <div class="column">
-                                <span class="is-size-6">
-                                    <span class="icon-text">
-                                        <i class="icon fa fa-stream"></i>
-                                    </span>
-                                    <span>
-                                        Your <strong>last transactions</strong>
-                                    </span>
-                                </span>
-                            </div>
-                            <div class="column is-narrow has-text-right">
-                                <div class="select mb-0" id="txsel">
-                                    <select id="txcount">
-                                        <option selected value="5">5</option>
-                                        <option value="15">15</option>
-                                        <option value="30">30</option>
-                                        <option value="7777">All</option>
-                                    </select>
+                <div class="tile is-child">
+                    <div class="columns is-multiline">
+                        <div class="column is-full">
+                            <div class="box blur">
+                                <div class="heading">
+                                    <div class="columns is-mobile is-multiline">
+                                        <div class="column">
+                                            <span class="is-size-6">
+                                                <span class="icon-text">
+                                                    <i class="icon fa fa-calendar"></i>
+                                                </span>
+                                                <span>
+                                                    Weekly <strong>event</strong>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="column">
+                                            <progress id="week_end" value="32" max="100"> 32%</progress>
+                                        </div>
+                                    </div>
                                 </div>
+                                <p>
+                                    Topic: <b id="week_topic">unknown</b>
+                                </p>
+                                <p>
+                                    Description: <span id="week_desc">unknown</span>
+                                </p>
+                                <p>
+                                    Ends on <b id="week_date">never</b>
+                                </p>
                             </div>
                         </div>
-                    </div>
-                    <div class="columns is-gapless is-multiline tparent">
-                        <div class="column is-full tcontainer">
-                            <div id="transactions_table" class="columns is-multiline">
-                                <div class="column is-full">
-                                    <p class="title is-size-6">
-                                        Fetching data
-                                    </p>
+                        <div class="column">
+                            <div class="box blur">
+                                <div class="heading">
+                                    <div class="columns is-mobile is-multiline">
+                                        <div class="column">
+                                            <span class="is-size-6">
+                                                <span class="icon-text">
+                                                    <i class="icon fa fa-stream"></i>
+                                                </span>
+                                                <span>
+                                                    Your <strong>last transactions</strong>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="column is-narrow has-text-right">
+                                            <div class="select mb-0" id="txsel">
+                                                <select id="txcount">
+                                                    <option selected value="5">5</option>
+                                                    <option value="15">15</option>
+                                                    <option value="30">30</option>
+                                                    <option value="7777">All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="column is-full mt-0 mb-0">
-                            <div class="transactionscontainer">
-                                <div class="columns is-multiline mt-0">
-                                    <div class="column">
-                                        <a class="button is-fullwidth modal-button" data-target="modal-send">
-                                            <i class="fa fa-paper-plane"></i>&nbsp;
-                                            <span>Send coins</span>
-                                        </a>
+                                <div class="columns is-gapless is-multiline tparent">
+                                    <div class="column is-full tcontainer">
+                                        <div id="transactions_table" class="columns is-multiline">
+                                            <div class="column is-full">
+                                                <p class="title is-size-6">
+                                                    Fetching data
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="column">
-                                        <a class="button is-fullwidth modal-button" data-target="modal-wrap">
-                                            <i class="mdi mdi-vector-link"></i>&nbsp;
-                                            <span>Wrap coins</span>
-                                        </a>
-                                    </div>
-                                    <div class="column">
-                                        <a class="button is-fullwidth modal-button" data-target="modal-stake">
-                                            <i class="fa fa-layer-group"></i>&nbsp;
-                                            <span>Stake coins</span>
-                                        </a>
+                                    <div class="column is-full mt-0 mb-0">
+                                        <div class="transactionscontainer">
+                                            <div class="columns is-multiline mt-0">
+                                                <div class="column">
+                                                    <a class="button is-fullwidth modal-button" data-target="modal-send">
+                                                        <i class="fa fa-paper-plane"></i>&nbsp;
+                                                        <span>Send coins</span>
+                                                    </a>
+                                                </div>
+                                                <div class="column">
+                                                    <a class="button is-fullwidth modal-button" data-target="modal-wrap">
+                                                        <i class="mdi mdi-vector-link"></i>&nbsp;
+                                                        <span>Wrap coins</span>
+                                                    </a>
+                                                </div>
+                                                <div class="column">
+                                                    <a class="button is-fullwidth modal-button" data-target="modal-stake">
+                                                        <i class="fa fa-layer-group"></i>&nbsp;
+                                                        <span>Stake coins</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -418,7 +454,7 @@
             <div class="tile is-parent">
                 <div class="tile is-child box blur">
                     <div class="heading">
-                        <div class="columns is-mobile">
+                        <div class="columns is-mobile is-multiline">
                             <div class="column">
                                 <p class="is-size-6">
                                     <span class="icon-text">
@@ -449,7 +485,7 @@
             <div class="tile is-parent">
                 <div class="tile is-child box blur" style="padding: 0 !important;">
                     <div class="heading" style="margin: 1.25rem;">
-                        <div class="columns is-mobile">
+                        <div class="columns is-mobile is-multiline">
                             <div class="column">
                                 <p class="is-size-6" style="height: 1.2em;">
                                     <span class="icon-text">
