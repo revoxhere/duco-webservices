@@ -61,14 +61,14 @@ function component_to_hex(c) {
     return hex.length == 1 ? "0" + hex : hex;
 };
 
-let minertableexpanded = 0
+let minertableexpanded = 0;
 function toggleexpand() {
     if (!minertableexpanded) {
-        document.getElementById("mcontainer").style.maxHeight = "100%"
-        minertableexpanded = 1
+        document.getElementById("mcontainer").style.maxHeight = "100%";
+        minertableexpanded = 1;
     } else {
-        document.getElementById("mcontainer").style.maxHeight = "150px"
-        minertableexpanded = 0
+        document.getElementById("mcontainer").style.maxHeight = "150px";
+        minertableexpanded = 0;
     }
 }
 
@@ -999,6 +999,22 @@ categories.addEventListener('change', (evt) => {
     }
 });
 
+function refresh_event() {
+    fetch(`https://server.duinocoin.com/event`)
+        .then(response => response.json())
+        .then(data => {
+            $("#week_topic").html(data.result.topic);
+            $("#week_desc").html(data.result.description);
+            $("#week_date").html(new Date(data.result.ends*1000).toLocaleString("default", date_opt));
+            
+            full_time = new Date(data.result.ends*1000) - new Date(data.result.starts*1000);
+            elapsed_time = new Date() - new Date(data.result.starts*1000); 
+
+            $("#week_end").attr('value', elapsed_time);
+            $("#week_end").attr('max', full_time);
+        });
+}
+
 function refresh_shop(user_items) {
     fetch(`https://server.duinocoin.com/shop_items`)
         .then(response => response.json())
@@ -1416,7 +1432,10 @@ window.addEventListener('load', function() {
                     delete data.prices.max;
 
                     user_items = data.items;
-                    if (first_open) refresh_shop(user_items);
+                    if (first_open) {
+                        refresh_shop(user_items);
+                        refresh_event();
+                    }
 
                     user_achievements = data.achievements;
                     refresh_achievements(user_achievements);
