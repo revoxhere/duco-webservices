@@ -424,6 +424,7 @@ input {
   overflow: hidden;
   background-position: 50% 50%;
   background-size: cover;
+  object-fit: cover;
   background-repeat: no-repeat;
   z-index: -777;
   -webkit-transform: translateZ(0);
