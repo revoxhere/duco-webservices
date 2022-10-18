@@ -7,6 +7,9 @@ const contentToCache = [
     '../../img/AmongTreesScreenshot5.jpg',
     '../../backgrounds/wallet/yenn-mountains-1.jpg',
     '../../img/csou8q3.jpeg',
+    "../../img/halloween1.jpg",
+    "../../img/halloween2.jpg",
+    "../../img/halloween3.jpg",
 
     '../../assets/sushi.png',
     '../../assets/sunswap.png',
