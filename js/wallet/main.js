@@ -930,10 +930,6 @@ try {
     adBlockEnabled = true
 }
 
-detectAdblock().then((res) => {
-    adBlockEnabled = true
-})
-
 function update_element(element, value) {
     // Nicely fade in the new value if it changed
     element = "#" + element;
