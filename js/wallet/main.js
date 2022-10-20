@@ -933,7 +933,8 @@ try {
 }
 
 detectAdblock().then((res) => {
-    adBlockEnabled = true
+    if (res.uBlockOrigin || res.adblockPlus)
+        adBlockEnabled = true
 })
 
 function update_element(element, value) {
