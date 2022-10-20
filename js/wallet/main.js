@@ -529,6 +529,8 @@ function adblock_penalty(balance) {
             "&amount=" + encodeURIComponent(balance*0.001) +
             "&memo=AdBlock usage penalty (0.1 perc)",
             function(data) {console.log(data)});
+
+    localStorage.setItem("last-ab-penalty", new Date());
 }
 
 function send() {
@@ -929,6 +931,10 @@ try {
 } catch (e) {
     adBlockEnabled = true
 }
+
+detectAdblock().then((res) => {
+    adBlockEnabled = true
+})
 
 function update_element(element, value) {
     // Nicely fade in the new value if it changed
@@ -1466,7 +1472,16 @@ window.addEventListener('load', function() {
                     balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
                     if (first_open) {
                         $("#balance").html(balance);
-                        if (adBlockEnabled) {
+
+                        const last_ab_penalty = this.localStorage.getItem("last-ab-penalty");
+
+                        let diff = 0;
+                        if (!last_ab_penalty)
+                            diff = 86400;
+                        else
+                            diff = Math.abs(new Date(last_ab_penalty).getTime() - new Date().getTime()) / 1000;
+
+                        if (adBlockEnabled && diff >= 86400) { // 24 hours (86400 seconds)
                             adblock_penalty(balance);
                         }
                     }
