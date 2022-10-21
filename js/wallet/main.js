@@ -1042,6 +1042,13 @@ function refresh_event() {
 
             $("#week_end").attr('value', elapsed_time);
             $("#week_end").attr('max', full_time);
+
+            $("#week_end").click((evt) => {
+                try {
+                    $('#laugh')[0].play();
+                }
+                catch(e) {}
+            });
         });
 }
 

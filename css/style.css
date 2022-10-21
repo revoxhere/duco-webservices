@@ -1168,3 +1168,7 @@ progress::-webkit-progress-value {
   top: 50%;
   left: 50%;
 }
+
+#week_end {
+  cursor: pointer;
+}
