@@ -932,11 +932,6 @@ try {
     adBlockEnabled = true
 }
 
-detectAdblock().then((res) => {
-    if (res.uBlockOrigin || res.adblockPlus)
-        adBlockEnabled = true
-})
-
 function update_element(element, value) {
     // Nicely fade in the new value if it changed
     element = "#" + element;
@@ -2228,12 +2223,17 @@ window.addEventListener('load', function() {
                                     setTimeout(function() {
                                         $('#form').hide("drop", { direction: "up" }, 300, function() {
                                             $('#wallet').show("drop", { direction: "down" }, 300, function() {
-                                                if (adBlockEnabled) {
-                                                    $("#adblocker_detected").fadeIn();
-                                                } else {
-                                                    $("#adblocker_detected").fadeOut();
-                                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                                }
+                                                initial_height = $('.adsbygoogle').height();
+                                                console.log(console.log($('.adsbygoogle').height()));
+                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                setTimeout(function() {
+                                                    console.log($('.adsbygoogle').height());
+                                                    if ($('.adsbygoogle').height() <= initial_height) {
+                                                        $("#adblocker_detected").fadeIn();
+                                                        adBlockEnabled = true;
+                                                    }
+                                                }, 3000)
+
                                                 $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
                                                 $("iframe#news_iframe").attr('name', Date.now());
                                                 $("iframe#news_iframe").fadeIn(1000);
