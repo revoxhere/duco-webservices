@@ -1060,7 +1060,7 @@ input:checked + .slider:before {
   top: -1.03125em;
 }
 
-.tf-tree .tf-nc:after,
+/*.tf-tree .tf-nc:after,*/
 .tf-tree .tf-nc:before {
   border-left: 0.1em solid #ff4112;
   content: "";
@@ -1094,12 +1094,11 @@ input:checked + .slider:before {
   position: absolute !important;
   max-width: 25vw;
   z-index: 999;
-  font-size: 12px;
+  font-size: 16px;
   display: block;
   line-height: 20px;
   padding: 5px;
   visibility: hidden;
-  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: opacity 0.3s, visibility 0s;
 }
@@ -1167,8 +1166,4 @@ progress::-webkit-progress-value {
 #week_text {
   top: 50%;
   left: 50%;
-}
-
-#week_end {
-  cursor: pointer;
 }
