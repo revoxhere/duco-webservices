@@ -1776,6 +1776,11 @@ window.addEventListener('load', function() {
                                 color = "#B33771";
                                 miner_type = "AVR (Normal)";
                                 percentage = 0.96;
+                            } else if (miner_software.includes("PC") && (miner_identifier == "Raspberry Pi" || miner_identifier.includes("RPi"))) {
+                                icon = `<img src="img/pi.gif">`;
+                                color = "#16a085";
+                                miner_type = "AVR (Pico)";
+                                percentage = 0.96;
                             } else if (miner_software.includes("PC")) {
                                 color = "#F97F51";
                                 icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
