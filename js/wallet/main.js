@@ -1038,12 +1038,12 @@ function refresh_event() {
             $("#week_end").attr('value', elapsed_time);
             $("#week_end").attr('max', full_time);
 
-            $("#week_end").click((evt) => {
+            /*$("#week_end").click((evt) => {
                 try {
                     $('#laugh')[0].play();
                 }
                 catch(e) {}
-            });
+            });*/
         });
 }
 
@@ -1186,6 +1186,10 @@ function refresh_achievements(user_achievements) {
         .then(data => {
             achievements = data.result;
 
+            // Kolkastart fix
+            achievements[99] = achievements[107];
+            delete achievements[107];
+
             achievements_final = `<div class="tf-tree">`;
 
             /* 
@@ -1196,19 +1200,30 @@ function refresh_achievements(user_achievements) {
                 2 => After Rising star
                 3 => After Steak? Nah, it's a stake!
                 4 => After Entrepreneur
+                5 => After Kolkastart
+                6 => After Mining expert
                 7 => After Beginner investor
+                8 => After For better future
             */
 
             let achievements_hierarchy = {
-                "Professional photographer": -1,
                 "Freshman": 0,
-                "Steak? Nah, it's a stake!": 0,
+                "Brick by brick, block by block...": 1,
                 "Rising star": 1,
                 "Entrepreneur": 2,
-                "Kolkastart": 4,
-                "Mining expert": 4,
+
+                "Professional photographer": -1,
+                "Steak? Nah, it's a stake!": 0,
+                "My steak is done! I mean, the stake!": 3,
+
                 "Beginner investor": 3,
                 "For better future": 7,
+                "The Godfather": 8,
+
+                "Kolkastart": 1,
+                "Mining empire": 6,
+                "Mining expert": 5,
+
                 "Coming soon": 7
             }
 
@@ -1237,8 +1252,17 @@ function refresh_achievements(user_achievements) {
                     case 4:
                         achievement_tree.addChild("Entrepreneur", achievements[achievement].name);
                         continue;
+                    case 5:
+                        achievement_tree.addChild("Kolkastart", achievements[achievement].name);
+                        continue;
+                    case 6:
+                        achievement_tree.addChild("Mining expert", achievements[achievement].name);
+                        continue;
                     case 7:
                         achievement_tree.addChild("Beginner investor", achievements[achievement].name);
+                        continue;
+                    case 8:
+                        achievement_tree.addChild("For better future", achievements[achievement].name);
                         continue;
                 }
             }
