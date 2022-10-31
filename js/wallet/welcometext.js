@@ -12,13 +12,13 @@ const welcome_texts = [
 */
 
 const backrounds = [
-    //"img/yenn-sea-1.jpg",
-    //"backgrounds/wallet/yenn-mountains-1.jpg",
-    //"img/AmongTreesScreenshot5.jpg",
-    //"img/csou8q3.jpeg",
-    "img/halloween1.jpg",
-    "img/halloween2.jpg",
-    "img/halloween3.jpg"
+    "img/yenn-sea-1.jpg",
+    "backgrounds/wallet/yenn-mountains-1.jpg",
+    "img/AmongTreesScreenshot5.jpg",
+    "img/csou8q3.jpeg",
+    //"img/halloween1.jpg",
+    //"img/halloween2.jpg",
+    //"img/halloween3.jpg"
 ];
 
 function showcredits() {
