@@ -1179,7 +1179,7 @@ function findAchivementImage (name) {
 
     if (user_achievements && user_achievements.includes(parseInt(findAchievementIdByName(achievements, name)))) {
         return `
-            <img class="image is-48x48 ${border}" src="${findAchievementByName(achievements, name).icon}"/>
+            <img class="image is-48x48 img-reached ${border}" src="${findAchievementByName(achievements, name).icon}"/>
         `;
     } else { // not reached
         return `

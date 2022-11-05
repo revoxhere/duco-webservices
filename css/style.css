@@ -1081,6 +1081,10 @@ input:checked + .slider:before {
   border: 0.1em solid rgba(0, 0, 0, .2) !important;
 }
 
+.tf-tree .tf-nc img.img-reached {
+  border: 0.1em solid rgba(243, 18, 145, .3) !important;
+}
+
 .tf-tree .tf-nc img.is-rewarded {
   border: 0.1em solid rgba(255, 215, 0, .3) !important;
 }
