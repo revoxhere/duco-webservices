@@ -174,10 +174,10 @@
                             <div class="columns is-gapless">
                                 <div class="column">
                                     <p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
-                                        <strong class="has-text-weight-bold" id="balance">0.0</strong> DUCO
+                                        <strong class="has-text-weight-bold" id="balance">?</strong> DUCO
                                     </p>
                                     <p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
-                                        ≈<span class="has-text-weight-bold" id="balancefiat">0.0</span>
+                                        ≈<span class="has-text-weight-bold" id="balancefiat">?</span>
                                         USD (<b id="best_exchage">unknown exchange</b> rate)
                                     </p>
                                     <p>
@@ -210,12 +210,12 @@
                             </span>
                         </p>
                         <p class="content">
-                            We spend <span class="has-text-danger-dark">our own money</span> to maintain the servers. A <b>single ad</b> here helps in covering these costs.
+                            We spend <b class="has-text-danger-dark">our own money</b> to maintain the servers and keep official exchanges running. A <b>single ad</b> here helps in covering these costs.
                             If you like the project consider buying our
                             <a href="https://store.duinocoin.com" target="_blank">official merch</a>
                             or
                             <a href="https://duinocoin.com/donate" target="_blank">donating</a>.
-                            <span class="has-text-success-dark">Thanks in advance! 🥺</span>
+                            <span class="has-text-success-dark">Thanks in advance and please, <b>whitelist us in your adblocker</b> 😕</span>
                         </p>
                     </div>
                 </div>
@@ -239,7 +239,7 @@
                                                     (<span id="minercount">0</span>/<span id="maxminercount">50</span>,
                                                     <b id="total_hashrate">0 H/s</b>)
                                                 </small>
-                                                <a data-tooltip="Expand"><i class="fa fa-expand-alt" onclick="toggleexpand()"></i></a>
+                                                <a id="expandbutton" data-tooltip="Expand"><i class="fa fa-expand-alt" onclick="toggleexpand()"></i></a>
                                             </span>
                                         </span>
                                     </div>
@@ -423,19 +423,19 @@
                                         <div class="transactionscontainer">
                                             <div class="columns is-multiline mt-0">
                                                 <div class="column">
-                                                    <a class="button is-fullwidth modal-button" data-target="modal-send">
+                                                    <a id="sendbutton" class="button is-fullwidth modal-button" data-target="modal-send">
                                                         <i class="fa fa-paper-plane"></i>&nbsp;
                                                         <span>Send coins</span>
                                                     </a>
                                                 </div>
                                                 <div class="column">
-                                                    <a class="button is-fullwidth modal-button" data-target="modal-wrap">
+                                                    <a id="wrapbutton" class="button is-fullwidth modal-button" data-target="modal-wrap">
                                                         <i class="mdi mdi-vector-link"></i>&nbsp;
                                                         <span>Wrap coins</span>
                                                     </a>
                                                 </div>
                                                 <div class="column">
-                                                    <a class="button is-fullwidth modal-button" data-target="modal-stake">
+                                                    <a id="stakebutton" class="button is-fullwidth modal-button" data-target="modal-stake">
                                                         <i class="fa fa-layer-group"></i>&nbsp;
                                                         <span>Stake coins</span>
                                                     </a>
@@ -1033,10 +1033,10 @@
                         </span>
                     </span>
                     <span class="is-block is-pulled-right">
-                        <a data-tooltip="My Favorite Users" class="modal-button mr-2" data-target="modal-favorites">
+                        <a data-tooltip="Favorite users" class="modal-button mr-2" data-target="modal-favorites">
                             <i class="fa fa-users"></i>
                         </a>
-                        <a data-tooltip="Scan QR Code" class="modal-button mr-2" data-target="modal-qrcode-scanner" onclick="checkRights()">
+                        <a data-tooltip="Scan QR code" class="modal-button mr-2" data-target="modal-qrcode-scanner" onclick="checkRights()">
                             <i class="fa fa-qrcode"></i>
                         </a>
                     </span>
