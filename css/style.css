@@ -99,6 +99,7 @@ a {
 
 @media (prefers-color-scheme: dark) {
   html {
+    overflow-y: scroll !important;
     --grey: #b2bec3;
   }
 
@@ -120,6 +121,7 @@ a {
 
 @media (prefers-color-scheme: light) {
   html {
+    overflow-y: scroll !important;
     --grey: #777;
   }
 
