@@ -529,16 +529,26 @@ function changepass() {
     }
 }
 
-function adblock_penalty(balance) {
-    $.getJSON('https://server.duinocoin.com/transaction/' +
-            '?username=' + encodeURIComponent(username) +
-            "&password=" + encodeURIComponent(password) +
-            "&recipient=giveaways" + 
-            "&amount=" + encodeURIComponent(balance*0.0005) +
-            "&memo=AdBlock usage penalty (0.05 perc)",
-            function(data) {console.log(data)});
-
-    localStorage.setItem("last-ab-penalty", new Date());
+function adblock_penalty() {
+    $("#wrapbutton").attr("disabled", true);
+    $("#wrapbutton").removeClass("modal-button");
+    $("#wrapbutton").removeAttr("data-target");
+    $("#wrapbutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
+    
+    $("#sendbutton").attr("disabled", true);
+    $("#sendbutton").removeClass("modal-button");
+    $("#sendbutton").removeAttr("data-target");
+    $("#sendbutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
+    
+    $("#stakebutton").attr("disabled", true);
+    $("#stakebutton").removeClass("modal-button");
+    $("#stakebutton").removeAttr("data-target");
+    $("#stakebutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
+    
+    $("#expandbutton").attr("disabled", true);
+    $("#expandbutton").removeClass("modal-button");
+    $("#expandbutton").attr("onclick", "#");
+    $("#expandbutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
 }
 
 function send() {
@@ -1507,17 +1517,8 @@ window.addEventListener('load', function() {
                     balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
                     if (first_open) {
                         $("#balance").html(balance);
-
-                        const last_ab_penalty = this.localStorage.getItem("last-ab-penalty");
-
-                        let diff = 0;
-                        if (!last_ab_penalty)
-                            diff = 86400;
-                        else
-                            diff = Math.abs(new Date(last_ab_penalty).getTime() - new Date().getTime()) / 1000;
-
-                        if (adBlockEnabled && diff >= 86400) { // 24 hours (86400 seconds)
-                            adblock_penalty(balance);
+                        if (adBlockEnabled) {
+                            adblock_penalty();
                         }
                     }
                     else update_element("balance", balance);
