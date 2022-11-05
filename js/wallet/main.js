@@ -63,14 +63,22 @@ function component_to_hex(c) {
     return hex.length == 1 ? "0" + hex : hex;
 };
 
+if (localStorage.getItem("minerExpanded")) {
+    if (localStorage.getItem("minerExpanded") == "true") document.getElementById("mcontainer").style.maxHeight = "100%";
+    else document.getElementById("mcontainer").style.maxHeight = "150px";
+}
+
+
 let minertableexpanded = 0;
 function toggleexpand() {
     if (!minertableexpanded) {
         document.getElementById("mcontainer").style.maxHeight = "100%";
         minertableexpanded = 1;
+        localStorage.setItem("minerExpanded", "true");
     } else {
         document.getElementById("mcontainer").style.maxHeight = "150px";
         minertableexpanded = 0;
+        localStorage.setItem("minerExpanded", "false");
     }
 }
 
