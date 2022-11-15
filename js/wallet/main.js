@@ -1207,6 +1207,11 @@ function refresh_achievements(user_achievements) {
             // Kolkastart fix
             achievements[99] = achievements[107];
             delete achievements[107];
+            if (user_achievements.includes(107)) {
+                user_achievements.push(99);
+            }
+
+            console.log(user_achievements, achievements)
 
             achievements_final = `<div class="tf-tree">`;
 
