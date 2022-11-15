@@ -1793,7 +1793,7 @@ window.addEventListener('load', function() {
                             } else if (miner_software.includes("PC") && (miner_identifier == "Raspberry Pi" || miner_identifier.includes("RPi"))) {
                                 icon = `<img src="img/pi.gif">`;
                                 color = "#16a085";
-                                miner_type = "AVR (Pico)";
+                                miner_type = "AVR (Raspberry Pi)";
                                 percentage = 0.96;
                             } else if (miner_software.includes("PC")) {
                                 color = "#F97F51";
