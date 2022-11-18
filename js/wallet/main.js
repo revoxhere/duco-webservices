@@ -55,8 +55,6 @@ function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + 
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
 
-function detectAdblock(){ const c={uBlockOrigin:{url:"https://incolumitas.com/data/pp34.js?sv=",id:"837jlaBksSjd9jh"},adblockPlus:{url:"https://incolumitas.com/data/neutral.js?&adserver=",id:"hfuBadsf3hFAk"}};function e(c){return new Promise(function(n,t){var o=document.createElement("script");o.onload=function(){document.getElementById(c.id)?n(!1):n(!0)},o.onerror=function(){n(!0)},o.src=c.url,document.body.appendChild(o)})}return new Promise(function(t,o){var n=[e(c.uBlockOrigin),e(c.adblockPlus)];Promise.all(n).then(n=>{t({uBlockOrigin:n[0],adblockPlus:n[1]})}).catch(n=>{o(n)})})}
-
 function component_to_hex(c) {
     /* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
     var hex = c.toString(16);
@@ -530,6 +528,7 @@ function changepass() {
 }
 
 function adblock_penalty() {
+    return; // disabled
     $("#wrapbutton").attr("disabled", true);
     $("#wrapbutton").removeClass("modal-button");
     $("#wrapbutton").removeAttr("data-target");
@@ -2271,7 +2270,7 @@ window.addEventListener('load', function() {
                                                 (adsbygoogle = window.adsbygoogle || []).push({});
                                                 setTimeout(function() {
                                                     console.log($('.adsbygoogle').height());
-                                                    if ($('.adsbygoogle').height() <= initial_height) {
+                                                    if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
                                                         $("#adblocker_detected").fadeIn();
                                                         adBlockEnabled = true;
                                                     }
@@ -2371,18 +2370,16 @@ window.addEventListener('load', function() {
                                                     $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
                                                     $("iframe#news_iframe").fadeIn(2500)
 
-                                                    if (adBlockEnabled) {
-                                                        $("#adblocker_detected").fadeIn()
-                                                    } else {
-                                                        try {
-                                                            $("#adblocker_detected").fadeOut(function() {
-                                                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                                            })
-
-                                                        } catch (err) {
-                                                            $("#adblocker_detected").fadeIn()
+                                                    initial_height = $('.adsbygoogle').height();
+                                                    console.log(console.log($('.adsbygoogle').height()));
+                                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                                    setTimeout(function() {
+                                                        console.log($('.adsbygoogle').height() || adBlockEnabled);
+                                                        if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
+                                                            $("#adblocker_detected").fadeIn();
+                                                            adBlockEnabled = true;
                                                         }
-                                                    }
+                                                    }, 3000)
                                                 });
                                             });
                                         }, 350);
