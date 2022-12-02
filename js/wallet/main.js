@@ -2789,4 +2789,24 @@ addFavorite.addEventListener('click', () => {
     }
 });
 
+let keys = [];
+let konami  = '72,79,72,79,72,79';  // "hohoho"
+
+$(document).keydown(function(e) {
+     keys.push(e.keyCode);
+     if (keys.toString().indexOf(konami) >= 0){
+
+        try {
+            $('#hohoho')[0].play();
+        }
+        catch(e) {}
+
+        keys = [];
+     }
+     else
+     {
+
+     }
+ });
+
 updateFavoritesTable();
