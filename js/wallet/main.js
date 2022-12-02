@@ -1041,6 +1041,46 @@ categories.addEventListener('change', (evt) => {
     }
 });
 
+const usableItems = [
+    1, // christmas hat
+    2, // sunglasses
+    3  // bow tie
+];
+
+let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || usableItems;
+
+function toggleItem(itemid)
+{
+    if(enabledItems.includes(itemid)) // disable item
+    {
+        let index = enabledItems.indexOf(itemid);
+
+        if (index > -1) {
+            enabledItems.splice(index, 1);
+        }
+
+        switch(itemid)
+        {
+            case 1: $("#hat").fadeOut(); break;
+            case 2: $("#sunglasses").fadeOut(); break;
+            case 3: $("#bowtie").fadeOut(); break;
+        }
+    }
+    else // enable item
+    {
+        enabledItems.push(itemid);
+
+        switch(itemid)
+        {
+            case 1: $("#hat").fadeIn(); break;
+            case 2: $("#sunglasses").fadeIn(); break;
+            case 3: $("#bowtie").fadeIn(); break;
+        }
+    }
+
+    localStorage.setItem("enabledItems", JSON.stringify(enabledItems));
+}
+
 function refresh_event() {
     fetch(`https://server.duinocoin.com/event`)
         .then(response => response.json())
@@ -1097,11 +1137,28 @@ function refresh_shop(user_items) {
                                     Price: <b>${shop_items[item]["price"]} DUCO</b>
                                 </div>`;
                 if (user_items && user_items.includes(parseInt(item))) {
-                    shop_items_final += `
-                                <button disabled class="button is-fullwidth">Owned</button>
+                    if(usableItems.includes(parseInt(item)))
+                    {
+                        shop_items_final += `
+                                    <div id="switch-container">
+                                        <label class="switch">
+                                            <input type="checkbox" ${enabledItems.includes(parseInt(item)) ? "checked" : ""} onclick="toggleItem(${item});">
+                                            <span class="slider round">
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>`;
+                        </div>`;
+                    }
+                    else
+                    {
+                        shop_items_final += `
+                                    <button disabled class="button is-fullwidth">Owned</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
                 } else {
                     shop_items_final += `
                                 <button id="${item}_button" onclick="shop_buy(${item})" class="button is-fullwidth">Buy</button>
@@ -1122,17 +1179,17 @@ function refresh_shop(user_items) {
 
     if (user_items.includes(1)) {
         $("#hat").attr("src", "https://server.duinocoin.com/assets/items/1.png")
-        $("#hat").fadeIn();
+        if(enabledItems.includes(1)) $("#hat").fadeIn();
     }
 
     if (user_items.includes(2)) {
         $("#sunglasses").attr("src", "https://server.duinocoin.com/assets/items/2.png")
-        $("#sunglasses").fadeIn();
+        if(enabledItems.includes(2)) $("#sunglasses").fadeIn();
     }
 
     if (user_items.includes(3)) {
         $("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
-        $("#bowtie").fadeIn();
+        if(enabledItems.includes(3)) $("#bowtie").fadeIn();
     }
 
     if (user_items.includes(10)) {
