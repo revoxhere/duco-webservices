@@ -8,8 +8,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="https://wallet.duinocoin.com/assets/duco.svg">
-    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/duco.svg">
+    <link rel="icon" href="https://wallet.duinocoin.com/assets/ducochristmas.svg">
+    <link rel="shortcut icon" href="https://wallet.duinocoin.com/assets/ducochristmas.svg">
     <title>Duino-Coin | Web Wallet</title>
     <meta name="apple-mobile-web-app-title" content="Duino-Coin | Web Wallet">
     <meta name="application-name" content="Duino-Coin | Web Wallet">
@@ -72,12 +72,14 @@
         <div id="loader"></div>
     </div>
     <canvas id="background"></canvas>
+    <div class="snow">
+    </div>
     <div class="login-content" class="mt-0">
         <form class="box blur" id="form">
             <p class="title is-size-5 mb-0">
                 <span class="icon-text">
                     <span class="icon">
-                        <img id="ducologo" src="https://wallet.duinocoin.com/assets/duco.svg">
+                        <img id="ducologo" src="https://wallet.duinocoin.com/assets/ducochristmas.svg">
                     </span>
                     <span style="word-break: break-all;">
                         <span class="has-text-weight-bold">
@@ -127,7 +129,7 @@
                 <button type="submit" id="submit" class="btn button">Login</button>
             </div>
             <a href="recovery.html">Forgot your passphrase?</a>
-            <a href="register.html">Don't have a wallet?</a>
+            <a href="register.html">Need to create a wallet?</a>
         </form>
     </div>
     <div id="wallet" style="display:none;">
@@ -421,7 +423,7 @@
                                     </div>
                                     <div class="column is-full mt-0 mb-0">
                                         <div class="transactionscontainer">
-                                            <div class="columns is-multiline mt-0">
+                                            <div class="columns is-multiline mt-0 is-hidden-mobile">
                                                 <div class="column">
                                                     <a id="sendbutton" class="button is-fullwidth modal-button" data-target="modal-send">
                                                         <i class="fa fa-paper-plane"></i>&nbsp;
@@ -438,6 +440,23 @@
                                                     <a id="stakebutton" class="button is-fullwidth modal-button" data-target="modal-stake">
                                                         <i class="fa fa-layer-group"></i>&nbsp;
                                                         <span>Stake coins</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="columns mt-0 is-hidden-desktop">
+                                                <div class="column" style="display:inline-block;width:32%">
+                                                    <a id="sendbutton" class="button modal-button is-fullwidth" data-target="modal-send">
+                                                        <i class="fa fa-paper-plane"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="column" style="display:inline-block;width:32%">
+                                                    <a id="wrapbutton" class="button modal-button is-fullwidth" data-target="modal-wrap">
+                                                        <i class="mdi mdi-vector-link"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="column" style="display:inline-block;width:32%">
+                                                    <a id="stakebutton" class="button modal-button is-fullwidth" data-target="modal-stake">
+                                                        <i class="fa fa-layer-group"></i>
                                                     </a>
                                                 </div>
                                             </div>
@@ -650,7 +669,7 @@
         </div>
         <br>
     </div>
-    <div class="footer-container blur">
+    <div class="footer-container blur is-hidden-mobile">
         <div class="footer-content ">
             <a href="https://status.duinocoin.com" target="_blank">
                 Server status
@@ -782,7 +801,11 @@
                             <img src="assets/amogus_faucet.png" class="icon is-small">
                             <span>Amogus Faucet</span>
                         </a>
-                        <a href="http://furim.xyz/faucet.html" target="_blank" class="button">
+                        <a href="https://duino-faucet.com" target="_blank" class="button">
+                            <img src="assets/duino_faucet.png" class="icon is-small">
+                            <span>duino-faucet.com</span>
+                        </a>
+                        <a href="https://furim.xyz/faucet.html" target="_blank" class="button">
                             <img src="assets/furim_faucet.png" class="icon is-small">
                             <span>Furime Faucet</span>
                         </a>
@@ -834,7 +857,7 @@
                 <p class="modal-card-title mb-5">
                     <span class="icon-text">
                         <span class="icon">
-                            <img src="https://wallet.duinocoin.com/assets/duco.svg">
+                            <img src="https://wallet.duinocoin.com/assets/ducochristmas.svg">
                         </span>
                         <span>Duino-Coin&nbsp;</span>
                         <span class="has-text-weight-light">
@@ -1407,7 +1430,6 @@
         </div>
         <button class="modal-close is-large" onclick="stopCamera()" aria-label="close"></button>
     </div>
-
     <audio id="laugh">
         <source src="assets/laugh.mp3" type="audio/mpeg">
     </audio>
