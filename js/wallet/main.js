@@ -68,6 +68,7 @@ if (localStorage.getItem("minerExpanded")) {
 
 
 let minertableexpanded = 0;
+
 function toggleexpand() {
     if (!minertableexpanded) {
         document.getElementById("mcontainer").style.maxHeight = "100%";
@@ -81,6 +82,7 @@ function toggleexpand() {
 }
 
 let transactiontableexpanded = 0;
+
 function toggletxexpand() {
     if (!transactiontableexpanded) {
         document.getElementsByClassName(".tcontainer").style.maxHeight = "100%";
@@ -533,17 +535,17 @@ function adblock_penalty() {
     $("#wrapbutton").removeClass("modal-button");
     $("#wrapbutton").removeAttr("data-target");
     $("#wrapbutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
-    
+
     $("#sendbutton").attr("disabled", true);
     $("#sendbutton").removeClass("modal-button");
     $("#sendbutton").removeAttr("data-target");
     $("#sendbutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
-    
+
     $("#stakebutton").attr("disabled", true);
     $("#stakebutton").removeClass("modal-button");
     $("#stakebutton").removeAttr("data-target");
     $("#stakebutton").attr("data-tooltip", "Disable your adblocking software. We're paying for this");
-    
+
     $("#expandbutton").attr("disabled", true);
     $("#expandbutton").removeClass("modal-button");
     $("#expandbutton").attr("onclick", "#");
@@ -1044,14 +1046,13 @@ categories.addEventListener('change', (evt) => {
 const usableItems = [
     1, // christmas hat
     2, // sunglasses
-    3  // bow tie
+    3 // bow tie
 ];
 
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || usableItems;
 
-function toggleItem(itemid)
-{
-    if(enabledItems.includes(itemid)) // disable item
+function toggleItem(itemid) {
+    if (enabledItems.includes(itemid)) // disable item
     {
         let index = enabledItems.indexOf(itemid);
 
@@ -1059,22 +1060,31 @@ function toggleItem(itemid)
             enabledItems.splice(index, 1);
         }
 
-        switch(itemid)
-        {
-            case 1: $("#hat").fadeOut(); break;
-            case 2: $("#sunglasses").fadeOut(); break;
-            case 3: $("#bowtie").fadeOut(); break;
+        switch (itemid) {
+            case 1:
+                $("#hat").fadeOut();
+                break;
+            case 2:
+                $("#sunglasses").fadeOut();
+                break;
+            case 3:
+                $("#bowtie").fadeOut();
+                break;
         }
-    }
-    else // enable item
+    } else // enable item
     {
         enabledItems.push(itemid);
 
-        switch(itemid)
-        {
-            case 1: $("#hat").fadeIn(); break;
-            case 2: $("#sunglasses").fadeIn(); break;
-            case 3: $("#bowtie").fadeIn(); break;
+        switch (itemid) {
+            case 1:
+                $("#hat").fadeIn();
+                break;
+            case 2:
+                $("#sunglasses").fadeIn();
+                break;
+            case 3:
+                $("#bowtie").fadeIn();
+                break;
         }
     }
 
@@ -1087,10 +1097,10 @@ function refresh_event() {
         .then(data => {
             $("#week_topic").html(data.result.topic);
             $("#week_desc").html(data.result.description);
-            $("#week_date").html(new Date(data.result.ends*1000).toLocaleString("default", date_opt));
-            
-            full_time = new Date(data.result.ends*1000) - new Date(data.result.starts*1000);
-            elapsed_time = new Date() - new Date(data.result.starts*1000); 
+            $("#week_date").html(new Date(data.result.ends * 1000).toLocaleString("default", date_opt));
+
+            full_time = new Date(data.result.ends * 1000) - new Date(data.result.starts * 1000);
+            elapsed_time = new Date() - new Date(data.result.starts * 1000);
 
             $("#week_end").attr('value', elapsed_time);
             $("#week_end").attr('max', full_time);
@@ -1137,8 +1147,7 @@ function refresh_shop(user_items) {
                                     Price: <b>${shop_items[item]["price"]} DUCO</b>
                                 </div>`;
                 if (user_items && user_items.includes(parseInt(item))) {
-                    if(usableItems.includes(parseInt(item)))
-                    {
+                    if (usableItems.includes(parseInt(item))) {
                         shop_items_final += `
                                     <div id="switch-container">
                                         <label class="switch">
@@ -1150,9 +1159,7 @@ function refresh_shop(user_items) {
                                 </div>
                             </div>
                         </div>`;
-                    }
-                    else
-                    {
+                    } else {
                         shop_items_final += `
                                     <button disabled class="button is-fullwidth">Owned</button>
                                 </div>
@@ -1179,17 +1186,17 @@ function refresh_shop(user_items) {
 
     if (user_items.includes(1)) {
         $("#hat").attr("src", "https://server.duinocoin.com/assets/items/1.png")
-        if(enabledItems.includes(1)) $("#hat").fadeIn();
+        if (enabledItems.includes(1)) $("#hat").fadeIn();
     }
 
     if (user_items.includes(2)) {
         $("#sunglasses").attr("src", "https://server.duinocoin.com/assets/items/2.png")
-        if(enabledItems.includes(2)) $("#sunglasses").fadeIn();
+        if (enabledItems.includes(2)) $("#sunglasses").fadeIn();
     }
 
     if (user_items.includes(3)) {
         $("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
-        if(enabledItems.includes(3)) $("#bowtie").fadeIn();
+        if (enabledItems.includes(3)) $("#bowtie").fadeIn();
     }
 
     if (user_items.includes(10)) {
@@ -1214,7 +1221,7 @@ function Tree(name) {
     this.tree = new Node(name);
 }
 
-Tree.prototype.addChild = function (parent, child) {
+Tree.prototype.addChild = function(parent, child) {
     function findParent(node) {
         var found;
         if (node.name === parent) return node;
@@ -1227,18 +1234,17 @@ Tree.prototype.addChild = function (parent, child) {
 
 const findAchievementIdByName = (obj, name) => {
     for (elm in obj) {
-        if(obj[elm].name == name) return elm;
-    }
-}       
-
-const findAchievementByName = (obj, name) => {
-    for(elm in obj)
-    {
-        if(obj[elm].name == name) return obj[elm];
+        if (obj[elm].name == name) return elm;
     }
 }
 
-function findAchivementImage (name) {
+const findAchievementByName = (obj, name) => {
+    for (elm in obj) {
+        if (obj[elm].name == name) return obj[elm];
+    }
+}
+
+function findAchivementImage(name) {
     let border = "";
 
     if (findAchievementByName(achievements, name).reward > 0) border = "is-rewarded";
@@ -1266,8 +1272,6 @@ function refresh_achievements(user_achievements) {
             if (user_achievements.includes(107)) {
                 user_achievements.push(99);
             }
-
-            console.log(user_achievements, achievements)
 
             achievements_final = `<div class="tf-tree">`;
 
@@ -1311,8 +1315,7 @@ function refresh_achievements(user_achievements) {
             for (achievement in achievements) {
                 let herarchy_number = parseInt(achievements_hierarchy[achievements[achievement].name]);
 
-                switch(herarchy_number)
-                {
+                switch (herarchy_number) {
                     case -1:
                         achievement_tree.addChild("Achievements", achievements[achievement].name);
                         continue;
@@ -1346,17 +1349,16 @@ function refresh_achievements(user_achievements) {
                 }
             }
 
-            function getChildrens (parent) {
+            function getChildrens(parent) {
                 return parent["children"] || [];
             }
 
-            function getChildrensHTML (parentAchievement) {
+            function getChildrensHTML(parentAchievement) {
                 let html = "";
 
-                for(elm in getChildrens(parentAchievement)) {
+                for (elm in getChildrens(parentAchievement)) {
                     let achievement = getChildrens(parentAchievement)[elm];
-                    if(getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0)
-                    {
+                    if (getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0) {
                         html += `
                         <li>
                             <div class="tf-nc" tip="${achievement.name}">
@@ -1366,8 +1368,7 @@ function refresh_achievements(user_achievements) {
                                 ${getChildrensHTML(achievement)}
                             </ul>
                         </li>`;
-                    }
-                    else {
+                    } else {
                         html += `
                         <li>
                             <div class="tf-nc" tip="${achievement.name}">
@@ -1382,10 +1383,9 @@ function refresh_achievements(user_achievements) {
 
             let childs = "";
 
-            for(elm in getChildrens(achievement_tree["tree"])) {
+            for (elm in getChildrens(achievement_tree["tree"])) {
                 let achievement = getChildrens(achievement_tree["tree"])[elm];
-                if(getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0)
-                {
+                if (getChildrens(achievement) && Object.keys(getChildrens(achievement)).length !== 0) {
                     childs += `
                     <li>
                         <div class="tf-nc" tip="${achievement.name}">
@@ -1395,8 +1395,7 @@ function refresh_achievements(user_achievements) {
                             ${getChildrensHTML(achievement)}
                         </ul>
                     </li>`;
-                }
-                else {
+                } else {
                     childs += `
                     <li>
                         <div class="tf-nc" tip="${achievement.name}">
@@ -1428,7 +1427,7 @@ const isElementXPercentInViewport = function(el, percentVisible) {
         windowHeight = (window.innerHeight || document.documentElement.clientHeight);
 
     return !(
-        Math.floor(100 - (((rect.top >= 0 ? 0 : rect.top) / +-rect.height) * 100)) < percentVisible ||
+        Math.floor(100 - (((rect.top >= 0 ? 0 : rect.top) / + -rect.height) * 100)) < percentVisible ||
         Math.floor(100 - ((rect.bottom - windowHeight) / rect.height) * 100) < percentVisible
     )
 };
@@ -1462,21 +1461,19 @@ const updateToolTips = () => {
 
             let { x, y } = el.getBoundingClientRect();
 
-            if(tip.style.visibility == "visible") return;
+            if (tip.style.visibility == "visible") return;
 
-            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || "ontouchstart" in document.documentElement || typeof window.orientation !== 'undefined')
-            { // if is phone use static position
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || "ontouchstart" in document.documentElement || typeof window.orientation !== 'undefined') { // if is phone use static position
                 tip.style.left = `25%`;
                 tip.style.top = `25%`;
-            }
-            else {
+            } else {
                 // If is out of the screen change position
-                if(!isElementXPercentInViewport(tip, 95)) {
-                    tip.style.left = x - tip.offsetWidth  + 'px';
-                    tip.style.top = y - tip.offsetHeight +  'px';
+                if (!isElementXPercentInViewport(tip, 95)) {
+                    tip.style.left = x - tip.offsetWidth + 'px';
+                    tip.style.top = y - tip.offsetHeight + 'px';
                 } else { // Default position (Achievement pos + 46px)
-                    tip.style.left = (x+46)  + 'px';
-                    tip.style.top = (y+46) +  'px';
+                    tip.style.left = (x + 46) + 'px';
+                    tip.style.top = (y + 46) + 'px';
                 }
             }
             tip.style.visibility = "visible";
@@ -1570,6 +1567,26 @@ window.addEventListener('load', function() {
                     if (first_open) {
                         refresh_shop(user_items);
                         refresh_event();
+
+                        $('#form').hide("drop", { direction: "left" }, 300, function() {
+                            $('#wallet').show("drop", { direction: "right" }, 300, function() {
+                                initial_height = $('.adsbygoogle').height();
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                setTimeout(function() {
+                                    console.log($('.adsbygoogle').height());
+                                    if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
+                                        $("#adblocker_detected").fadeIn();
+                                        adBlockEnabled = true;
+                                    }
+                                }, 3000)
+
+                                $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
+                                $("iframe#news_iframe").attr('name', Date.now());
+                                $('iframe#news_iframe').on("load", function() {
+                                    $("iframe#news_iframe").fadeIn(500);
+                                });
+                            });
+                        });
                     }
 
                     user_achievements = data.achievements;
@@ -1581,8 +1598,7 @@ window.addEventListener('load', function() {
                         if (adBlockEnabled) {
                             adblock_penalty();
                         }
-                    }
-                    else update_element("balance", balance);
+                    } else update_element("balance", balance);
 
                     if (oldb != balance) {
                         if (data.miners.length) {
@@ -1855,7 +1871,7 @@ window.addEventListener('load', function() {
                                 color = "#F97F51";
                                 icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
                                 miner_type = "PC (Normal)";
-                                if (Math.floor(Math.random() * 5) == 1) $("#magi_notify").fadeIn();
+                                if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
                             } else if (miner_software.includes("Web")) {
                                 color = "#009432";
                                 icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
@@ -2193,7 +2209,7 @@ window.addEventListener('load', function() {
                                 thtml = `
                                 <div class="column is-full">
                                     <p class="title is-size-6">
-                                        <i class="mdi mdi-arrow-top-right fa-fw has-text-danger"></i>
+                                        <i class="fa fa-arrow-right fa-fw has-text-danger"></i>
                                         <span class="has-text-weight-normal">
                                             Sent
                                             <span class="has-text-weight-bold">
@@ -2222,7 +2238,7 @@ window.addEventListener('load', function() {
                                 thtml = `
                                 <div class="column is-full">
                                     <p class="title is-size-6">
-                                        <i class="mdi mdi-arrow-bottom-left fa-fw has-text-success-dark"></i>
+                                        <i class="fa fa-arrow-left fa-fw has-text-success-dark"></i>
                                         <span class="has-text-weight-normal">
                                             Received
                                             <span class="has-text-weight-bold">
@@ -2307,7 +2323,7 @@ window.addEventListener('load', function() {
                                     $("#ducologo").addClass("rotate");
 
                                     $("#username").text(encodeURIComponent(username));
-                                    $("#email").text(`(${data.result[1]})`);
+                                    $("#email").text(`${data.result[1]}`);
 
                                     $("#miner_pass").text(data.result[2]);
                                     $("#mining_key").val(data.result[2]);
@@ -2318,27 +2334,6 @@ window.addEventListener('load', function() {
 
                                     user_data(username, true);
                                     genQrCode();
-
-                                    setTimeout(function() {
-                                        $('#form').hide("drop", { direction: "up" }, 300, function() {
-                                            $('#wallet').show("drop", { direction: "down" }, 300, function() {
-                                                initial_height = $('.adsbygoogle').height();
-                                                console.log(console.log($('.adsbygoogle').height()));
-                                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                                setTimeout(function() {
-                                                    console.log($('.adsbygoogle').height());
-                                                    if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
-                                                        $("#adblocker_detected").fadeIn();
-                                                        adBlockEnabled = true;
-                                                    }
-                                                }, 3000)
-
-                                                $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
-                                                $("iframe#news_iframe").attr('name', Date.now());
-                                                $("iframe#news_iframe").fadeIn(1000);
-                                            });
-                                        });
-                                    }, 500);
 
                                     setInterval(function() {
                                         stake_counter();
@@ -2354,7 +2349,7 @@ window.addEventListener('load', function() {
                                         document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                                             `<b>Incorrect captcha score</b><br>
                                     ReCaptcha didn't like your browser or your behavior.<br>
-                                    If you're not a robot, just try again.<br>
+                                    🤖 If you're not a robot, just try again.<br>
                                     If the issue persists, try using a different network or browser.</p>`;
                                         document.querySelector('html').classList.add('is-clipped');
                                         modal_error.classList.add('is-active');
@@ -2374,10 +2369,45 @@ window.addEventListener('load', function() {
                             })
                         .fail(function(jqXHR, textStatus, errorThrown) {
                             $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            let modal_error = document.querySelector('#modal_error');
+                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                `Network <b>connection problem</b>.<br>
+                                Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                We'd like to help, but there are many possible causes.<br>
+                                <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                            </p>`;
+                            document.querySelector('html').classList.add('is-clipped');
+                            modal_error.classList.add('is-active');
                         })
                         .always(function() {
                             $("#submit").removeClass("is-loading");
+                        })
+                        .catch(function(err) {
+                            console.error(err);
+                            $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            let modal_error = document.querySelector('#modal_error');
+                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                `Network <b>connection problem</b>.<br>
+                                Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                We'd like to help, but there are many possible causes.<br>
+                                <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                            </p>`;
+                            document.querySelector('html').classList.add('is-clipped');
+                            modal_error.classList.add('is-active');
                         });
+                }).catch(function(err) {
+                    console.error(err);
+                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    let modal_error = document.querySelector('#modal_error');
+                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                        `<b>ReCaptcha issue</b>.<br>
+                        Your web browser couldn't connect to Google's servers for some reason.<br>
+                        🤖 If you're not a robot, just try again.<br>
+                        If the issue persists, try using a different network or browser.
+                    </p>`;
+                    document.querySelector('html').classList.add('is-clipped');
+                    modal_error.classList.add('is-active');
+                    $("#submit").removeClass("is-loading");
                 });
             });
         }, 500);
@@ -2409,7 +2439,7 @@ window.addEventListener('load', function() {
                                         $("#ducologo").addClass("rotate");
 
                                         $("#username").text(encodeURIComponent(username));
-                                        $("#email").text(`(${data.result[1]})`);
+                                        $("#email").text(`${data.result[1]}`);
 
                                         $("#miner_pass").text(data.result[3]);
                                         $("#mining_key").val(data.result[3]);
@@ -2420,26 +2450,6 @@ window.addEventListener('load', function() {
 
                                         user_data(username, true);
                                         genQrCode();
-
-                                        setTimeout(function() {
-                                            $('#form').hide("drop", { direction: "up" }, 300, function() {
-                                                $('#wallet').show("drop", { direction: "down" }, 300, function() {
-                                                    $("iframe#news_iframe").attr('src', 'https://server.duinocoin.com/news.html');
-                                                    $("iframe#news_iframe").fadeIn(2500)
-
-                                                    initial_height = $('.adsbygoogle').height();
-                                                    console.log(console.log($('.adsbygoogle').height()));
-                                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                                    setTimeout(function() {
-                                                        console.log($('.adsbygoogle').height() || adBlockEnabled);
-                                                        if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
-                                                            $("#adblocker_detected").fadeIn();
-                                                            adBlockEnabled = true;
-                                                        }
-                                                    }, 3000)
-                                                });
-                                            });
-                                        }, 350);
 
                                         setInterval(function() {
                                             stake_counter();
@@ -2452,7 +2462,7 @@ window.addEventListener('load', function() {
                                             document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
                                                 `<b>Incorrect captcha score</b><br>
                                             ReCaptcha didn't like your browser or your behavior.<br>
-                                            If you're not a robot, just try again.<br>
+                                            🤖 If you're not a robot, just try again.<br>
                                             If the issue persists, try using a different network or browser.</p>`;
                                             document.querySelector('html').classList.add('is-clipped');
                                             modal_error.classList.add('is-active');
@@ -2472,11 +2482,46 @@ window.addEventListener('load', function() {
                                 })
                             .fail(function(jqXHR, textStatus, errorThrown) {
                                 $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `Network <b>connection problem</b>.<br>
+                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                    We'd like to help, but there are many possible causes.<br>
+                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                                </p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
                             })
                             .always(function() {
                                 $("#submit").removeClass("is-loading");
+                            })
+                            .catch(function(err) {
+                                console.error(err);
+                                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `Network <b>connection problem</b>.<br>
+                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                    We'd like to help, but there are many possible causes.<br>
+                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                                </p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
                             });
                     });
+                }).catch(function(err) {
+                    console.error(err);
+                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    let modal_error = document.querySelector('#modal_error');
+                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                        `<b>ReCaptcha issue</b>.<br>
+                        Your web browser couldn't connect to Google's servers for some reason.<br>
+                        🤖 If you're not a robot, just try again.<br>
+                        If the issue persists, try using a different network or browser.
+                    </p>`;
+                    document.querySelector('html').classList.add('is-clipped');
+                    modal_error.classList.add('is-active');
+                    $("#submit").removeClass("is-loading");
                 });
             }, 500);
         } else {
