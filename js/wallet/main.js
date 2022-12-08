@@ -1494,6 +1494,7 @@ $('#achievements').on('DOMSubtreeModified', updateToolTips);
 
 window.addEventListener('load', function() {
     // CONSOLE WARNING
+    console.log(`%cYo Mister White! Someone's at the Door`, "color:red; font-size: 2em");
     console.log(`%cHold on!`, "color: red; font-size: 3em");
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
     console.log(`%cPlease proceed with caution.`, "color: orange; font-size: 1.5em;");
@@ -2810,3 +2811,158 @@ $(document).keydown(function(e) {
  });
 
 updateFavoritesTable();
+
+document.querySelector("#hidden").addEventListener("click", function(e) {
+    e.preventDefault();
+    $('#wallet').hide("drop", { direction: "right" }, 300, function() {
+        $('.egg').show("drop", { direction: "right" }, 300);
+    });
+    type();
+});
+
+const startSnake = () => {
+
+    var snakeGame = {
+        ctx: $("#snakeGame")[0].getContext("2d"),
+        w: $("#snakeGame").width(),
+        h: $("#snakeGame").height()
+    }
+    
+    var cw = 10;
+    var d; 
+    var food;
+    var score;
+    let speed = 90;
+    
+    var snake_array; 
+    
+    function make_snake(){
+        var length = 4; 
+        snake_array = [];
+        for(var i = length-1; i>=0; i--){
+            snake_array.push({x: i, y:0});
+        }
+    }
+    
+    function make_food(){
+        food = {
+            x: Math.round(Math.random()*(snakeGame.w-cw)/cw), 
+            y: Math.round(Math.random()*(snakeGame.h-cw)/cw), 
+        };
+    }
+    
+    function drawGame(){
+        snakeGame.ctx.fillStyle = "black";
+        snakeGame.ctx.fillRect(0, 0, snakeGame.w, snakeGame.h);
+        snakeGame.ctx.strokeStyle = "lime";
+        snakeGame.ctx.strokeRect(0, 0, snakeGame.w, snakeGame.h);
+        
+        var nx = snake_array[0].x;
+        var ny = snake_array[0].y;
+    
+        if(d == "right") nx++;
+        else if(d == "left") nx--;
+        else if(d == "up") ny--;
+        else if(d == "down") ny++;
+        
+        if(nx == -1 || nx == snakeGame.w/cw || ny == -1 || ny == snakeGame.h/cw || check_collision(nx, ny, snake_array)){
+            initGame();
+            return;
+        }
+        
+        if(nx == food.x && ny == food.y){
+            var tail = {x: nx, y: ny};
+            score++;
+            make_food();
+        }
+        else{
+            var tail = snake_array.pop();
+            tail.x = nx; tail.y = ny;
+        }
+        
+        snake_array.unshift(tail);
+        
+        for(var i = 0; i < snake_array.length; i++){
+            var c = snake_array[i];
+            paint_cell(c.x, c.y);
+        }
+        
+        paint_cell(food.x, food.y);
+        var score_text = "Score: " + score;
+        snakeGame.ctx.fillStyle = "lime";
+        snakeGame.ctx.font = "1em Lato";
+        snakeGame.ctx.fillText(score_text, 5, snakeGame.h-5);
+    }
+    
+    function paint_cell(x, y){
+        snakeGame.ctx.fillStyle = "black";
+        snakeGame.ctx.fillRect(x*cw, y*cw, cw, cw);
+        snakeGame.ctx.strokeStyle = "white";
+        snakeGame.ctx.strokeRect(x*cw, y*cw, cw, cw);
+    }
+    
+    function check_collision(x, y, array){
+        for(var i = 0; i < array.length; i++){
+            if(i != array.length && (array[i].x == x && array[i].y == y)) return true;
+        }
+        return false;
+    }
+
+    function initGame() {
+        d = "right";
+        make_snake();
+        make_food(); 
+        score = 0;
+        
+        if(typeof game_loop != "undefined") clearInterval(game_loop);
+        game_loop = setInterval(drawGame, speed);
+    }
+
+    initGame();
+
+    $(document).keydown(function(e){
+        var key = e.which;
+        if(key == "37" && d != "right") d = "left";
+        else if(key == "38" && d != "down") d = "up";
+        else if(key == "39" && d != "left") d = "right";
+        else if(key == "40" && d != "up") d = "down";
+    })	
+}
+
+let textToWrite = `
+⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄<br/>
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀<br/>
+⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⠀⠀⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
+<br/>
+C:/Duino-Coin/EasterEgg/Snake> python3 main.py
+<br/>
+<br/>
+<br/>
+Starting game...
+`;
+  
+let screen = document.querySelector("#screen");
+let i = 0, isTag, text;
+
+function type() {
+    text = textToWrite.slice(0, ++i);
+    if (text === textToWrite) 
+    {
+        screen.innerHTML = `<canvas width="400" height="400" id="snakeGame"></canvas>`;
+        startSnake();
+        return;
+    }
+    screen.innerHTML = text + `<span class='blinker'>&#32;</span>`;
+    let char = text.slice(-1);
+    if (char === "<") isTag = true;
+    if (char === ">") isTag = false;
+    if (isTag) return type();
+    setTimeout(type, 30);
+};

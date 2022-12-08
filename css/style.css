@@ -1221,3 +1221,43 @@ progress[value]::-moz-progress-bar {
   50% {background-position: 500px 500px, 100px 200px, -100px 150px;}
   100% {background-position: 500px 1000px, 200px 400px, -100px 300px;}
 }
+
+.egg {
+  background: #00000c;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  padding: 20px;
+  font-size: 16px;
+  line-break: nowrap;
+  line-height: 1.3;
+  color: lime;
+}
+
+.blinker {
+  opacity: 1;
+  margin-bottom: -2px;
+  height: 15px;
+  margin-left: -5px;
+  border-left: 7px solid lime;
+  animation: blinker 0.9s steps(2, start) infinite;
+}
+
+@keyframes blinker {
+  to { 
+    visibility: hidden; 
+  }
+}
+
+#hidden {
+  width: 2em;
+  height: 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
