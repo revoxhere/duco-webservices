@@ -2120,12 +2120,14 @@ window.addEventListener('load', function() {
                                                     <div class="divider my-0">${device_name}</div>
                                                 </div>`
                                 for (let key in iot_devices[device]) {
-                                    if (key.toLowerCase().includes("temp")) icon = "mdi mdi-thermometer";
-                                    else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
+                                    if (key.toLowerCase().includes("temp")) {
+                                        icon = "mdi mdi-thermometer";
+                                        iot_devices[device][key] = iot_devices[device][key].replace("*", "°")
+                                    } else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
                                     else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
                                     else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
                                     else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
-                                    else icon = "fa fa-tachometer";
+                                    else icon = "fa fa-tachometer-alt";
 
                                     iot_html += `
                                             <div class="column">
@@ -2149,7 +2151,7 @@ window.addEventListener('load', function() {
                             $("#iot").html(`
                                 <div class="content">
                                     <span class="has-text-weight-bold">
-                                        No IoT devices detected.
+                                        No internet of things devices detected.
                                     </span>
                                     <p class="has-text-weight-normal">
                                         Check your sensor wirings and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
@@ -2173,7 +2175,7 @@ window.addEventListener('load', function() {
                         $("#iot").html(`
                                 <div class="content">
                                     <span class="has-text-weight-bold">
-                                        No IoT devices detected.
+                                        No internet of things devices detected.
                                     </span>
                                     <p class="has-text-weight-normal">
                                         Check the wiring of your sensors and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
@@ -2790,179 +2792,181 @@ addFavorite.addEventListener('click', () => {
     }
 });
 
-let keys = [];
-let konami  = '72,79,72,79,72,79';  // "hohoho"
-
-$(document).keydown(function(e) {
-     keys.push(e.keyCode);
-     if (keys.toString().indexOf(konami) >= 0){
-
-        try {
-            $('#hohoho')[0].play();
-        }
-        catch(e) {}
-
-        keys = [];
-     }
-     else
-     {
-
-     }
- });
-
 updateFavoritesTable();
 
-document.querySelector("#hidden").addEventListener("click", function(e) {
-    e.preventDefault();
-    $('#wallet').hide("drop", { direction: "right" }, 300, function() {
-        $('.egg').show("drop", { direction: "right" }, 300);
-    });
-    type();
-});
+let keys = [];
+let konami  = '72,79,72,79,72,79';  // "hohoho" 
 
-const startSnake = () => {
+$(document).keydown(function(e) {   
+     keys.push(e.keyCode);  
+     if (keys.toString().indexOf(konami) >= 0){ 
 
-    var snakeGame = {
-        ctx: $("#snakeGame")[0].getContext("2d"),
-        w: $("#snakeGame").width(),
-        h: $("#snakeGame").height()
-    }
-    
-    var cw = 10;
-    var d; 
-    var food;
-    var score;
-    let speed = 90;
-    
-    var snake_array; 
-    
-    function make_snake(){
-        var length = 4; 
-        snake_array = [];
-        for(var i = length-1; i>=0; i--){
-            snake_array.push({x: i, y:0});
-        }
-    }
-    
-    function make_food(){
-        food = {
-            x: Math.round(Math.random()*(snakeGame.w-cw)/cw), 
-            y: Math.round(Math.random()*(snakeGame.h-cw)/cw), 
-        };
-    }
-    
-    function drawGame(){
-        snakeGame.ctx.fillStyle = "black";
-        snakeGame.ctx.fillRect(0, 0, snakeGame.w, snakeGame.h);
-        snakeGame.ctx.strokeStyle = "lime";
-        snakeGame.ctx.strokeRect(0, 0, snakeGame.w, snakeGame.h);
-        
-        var nx = snake_array[0].x;
-        var ny = snake_array[0].y;
-    
-        if(d == "right") nx++;
-        else if(d == "left") nx--;
-        else if(d == "up") ny--;
-        else if(d == "down") ny++;
-        
-        if(nx == -1 || nx == snakeGame.w/cw || ny == -1 || ny == snakeGame.h/cw || check_collision(nx, ny, snake_array)){
-            initGame();
-            return;
-        }
-        
-        if(nx == food.x && ny == food.y){
-            var tail = {x: nx, y: ny};
-            score++;
-            make_food();
-        }
-        else{
-            var tail = snake_array.pop();
-            tail.x = nx; tail.y = ny;
-        }
-        
-        snake_array.unshift(tail);
-        
-        for(var i = 0; i < snake_array.length; i++){
-            var c = snake_array[i];
-            paint_cell(c.x, c.y);
-        }
-        
-        paint_cell(food.x, food.y);
-        var score_text = "Score: " + score;
-        snakeGame.ctx.fillStyle = "lime";
-        snakeGame.ctx.font = "1em Lato";
-        snakeGame.ctx.fillText(score_text, 5, snakeGame.h-5);
-    }
-    
-    function paint_cell(x, y){
-        snakeGame.ctx.fillStyle = "black";
-        snakeGame.ctx.fillRect(x*cw, y*cw, cw, cw);
-        snakeGame.ctx.strokeStyle = "white";
-        snakeGame.ctx.strokeRect(x*cw, y*cw, cw, cw);
-    }
-    
-    function check_collision(x, y, array){
-        for(var i = 0; i < array.length; i++){
-            if(i != array.length && (array[i].x == x && array[i].y == y)) return true;
-        }
-        return false;
-    }
+        try {   
+            $('#hohoho')[0].play(); 
+        }   
+        catch(e) {} 
 
-    function initGame() {
-        d = "right";
-        make_snake();
-        make_food(); 
-        score = 0;
-        
-        if(typeof game_loop != "undefined") clearInterval(game_loop);
-        game_loop = setInterval(drawGame, speed);
-    }
+        keys = [];  
+     }  
+     else   
+     {  
 
-    initGame();
+     }  
+ });    
 
-    $(document).keydown(function(e){
-        var key = e.which;
-        if(key == "37" && d != "right") d = "left";
-        else if(key == "38" && d != "down") d = "up";
-        else if(key == "39" && d != "left") d = "right";
-        else if(key == "40" && d != "up") d = "down";
-    })	
-}
+updateFavoritesTable(); 
 
-let textToWrite = `
-⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄<br/>
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀<br/>
-⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⠀⠀⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>
-<br/>
-C:/Duino-Coin/EasterEgg/Snake> python3 main.py
-<br/>
-<br/>
-<br/>
-Starting game...
-`;
-  
-let screen = document.querySelector("#screen");
-let i = 0, isTag, text;
+document.querySelector("#hidden").addEventListener("click", function(e) {   
+    e.preventDefault(); 
+    $('#wallet').hide("drop", { direction: "right" }, 300, function() { 
+        $('.egg').show("drop", { direction: "right" }, 300);    
+    }); 
+    type(); 
+}); 
 
-function type() {
-    text = textToWrite.slice(0, ++i);
-    if (text === textToWrite) 
-    {
-        screen.innerHTML = `<canvas width="400" height="400" id="snakeGame"></canvas>`;
-        startSnake();
-        return;
-    }
-    screen.innerHTML = text + `<span class='blinker'>&#32;</span>`;
-    let char = text.slice(-1);
-    if (char === "<") isTag = true;
-    if (char === ">") isTag = false;
-    if (isTag) return type();
-    setTimeout(type, 30);
+const startSnake = () => {  
+
+    var snakeGame = {   
+        ctx: $("#snakeGame")[0].getContext("2d"),   
+        w: $("#snakeGame").width(), 
+        h: $("#snakeGame").height() 
+    }   
+
+    var cw = 10;    
+    var d;  
+    var food;   
+    var score;  
+    let speed = 90; 
+
+    var snake_array;    
+
+    function make_snake(){  
+        var length = 4;     
+        snake_array = [];   
+        for(var i = length-1; i>=0; i--){   
+            snake_array.push({x: i, y:0});  
+        }   
+    }   
+
+    function make_food(){   
+        food = {    
+            x: Math.round(Math.random()*(snakeGame.w-cw)/cw),   
+            y: Math.round(Math.random()*(snakeGame.h-cw)/cw),   
+        };  
+    }   
+
+    function drawGame(){    
+        snakeGame.ctx.fillStyle = "black";  
+        snakeGame.ctx.fillRect(0, 0, snakeGame.w, snakeGame.h); 
+        snakeGame.ctx.strokeStyle = "lime"; 
+        snakeGame.ctx.strokeRect(0, 0, snakeGame.w, snakeGame.h);   
+
+        var nx = snake_array[0].x;  
+        var ny = snake_array[0].y;  
+
+        if(d == "right") nx++;  
+        else if(d == "left") nx--;  
+        else if(d == "up") ny--;    
+        else if(d == "down") ny++;  
+
+        if(nx == -1 || nx == snakeGame.w/cw || ny == -1 || ny == snakeGame.h/cw || check_collision(nx, ny, snake_array)){   
+            initGame(); 
+            return; 
+        }   
+
+        if(nx == food.x && ny == food.y){   
+            var tail = {x: nx, y: ny};  
+            score++;    
+            make_food();    
+        }   
+        else{   
+            var tail = snake_array.pop();   
+            tail.x = nx; tail.y = ny;   
+        }   
+
+        snake_array.unshift(tail);  
+
+        for(var i = 0; i < snake_array.length; i++){    
+            var c = snake_array[i]; 
+            paint_cell(c.x, c.y);   
+        }   
+
+        paint_cell(food.x, food.y); 
+        var score_text = "Score: " + score; 
+        snakeGame.ctx.fillStyle = "lime";   
+        snakeGame.ctx.font = "1em Lato";    
+        snakeGame.ctx.fillText(score_text, 5, snakeGame.h-5);   
+    }   
+
+    function paint_cell(x, y){  
+        snakeGame.ctx.fillStyle = "black";  
+        snakeGame.ctx.fillRect(x*cw, y*cw, cw, cw); 
+        snakeGame.ctx.strokeStyle = "white";    
+        snakeGame.ctx.strokeRect(x*cw, y*cw, cw, cw);   
+    }   
+
+    function check_collision(x, y, array){  
+        for(var i = 0; i < array.length; i++){  
+            if(i != array.length && (array[i].x == x && array[i].y == y)) return true;  
+        }   
+        return false;   
+    }   
+
+    function initGame() {   
+        d = "right";    
+        make_snake();   
+        make_food();    
+        score = 0;  
+
+        if(typeof game_loop != "undefined") clearInterval(game_loop);   
+        game_loop = setInterval(drawGame, speed);   
+    }   
+
+    initGame(); 
+
+    $(document).keydown(function(e){    
+        var key = e.which;  
+        if(key == "37" && d != "right") d = "left"; 
+        else if(key == "38" && d != "down") d = "up";   
+        else if(key == "39" && d != "left") d = "right";    
+        else if(key == "40" && d != "up") d = "down";   
+    })      
+}   
+
+let textToWrite = ` 
+⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>  
+⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⢿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⢀⣾⣿⣿⣿⣿⣿⣿⣿⣅⢀⣽⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⠛⠁⠀⠀⣴⣶⡄⠀⣶⣶⡄⠀⣴⣶⡄<br/>   
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠙⠋⠁⠀⠉⠋⠁⠀⠙⠋⠀<br/>   
+⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⠀⠀⠈⠙⠿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>   
+<br/>   
+C:/Duino-Coin/EasterEgg/Snake> python3 main.py  
+<br/>   
+<br/>   
+<br/>   
+Starting game...    
+`;  
+
+let screen = document.querySelector("#screen"); 
+let i = 0, isTag, text; 
+
+function type() {   
+    text = textToWrite.slice(0, ++i);   
+    if (text === textToWrite)   
+    {   
+        screen.innerHTML = `<canvas width="400" height="400" id="snakeGame"></canvas>`; 
+        startSnake();   
+        return; 
+    }   
+    screen.innerHTML = text + `<span class='blinker'>&#32;</span>`; 
+    let char = text.slice(-1);  
+    if (char === "<") isTag = true; 
+    if (char === ">") isTag = false;    
+    if (isTag) return type();   
+    setTimeout(type, 30);   
 };
