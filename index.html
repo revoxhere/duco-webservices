@@ -74,15 +74,12 @@
     <canvas id="background"></canvas>
     <div class="snow">
     </div>
-
     <div class="egg" id="screen">
         <span class='blinker'>&#32;</span>
     </div>
-
     <div id="hidden">
         &nbsp;
     </div>
-
     <div class="login-content" class="mt-0">
         <form class="box blur" id="form">
             <p class="title is-size-5 mb-0">
@@ -323,36 +320,23 @@
                     </div>
                     <div class="column" id="iotbox">
                         <div class="box blur">
-                            <div class="columns is-mobile is-multiline" bis_skin_checked="1">
-                                <div class="column" bis_skin_checked="1">
-                                    <span class="icon-text is-size-6">
-                                        <i class="icon mdi mdi-24px mdi-access-point-network"></i>
-                                    </span>
-                                    <span>
-                                        Duino <strong>IoT</strong> <small class="tag is-info">Beta</small>
-                                    </span>
-                                </div>
-                                <div class="column" bis_skin_checked="1">
-                                    <div class="subtitle is-size-6 has-text-right">
-                                        Unit:
-                                        <div class="dropdown">
-                                            <div class="dropdown-trigger">
-                                                <a>
-                                                    <b style="text-transform: initial;" id="temp-unit">Celcius</b>
-                                                    <svg class="svg-inline--fa fa-edit fa-w-18" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="edit" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg="">
-                                                        <path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path>
-                                                    </svg><!-- <i class="fa fa-edit"></i> -->
-                                                </a>
-                                            </div>
-                                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                                                <div class="dropdown-content" id="temp-unit-select">
-                                                    <a href="#!" class="dropdown-item">Celcius</a>
-                                                    <a href="#!" class="dropdown-item">Fahrenheit</a>
-                                                    <a href="#!" class="dropdown-item">Kelvin</a>
-                                                    <a href="#!" class="dropdown-item">Rankine</a>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="heading">
+                                <div class="columns is-mobile is-multiline">
+                                    <div class="column">
+                                        <span class="is-size-6">
+                                            <span class="icon-text">
+                                                <i class="icon mdi mdi-24px mdi-access-point-network"></i>
+                                            </span>
+                                            <span>
+                                                Duino <strong>IoT</strong>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="column is-narrow has-text-right">
+                                        <a href="https://github.com/revoxhere/duino-coin/wiki/Duino's-take-on-the-Internet-of-Things" target="_blank" class="is-link is-size-6">
+                                            Docs
+                                            <i class="fa fa-link"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -740,9 +724,30 @@
                             <input class="is-checkbox" id="disableAnims" type="checkbox">
                             <label for="disableAnims">Disable background animations</label>
                         </div>
-                        <div class="column">
+                        <div class="column is-half">
                             <input class="is-checkbox" id="disableIoT" type="checkbox">
                             <label for="disableIoT">Disable Duino IoT</label>
+                        </div>
+                        <div class="column is-half">
+                            Duino IoT <b>legacy</b> units:
+                            <div class="dropdown">
+                                <div class="dropdown-trigger">
+                                    <a>
+                                        <b style="text-transform: initial;" id="temp-unit">Celcius</b>
+                                        <svg class="svg-inline--fa fa-edit fa-w-18" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="edit" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg="">
+                                            <path fill="currentColor" d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                    <div class="dropdown-content" id="temp-unit-select">
+                                        <a href="#!" class="dropdown-item">Celcius</a>
+                                        <a href="#!" class="dropdown-item">Fahrenheit</a>
+                                        <a href="#!" class="dropdown-item">Kelvin</a>
+                                        <a href="#!" class="dropdown-item">Rankine</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="column">
                             <a class="button modal-button" data-target="modal-changepass" class="button">
@@ -781,10 +786,6 @@
                             <img src="assets/explorer.png" class="icon is-small">
                             <span>Duino-Coin network stats & explorer</span>
                         </a>
-                        <!--<a href="https://duco.sytes.net/" target="_blank" class="button">
-                            <img src="assets/ducominingdashboarddark.png" class="icon is-small">
-                            <span>Lulaschkas' mining dashboard</span>
-                        </a>-->
                         <a href="https://duco.pcgeek.pl/" target="_blank" class="button">
                             <img src="assets/ducopcgeek.png" class="icon is-small">
                             <span>Duino-Coin in Charts</span>
