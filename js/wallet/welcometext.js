@@ -12,11 +12,11 @@ const welcome_texts = [
 */
 
 const backrounds = [
-    //"img/yenn-sea-1.jpg",
+    "img/yenn-sea-1.jpg",
     "backgrounds/wallet/yenn-mountains-1.jpg",
-    "backgrounds/wallet/christmas-1.jpg",
-    "backgrounds/wallet/christmas-2.jpg",
-    "backgrounds/wallet/christmas-3.jpg",
+    //"backgrounds/wallet/christmas-1.jpg",
+    //"backgrounds/wallet/christmas-2.jpg",
+    //"backgrounds/wallet/christmas-3.jpg",
     //"img/AmongTreesScreenshot5.jpg",
     //"img/csou8q3.jpeg",
 ];
