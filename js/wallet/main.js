@@ -1494,7 +1494,6 @@ $('#achievements').on('DOMSubtreeModified', updateToolTips);
 
 window.addEventListener('load', function() {
     // CONSOLE WARNING
-    console.log(`%cYo Mister White! Someone's at the Door`, "color:red; font-size: 2em");
     console.log(`%cHold on!`, "color: red; font-size: 3em");
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
     console.log(`%cPlease proceed with caution.`, "color: orange; font-size: 1.5em;");
@@ -1574,7 +1573,6 @@ window.addEventListener('load', function() {
                                 initial_height = $('.adsbygoogle').height();
                                 (adsbygoogle = window.adsbygoogle || []).push({});
                                 setTimeout(function() {
-                                    console.log($('.adsbygoogle').height());
                                     if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
                                         $("#adblocker_detected").fadeIn();
                                         adBlockEnabled = true;
@@ -2793,28 +2791,6 @@ addFavorite.addEventListener('click', () => {
 });
 
 updateFavoritesTable();
-
-let keys = [];
-let konami  = '72,79,72,79,72,79';  // "hohoho" 
-
-$(document).keydown(function(e) {   
-     keys.push(e.keyCode);  
-     if (keys.toString().indexOf(konami) >= 0){ 
-
-        try {   
-            $('#hohoho')[0].play(); 
-        }   
-        catch(e) {} 
-
-        keys = [];  
-     }  
-     else   
-     {  
-
-     }  
- });    
-
-updateFavoritesTable(); 
 
 document.querySelector("#hidden").addEventListener("click", function(e) {   
     e.preventDefault(); 
