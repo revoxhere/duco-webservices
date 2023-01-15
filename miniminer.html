@@ -397,18 +397,43 @@ window.sha1 = (function() {
 
 })();
 
+let XMLHttpFactories = [
+    function () {return new XMLHttpRequest()}, // Default Api
+    function () {return new ActiveXObject("Msxml3.XMLHTTP")},
+    function () {return new ActiveXObject("Msxml2.XMLHTTP.6.0")},
+    function () {return new ActiveXObject("Msxml2.XMLHTTP.3.0")},
+    function () {return new ActiveXObject("Msxml2.XMLHTTP")},
+    function () {return new ActiveXObject("Microsoft.XMLHTTP")}
+];
+
+let requestApi = false;
+for (let i = 0; i < XMLHttpFactories.length; i++) {
+    try {
+        requestApi = XMLHttpFactories[i]();
+    }
+    catch (e) {
+        continue;
+    }
+    break;
+}
+
+if(!requestApi)
+{
+    document.write("<span class='error'> We can't make an http request.</span><br><br>");
+    document.write("<span class='info'>Try searching for help on our official Discord server (<a href='https://discord.gg/kvBkccy' target='_blank'>discord.gg/kvBkccy</a>) or GitHub (<a href='https://github.com/revoxhere/duino-coin'>github.com/revoxhere/duino-coin</a>)</span><br><b>You can also open the troubleshooting page</b> (<a href='/webtest.html' target='_blank'>webtest.html</a>)");
+    document.getElementById("button").innerHTML = "Error";
+}
+
 function httpGet(theUrl) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", theUrl, false);
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
+    requestApi.open("GET", theUrl, false);
+    requestApi.send(null);
+    return requestApi.responseText;
 }
 
 function httpPost(theUrl) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", theUrl, false);
-    xmlHttp.send(null);
-    return xmlHttp.responseText;
+    requestApi.open("POST", theUrl, false);
+    requestApi.send(null);
+    return requestApi.responseText;
 }
 
 function getRandomInt(min, max) {
