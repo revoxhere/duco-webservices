@@ -2363,6 +2363,15 @@ window.addEventListener('load', function() {
                                     </p>`;
                                         document.querySelector('html').classList.add('is-clipped');
                                         modal_error.classList.add('is-active');
+                                    } else if (data.message.includes("token")) {
+                                        let modal_error = document.querySelector('#modal_error');
+                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                            `Login token has expired.<br>
+                                    Login tokens have a limited lifetime to increase security.<br>
+                                    Please just <b>login again</b> to refresh the token.
+                                    </p>`;
+                                        document.querySelector('html').classList.add('is-clipped');
+                                        modal_error.classList.add('is-active');
                                     } else {
                                         $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                                     }
