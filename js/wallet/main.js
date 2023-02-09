@@ -319,6 +319,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/js/wallet/serviceWorker.js');
 }
 
+const rememberLogin = document.querySelector("#rememberinput");
+
 const historicPrices = document.querySelector('#historicPrices');
 
 const historicPricesCtx = historicPrices.getContext('2d');
@@ -1552,81 +1554,82 @@ window.addEventListener('load', function() {
         transaction_limit = this.value;
         document.getElementById('txsel').classList.add("is-loading");
     });
+});
 
-    //USER DATA FROM API
-    const user_data = (username, first_open) => {
-        try {
-            fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
-                .then(response => response.json())
-                .then(data => {
-                    data = data.result;
-                    duco_price = data.prices.max;
-                    delete data.prices.max;
+//USER DATA FROM API
+const user_data = (username, first_open) => {
+    try {
+        fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
+            .then(response => response.json())
+            .then(data => {
+                data = data.result;
+                duco_price = data.prices.max;
+                delete data.prices.max;
 
-                    user_items = data.items;
-                    if (first_open) {
-                        refresh_shop(user_items);
-                        refresh_event();
+                user_items = data.items;
+                if (first_open) {
+                    refresh_shop(user_items);
+                    refresh_event();
 
-                        $('#form').hide("drop", { direction: "left" }, 300, function() {
-                            $('#wallet').show("drop", { direction: "right" }, 300, function() {
-                                initial_height = $('.adsbygoogle').height();
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                setTimeout(function() {
-                                    if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
-                                        $("#adblocker_detected").fadeIn();
-                                        adBlockEnabled = true;
-                                    }
-                                }, 3000)
+                    $('#form').hide("drop", { direction: "left" }, 300, function() {
+                        $('#wallet').show("drop", { direction: "right" }, 300, function() {
+                            initial_height = $('.adsbygoogle').height();
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            setTimeout(function() {
+                                if ($('.adsbygoogle').height() <= initial_height || adBlockEnabled) {
+                                    $("#adblocker_detected").fadeIn();
+                                    adBlockEnabled = true;
+                                }
+                            }, 3000)
 
-                                $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
-                                $("iframe#news_iframe").attr('name', Date.now());
-                                $('iframe#news_iframe').on("load", function() {
-                                    $("iframe#news_iframe").fadeIn(500);
-                                });
+                            $("iframe#news_iframe").attr('src', `https://server.duinocoin.com/news.html?v=${Date.now()}`);
+                            $("iframe#news_iframe").attr('name', Date.now());
+                            $('iframe#news_iframe').on("load", function() {
+                                $("iframe#news_iframe").fadeIn(500);
                             });
                         });
+                    });
+                }
+
+                user_achievements = data.achievements;
+                refresh_achievements(user_achievements);
+
+                balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
+                if (first_open) {
+                    $("#balance").html(balance);
+                    if (adBlockEnabled) {
+                        adblock_penalty();
                     }
+                } else update_element("balance", balance);
 
-                    user_achievements = data.achievements;
-                    refresh_achievements(user_achievements);
-
-                    balance = round_to(12 - parseFloat(data.balance.balance).toString().split(".")[0].length, parseFloat(data.balance.balance));
-                    if (first_open) {
-                        $("#balance").html(balance);
-                        if (adBlockEnabled) {
-                            adblock_penalty();
-                        }
-                    } else update_element("balance", balance);
-
-                    if (oldb != balance) {
-                        if (data.miners.length) {
-                            calculdaily(balance, oldb, user_items);
-                            oldb = balance;
-                            window.setTimeout(() => {
-                                user_data(username, false);
-                            }, 5 * 1000);
-                        } else {
-                            update_element("estimatedprofit", `
-                                <i class="fa fa-times-circle"></i> No miners detected`);
-                            update_element("estimatedprofitusd", ``);
-                            window.setTimeout(() => {
-                                user_data(username, false);
-                            }, 10 * 1000);
-                        }
+                if (oldb != balance) {
+                    if (data.miners.length) {
+                        calculdaily(balance, oldb, user_items);
+                        oldb = balance;
+                        window.setTimeout(() => {
+                            user_data(username, false);
+                        }, 5 * 1000);
                     } else {
+                        update_element("estimatedprofit", `
+                                <i class="fa fa-times-circle"></i> No miners detected`);
+                        update_element("estimatedprofitusd", ``);
                         window.setTimeout(() => {
                             user_data(username, false);
                         }, 10 * 1000);
                     }
+                } else {
+                    window.setTimeout(() => {
+                        user_data(username, false);
+                    }, 10 * 1000);
+                }
 
-                    if (data.balance.created.includes("before")) data.balance.created += " (Welcome, OG member!)"
-                    $("#account_creation").html(data.balance.created)
-                    $("#last_login").html(new Date(data.balance.last_login * 1000).toLocaleString())
+                if (data.balance.created.includes("before")) data.balance.created += " (Welcome, OG member!)"
+                $("#account_creation").html(data.balance.created)
+                $("#last_login").html(new Date(data.balance.last_login * 1000).toLocaleString())
 
-                    if (data.balance.stake_amount) {
-                        update_element("stake_info",
-                            `<span>
+                if (data.balance.stake_amount) {
+                    update_element("stake_info",
+                        `<span>
                                 <i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
                                 Staking <b>${round_to(2, data.balance.stake_amount)} DUCO</b>
                             </span><br>
@@ -1643,335 +1646,335 @@ window.addEventListener('load', function() {
                                     est. reward
                                 </span>
                             </small>`);
-                    } else {
-                        update_element("stake_info",
-                            `<span>
+                } else {
+                    update_element("stake_info",
+                        `<span>
                                 <i class="fa fa-layer-group"></i>
                                 Not staking
                             </span><br>
                             <small>
                                 Click the <b>Stake coins</b> button to start
                             </small>`);
-                    }
+                }
 
-                    $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
-                    $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
-                    $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
-                    $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
-                    $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
-                    $("#duco_fluffyswap").html("$" + round_to(5, data.prices.fluffy));
-                    $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
-                    $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
-                    $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
+                $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
+                $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
+                $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
+                $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
+                $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
+                $("#duco_fluffyswap").html("$" + round_to(5, data.prices.fluffy));
+                $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
+                $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
+                $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
 
-                    balanceusd = round_to(4, balance * duco_price);
-                    if (first_open) {
-                        $("#balancefiat").html(balanceusd);
-                        $("#best_exchage").html(key_from_value(data.prices, duco_price));
-                    } else {
-                        update_element("balancefiat", balanceusd);
-                        update_element("best_exchage", key_from_value(data.prices, duco_price));
-                    }
+                balanceusd = round_to(4, balance * duco_price);
+                if (first_open) {
+                    $("#balancefiat").html(balanceusd);
+                    $("#best_exchage").html(key_from_value(data.prices, duco_price));
+                } else {
+                    update_element("balancefiat", balanceusd);
+                    update_element("best_exchage", key_from_value(data.prices, duco_price));
+                }
 
-                    if (data.balance.warnings < 1) {
-                        verified = data.balance.verified;
-                        if (verified === "yes") {
-                            $("#verify").html(
-                                `<span class="icon-text has-text-success-dark" data-tooltip="Your account is verified">
+                if (data.balance.warnings < 1) {
+                    verified = data.balance.verified;
+                    if (verified === "yes") {
+                        $("#verify").html(
+                            `<span class="icon-text has-text-success-dark" data-tooltip="Your account is verified">
                                     <i class="fa fa-check-circle icon"></i>
                                 </span>`);
-                        } else {
-                            $("#verify").html(
-                                `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
+                    } else {
+                        $("#verify").html(
+                            `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
                                     <i class="fa fa-times-circle animated faa-ring faa-slow icon"></i>
                                     <span>unverified</span>
                                 </a>`);
-                        }
-                    } else {
-                        $("#verify").html(
-                            `<span class="icon-text has-text-warning-dark" data-tooltip="Your account received ${data.balance.warnings} warning(s)">
+                    }
+                } else {
+                    $("#verify").html(
+                        `<span class="icon-text has-text-warning-dark" data-tooltip="Your account received ${data.balance.warnings} warning(s)">
                                     <i class="fa fa-exclamation-triangle icon"></i>
                                     <span>suspicious</span>
                                 </span>`);
-                    }
+                }
 
-                    user_miners = data.miners;
+                user_miners = data.miners;
 
-                    if (cache_miners != user_miners.length) {
+                if (cache_miners != user_miners.length) {
 
-                        calculdaily(balance, oldb, user_items);
-                        cache_miners = data.miners.length;
-                        oldb = balance;
-                    }
+                    calculdaily(balance, oldb, user_items);
+                    cache_miners = data.miners.length;
+                    oldb = balance;
+                }
 
-                    total_hashrate = 0;
-                    t_miners = []
-                    iot_devices = {}
-                    if (user_miners.length) {
-                        $("#nominers").fadeOut(0);
-                        $("#minertable").fadeIn(0)
-                        for (let miner in user_miners) {
-                            let miner_wallet_id = user_miners[miner]["wd"];
-                            if (!miner_wallet_id) miner_wallet_id = Math.floor(Math.random() * 2812);
-                            const miner_hashrate = user_miners[miner]["hashrate"];
-                            const miner_rejected = user_miners[miner]["rejected"];
-                            const miner_accepted = user_miners[miner]["accepted"];
-                            total_hashrate += miner_hashrate;
+                total_hashrate = 0;
+                t_miners = []
+                iot_devices = {}
+                if (user_miners.length) {
+                    $("#nominers").fadeOut(0);
+                    $("#minertable").fadeIn(0)
+                    for (let miner in user_miners) {
+                        let miner_wallet_id = user_miners[miner]["wd"];
+                        if (!miner_wallet_id) miner_wallet_id = Math.floor(Math.random() * 2812);
+                        const miner_hashrate = user_miners[miner]["hashrate"];
+                        const miner_rejected = user_miners[miner]["rejected"];
+                        const miner_accepted = user_miners[miner]["accepted"];
+                        total_hashrate += miner_hashrate;
 
-                            if (!t_miners[miner_wallet_id]) {
-                                t_miners[miner_wallet_id] = user_miners[miner];
-                                t_miners[miner_wallet_id]["threads"] = 1;
-                                t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
+                        if (!t_miners[miner_wallet_id]) {
+                            t_miners[miner_wallet_id] = user_miners[miner];
+                            t_miners[miner_wallet_id]["threads"] = 1;
+                            t_miners[miner_wallet_id]["threadid"] = user_miners[miner]["threadid"];
 
-                                if (user_miners[miner]["it"] != null) {
-                                    if (!user_miners[miner]["it"].includes(":")) {
-                                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
-                                        hum = user_miners[miner]["it"].split("@")[1];
+                            if (user_miners[miner]["it"] != null) {
+                                if (!user_miners[miner]["it"].includes(":")) {
+                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                    hum = user_miners[miner]["it"].split("@")[1];
 
-                                        if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
-                                        else hum += "%";
+                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check your wiring and code</small>`;
+                                    else hum += "%";
 
-                                        iot_devices[user_miners[miner]["identifier"]] = {
-                                            "Temperature": temp,
-                                            "Humidity": hum
-                                        }
-                                    } else {
-                                        iot_devices[user_miners[miner]["identifier"]] = {}
-                                        for (entry in user_miners[miner]["it"].split("@")) {
-                                            key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
-                                            value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
-                                            iot_devices[user_miners[miner]["identifier"]][key] = value;
-                                        }
+                                    iot_devices[user_miners[miner]["identifier"]] = {
+                                        "Temperature": temp,
+                                        "Humidity": hum
+                                    }
+                                } else {
+                                    iot_devices[user_miners[miner]["identifier"]] = {}
+                                    for (entry in user_miners[miner]["it"].split("@")) {
+                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
                                     }
                                 }
-                                continue;
-                            } else if (t_miners[miner_wallet_id]) {
-                                t_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
-                                t_miners[miner_wallet_id]["rejected"] += miner_rejected;
-                                t_miners[miner_wallet_id]["accepted"] += miner_accepted;
-                                t_miners[miner_wallet_id]["threads"] += 1;
+                            }
+                            continue;
+                        } else if (t_miners[miner_wallet_id]) {
+                            t_miners[miner_wallet_id]["hashrate"] += miner_hashrate;
+                            t_miners[miner_wallet_id]["rejected"] += miner_rejected;
+                            t_miners[miner_wallet_id]["accepted"] += miner_accepted;
+                            t_miners[miner_wallet_id]["threads"] += 1;
 
-                                if (user_miners[miner]["it"] != null) {
-                                    if (!user_miners[miner]["it"].includes(":")) {
-                                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
-                                        hum = user_miners[miner]["it"].split("@")[1];
+                            if (user_miners[miner]["it"] != null) {
+                                if (!user_miners[miner]["it"].includes(":")) {
+                                    temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                                    hum = user_miners[miner]["it"].split("@")[1];
 
-                                        if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
-                                        else hum += "%";
+                                    if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">Check you wiring and code</small>`;
+                                    else hum += "%";
 
-                                        iot_devices[user_miners[miner]["identifier"]] = {
-                                            "Temperature": temp,
-                                            "Humidity": hum
-                                        }
-                                    } else {
-                                        iot_devices[user_miners[miner]["identifier"]] = {}
-                                        for (entry in user_miners[miner]["it"].split("@")) {
-                                            key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
-                                            value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
-                                            iot_devices[user_miners[miner]["identifier"]][key] = value;
-                                        }
+                                    iot_devices[user_miners[miner]["identifier"]] = {
+                                        "Temperature": temp,
+                                        "Humidity": hum
+                                    }
+                                } else {
+                                    iot_devices[user_miners[miner]["identifier"]] = {}
+                                    for (entry in user_miners[miner]["it"].split("@")) {
+                                        key = user_miners[miner]["it"].split("@")[entry].split(":")[0];
+                                        value = user_miners[miner]["it"].split("@")[entry].split(":")[1];
+                                        iot_devices[user_miners[miner]["identifier"]][key] = value;
                                     }
                                 }
-                                continue;
                             }
+                            continue;
+                        }
+                    }
+
+                    t_miners = t_miners.sort(function(a, b) {
+                        if (a.identifier < b.identifier) { return -1; }
+                        if (a.identifier > b.identifier) { return 1; }
+                        return 0;
+                    });
+
+                    miner_num = 0;
+                    miners_html = "";
+
+                    let minersOrder = JSON.parse(localStorage.getItem('minersOrder')) || [];
+
+                    for (let orderIndex in minersOrder) {
+                        let MinerData;
+                        try { // if the element doesn't exist just ignore it
+                            MinerData = t_miners.find(miner => miner.threadid == minersOrder[orderIndex].threadid);
+                        } catch (e) {
+                            continue;
                         }
 
-                        t_miners = t_miners.sort(function(a, b) {
-                            if (a.identifier < b.identifier) { return -1; }
-                            if (a.identifier > b.identifier) { return 1; }
-                            return 0;
-                        });
+                        if (!MinerData || MinerData == -1) continue; // prevent bugs
 
-                        miner_num = 0;
-                        miners_html = "";
+                        let Oldindex = t_miners.indexOf(MinerData);
 
-                        let minersOrder = JSON.parse(localStorage.getItem('minersOrder')) || [];
+                        t_miners.splice(Oldindex, 1); // change element order
+                        t_miners.splice(minersOrder[orderIndex].order, 0, MinerData);
+                    }
 
-                        for (let orderIndex in minersOrder) {
-                            let MinerData;
-                            try { // if the element doesn't exist just ignore it
-                                MinerData = t_miners.find(miner => miner.threadid == minersOrder[orderIndex].threadid);
-                            } catch (e) {
-                                continue;
-                            }
+                    for (let miner in t_miners) {
+                        miner_num += 1;
+                        miner_threadid = t_miners[miner]["threadid"];
+                        miner_hashrate = t_miners[miner]["hashrate"];
+                        miner_identifier = t_miners[miner]["identifier"];
+                        miner_software = t_miners[miner]["software"];
+                        miner_diff = t_miners[miner]["diff"];
+                        miner_rejected = t_miners[miner]["rejected"];
+                        miner_accepted = t_miners[miner]["accepted"];
+                        miner_sharetime = t_miners[miner]["sharetime"];
+                        miner_pool = t_miners[miner]["pool"];
+                        miner_algo = t_miners[miner]["algorithm"];
+                        miner_count = t_miners[miner]["threads"];
+                        miner_ki = t_miners[miner]["ki"];
+                        miner_ping = t_miners[miner]["pg"];
 
-                            if (!MinerData || MinerData == -1) continue; // prevent bugs
+                        iot_tag = ``
+                        if (t_miners[miner]["it"])
+                            iot_tag = `<small data-tooltip="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
 
-                            let Oldindex = t_miners.indexOf(MinerData);
-
-                            t_miners.splice(Oldindex, 1); // change element order
-                            t_miners.splice(minersOrder[orderIndex].order, 0, MinerData);
+                        if (!miner_identifier || miner_identifier === "None") {
+                            miner_name = miner_software;
+                            miner_soft = "";
+                        } else {
+                            miner_name = miner_identifier;
+                            miner_soft = miner_software + ", ";
                         }
 
-                        for (let miner in t_miners) {
-                            miner_num += 1;
-                            miner_threadid = t_miners[miner]["threadid"];
-                            miner_hashrate = t_miners[miner]["hashrate"];
-                            miner_identifier = t_miners[miner]["identifier"];
-                            miner_software = t_miners[miner]["software"];
-                            miner_diff = t_miners[miner]["diff"];
-                            miner_rejected = t_miners[miner]["rejected"];
-                            miner_accepted = t_miners[miner]["accepted"];
-                            miner_sharetime = t_miners[miner]["sharetime"];
-                            miner_pool = t_miners[miner]["pool"];
-                            miner_algo = t_miners[miner]["algorithm"];
-                            miner_count = t_miners[miner]["threads"];
-                            miner_ki = t_miners[miner]["ki"];
-                            miner_ping = t_miners[miner]["pg"];
+                        let miner_diff_str = scientific_prefix(miner_diff)
+                        let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
 
-                            iot_tag = ``
-                            if (t_miners[miner]["it"])
-                                iot_tag = `<small data-tooltip="Duino IoT (Beta) is enabled" class="tag is-success">IoT</small>`;
+                        let percentage = 0.80;
+                        let miner_type = "Other";
+                        if (miner_software.includes("ESP8266")) {
+                            icon = `<img src="img/wemos.gif">`;
+                            color = "#F5515F";
+                            miner_type = "ESP8266";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("ESP32")) {
+                            color = "#5f27cd";
+                            icon = `<img src="img/esp32.gif">`;
+                            miner_type = "ESP32";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("I2C")) {
+                            icon = `<img src="img/arduino.gif">`;
+                            color = "#B33771";
+                            miner_type = "AVR (I²C)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("AVR") && miner_diff == 333) {
+                            icon = `<img src="img/pico.gif">`;
+                            color = "#16a085";
+                            miner_type = "AVR (Pico)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("AVR")) {
+                            icon = `<img src="img/arduino.gif">`;
+                            color = "#B33771";
+                            miner_type = "AVR (Normal)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("PC") && (miner_identifier == "Raspberry Pi" || miner_identifier.includes("RPi"))) {
+                            icon = `<img src="img/pi.gif">`;
+                            color = "#16a085";
+                            miner_type = "AVR (Raspberry Pi)";
+                            percentage = 0.96;
+                        } else if (miner_software.includes("PC")) {
+                            color = "#F97F51";
+                            icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
+                            miner_type = "PC (Normal)";
+                            if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
+                        } else if (miner_software.includes("Web")) {
+                            color = "#009432";
+                            icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
+                            miner_type = "PC (Web)";
+                        } else if (miner_software.includes("Android") || miner_software.includes("Phone") || miner_software.includes("Mini Miner")) {
+                            color = "#fa983a";
+                            icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
+                            miner_type = "Mobile";
+                        } else {
+                            color = "#16a085";
+                            icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
+                            miner_type = "Unknown!";
+                        }
 
-                            if (!miner_identifier || miner_identifier === "None") {
-                                miner_name = miner_software;
-                                miner_soft = "";
-                            } else {
-                                miner_name = miner_identifier;
-                                miner_soft = miner_software + ", ";
-                            }
-
-                            let miner_diff_str = scientific_prefix(miner_diff)
-                            let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
-
-                            let percentage = 0.80;
-                            let miner_type = "Other";
-                            if (miner_software.includes("ESP8266")) {
-                                icon = `<img src="img/wemos.gif">`;
-                                color = "#F5515F";
-                                miner_type = "ESP8266";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("ESP32")) {
-                                color = "#5f27cd";
-                                icon = `<img src="img/esp32.gif">`;
-                                miner_type = "ESP32";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("I2C")) {
-                                icon = `<img src="img/arduino.gif">`;
-                                color = "#B33771";
-                                miner_type = "AVR (I²C)";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("AVR") && miner_diff == 333) {
-                                icon = `<img src="img/pico.gif">`;
-                                color = "#16a085";
-                                miner_type = "AVR (Pico)";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("AVR")) {
-                                icon = `<img src="img/arduino.gif">`;
-                                color = "#B33771";
-                                miner_type = "AVR (Normal)";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("PC") && (miner_identifier == "Raspberry Pi" || miner_identifier.includes("RPi"))) {
-                                icon = `<img src="img/pi.gif">`;
-                                color = "#16a085";
-                                miner_type = "AVR (Raspberry Pi)";
-                                percentage = 0.96;
-                            } else if (miner_software.includes("PC")) {
-                                color = "#F97F51";
-                                icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
-                                miner_type = "PC (Normal)";
-                                if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
-                            } else if (miner_software.includes("Web")) {
-                                color = "#009432";
-                                icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
-                                miner_type = "PC (Web)";
-                            } else if (miner_software.includes("Android") || miner_software.includes("Phone") || miner_software.includes("Mini Miner")) {
-                                color = "#fa983a";
-                                icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
-                                miner_type = "Mobile";
-                            } else {
-                                color = "#16a085";
-                                icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
-                                miner_type = "Unknown!";
-                            }
-
-                            let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
-                            let efficiency_color = "has-text-warning-dark";
-                            if (miner_efficiency < 40) {
-                                efficiency_color = "has-text-danger-dark";
-                            } else if (miner_efficiency > 80) {
-                                efficiency_color = "has-text-success-dark";
-                            }
+                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
+                        let efficiency_color = "has-text-warning-dark";
+                        if (miner_efficiency < 40) {
+                            efficiency_color = "has-text-danger-dark";
+                        } else if (miner_efficiency > 80) {
+                            efficiency_color = "has-text-success-dark";
+                        }
 
 
-                            let accept_color = "has-text-warning-dark";
-                            if (accepted_rate < 50) {
-                                accept_color = "has-text-danger-dark";
-                            } else if (accepted_rate > 95) {
-                                accept_color = "has-text-success-dark";
-                            }
+                        let accept_color = "has-text-warning-dark";
+                        if (accepted_rate < 50) {
+                            accept_color = "has-text-danger-dark";
+                        } else if (accepted_rate > 95) {
+                            accept_color = "has-text-success-dark";
+                        }
 
-                            let thread_string = "";
-                            if (miner_count > 1) {
-                                thread_string = `(${miner_count} threads)`;
-                            }
+                        let thread_string = "";
+                        if (miner_count > 1) {
+                            thread_string = `(${miner_count} threads)`;
+                        }
 
-                            icon_class = "has-text-warning-dark";
-                            icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
-                            icon_class_alt = "has-text-danger";
-                            icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
+                        icon_class = "has-text-warning-dark";
+                        icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
+                        icon_class_alt = "has-text-danger";
+                        icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
 
-                            if (localStorage.getItem("hideWarnings") == "true") {
-                                icon_class = "";
-                                icon_class_animation = "far fa-question-circle";
-                                icon_class_alt = "";
-                                icon_class_animation_alt = "far fa-question-circle";
-                            }
+                        if (localStorage.getItem("hideWarnings") == "true") {
+                            icon_class = "";
+                            icon_class_animation = "far fa-question-circle";
+                            icon_class_alt = "";
+                            icon_class_animation_alt = "far fa-question-circle";
+                        }
 
-                            let warning_icon = `
+                        let warning_icon = `
                             <span class="icon-text has-text-success-dark" style="cursor: pointer;" data-tooltip="Operating normally">
                                 <i class="icon mdi mdi-check-all"></i>
                             </span>`;
-                            if (miner_efficiency < 40) {
-                                warning_icon = `
+                        if (miner_efficiency < 40) {
+                            warning_icon = `
                             <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many miners - low Kolka efficiency">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                            } else if (accepted_rate < 50) {
-                                warning_icon = `
+                        } else if (accepted_rate < 50) {
+                            warning_icon = `
                             <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many rejected shares">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                            } else if (miner_type == "Unknown!") {
-                                warning_icon = `
+                        } else if (miner_type == "Unknown!") {
+                            warning_icon = `
                             <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Unknown miner">
                                 <i class="icon ${icon_class_animation_alt}"></i>
                             </span>`
-                            }
+                        }
 
-                            if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
-                                warning_icon = `
+                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                            warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                            } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
-                                warning_icon = `
+                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                            warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                            } else if (miner_type == "ESP8266" && miner_hashrate > 45000) {
-                                warning_icon = `
+                        } else if (miner_type == "ESP8266" && miner_hashrate > 45000) {
+                            warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                            } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
-                                warning_icon = `
+                        } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
+                            warning_icon = `
                                 <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use 160 MHz clock for optimal hashrate">
                                     <i class="icon ${icon_class_animation}"></i>
                                 </span>`
-                            } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
-                                warning_icon = `
+                        } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
+                            warning_icon = `
                                 <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use the 2.0.1 version of ESP32 library for optimal hashrate">
                                     <i class="icon ${icon_class_animation}"></i>
                                 </span>`
-                            } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
-                                warning_icon = `
+                        } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
+                            warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                            }
+                        }
 
-                            miners_html += `
+                        miners_html += `
                                 <tr data-index="${miner_num}" draggable="true" class="is-draggable">
                                     <th align="right">
                                             <span class="has-text-grey">
@@ -2105,29 +2108,29 @@ window.addEventListener('load', function() {
                                         </div>
                                     </td>
                                 </tr>`
-                        }
+                    }
 
-                        if (Object.keys(iot_devices).length) {
-                            iot_html = ``;
-                            for (let device in iot_devices) {
-                                if (device == "None") device_name = "IoT Reading";
-                                else device_name = device;
+                    if (Object.keys(iot_devices).length) {
+                        iot_html = ``;
+                        for (let device in iot_devices) {
+                            if (device == "None") device_name = "IoT Reading";
+                            else device_name = device;
 
-                                iot_html += `<div class="columns is-multiline is-gapless">
+                            iot_html += `<div class="columns is-multiline is-gapless">
                                                 <div class="column is-full">
                                                     <div class="divider my-0">${device_name}</div>
                                                 </div>`
-                                for (let key in iot_devices[device]) {
-                                    if (key.toLowerCase().includes("temp")) {
-                                        icon = "mdi mdi-thermometer";
-                                        iot_devices[device][key] = iot_devices[device][key].replace("*", "°")
-                                    } else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
-                                    else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
-                                    else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
-                                    else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
-                                    else icon = "fa fa-tachometer-alt";
+                            for (let key in iot_devices[device]) {
+                                if (key.toLowerCase().includes("temp")) {
+                                    icon = "mdi mdi-thermometer";
+                                    iot_devices[device][key] = iot_devices[device][key].replace("*", "°")
+                                } else if (key.toLowerCase().includes("hum")) icon = "fa fa-tint";
+                                else if (key.toLowerCase().includes("volt")) icon = "fa fa-bolt";
+                                else if (key.toLowerCase().includes("amp")) icon = "fa fa-bolt";
+                                else if (key.toLowerCase().includes("wat")) icon = "fa fa-bolt";
+                                else icon = "fa fa-tachometer-alt";
 
-                                    iot_html += `
+                                iot_html += `
                                             <div class="column">
                                                 <div class="columns is-mobile">
                                                     <div class="column has-text-centered">
@@ -2141,12 +2144,12 @@ window.addEventListener('load', function() {
                                                     </div>
                                                 </div>
                                             </div>`;
-                                }
-                                iot_html += "</div>"
                             }
-                            $("#iot").html(iot_html);
-                        } else {
-                            $("#iot").html(`
+                            iot_html += "</div>"
+                        }
+                        $("#iot").html(iot_html);
+                    } else {
+                        $("#iot").html(`
                                 <div class="content">
                                     <span class="has-text-weight-bold">
                                         No internet of things devices detected.
@@ -2155,22 +2158,22 @@ window.addEventListener('load', function() {
                                         Check your sensor wirings and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
                                     </p>
                                 </div>`);
-                        }
-                        $("#miners").html(miners_html);
-                        $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
-                        $("#minercount").html(user_miners.length);
+                    }
+                    $("#miners").html(miners_html);
+                    $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
+                    $("#minercount").html(user_miners.length);
 
-                        // We fill the dragListItems variable with the latest elements
+                    // We fill the dragListItems variable with the latest elements
 
-                        dragListItems = minersList.querySelectorAll('tr.is-draggable');
+                    dragListItems = minersList.querySelectorAll('tr.is-draggable');
 
-                        if (first_open && user_miners.length >= 45) miner_notify();
-                    } else {
-                        $("#minertable").fadeOut(function() {
-                            $("#nominers").fadeIn();
-                        });
-                        $("#minercount").html("0");
-                        $("#iot").html(`
+                    if (first_open && user_miners.length >= 45) miner_notify();
+                } else {
+                    $("#minertable").fadeOut(function() {
+                        $("#nominers").fadeIn();
+                    });
+                    $("#minercount").html("0");
+                    $("#iot").html(`
                                 <div class="content">
                                     <span class="has-text-weight-bold">
                                         No internet of things devices detected.
@@ -2179,35 +2182,35 @@ window.addEventListener('load', function() {
                                         Check the wiring of your sensors and make sure Duino IoT is enabled on your device. You can disable this feature in settings.
                                     </p>
                                 </div>`);
-                    }
+                }
 
-                    $(function() {
-                        $("td[colspan=5]").find(".content").hide();
-                        $(".expand-btn").click(function(event) {
-                            let $target = $(event.target);
-                            $target.closest("tr").next().find(".content").slideToggle(250);
-                        });
+                $(function() {
+                    $("td[colspan=5]").find(".content").hide();
+                    $(".expand-btn").click(function(event) {
+                        let $target = $(event.target);
+                        $target.closest("tr").next().find(".content").slideToggle(250);
                     });
+                });
 
-                    user_transactions = data.transactions.reverse();
-                    if (user_transactions.length > 0) {
-                        transactions_html = "";
-                        for (let i in user_transactions) {
-                            transaction_date = user_transactions[i]["datetime"];
-                            transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
-                            transaction_hash_full = user_transactions[i]["hash"];
-                            transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 16);
-                            transaction_memo = user_transactions[i]["memo"];
-                            transaction_recipient = user_transactions[i]["recipient"];
-                            transaction_sender = user_transactions[i]["sender"];
+                user_transactions = data.transactions.reverse();
+                if (user_transactions.length > 0) {
+                    transactions_html = "";
+                    for (let i in user_transactions) {
+                        transaction_date = user_transactions[i]["datetime"];
+                        transaction_amount = round_to(8, parseFloat(user_transactions[i]["amount"]));
+                        transaction_hash_full = user_transactions[i]["hash"];
+                        transaction_hash = transaction_hash_full.substr(transaction_hash_full.length - 16);
+                        transaction_memo = user_transactions[i]["memo"];
+                        transaction_recipient = user_transactions[i]["recipient"];
+                        transaction_sender = user_transactions[i]["sender"];
 
-                            if (transaction_memo == "None")
-                                transaction_memo = "";
-                            else
-                                transaction_memo = "\"" + transaction_memo + "\""
+                        if (transaction_memo == "None")
+                            transaction_memo = "";
+                        else
+                            transaction_memo = "\"" + transaction_memo + "\""
 
-                            if (transaction_sender == username) {
-                                thtml = `
+                        if (transaction_sender == username) {
+                            thtml = `
                                 <div class="column is-full">
                                     <p class="title is-size-6">
                                         <i class="fa fa-arrow-right fa-fw has-text-danger"></i>
@@ -2234,9 +2237,9 @@ window.addEventListener('load', function() {
                                         </a>
                                     </p>
                                 </div>`;
-                                transactions_html += thtml;
-                            } else {
-                                thtml = `
+                            transactions_html += thtml;
+                        } else {
+                            thtml = `
                                 <div class="column is-full">
                                     <p class="title is-size-6">
                                         <i class="fa fa-arrow-left fa-fw has-text-success-dark"></i>
@@ -2263,12 +2266,12 @@ window.addEventListener('load', function() {
                                         </a>
                                     </p>
                                 </div>`;
-                                transactions_html += thtml;
-                            }
+                            transactions_html += thtml;
                         }
-                        update_element("transactions_table", transactions_html);
-                    } else
-                        update_element("transactions_table", `<div class="column is-full">
+                    }
+                    update_element("transactions_table", transactions_html);
+                } else
+                    update_element("transactions_table", `<div class="column is-full">
                         <p class="title is-size-6">
                             No transactions yet or they're temporarily unavailable
                         </p>
@@ -2277,284 +2280,170 @@ window.addEventListener('load', function() {
                             it will take a few seconds until the transaction will appear here.
                         </p>
                     </div>`);
-                }).then(function() {
-                    document.getElementById('txsel').classList.remove("is-loading");
-                });
-        } catch (err) {
-            console.error(err);
-            user_data(username, false);
-        }
+            }).then(function() {
+                document.getElementById('txsel').classList.remove("is-loading");
+            });
+    } catch (err) {
+        console.error(err);
+        user_data(username, false);
     }
+}
 
-    // ENTER KEY AS LOGIN
-    let input_login = document.getElementById("submit");
-    input_login.addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            document.getElementById("submit").click();
-        }
-    });
-
-    let rememberLogin = document.querySelector("#rememberinput");
-
-    // If the user has the old password
-
-    if (localStorage.getItem("password") && localStorage.getItem("username")) {
-        localStorage.removeItem("password");
-        localStorage.removeItem("username");
+// ENTER KEY AS LOGIN
+let input_login = document.getElementById("submit");
+input_login.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("submit").click();
     }
+});
 
-    // If the user has the auth-token
+// If the user has the old password
 
-    if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
-        $('#usernameinput').val(localStorage.getItem("username"));
-        $('#passwordinput').val(localStorage.getItem("authToken"));
-        rememberLogin.checked = true;
+if (localStorage.getItem("password") && localStorage.getItem("username")) {
+    localStorage.removeItem("password");
+    localStorage.removeItem("username");
+}
 
-        username = localStorage.getItem("username");
-        password = localStorage.getItem("authToken");
+// If the user has the auth-token
 
-        $("#submit").addClass("is-loading");
-        setTimeout(function() {
-            grecaptcha.ready(function() {
-                grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
-                    $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
-                            function(data) {
-                                if (data.success == true) {
-                                    $("#ducologo").addClass("rotate");
+if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
+    $('#usernameinput').val(localStorage.getItem("username"));
+    $('#passwordinput').val(localStorage.getItem("authToken"));
+    rememberLogin.checked = true;
 
-                                    $("#username").text(encodeURIComponent(username));
-                                    $("#email").text(`${data.result[1]}`);
+    username = localStorage.getItem("username");
+    password = localStorage.getItem("authToken");
 
-                                    $("#miner_pass").text(data.result[2]);
-                                    $("#mining_key").val(data.result[2]);
+    $("#submit").addClass("is-loading");
+    setTimeout(function() {
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
+                $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
+                        function(data) {
+                            if (data.success == true) {
+                                $("#ducologo").addClass("rotate");
 
-                                    $("#useravatar").attr("src",
-                                        `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                                        `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+                                $("#username").text(encodeURIComponent(username));
+                                $("#email").text(`${data.result[1]}`);
 
-                                    user_data(username, true);
-                                    genQrCode();
+                                $("#miner_pass").text(data.result[2]);
+                                $("#mining_key").val(data.result[2]);
 
-                                    setInterval(function() {
-                                        stake_counter();
-                                    }, 300);
-                                } else {
+                                $("#useravatar").attr("src",
+                                    `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                                    `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
 
-                                    localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
+                                user_data(username, true);
+                                genQrCode();
 
-                                    if (data.message.includes("This user doesn't exist")) {
-                                        $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                    } else if (data.message.includes("captcha")) {
-                                        let modal_error = document.querySelector('#modal_error');
-                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                            `<b>Incorrect captcha score</b><br>
+                                setInterval(function() {
+                                    stake_counter();
+                                }, 300);
+                            } else {
+
+                                localStorage.removeItem("authToken"); // If the token is invalid then delete the localStorage saved token
+
+                                if (data.message.includes("This user doesn't exist")) {
+                                    $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                                } else if (data.message.includes("captcha")) {
+                                    let modal_error = document.querySelector('#modal_error');
+                                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                        `<b>Incorrect captcha score</b><br>
                                     ReCaptcha didn't like your browser or your behavior.<br>
                                     🤖 If you're not a robot, just try again.<br>
                                     If the issue persists, try using a different network or browser.</p>`;
-                                        document.querySelector('html').classList.add('is-clipped');
-                                        modal_error.classList.add('is-active');
-                                    } else if (data.message.includes("banned")) {
-                                        let modal_error = document.querySelector('#modal_error');
-                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                            `Your account is <b>banned</b>.<br>
+                                    document.querySelector('html').classList.add('is-clipped');
+                                    modal_error.classList.add('is-active');
+                                } else if (data.message.includes("banned")) {
+                                    let modal_error = document.querySelector('#modal_error');
+                                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                        `Your account is <b>banned</b>.<br>
                                     You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
                                     We don't want to see you here again.
                                     </p>`;
-                                        document.querySelector('html').classList.add('is-clipped');
-                                        modal_error.classList.add('is-active');
-                                    } else if (data.message.includes("token")) {
-                                        let modal_error = document.querySelector('#modal_error');
-                                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                            `Login token has expired.<br>
+                                    document.querySelector('html').classList.add('is-clipped');
+                                    modal_error.classList.add('is-active');
+                                } else if (data.message.toLowerCase().includes("token")) {
+                                    let modal_error = document.querySelector('#modal_error');
+                                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                        `Login token has expired.<br>
                                     Login tokens have a limited lifetime to increase security.<br>
                                     Please just <b>login again</b> to refresh the token.
                                     </p>`;
-                                        document.querySelector('html').classList.add('is-clipped');
-                                        modal_error.classList.add('is-active');
-                                    } else {
-                                        $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                    }
+                                    document.querySelector('html').classList.add('is-clipped');
+                                    modal_error.classList.add('is-active');
+                                } else {
+                                    $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
                                 }
-                            })
-                        .fail(function(jqXHR, textStatus, errorThrown) {
-                            $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                            let modal_error = document.querySelector('#modal_error');
-                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                `Network <b>connection problem</b>.<br>
+                            }
+                        })
+                    .fail(function(jqXHR, textStatus, errorThrown) {
+                        $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                        let modal_error = document.querySelector('#modal_error');
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `Network <b>connection problem</b>.<br>
                                 Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
                                 We'd like to help, but there are many possible causes.<br>
                                 <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
                             </p>`;
-                            document.querySelector('html').classList.add('is-clipped');
-                            modal_error.classList.add('is-active');
-                        })
-                        .always(function() {
-                            $("#submit").removeClass("is-loading");
-                        })
-                        .catch(function(err) {
-                            console.error(err);
-                            $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                            let modal_error = document.querySelector('#modal_error');
-                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                `Network <b>connection problem</b>.<br>
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
+                    })
+                    .always(function() {
+                        $("#submit").removeClass("is-loading");
+                    })
+                    .catch(function(err) {
+                        console.error(err);
+                        $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                        let modal_error = document.querySelector('#modal_error');
+                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                            `Network <b>connection problem</b>.<br>
                                 Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
                                 We'd like to help, but there are many possible causes.<br>
                                 <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
                             </p>`;
-                            document.querySelector('html').classList.add('is-clipped');
-                            modal_error.classList.add('is-active');
-                        });
-                }).catch(function(err) {
-                    console.error(err);
-                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    let modal_error = document.querySelector('#modal_error');
-                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                        `<b>ReCaptcha issue</b>.<br>
-                        Your web browser couldn't connect to Google's servers for some reason.<br>
-                        🤖 If you're not a robot, just try again.<br>
-                        If the issue persists, try using a different network or browser.
-                    </p>`;
-                    document.querySelector('html').classList.add('is-clipped');
-                    modal_error.classList.add('is-active');
-                    $("#submit").removeClass("is-loading");
-                });
-            });
-        }, 500);
-    }
-
-    $('#form').submit(function() {
-        return false;
-    });
-
-    $('#submit').click(function() {
-        username = $('#usernameinput').val()
-        //trim the username field to remove extra spaces
-        username = username.replace(/^[ ]+|[ ]+$/g, '')
-        password = $('#passwordinput').val()
-
-        if (username && password) {
-            $("#submit").addClass("is-loading");
-            setTimeout(function() {
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
-                        $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
-                                function(data) {
-                                    if (data.success == true) {
-                                        if (rememberLogin.checked) {
-                                            localStorage.setItem("username", encodeURIComponent(username));
-                                            localStorage.setItem("authToken", data.result[2]);
-                                        }
-
-                                        $("#ducologo").addClass("rotate");
-
-                                        $("#username").text(encodeURIComponent(username));
-                                        $("#email").text(`${data.result[1]}`);
-
-                                        $("#miner_pass").text(data.result[3]);
-                                        $("#mining_key").val(data.result[3]);
-
-                                        $("#useravatar").attr("src",
-                                            `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                                            `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
-
-                                        user_data(username, true);
-                                        genQrCode();
-
-                                        setInterval(function() {
-                                            stake_counter();
-                                        }, 250);
-                                    } else {
-                                        if (data.message.includes("This user doesn't exist")) {
-                                            $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                        } else if (data.message.includes("captcha")) {
-                                            let modal_error = document.querySelector('#modal_error');
-                                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                                `<b>Incorrect captcha score</b><br>
-                                            ReCaptcha didn't like your browser or your behavior.<br>
-                                            🤖 If you're not a robot, just try again.<br>
-                                            If the issue persists, try using a different network or browser.</p>`;
-                                            document.querySelector('html').classList.add('is-clipped');
-                                            modal_error.classList.add('is-active');
-                                        } else if (data.message.includes("banned")) {
-                                            let modal_error = document.querySelector('#modal_error');
-                                            document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                                `Your account is <b>banned</b>.<br>
-                                            You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
-                                            We don't want to see you here again.
-                                            </p>`;
-                                            document.querySelector('html').classList.add('is-clipped');
-                                            modal_error.classList.add('is-active');
-                                        } else {
-                                            $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                        }
-                                    }
-                                })
-                            .fail(function(jqXHR, textStatus, errorThrown) {
-                                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                let modal_error = document.querySelector('#modal_error');
-                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                    `Network <b>connection problem</b>.<br>
-                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
-                                    We'd like to help, but there are many possible causes.<br>
-                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
-                                </p>`;
-                                document.querySelector('html').classList.add('is-clipped');
-                                modal_error.classList.add('is-active');
-                            })
-                            .always(function() {
-                                $("#submit").removeClass("is-loading");
-                            })
-                            .catch(function(err) {
-                                console.error(err);
-                                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                                let modal_error = document.querySelector('#modal_error');
-                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                                    `Network <b>connection problem</b>.<br>
-                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
-                                    We'd like to help, but there are many possible causes.<br>
-                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
-                                </p>`;
-                                document.querySelector('html').classList.add('is-clipped');
-                                modal_error.classList.add('is-active');
-                            });
+                        document.querySelector('html').classList.add('is-clipped');
+                        modal_error.classList.add('is-active');
                     });
-                }).catch(function(err) {
-                    console.error(err);
-                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-                    let modal_error = document.querySelector('#modal_error');
-                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                        `<b>ReCaptcha issue</b>.<br>
+            }).catch(function(err) {
+                console.error(err);
+                $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                let modal_error = document.querySelector('#modal_error');
+                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                    `<b>ReCaptcha issue</b>.<br>
                         Your web browser couldn't connect to Google's servers for some reason.<br>
                         🤖 If you're not a robot, just try again.<br>
                         If the issue persists, try using a different network or browser.
                     </p>`;
-                    document.querySelector('html').classList.add('is-clipped');
-                    modal_error.classList.add('is-active');
-                    $("#submit").removeClass("is-loading");
-                });
-            }, 500);
-        } else {
-            $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-            $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
-        }
-    });
+                document.querySelector('html').classList.add('is-clipped');
+                modal_error.classList.add('is-active');
+                $("#submit").removeClass("is-loading");
+            });
+        });
+    }, 500);
+}
 
-    document.addEventListener('onautocomplete', function(e) {
-        if (e.target.hasAttribute('autocompleted')) {
-            if (e.target.id == "usernameinput") {
-                $('#usernamediv').addClass("focus");
-            }
-            if (e.target.id == "passwordinput") {
-                $('#passworddiv').addClass("focus");
-            }
-        }
-    })
-
-    setInterval(function() {
-        $("#mcontainer").css("max-width", window.innerWidth - 80)
-    }, 1000)
+$('#form').submit(function() {
+    return false;
 });
+
+
+
+document.addEventListener('onautocomplete', function(e) {
+    if (e.target.hasAttribute('autocompleted')) {
+        if (e.target.id == "usernameinput") {
+            $('#usernamediv').addClass("focus");
+        }
+        if (e.target.id == "passwordinput") {
+            $('#passworddiv').addClass("focus");
+        }
+    }
+})
+
+setInterval(function() {
+    $("#mcontainer").css("max-width", window.innerWidth - 80)
+}, 1000)
 
 // Fix the overflow on modal close (Fix the mistake)
 
@@ -2602,6 +2491,102 @@ document.querySelectorAll('#temp-unit-select a').forEach((elm) => {
         dropdown.parentElement.classList.remove('is-active');
     });
 });
+
+function login(token) {
+    username = $('#usernameinput').val()
+    //trim the username field to remove extra spaces
+    username = username.replace(/^[ ]+|[ ]+$/g, '')
+    password = $('#passwordinput').val()
+
+    if (username && password) {
+        $("#submit").addClass("is-loading");
+        setTimeout(function() {
+            $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
+                    function(data) {
+                        if (data.success == true) {
+                            if (rememberLogin.checked) {
+                                localStorage.setItem("username", encodeURIComponent(username));
+                                localStorage.setItem("authToken", data.result[2]);
+                            }
+
+                            $("#ducologo").addClass("rotate");
+
+                            $("#username").text(encodeURIComponent(username));
+                            $("#email").text(`${data.result[1]}`);
+
+                            $("#miner_pass").text(data.result[3]);
+                            $("#mining_key").val(data.result[3]);
+
+                            $("#useravatar").attr("src",
+                                `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+                                `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/128/${get_user_color(username)}/ffffff/1`);
+
+                            user_data(username, true);
+                            genQrCode();
+
+                            setInterval(function() {
+                                stake_counter();
+                            }, 250);
+                        } else {
+                            if (data.message.includes("This user doesn't exist")) {
+                                $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            } else if (data.message.includes("captcha")) {
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `<b>Incorrect captcha score</b><br>
+                                            ReCaptcha didn't like your browser or your behavior.<br>
+                                            🤖 If you're not a robot, just try again.<br>
+                                            If the issue persists, try using a different network or browser.</p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
+                            } else if (data.message.includes("banned")) {
+                                let modal_error = document.querySelector('#modal_error');
+                                document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                                    `Your account is <b>banned</b>.<br>
+                                            You have violated our <a href="https://github.com/revoxhere/duino-coin#terms-of-service">ToS</a> <br/>
+                                            We don't want to see you here again.
+                                            </p>`;
+                                document.querySelector('html').classList.add('is-clipped');
+                                modal_error.classList.add('is-active');
+                            } else {
+                                $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                            }
+                        }
+                    })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    let modal_error = document.querySelector('#modal_error');
+                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                        `Network <b>connection problem</b>.<br>
+                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                    We'd like to help, but there are many possible causes.<br>
+                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                                </p>`;
+                    document.querySelector('html').classList.add('is-clipped');
+                    modal_error.classList.add('is-active');
+                })
+                .always(function() {
+                    $("#submit").removeClass("is-loading");
+                })
+                .catch(function(err) {
+                    console.error(err);
+                    $("#ducologo").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+                    let modal_error = document.querySelector('#modal_error');
+                    document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
+                        `Network <b>connection problem</b>.<br>
+                                    Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                                    We'd like to help, but there are many possible causes.<br>
+                                    <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                                </p>`;
+                    document.querySelector('html').classList.add('is-clipped');
+                    modal_error.classList.add('is-active');
+                });
+        }, 500);
+    } else {
+        $("#usernamediv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+        $("#passworddiv").effect("shake", { duration: 750, easing: "swing", distance: 5, times: 3 });
+    }
+}
 
 function parseTemperature(temp) {
     let unit = localStorage.getItem("tempUnit") || "Celcius";
@@ -2801,122 +2786,122 @@ addFavorite.addEventListener('click', () => {
 
 updateFavoritesTable();
 
-document.querySelector("#hidden").addEventListener("click", function(e) {   
-    e.preventDefault(); 
-    $('#wallet').hide("drop", { direction: "right" }, 300, function() { 
-        $('.egg').show("drop", { direction: "right" }, 300);    
-    }); 
-    type(); 
-}); 
+document.querySelector("#hidden").addEventListener("click", function(e) {
+    e.preventDefault();
+    $('#wallet').hide("drop", { direction: "right" }, 300, function() {
+        $('.egg').show("drop", { direction: "right" }, 300);
+    });
+    type();
+});
 
-const startSnake = () => {  
+const startSnake = () => {
 
-    var snakeGame = {   
-        ctx: $("#snakeGame")[0].getContext("2d"),   
-        w: $("#snakeGame").width(), 
-        h: $("#snakeGame").height() 
-    }   
+    var snakeGame = {
+        ctx: $("#snakeGame")[0].getContext("2d"),
+        w: $("#snakeGame").width(),
+        h: $("#snakeGame").height()
+    }
 
-    var cw = 10;    
-    var d;  
-    var food;   
-    var score;  
-    let speed = 90; 
+    var cw = 10;
+    var d;
+    var food;
+    var score;
+    let speed = 90;
 
-    var snake_array;    
+    var snake_array;
 
-    function make_snake(){  
-        var length = 4;     
-        snake_array = [];   
-        for(var i = length-1; i>=0; i--){   
-            snake_array.push({x: i, y:0});  
-        }   
-    }   
+    function make_snake() {
+        var length = 4;
+        snake_array = [];
+        for (var i = length - 1; i >= 0; i--) {
+            snake_array.push({ x: i, y: 0 });
+        }
+    }
 
-    function make_food(){   
-        food = {    
-            x: Math.round(Math.random()*(snakeGame.w-cw)/cw),   
-            y: Math.round(Math.random()*(snakeGame.h-cw)/cw),   
-        };  
-    }   
+    function make_food() {
+        food = {
+            x: Math.round(Math.random() * (snakeGame.w - cw) / cw),
+            y: Math.round(Math.random() * (snakeGame.h - cw) / cw),
+        };
+    }
 
-    function drawGame(){    
-        snakeGame.ctx.fillStyle = "black";  
-        snakeGame.ctx.fillRect(0, 0, snakeGame.w, snakeGame.h); 
-        snakeGame.ctx.strokeStyle = "lime"; 
-        snakeGame.ctx.strokeRect(0, 0, snakeGame.w, snakeGame.h);   
+    function drawGame() {
+        snakeGame.ctx.fillStyle = "black";
+        snakeGame.ctx.fillRect(0, 0, snakeGame.w, snakeGame.h);
+        snakeGame.ctx.strokeStyle = "lime";
+        snakeGame.ctx.strokeRect(0, 0, snakeGame.w, snakeGame.h);
 
-        var nx = snake_array[0].x;  
-        var ny = snake_array[0].y;  
+        var nx = snake_array[0].x;
+        var ny = snake_array[0].y;
 
-        if(d == "right") nx++;  
-        else if(d == "left") nx--;  
-        else if(d == "up") ny--;    
-        else if(d == "down") ny++;  
+        if (d == "right") nx++;
+        else if (d == "left") nx--;
+        else if (d == "up") ny--;
+        else if (d == "down") ny++;
 
-        if(nx == -1 || nx == snakeGame.w/cw || ny == -1 || ny == snakeGame.h/cw || check_collision(nx, ny, snake_array)){   
-            initGame(); 
-            return; 
-        }   
+        if (nx == -1 || nx == snakeGame.w / cw || ny == -1 || ny == snakeGame.h / cw || check_collision(nx, ny, snake_array)) {
+            initGame();
+            return;
+        }
 
-        if(nx == food.x && ny == food.y){   
-            var tail = {x: nx, y: ny};  
-            score++;    
-            make_food();    
-        }   
-        else{   
-            var tail = snake_array.pop();   
-            tail.x = nx; tail.y = ny;   
-        }   
+        if (nx == food.x && ny == food.y) {
+            var tail = { x: nx, y: ny };
+            score++;
+            make_food();
+        } else {
+            var tail = snake_array.pop();
+            tail.x = nx;
+            tail.y = ny;
+        }
 
-        snake_array.unshift(tail);  
+        snake_array.unshift(tail);
 
-        for(var i = 0; i < snake_array.length; i++){    
-            var c = snake_array[i]; 
-            paint_cell(c.x, c.y);   
-        }   
+        for (var i = 0; i < snake_array.length; i++) {
+            var c = snake_array[i];
+            paint_cell(c.x, c.y);
+        }
 
-        paint_cell(food.x, food.y); 
-        var score_text = "Score: " + score; 
-        snakeGame.ctx.fillStyle = "lime";   
-        snakeGame.ctx.font = "1em Lato";    
-        snakeGame.ctx.fillText(score_text, 5, snakeGame.h-5);   
-    }   
+        paint_cell(food.x, food.y);
+        var score_text = "Score: " + score;
+        snakeGame.ctx.fillStyle = "lime";
+        snakeGame.ctx.font = "1em Lato";
+        snakeGame.ctx.fillText(score_text, 5, snakeGame.h - 5);
+    }
 
-    function paint_cell(x, y){  
-        snakeGame.ctx.fillStyle = "black";  
-        snakeGame.ctx.fillRect(x*cw, y*cw, cw, cw); 
-        snakeGame.ctx.strokeStyle = "white";    
-        snakeGame.ctx.strokeRect(x*cw, y*cw, cw, cw);   
-    }   
+    function paint_cell(x, y) {
+        snakeGame.ctx.fillStyle = "black";
+        snakeGame.ctx.fillRect(x * cw, y * cw, cw, cw);
+        snakeGame.ctx.strokeStyle = "white";
+        snakeGame.ctx.strokeRect(x * cw, y * cw, cw, cw);
+    }
 
-    function check_collision(x, y, array){  
-        for(var i = 0; i < array.length; i++){  
-            if(i != array.length && (array[i].x == x && array[i].y == y)) return true;  
-        }   
-        return false;   
-    }   
+    function check_collision(x, y, array) {
+        for (var i = 0; i < array.length; i++) {
+            if (i != array.length && (array[i].x == x && array[i].y == y)) return true;
+        }
+        return false;
+    }
 
-    function initGame() {   
-        d = "right";    
-        make_snake();   
-        make_food();    
-        score = 0;  
+    function initGame() {
+        d = "right";
+        make_snake();
+        make_food();
+        score = 0;
 
-        if(typeof game_loop != "undefined") clearInterval(game_loop);   
-        game_loop = setInterval(drawGame, speed);   
-    }   
+        if (typeof game_loop != "undefined") clearInterval(game_loop);
+        game_loop = setInterval(drawGame, speed);
+    }
 
-    initGame(); 
+    initGame();
 
-    $(document).keydown(function(e){    
-        var key = e.which;  
-        if(key == "37" && d != "right") d = "left"; 
-        else if(key == "38" && d != "down") d = "up";   
-        else if(key == "39" && d != "left") d = "right";    
-        else if(key == "40" && d != "up") d = "down";   
-    })      
-}   
+    $(document).keydown(function(e) {
+        var key = e.which;
+        if (key == "37" && d != "right") d = "left";
+        else if (key == "38" && d != "down") d = "up";
+        else if (key == "39" && d != "left") d = "right";
+        else if (key == "40" && d != "up") d = "down";
+    })
+}
 
 let textToWrite = ` 
 ⠀⠀⠀⠀⠀⣀⣤⣴⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀<br/>  
@@ -2935,23 +2920,23 @@ C:/Duino-Coin/EasterEgg/Snake> python3 main.py
 <br/>   
 <br/>   
 Starting game...    
-`;  
+`;
 
-let screen = document.querySelector("#screen"); 
-let i = 0, isTag, text; 
+let screen = document.querySelector("#screen");
+let i = 0,
+    isTag, text;
 
-function type() {   
-    text = textToWrite.slice(0, ++i);   
-    if (text === textToWrite)   
-    {   
-        screen.innerHTML = `<canvas width="400" height="400" id="snakeGame"></canvas>`; 
-        startSnake();   
-        return; 
-    }   
-    screen.innerHTML = text + `<span class='blinker'>&#32;</span>`; 
-    let char = text.slice(-1);  
-    if (char === "<") isTag = true; 
-    if (char === ">") isTag = false;    
-    if (isTag) return type();   
-    setTimeout(type, 30);   
+function type() {
+    text = textToWrite.slice(0, ++i);
+    if (text === textToWrite) {
+        screen.innerHTML = `<canvas width="400" height="400" id="snakeGame"></canvas>`;
+        startSnake();
+        return;
+    }
+    screen.innerHTML = text + `<span class='blinker'>&#32;</span>`;
+    let char = text.slice(-1);
+    if (char === "<") isTag = true;
+    if (char === ">") isTag = false;
+    if (isTag) return type();
+    setTimeout(type, 30);
 };
