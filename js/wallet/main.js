@@ -1565,6 +1565,8 @@ const user_data = (username, first_open) => {
                 try {
                     return response.json();
                 } catch (e) {
+                    let result = response.text();
+                    result.replace('Infinity', 0);
                     return JSON.parse(JSON.stringify(response));
                 }
             })
