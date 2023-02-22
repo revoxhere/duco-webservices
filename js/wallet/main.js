@@ -1558,9 +1558,16 @@ window.addEventListener('load', function() {
 
 //USER DATA FROM API
 const user_data = (username, first_open) => {
+
     try {
         fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
-            .then(response => response.json())
+            .then(response => {
+                try {
+                    return response.json();
+                } catch (e) {
+                    return JSON.parse(JSON.stringify(response));
+                }
+            })
             .then(data => {
                 data = data.result;
                 duco_price = data.prices.max;
