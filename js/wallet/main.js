@@ -670,8 +670,13 @@ function wrap() {
 }
 
 document.querySelector("#stake_max").addEventListener("click", function() {
-    document.getElementById("stake_amount").value = balance;
+    // Round down the value of balance
+    let roundedBalance = Math.floor(balance);
+  
+    // Set the rounded down value to the input field
+    document.getElementById("stake_amount").value = roundedBalance;
 });
+
 
 function stake_counter() {
     stake_amount_text = document.getElementById("stake_amount_text")
