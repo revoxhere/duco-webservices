@@ -1214,3 +1214,12 @@ progress::-webkit-progress-value {
   right: 0;
   cursor: pointer;
 }
+
+.circle {
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  color: #fff;
+  text-align: center;
+  font-size: 1.8em;
+}
