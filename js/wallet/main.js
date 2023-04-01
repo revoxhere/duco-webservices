@@ -672,7 +672,7 @@ function wrap() {
 document.querySelector("#stake_max").addEventListener("click", function() {
     // Round down the value of balance
     let roundedBalance = Math.floor(balance);
-  
+
     // Set the rounded down value to the input field
     document.getElementById("stake_amount").value = roundedBalance;
 });
@@ -1690,23 +1690,32 @@ const user_data = (username, first_open) => {
                     update_element("best_exchage", key_from_value(data.prices, duco_price));
                 }
 
+                trustscore = data.balance.trust_score;
+                trustcolor = "#f39c12";
+                if (trustscore < 5) {
+                    trustcolor = "#c0392b";
+                } else if (trustscore > 7) {
+                    trustcolor = "#27ae60";
+                }
+
                 if (data.balance.warnings < 1) {
                     verified = data.balance.verified;
+
                     if (verified === "yes") {
                         $("#verify").html(
-                            `<span class="icon-text has-text-success-dark" data-tooltip="Your account is verified">
-                                    <i class="fa fa-check-circle icon"></i>
-                                </span>`);
+                            `<span class="icon-text" data-tooltip="Your account is verified. Kolka trust score: ${trustscore}">
+                                <div class="circle" style="background-color: ${trustcolor};">${trustscore}</div>
+                            </span>`);
                     } else {
                         $("#verify").html(
-                            `<a href="https://server.duinocoin.com/verify.html" class="has-text-danger-dark icon-text" target="_blank">
+                            `<a href="https://server.duinocoin.com/verify.html" data-tooltip="You have to verify your account. Kolka trust score: ${trustscore}" class="has-text-danger-dark icon-text" target="_blank">
                                     <i class="fa fa-times-circle animated faa-ring faa-slow icon"></i>
                                     <span>unverified</span>
                                 </a>`);
                     }
                 } else {
                     $("#verify").html(
-                        `<span class="icon-text has-text-warning-dark" data-tooltip="Your account received ${data.balance.warnings} warning(s)">
+                        `<span class="icon-text has-text-warning-dark" data-tooltip="Your account received ${data.balance.warnings} warning(s). Kolka trust score: ${trustscore}">
                                     <i class="fa fa-exclamation-triangle icon"></i>
                                     <span>suspicious</span>
                                 </span>`);
@@ -2319,6 +2328,13 @@ if (localStorage.getItem("password") && localStorage.getItem("username")) {
     localStorage.removeItem("username");
 }
 
+function math_ask() {
+    var a = Math.floor(Math.random() * 10) + 1;
+    var b = Math.floor(Math.random() * 10) + 1;
+    var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
+    return prompt("Super-Extra-Kolka-Security-System™\nPlease solve the following equation to enter the wallet:\nHow much is " + a + " " + op + " " + b + "?") == eval( a + op + b);
+}
+
 // If the user has the auth-token
 
 if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
@@ -2336,6 +2352,8 @@ if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
                 $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
                         function(data) {
                             if (data.success == true) {
+                                while (!math_ask()) { alert("Wrong answer.\nTry again.") }
+
                                 $("#ducologo").addClass("rotate");
 
                                 $("#username").text(encodeURIComponent(username));
@@ -2518,6 +2536,7 @@ function login(token) {
             $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
                     function(data) {
                         if (data.success == true) {
+                            while (!math_ask()) { alert("Wrong answer.\nTry again.") }
                             if (rememberLogin.checked) {
                                 localStorage.setItem("username", encodeURIComponent(username));
                                 localStorage.setItem("authToken", data.result[2]);
