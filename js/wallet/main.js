@@ -2328,12 +2328,6 @@ if (localStorage.getItem("password") && localStorage.getItem("username")) {
     localStorage.removeItem("username");
 }
 
-function math_ask() {
-    var a = Math.floor(Math.random() * 10) + 1;
-    var b = Math.floor(Math.random() * 10) + 1;
-    var op = ["*", "+", "/", "-"][Math.floor(Math.random()*4)];
-    return prompt("Super-Extra-Kolka-Security-System™\nPlease solve the following equation to enter the wallet:\nHow much is " + a + " " + op + " " + b + "?") == eval( a + op + b);
-}
 
 // If the user has the auth-token
 
@@ -2352,8 +2346,6 @@ if (localStorage.getItem("authToken") && localStorage.getItem("username")) {
                 $.getJSON(`https://server.duinocoin.com/v2/auth/check/${encodeURIComponent(username)}`, { token: localStorage.getItem("authToken"), captcha: token },
                         function(data) {
                             if (data.success == true) {
-                                while (!math_ask()) { alert("Wrong answer.\nTry again.") }
-
                                 $("#ducologo").addClass("rotate");
 
                                 $("#username").text(encodeURIComponent(username));
@@ -2536,7 +2528,6 @@ function login(token) {
             $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, { password: window.btoa(unescape(encodeURIComponent(password))), captcha: token },
                     function(data) {
                         if (data.success == true) {
-                            while (!math_ask()) { alert("Wrong answer.\nTry again.") }
                             if (rememberLogin.checked) {
                                 localStorage.setItem("username", encodeURIComponent(username));
                                 localStorage.setItem("authToken", data.result[2]);
