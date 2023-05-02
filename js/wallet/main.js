@@ -1314,6 +1314,8 @@ function refresh_achievements(user_achievements) {
                 "Mining empire": 6,
                 "Mining expert": 5,
 
+                "The braincell": -1,
+
                 "Coming soon": 7
             }
 
