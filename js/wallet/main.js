@@ -1967,12 +1967,12 @@ const user_data = (username, first_open) => {
                             </span>`
                         }
 
-                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270) &&  miner_diff != 333) {
                             warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
-                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 225 && miner_hashrate < 270)) {
+                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 280 && miner_hashrate < 380) &&  miner_diff != 333) {
                             warning_icon = `
                                 <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
                                     <i class="icon ${icon_class_animation_alt}"></i>
