@@ -191,7 +191,7 @@ form {
 }
 
 #minertable {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 table,
@@ -200,12 +200,24 @@ td {
   border: none !important;
 }
 
+.tenbox {
+  height:100%;
+}
+
+.takolumna {
+    margin: -10px;
+    padding: 0px;
+    min-width: 103%;
+    min-height: 100% !important;
+}
+
 #mcontainer {
+  position:relative;
+  min-height: 92.5%;
   transition: 0.3s height;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 150px;
-  margin-bottom: 0px !important;
+  margin-bottom: 5px !important;
   border-radius: 0px 0px 10px 10px !important;
 }
 
