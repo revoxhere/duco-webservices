@@ -1563,6 +1563,8 @@ window.addEventListener('load', function() {
     });
 });
 
+stopUpdate = false;
+
 //USER DATA FROM API
 const user_data = (username, first_open) => {
 
@@ -1693,20 +1695,13 @@ const user_data = (username, first_open) => {
                 }
 
                 trustscore = data.balance.trust_score;
-                trustcolor = "#f39c12";
-                if (trustscore < 5) {
-                    trustcolor = "#c0392b";
-                } else if (trustscore > 7) {
-                    trustcolor = "#27ae60";
-                }
-
                 if (data.balance.warnings < 1) {
                     verified = data.balance.verified;
 
                     if (verified === "yes") {
                         $("#verify").html(
-                            `<span class="icon-text" data-tooltip="Your account is verified. Kolka trust score: ${trustscore}">
-                                <div class="circle" style="background-color: ${trustcolor};">${trustscore}</div>
+                            `<span data-tooltip="Your account is verified. Kolka trust score: ${trustscore}">
+                                <i class="fa icon-text has-text-success-dark fa-lg fa-check-circle"></i>
                             </span>`);
                     } else {
                         $("#verify").html(
@@ -1805,8 +1800,8 @@ const user_data = (username, first_open) => {
                     }
 
                     t_miners = t_miners.sort(function(a, b) {
-                        if (a.identifier < b.identifier) { return -1; }
-                        if (a.identifier > b.identifier) { return 1; }
+                        if (a.threadid < b.threadid) { return -1; }
+                        if (a.threadid > b.threadid) { return 1; }
                         return 0;
                     });
 
@@ -1874,17 +1869,17 @@ const user_data = (username, first_open) => {
                             icon = `<img src="img/esp32.gif">`;
                             miner_type = "ESP32";
                             percentage = 0.96;
-                        } else if (miner_software.includes("I2C")) {
-                            icon = `<img src="img/arduino.gif">`;
-                            color = "#B33771";
-                            miner_type = "AVR (I²C)";
-                            percentage = 0.96;
                         } else if (miner_software.includes("AVR") && miner_diff == 333) {
                             icon = `<img src="img/pico.gif">`;
                             color = "#16a085";
                             miner_type = "AVR (Pico)";
                             percentage = 0.96;
-                        } else if (miner_software.includes("AVR")) {
+                        } else if (miner_software.includes("I2C")) {
+                            icon = `<img src="img/arduino.gif">`;
+                            color = "#B33771";
+                            miner_type = "AVR (I²C)";
+                            percentage = 0.96;
+                        }  else if (miner_software.includes("AVR")) {
                             icon = `<img src="img/arduino.gif">`;
                             color = "#B33771";
                             miner_type = "AVR (Normal)";
@@ -1931,13 +1926,13 @@ const user_data = (username, first_open) => {
 
                         let thread_string = "";
                         if (miner_count > 1) {
-                            thread_string = `(${miner_count} threads)`;
+                            thread_string = `(${miner_count}x)`;
                         }
 
                         icon_class = "has-text-warning-dark";
                         icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
                         icon_class_alt = "has-text-danger";
-                        icon_class_animation_alt = "fa fa-times-circle animated faa-flash";
+                        icon_class_animation_alt = "fa fa-exclamation-triangle animated faa-flash";
 
                         if (localStorage.getItem("hideWarnings") == "true") {
                             icon_class = "";
@@ -2023,7 +2018,7 @@ const user_data = (username, first_open) => {
                                             <span class="has-text-weight-bold" data-tooltip="Calculations per second">
                                                 ${scientific_prefix(miner_hashrate)}H/s
                                             </span>
-                                            <span class="has-text-weight-normal" data-tooltip="Threads/cores">
+                                            <span class="has-text-weight-normal" data-tooltip="Number of threads/cores">
                                                 ${thread_string}
                                             </span>
                                     </th>
@@ -2184,7 +2179,7 @@ const user_data = (username, first_open) => {
                                     </p>
                                 </div>`);
                     }
-                    $("#miners").html(miners_html);
+                    if (!stopUpdate) $("#miners").html(miners_html);
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
 
@@ -2210,9 +2205,10 @@ const user_data = (username, first_open) => {
                 }
 
                 $(function() {
-                    $("td[colspan=5]").find(".content").hide();
+                    if (!stopUpdate) $("td[colspan=5]").find(".content").hide();
                     $(".expand-btn").click(function(event) {
                         let $target = $(event.target);
+                        stopUpdate = !stopUpdate;
                         $target.closest("tr").next().find(".content").slideToggle(250);
                     });
                 });
