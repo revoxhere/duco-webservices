@@ -468,6 +468,20 @@ input {
   opacity: 1;
 }
 
+.ui-tooltip {
+	position: absolute;
+	z-index: 9999;
+	max-width: 300px;
+  background-color: rgb(74,74,74,.9);
+  border-radius:8px;
+}
+body .ui-tooltip {
+	padding:.5rem 1rem;
+  color: white;
+  font-family:BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-size:.75rem
+}
+
 .rotate {
   overflow: hidden;
   transition-duration: 0.8s;

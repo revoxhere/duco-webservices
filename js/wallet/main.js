@@ -1854,68 +1854,52 @@ const user_data = (username, first_open) => {
                             miner_soft = miner_software + ", ";
                         }
 
+                        let fMinerSoftware = null;
+                        let fMinerObj = null;
+                        let fMinerToolTip = null
+                        
+                        // Find miner software
+                        for(let i of Object.keys(minerObj.miner_software)) { 
+                            if(miner_software.includes(i)) {
+                                fMinerSoftware = i;
+                                break;
+                            }
+                        };
+
+                        // Find miner_identifier or use default
+                        if(fMinerSoftware) {
+                            if(Object.keys(minerObj.miner_software[fMinerSoftware]).length > 1) {
+                                for(const [index, element] of Object.values(minerObj.miner_software[fMinerSoftware]).entries()) {
+                                    if( (element.miner_diff && element.miner_diff == miner_diff) ||
+                                        (miner_identifier.includes(Object.keys(minerObj.miner_software[fMinerSoftware])[index])))
+                                    {
+                                        fMinerObj = element;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(!fMinerObj)
+                            {
+                                // Use default
+                                fMinerObj = minerObj.miner_software[fMinerSoftware].default;
+                            }
+                        }
+                        else
+                        {
+                            // Use default
+                            fMinerObj = minerObj.miner_software.default.default;
+                        }
+
                         let miner_diff_str = scientific_prefix(miner_diff)
                         let accepted_rate = round_to(1, (miner_accepted / (miner_accepted + miner_rejected) * 100))
 
-                        let percentage = 0.80;
-                        let miner_type = "Other";
-                        if (miner_software.includes("ESP8266")) {
-                            icon = `<img src="img/wemos.gif">`;
-                            color = "#F5515F";
-                            miner_type = "ESP8266";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("ESP32")) {
-                            color = "#5f27cd";
-                            icon = `<img src="img/esp32.gif">`;
-                            miner_type = "ESP32";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("AVR") && miner_diff == 333) {
-                            icon = `<img src="img/pico.gif">`;
-                            color = "#16a085";
-                            miner_type = "AVR (Pico)";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("I2C")) {
-                            icon = `<img src="img/arduino.gif">`;
-                            color = "#B33771";
-                            miner_type = "AVR (I²C)";
-                            percentage = 0.96;
-                        }  else if (miner_software.includes("AVR")) {
-                            icon = `<img src="img/arduino.gif">`;
-                            color = "#B33771";
-                            miner_type = "AVR (Normal)";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("PC") && (miner_identifier == "Raspberry Pi" || miner_identifier.includes("RPi"))) {
-                            icon = `<img src="img/pi.gif">`;
-                            color = "#16a085";
-                            miner_type = "AVR (Raspberry Pi)";
-                            percentage = 0.96;
-                        } else if (miner_software.includes("PC")) {
-                            color = "#F97F51";
-                            icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
-                            miner_type = "PC (Normal)";
-                            if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
-                        } else if (miner_software.includes("Web")) {
-                            color = "#009432";
-                            icon = `<i class="fa fa-globe" style="color:${color}"></i>`;
-                            miner_type = "PC (Web)";
-                        } else if (miner_software.includes("Android") || miner_software.includes("Phone") || miner_software.includes("Mini Miner")) {
-                            color = "#fa983a";
-                            icon = `<i class="fa fa-mobile" style="color:${color}"></i>`;
-                            miner_type = "Mobile";
-                        } else {
-                            color = "#16a085";
-                            icon = `<i class="fa fa-question-circle" style="color:${color}"></i>`;
-                            miner_type = "Unknown!";
-                        }
-
-                        let miner_efficiency = round_to(2, Math.pow(percentage, miner_ki - 1) * 100);
+                        let miner_efficiency = round_to(2, Math.pow(fMinerObj.percentage, miner_ki - 1) * 100);
                         let efficiency_color = "has-text-warning-dark";
                         if (miner_efficiency < 40) {
                             efficiency_color = "has-text-danger-dark";
                         } else if (miner_efficiency > 80) {
                             efficiency_color = "has-text-success-dark";
                         }
-
 
                         let accept_color = "has-text-warning-dark";
                         if (accepted_rate < 50) {
@@ -1929,68 +1913,46 @@ const user_data = (username, first_open) => {
                             thread_string = `(${miner_count}x)`;
                         }
 
-                        icon_class = "has-text-warning-dark";
-                        icon_class_animation = "fa fa-exclamation-triangle animated faa-flash";
-                        icon_class_alt = "has-text-danger";
-                        icon_class_animation_alt = "fa fa-exclamation-triangle animated faa-flash";
+                        icon_class =            "has-text-danger";
+                        icon_class_animation =  "fa fa-exclamation-triangle animated faa-flash";
 
                         if (localStorage.getItem("hideWarnings") == "true") {
-                            icon_class = "";
-                            icon_class_animation = "far fa-question-circle";
-                            icon_class_alt = "";
-                            icon_class_animation_alt = "far fa-question-circle";
+                            icon_class =            "";
+                            icon_class_animation =  "far fa-question-circle";
                         }
 
+                        // Warning Tool Tip
+                        let warning_message = "Operating normally";
+                        if (miner_efficiency < 40) {
+                            warning_message = "Too many miners - low Kolka efficiency";
+                        } else if (accepted_rate < 50) {
+                            warning_message = "Too many rejected shares";
+                        } else if (fMinerObj.miner_type == "Unknown") {
+                            warning_message = "Unknown miner";
+                        }
+                        
+                        // Miner Tool Tip (Overrides)
+                        if(fMinerObj["hashrate-max"] && miner_hashrate > fMinerObj["hashrate-max"])
+                        {
+                            fMinerToolTip = fMinerObj["hashrate-message-over"];
+                        }
+                        else if(fMinerObj["hashrate-min"] && miner_hashrate < fMinerObj["hashrate-min"])
+                        {
+                            fMinerToolTip = fMinerObj["hashrate-message-under"];
+                        }
+                        
+                        // Construct Warning
                         let warning_icon = `
-                            <span class="icon-text has-text-success-dark" style="cursor: pointer;" data-tooltip="Operating normally">
+                            <span class="icon-text ${warning_message != "Operating normally" ? icon_class : 'has-text-success-dark'}" id="ui-tooltip-center" style="cursor: pointer;" title="${warning_message}">
                                 <i class="icon mdi mdi-check-all"></i>
                             </span>`;
-                        if (miner_efficiency < 40) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many miners - low Kolka efficiency">
-                                <i class="icon ${icon_class_animation_alt}"></i>
-                            </span>`
-                        } else if (accepted_rate < 50) {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Too many rejected shares">
-                                <i class="icon ${icon_class_animation_alt}"></i>
-                            </span>`
-                        } else if (miner_type == "Unknown!") {
-                            warning_icon = `
-                            <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Unknown miner">
-                                <i class="icon ${icon_class_animation_alt}"></i>
-                            </span>`
-                        }
 
-                        if (miner_type == "AVR (I²C)" && !(miner_hashrate > 225 && miner_hashrate < 270) &&  miner_diff != 333) {
+                        // Construct Warning Override
+                        if(fMinerToolTip)
+                        {
                             warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
-                                    <i class="icon ${icon_class_animation_alt}"></i>
-                                </span>`
-                        } else if (miner_type == "AVR (Normal)" && !(miner_hashrate > 280 && miner_hashrate < 380) &&  miner_diff != 333) {
-                            warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
-                                    <i class="icon ${icon_class_animation_alt}"></i>
-                                </span>`
-                        } else if (miner_type == "ESP8266" && miner_hashrate > 45000) {
-                            warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
-                                    <i class="icon ${icon_class_animation_alt}"></i>
-                                </span>`
-                        } else if (miner_type == "ESP8266" && miner_hashrate < 8000) {
-                            warning_icon = `
-                                <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use 160 MHz clock for optimal hashrate">
+                                <span class="${icon_class}" id="ui-tooltip-center" style="cursor: pointer;" title="${fMinerToolTip}">
                                     <i class="icon ${icon_class_animation}"></i>
-                                </span>`
-                        } else if (miner_type == "ESP32" && miner_hashrate < 30000) {
-                            warning_icon = `
-                                <span class="icon-text ${icon_class}" style="cursor: pointer;" data-tooltip="Use the 2.0.1 version of ESP32 library for optimal hashrate">
-                                    <i class="icon ${icon_class_animation}"></i>
-                                </span>`
-                        } else if (miner_type == "ESP32" && miner_hashrate > 48000) {
-                            warning_icon = `
-                                <span class="${icon_class_alt}" style="cursor: pointer;" data-tooltip="Incorrect hashrate">
-                                    <i class="icon ${icon_class_animation_alt}"></i>
                                 </span>`
                         }
 
@@ -2004,7 +1966,7 @@ const user_data = (username, first_open) => {
                                     <th style="word-break: break-all">
                                             <span class="icon-text">
                                                 <span class="icon minerIcon">
-                                                    ${icon}<wbr>
+                                                    ${fMinerObj.icon}<wbr>
                                                 </span>
                                             </span>
                                             <span class="has-text-weight-bold"">
@@ -2015,10 +1977,10 @@ const user_data = (username, first_open) => {
                                             </span>
                                     </th>
                                     <th>
-                                            <span class="has-text-weight-bold" data-tooltip="Calculations per second">
+                                            <span class="has-text-weight-bold" id="ui-tooltip" title="Calculations per second">
                                                 ${scientific_prefix(miner_hashrate)}H/s
                                             </span>
-                                            <span class="has-text-weight-normal" data-tooltip="Number of threads/cores">
+                                            <span class="has-text-weight-normal" id="ui-tooltip" title="Number of threads/cores">
                                                 ${thread_string}
                                             </span>
                                     </th>
@@ -2046,12 +2008,12 @@ const user_data = (username, first_open) => {
                                             <div class="columns is-mobile">
                                                 <div class="column">
                                                     <ul class="my-1">
-                                                        <li data-tooltip="Miner software">
-                                                            <span style="color:${color}">
+                                                        <li id="ui-tooltip" title="Miner software">
+                                                            <span>
                                                                 ${miner_software}
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Time it took to find the latest result">
+                                                        <li id="ui-tooltip" title="Time it took to find the latest result">
                                                             <span class="has-text-weight-normal">
                                                                 Last share:
                                                             </span>
@@ -2059,7 +2021,7 @@ const user_data = (username, first_open) => {
                                                                 ${round_to(2, miner_sharetime)}s
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Server your miner is connected to">
+                                                        <li id="ui-tooltip" title="Server your miner is connected to">
                                                             <span class="has-text-weight-normal">
                                                                 Node: 
                                                             </span>
@@ -2067,7 +2029,7 @@ const user_data = (username, first_open) => {
                                                                 ${miner_pool}
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="How hard is it to mine">
+                                                        <li id="ui-tooltip" title="How hard is it to mine">
                                                             <span class="has-text-weight-normal">
                                                                 Difficulty: 
                                                             </span>
@@ -2075,7 +2037,7 @@ const user_data = (username, first_open) => {
                                                                 ${miner_diff_str}
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Ping (network delay) is exluded from calculations">
+                                                        <li id="ui-tooltip" title="Ping (network delay) is exluded from calculations">
                                                             <span class="has-text-weight-normal">
                                                                 Ping: 
                                                             </span>
@@ -2088,7 +2050,7 @@ const user_data = (username, first_open) => {
                                                 </div>
                                                 <div class="column">
                                                     <ul class="my-1">
-                                                        <li data-tooltip="Used hashing algorithm">
+                                                        <li id="ui-tooltip" title="Used hashing algorithm">
                                                             <span class="has-text-weight-normal">
                                                                 Algorithm:
                                                             </span>
@@ -2096,7 +2058,7 @@ const user_data = (username, first_open) => {
                                                                 ${miner_algo}
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Identifier used to separate miners in the API">
+                                                        <li id="ui-tooltip" title="Identifier used to separate miners in the API">
                                                             <span class="has-text-weight-normal">
                                                                 Thread ID:
                                                             </span>
@@ -2104,15 +2066,15 @@ const user_data = (username, first_open) => {
                                                                 ${miner_threadid} (${miner})
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Identifier used to group same threads">
+                                                        <li id="ui-tooltip" title="Identifier used to group same threads">
                                                             <span class="has-text-weight-normal">
                                                                 Miner type:
                                                             </span>
                                                             <span class="has-text-weight-bold">
-                                                                ${miner_type}
+                                                                ${fMinerObj.miner_type}
                                                             </span>
                                                         </li>
-                                                        <li data-tooltip="Kolka efficiency drop">
+                                                        <li id="ui-tooltip" title="Kolka efficiency drop">
                                                             <span class="has-text-weight-normal">
                                                                 Earnings
                                                                 <a href="https://github.com/revoxhere/duino-coin/wiki/FAQ#q-can-i-create-a-mining-farm-with-esp-boards-or-arduinos"
@@ -2182,6 +2144,22 @@ const user_data = (username, first_open) => {
                     if (!stopUpdate) $("#miners").html(miners_html);
                     $("#total_hashrate").html(scientific_prefix(total_hashrate) + "H/s");
                     $("#minercount").html(user_miners.length);
+
+                    $( "[id=ui-tooltip-center]" ).tooltip({
+                        position: {
+                            my: "center bottom", 
+                            at: "center top", 
+                        },
+                        tooltipClass: "ui-tooltip",
+                    });
+
+                    $( "[id=ui-tooltip]" ).tooltip({
+                        position: {
+                            my: "left bottom", 
+                            at: "left top", 
+                        },
+                        tooltipClass: "ui-tooltip",
+                    });
 
                     // We fill the dragListItems variable with the latest elements
 
