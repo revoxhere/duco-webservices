@@ -42,6 +42,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js" as="script">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.8.1/lottie.min.js"></script>
     <style>
         #background {
         position: fixed;
@@ -100,8 +102,8 @@
                     <br>
                     <p class="title is-size-3 mb-5 has-text-weight-normal has-text-centered">
                         <span class="has-text-weight-bold">
-                            Create
-                        </span> a new wallet
+                            Register
+                        </span> on the network
                     </p>
                     <div class="field mt-5">
                         <label for="" class="label">Username</label>
@@ -160,7 +162,7 @@
                         </div>
                         <p class="subtitle is-size-6 has-text-info">
                             <i class="fa fa-info-circle"></i>
-                            Optional: setup a key that you will put in your miners so that other people can't mine on your account and mess with your Kolka efficiency drops. <b>You can leave that field blank and enable it in the future in settings.</b>
+                            Setup a key that you will put in your miners so that other people can't mine on your account and mess with your Kolka efficiency drops. <b>You can leave that field blank and enable it in the future in settings.</b>
                         </p>
                     </div>
                     <div class="field">
@@ -183,13 +185,29 @@
                         <div class="h-captcha" data-theme="dark" data-sitekey="1c77cf53-13bc-46a2-b358-84c6766be2bc"></div>
                         <small id="captchainfo" class="has-text-danger"></small>
                     </div>
+                    <p class="subtitle is-size-6">
+                        <input class="is-checkbox is-danger" type="checkbox" id="check1">
+                        <label for="check1">I understand that Duino-Coin is <b>not meant for any profits from mining and is just a novelty</b> and a learning platform.</label>
+                    </p>
+                    <p class="subtitle is-size-6">
+                        <input class="is-checkbox is-danger" type="checkbox" id="check2">
+                        <label for="check2">I agree to receive <b>announcement e-mails</b> from Duino-Coin and when <b>something's happening with my account</b>.</label>
+                    </p>
+                    <p class="subtitle is-size-6">
+                        <input class="is-checkbox is-danger" type="checkbox" id="check3">
+                        <label for="check3">I understand that <b>some of my personal data will be saved</b>. For example, my saved <b>IP address may get reported to the AbuseIPDB list if I break the rules</b>.</label>
+                    </p>
                     <div class="field">
-                        <p class="subtitle is-size-6 has-text-danger">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            By registering you agree to the
-                            <a href="https://github.com/revoxhere/duino-coin#terms-of-service">
-                                <b>Duino-Coin terms of usage and privacy policy</b>
-                            </a>
+                        <p class="subtitle is-size-6">
+                            <input class="is-checkbox is-danger" type="checkbox" id="check4">
+                            <label for="check4">
+                                I agree to the
+                                <a href="https://github.com/revoxhere/duino-coin#terms-of-service">
+                                    <b>Duino-Coin terms of usage and privacy policy</b>
+                                </a>
+                                and I understand that <b>my account will be banned if I break any of the rules</b>.
+                            </label>
+                            <small class="has-text-danger" id="checkinfo"></small>
                         </p>
                         <div id="loginInput" class="buttons">
                             <button class="button is-warning is-duco register is-fullwidth">
@@ -211,12 +229,10 @@
                         </div>
                         <p class="subtitle is-size-7 has-text-grey-dark mt-5" id="copyright">
                             <b>Official</b> Duino-Coin Web Wallet ©
-                            <a href="https://revoxhere.github.io">revox</a> &middot;
+                            <a href="https://piotrowsky.dev">revox</a> &middot;
                             <a href="https://www.instagram.com/vlegle/">Yennefer</a> &middot;
                             <a href="https://github.com/LDarki">LDarki</a>
                             <br>Hosted by
-                            <a href="https://kristian-kramer.com">Kristian</a>
-                            and
                             <a href="https://pages.github.com">GH Pages</a>
                             &middot;
                             <a href="https://opensource.org/licenses/MIT">
