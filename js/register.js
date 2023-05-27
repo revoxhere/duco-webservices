@@ -8,6 +8,11 @@ const miner_key = document.getElementById('miner_key');
 const password = document.getElementById('password');
 const passwordConfirm = document.getElementById('passwordconfirm');
 const captchainfo = document.getElementById('captchainfo');
+const check1 = document.getElementById('check1');
+const check2 = document.getElementById('check2');
+const check3 = document.getElementById('check3');
+const check4 = document.getElementById('check4');
+const checkInfo = document.getElementById("checkinfo");
 let captcha;
 let server_message;
 let version_received;
@@ -53,8 +58,8 @@ register.onclick = function(event) {
                         $("#logincheck").show(1);
                         $("#loginload").hide(1);
                         $("#logintext").text("Create a new wallet");
-                        document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                            `<b>` + server_message + `. Please try again</b><br></p>`;
+                        document.querySelector('#modal_error .modal-card-body .content p').inner
+                            `<b>` + server_message + `. Please try again</b><br></p>`;HTML =
                         document.querySelector('html').classList.add('is-clipped');
                         modal_error.classList.add('is-active');
 
@@ -66,17 +71,22 @@ register.onclick = function(event) {
                     }
                 })
             .catch((error) => {
+                let modal_error = document.querySelector('#modal_error');
                 document.querySelector('#modal_error .modal-card-body .content p').innerHTML =
-                    "<b>An error has ocurred.</b><br/>" +
-                    "There may be issues with the servers. Please try again later.<br/><br/>" +
-                    "If you are still having problems, please contact us on Discord with the following data:<br/>" +
-                    `<br/><br/>Error: ${error}</p>`;
+                    `Network <b>connection problem</b>.<br>
+                        Your web browser couldn't connect to the Duino-Coin servers for some reason.<br>
+                        We'd like to help, but there are many possible causes.<br>
+                         <b>Before asking the support, try disabling your browser extensions or similar programs and try again.</br>
+                    </p>`;
                 document.querySelector('html').classList.add('is-clipped');
                 modal_error.classList.add('is-active');
+                hcaptcha.reset();
+                $("#logintext").text("Create a new wallet");
 
                 document.querySelector('#modal_error .delete').onclick = function() {
                     document.querySelector('html').classList.remove('is-clipped');
                     modal_error.classList.remove('is-active');
+
                 }
             });
     } else {
@@ -100,6 +110,10 @@ function checkInputs() {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const passwordConfirmValue = passwordConfirm.value.trim();
+    const check1Value = check1.checked;
+    const check2Value = check2.checked;
+    const check3Value = check3.checked;
+    const check4Value = check4.checked;
 
     let isFormValid = true;
 
@@ -140,8 +154,14 @@ function checkInputs() {
         captchainfo.innerHTML = "";
     } else {
         isFormValid = false;
-        console.log(captcha);
         captchainfo.innerHTML = "Please answer the captcha correctly!";
+    }
+
+    if (check1Value && check2Value && check3Value && check4Value) {
+        checkInfo.innerHTML = "";
+    } else {
+        isFormValid = false;
+        checkInfo.innerHTML = "Please read and agree to the rules to create an account!"
     }
 
     return isFormValid;
