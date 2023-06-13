@@ -1586,6 +1586,8 @@ const user_data = (username, first_open) => {
 
                 user_items = data.items;
                 if (first_open) {
+                    if (user_items.includes(12)) $("#badge").html(`<span class="tag gold has-text-weight-bold">STARTER</span>`);
+
                     refresh_shop(user_items);
                     refresh_event();
 
@@ -2535,6 +2537,7 @@ function login(token) {
 
                             $("#username").text(encodeURIComponent(username));
                             $("#email").text(`${data.result[1]}`);
+
 
                             $("#miner_pass").text(data.result[3]);
                             $("#mining_key").val(data.result[3]);
