@@ -1235,3 +1235,32 @@ progress::-webkit-progress-value {
   text-align: center;
   font-size: 1.8em;
 }
+
+
+.gold {
+  color:white !important;
+  background: linear-gradient(102deg, #fcf581, #dfb322, #bc7113, #fff686);
+  background-size: 300% 300%;
+
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 1) !important;
+
+  -webkit-animation: gold 5s ease infinite;
+  -moz-animation: gold 5s ease infinite;
+  animation: gold 5s ease infinite;
+}}
+
+@-webkit-keyframes gold {
+    0%{background-position:0% 43%}
+    50%{background-position:100% 58%}
+    100%{background-position:0% 43%}
+}
+@-moz-keyframes gold {
+    0%{background-position:0% 43%}
+    50%{background-position:100% 58%}
+    100%{background-position:0% 43%}
+}
+@keyframes gold {
+    0%{background-position:0% 43%}
+    50%{background-position:100% 58%}
+    100%{background-position:0% 43%}
+}
