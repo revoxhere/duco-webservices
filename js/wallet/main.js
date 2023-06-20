@@ -17,7 +17,7 @@ let transaction_limit = 5;
 let first_launch = true;
 let start_time = Date.now();
 let start_balance = 0;
-const STAKING_PERC = 1.5;
+const STAKING_PERC = 1.0;
 const STAKE_DAYS = 21;
 const date_opt = { day: 'numeric', month: "long", year: 'numeric' };
 
@@ -671,7 +671,7 @@ function wrap() {
 
 document.querySelector("#stake_max").addEventListener("click", function() {
     // Round down the value of balance
-    let roundedBalance = Math.floor(balance);
+    let roundedBalance = Math.floor(balance * 0.2);
 
     // Set the rounded down value to the input field
     document.getElementById("stake_amount").value = roundedBalance;
@@ -696,28 +696,33 @@ function stake() {
     stake_text = document.getElementById("stake_text");
     if (stake_amount >= 20) {
         document.getElementById("stake_confirm").classList.add("is-loading");
-        fetch("https://server.duinocoin.com/stake/" + encodeURIComponent(username) +
-                "?password=" + encodeURIComponent(password) +
-                "&amount=" + encodeURIComponent(stake_amount))
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    update_element("stake_text",
-                        `<a href='https://explorer.duinocoin.com/?search=${
-                                data.result.split(",")[1]
-                            }' target='_blank' class='has-text-success-dark'>
-                                ${data.result.split(",")[0]}
-                            </a>`
-                    );
-                    $('#stake_amount').val('');
-                } else {
-                    update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
-                }
-                document.getElementById("stake_confirm").classList.remove("is-loading");
-                setTimeout(function() {
-                    update_element("stake_text", "")
-                }, 10000)
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6', { action: 'submit' }).then(function(token) {
+                fetch("https://server.duinocoin.com/stake/" + encodeURIComponent(username) +
+                        "?password=" + encodeURIComponent(password) +
+                        "&amount=" + encodeURIComponent(stake_amount) +
+                        "&captcha=" + encodeURIComponent(token))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            update_element("stake_text",
+                                `<a href='https://explorer.duinocoin.com/?search=${
+                                        data.result.split(",")[1]
+                                    }' target='_blank' class='has-text-success-dark'>
+                                        ${data.result.split(",")[0]}
+                                    </a>`
+                            );
+                            $('#stake_amount').val('');
+                        } else {
+                            update_element("stake_text", "<span class='has-text-danger-dark'>" + data.message + "</span>");
+                        }
+                        document.getElementById("stake_confirm").classList.remove("is-loading");
+                        setTimeout(function() {
+                            update_element("stake_text", "")
+                        }, 10000)
+                    });
             });
+        });
     }
 }
 
