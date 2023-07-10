@@ -1682,15 +1682,15 @@ const user_data = (username, first_open) => {
                             </small>`);
                 }
 
-                $("#ducousd_xmg").html("$" + round_to(6, data.prices.xmg));
-                $("#ducousd_bch").html("$" + round_to(6, data.prices.bch));
-                $("#ducousd_trx").html("$" + round_to(6, data.prices.trx));
-                $("#ducousd_nano").html("$" + round_to(6, data.prices.nano));
-                $("#duco_ubeswap").html("$" + round_to(5, data.prices.ubeswap));
-                $("#duco_fluffyswap").html("$" + round_to(5, data.prices.fluffy));
-                $("#duco_justswap").html("$" + round_to(5, data.prices.sunswap));
-                $("#duco_pancake").html("$" + round_to(5, data.prices.pancake));
-                $("#duco_sushi").html("$" + round_to(5, data.prices.sushi));
+                $("#ducousd_xmg").html("$" + round_to(7, data.prices.xmg));
+                $("#ducousd_bch").html("$" + round_to(7, data.prices.bch));
+                $("#ducousd_trx").html("$" + round_to(7, data.prices.trx));
+                $("#ducousd_nano").html("$" + round_to(7, data.prices.nano));
+                $("#duco_ubeswap").html("$" + round_to(6, data.prices.ubeswap));
+                $("#duco_fluffyswap").html("$" + round_to(7, data.prices.fluffy));
+                $("#duco_justswap").html("$" + round_to(6, data.prices.sunswap));
+                $("#duco_pancake").html("$" + round_to(6, data.prices.pancake));
+                $("#duco_sushi").html("$" + round_to(6, data.prices.sushi));
 
                 balanceusd = round_to(4, balance * duco_price);
                 if (first_open) {
