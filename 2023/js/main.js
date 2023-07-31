@@ -2155,7 +2155,16 @@ function estimated_earnings_warning() {
 }
 
 
-if (!localStorage.getItem('first-launch')) {
+function on_mobile() {
+	const ua = navigator.userAgent;
+    else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return true;
+    }
+    return false;
+}
+
+
+if (!localStorage.getItem('first-launch') && on_mobile()) {
 	alert_bulma("Hello! This is a beta version of the new mobile online wallet look. It's finished in ~80% but I'm open for suggestions - reach out to me on Discord (revox - Founder) or e-mail me at robert@piotrowsky.dev if you find something missing or needing a change. Have fun!")
 	localStorage.setItem('first-launch', true);
 }
