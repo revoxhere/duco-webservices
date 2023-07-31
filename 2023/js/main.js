@@ -2183,7 +2183,6 @@ greetings = [
 	"Back in action",
 	"Howdy",
 	"It's good to have you back",
-	"Hey, how have you been?",
 	"Good to have you here once more",
 	"Greetings",
 	"Hey there",
