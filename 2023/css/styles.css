@@ -1,0 +1,359 @@
+:root {
+  --primary: #FC6803;
+  --secondary: #F31291;
+  --blue: #084B83;
+  --magenta: #C45AB3;
+  --green: #568946;
+}
+
+/* Global transitions */
+.navbar-button,
+.triangle,
+.triangle-left,
+.fa-chevron-right,
+.button {
+  transition: all 0.1s ease-in-out;
+}
+
+.login-bottom {
+  position:fixed;
+  bottom:0;
+  padding-bottom:100px;
+  width:100%;
+  left:0;
+}
+
+.login-logo {
+  z-index: 1;
+  top: -13%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.login-text {
+  position: fixed;
+  left:0;
+  top:0;
+  height:50vh;
+  width:100vw;
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+#image_author::after {
+  content: "'s rig";
+}
+
+#image_author {
+  position:absolute;
+  top:-28px;
+  right:5px;
+  opacity:0.5;
+  text-shadow: none;
+}
+
+#loginbutton {
+  color: var(--primary);
+}
+
+.login-backdrop {
+  filter: contrast(180%) invert(37%) sepia(98%) saturate(800%) hue-rotate(3deg) brightness(106%) contrast(98%);
+  position: fixed;
+  left:0;
+  top:0;
+  height:50vh;
+  width:100vw;
+  background-color: orange;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Grayed-out shop elements */
+.grayed-out {
+  opacity: 0.3;
+}
+.grayed-out > div > img {
+  filter: grayscale(75%);
+}
+
+.grecaptcha-badge { 
+  visibility: hidden;
+}
+
+/* Navbar button interactions */
+.navbar-button:hover {
+  transform: scale(1.15);
+}
+.navbar-button:active {
+  color: #333;
+  transform: scale(0.9);
+}
+
+/* Selected navbar button */
+.navbar-selected {
+  color: var(--primary);
+}
+
+/* Hat positioning */
+#hat {
+  position: absolute;
+  height: 40px;
+  top: 40px;
+  right: 0;
+}
+
+/* Fixed overlays */
+#txdetails,
+#txsend,
+#txwrap,
+#stakemenu,
+#minerdetails,
+#buymenu,
+#achievements,
+#shop,
+#help {
+  background: white;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 30;
+  overflow-y: scroll;
+}
+
+/* Progress bar with value display */
+progress.show-value {
+  color: white;
+  position: relative;
+}
+
+progress.show-value:after {
+  content: attr(value) '%';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: calc(1rem / 1.5);
+  line-height: 1rem;
+}
+
+progress.show-value.is-small:after {
+  font-size: calc(0.75rem / 1.5);
+  line-height: 0.75rem;
+}
+
+progress.show-value.is-medium:after {
+  font-size: calc(1.25rem / 1.5);
+  line-height: 1.25rem;
+}
+
+progress.show-value.is-large:after {
+  font-size: calc(1.5rem / 1.5);
+  line-height: 1.5rem;
+}
+
+/* Navbar button image */
+.navbar-button > center > img {
+  filter: invert(26%) sepia(0%) saturate(3705%) hue-rotate(161deg) brightness(101%) contrast(90%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbar-button > center > img {
+    filter: invert(86%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(87%) contrast(84%);
+  }
+
+  .darkmode-dark-bg {
+    background-color: #17181C !important;
+  }
+
+  .box, input, button {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5) !important;
+  }
+}
+
+/* Selected navbar button image */
+.navbar-selected > center > img {
+  filter: invert(49%) sepia(100%) saturate(2909%) hue-rotate(357deg) brightness(98%) contrast(103%) !important;
+}
+
+/* Box shadow for elements */
+.has-shadow {
+  box-shadow: 0 8px 30px rgb(0, 0, 0) !important;
+}
+
+/* Hover text */
+.hovertext {
+  position: relative;
+}
+
+/* Heading with underline */
+.heading {
+  overflow: hidden;
+}
+.heading:after {
+  content: "";
+  display: inline-block;
+  height: 0.8em;
+  vertical-align: bottom;
+  width: 100%;
+  margin-right: -100%;
+  margin-left: 10px;
+  border-top: 1px solid lightgray;
+}
+
+/* Triangles (arrows) */
+.triangle,
+.triangle-left {
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  height: 15px;
+  width: 15px;
+}
+
+.triangle {
+  color: #AAA;
+  transform: rotate(-45deg);
+}
+
+.triangle-left {
+  transform: rotate(135deg);
+}
+
+/* Active state for triangles and chevron */
+.triangle:active,
+.triangle-left:active,
+.fa-chevron-right:active {
+  color: var(--primary);
+}
+
+/* Text wrapping styles */
+.text-wrap {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/* Show only one line of text with ellipsis */
+.shorttext {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Marquee scrolling effect */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+}
+
+.marquee__content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
+  animation: scroll 5s infinite alternate;
+}
+
+@keyframes scroll {
+  0%, 20% {
+    transform: translateX(0%);
+  }
+  90%, 100% {
+    transform: translateX(-55%);
+  }
+}
+
+/* Buy button style */
+.buybutton {
+  text-align: center;
+  height: 1.8em;
+  width: 1.8em;
+  font-size: 13px !important;
+}
+
+/* Small tag style */
+.badges > .tag {
+  font-size: 0.7em !important;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 350px) {
+  #myChart {
+    display: none !important;
+  }
+  .listviewbutton {
+    display: none !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    background-color: #FBF2EB55;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .has-background-success-light {
+    background-color: #072b14 !important;
+  }
+  .has-background-info-light {
+    background-color: #0f1b36 !important;
+  }
+}
+
+.greyout {
+  top:0;
+  left:0;
+  z-index:29;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#fullscreen_alert {
+  z-index:30;
+  position:absolute;
+  height:100%;
+  width:100%;
+}
+
+#alert_container {
+  z-index:31;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+/* Transition for transaction dialogs */
+.txdialog {
+  transition: all 0.2s ease-in-out;
+}
+#transactions {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Gold gradient effect */
+.gold {
+  color: white !important;
+  background: linear-gradient(102deg, #fcf581, #dfb322, #bc7113, #fff686);
+  background-size: 400% 400%;
+  animation: gold 7s ease infinite;
+}
+
+@keyframes gold {
+  0% {
+    background-position: 0% 43%;
+  }
+  50% {
+    background-position: 100% 58%;
+  }
+  100% {
+    background-position: 0% 43%;
+  }
+}
