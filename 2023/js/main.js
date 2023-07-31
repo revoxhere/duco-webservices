@@ -464,7 +464,7 @@ function adblock_check() {
 			$("#adblock_desc").html(adblock_desc);
 			$("#adblocker_detected").fadeIn();
 		}
-	}, 1500);
+	}, 2000);
 }
 
 
