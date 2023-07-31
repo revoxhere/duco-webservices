@@ -2157,7 +2157,7 @@ function estimated_earnings_warning() {
 
 function on_mobile() {
 	const ua = navigator.userAgent;
-    else if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
         return true;
     }
     return false;
