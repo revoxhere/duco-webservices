@@ -319,7 +319,7 @@ progress.show-value.is-large:after {
 
 #fullscreen_alert {
   z-index:30;
-  position:absolute;
+  position:fixed;
   height:100%;
   width:100%;
 }
