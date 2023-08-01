@@ -19,6 +19,9 @@ const backdrops = [
 	"CUTSDBZ",
 	"Albedo",
 	"Baphomet",
+	"Rbean",
+	"Tsifios",
+	"Shibby",
 ]
 
 login_backdrop = backdrops[Math.floor(Math.random() * backdrops.length)];
@@ -414,6 +417,7 @@ function login(token) {
 				adblock_check();
 			});
 		} else {
+			console.log(data.message);
 			if (data.message.includes("This user doesn't exist")) {
 				$("#login_username").effect("shake", { distance: 5 });
 				return;
@@ -422,6 +426,10 @@ function login(token) {
 				return;
 			} else if (data.message.includes("banned")) {
 				alert_bulma("User banned");
+				return;
+			} else if (data.message.includes("Token")) {
+				alert_bulma("Token expired. Please login again");
+				$("#login_password").val('');
 				return;
 			} else {
 				$("#login_password").effect("shake", { distance: 5 });
@@ -1086,8 +1094,8 @@ function create_miners(user_miners) {
 		}
 
 		t_miners = t_miners.sort(function(a, b) {
-			if (a.threadid < b.threadid) { return -1; }
-			if (a.threadid > b.threadid) { return 1; }
+			if (a.identifier < b.identifier) { return -1; }
+			if (a.identifier > b.identifier) { return 1; }
 			return 0;
 		});
 
