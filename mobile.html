@@ -47,13 +47,85 @@
 </head>
 
 <body>
-	<section class="section is-hidden-touch">
-		<div class="container">
-			<div class="columns">
-				<div class="column">
-					<div class="box">
-						Whoops, are you trying to access a mobile-only website on a computer? That won't work.
-						I guess you're looking for the <a href="index.html">online wallet</a>.
+	<section class="section is-hidden-touch" id="login-desktop">
+		<div class="container login-content-desktop">
+			<div class="box p-0">
+				<div class="columns is-gapless">
+					<div class="column">
+						<div class="login-text-desktop">
+							<small class="has-text-white icon-text">
+								<span>
+									<b>Duino-Coin</b> Web Wallet
+								</span>
+							</small>
+							<p class="title is-size-1 has-text-white">
+								Sign in
+							</p>
+						</div>
+						<div class="login-backdrop login-backdrop-desktop" id="backdrop-desktop"></div>
+						<span id="image_author_desktop">...</span>
+					</div>
+					<div class="column is-7 p-5">
+						<div class="container p-5">
+							<center>
+								<img src="assets/duco.svg" width="80px" class="mb-5">
+							</center>
+							<div class="field">
+								<label class="label">Username</label>
+								<div class="control">
+									<input id="login_username_desktop" class="input" type="text"
+										   placeholder="myCoolUsername"
+										   autocomplete="username">
+								</div>
+							</div>
+							<div class="field">
+								<label class="label">Password</label>
+								<div class="control">
+									<input id="login_password_desktop" class="input" type="password"
+										   placeholder="*********"
+										   autocomplete="current-password">
+								</div>
+							</div>
+							<div class="field">
+								<div class="control">
+									<button class="button is-fullwidth g-recaptcha" 
+											data-callback="login" id="loginbutton_desktop"
+											data-sitekey="6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6">
+										Login
+									</button>
+								</div>
+							</div>
+							<div class="field">
+								<div class="columns is-mobile">
+									<div class="column">
+										<a href="recovery.html">
+											Forgot password?
+										</a>
+									</div>
+									<div class="column has-text-right">
+										<a href="register.html">
+											Create wallet
+										</a>
+									</div>
+								</div>
+							</div>
+							<footer class="has-text-grey">
+								<center class="mt-5 pt-5 is-size-7">
+									<p>
+										This site is protected by reCAPTCHA and the<br>
+										Google
+										<a href="https://policies.google.com/privacy">Privacy Policy</a> and
+										<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+									</p>
+									<p>
+										2019-2023 © The
+										<a href="https://duinocoin.com/team.html">
+											Duino-Coin Team
+										</a>
+									</p>
+								</center>
+							</footer>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -61,7 +133,7 @@
 	</section>
 	<section class="section is-hidden-desktop" id="login-mobile">
 		<div class="container">
-			<div class="login-backdrop" id="backdrop"></div>
+			<div class="login-backdrop" id="backdrop-mobile"></div>
 			<div class="login-text">
 				<section class="section">
 					<div class="container">
@@ -96,8 +168,8 @@
 					</div>
 					<div class="field">
 						<div class="control">
-							<button class="button is-fullwidth g-recaptcha" 
-									id="loginbutton" data-callback="login"
+							<button class="button is-fullwidth g-recaptcha" id="loginbutton" 
+							        data-callback="login"
 									data-sitekey="6LdJ9XsgAAAAAMShiVvOtZ4cAbvvdkw7sHKQDV-6">
 								Login
 							</button>
@@ -137,25 +209,276 @@
 			</div>
 		</div>
 	</section>
+
+	<section class="section is-hidden-touch" id="wallet-desktop" style="display:none">
+		<div class="container">
+			<div class="tile is-ancestor">
+				<div class="tile is-parent">
+					<div class="tile is-child box">
+						<article class="media">
+							<a href="https://gravatar.com" target="_blank">
+								<div class="media-left is-relative">
+									<figure class="image is-64x64" data-tooltip="Synced with Gravatar">
+										<img class="is-rounded" id="useravatar" alt="User avatar">
+									</figure>
+
+									<img id="hat_d" style="height:50px;width:50px;position:absolute;top:-1.75em;margin-left:10px;display:none;pointer-events: none;opacity:0.9">
+									<img id="sunglasses_d" style="height:64px;width:64px;position:absolute;top:-0.25em;display:none;pointer-events: none;opacity:0.9">
+									<img id="bowtie_d" style="height:44px;width:44px;position:absolute;top:2.3em;left:.6em;display:none;pointer-events: none;opacity:0.9">
+
+									<p class="mt-1 has-text-centered">
+										<a data-tooltip="Settings" class="modal-button" 
+											onclick="open_settings()">
+											<i class="fa fa-cog"></i>
+										</a>
+										<a data-tooltip="Item shop" onclick="open_shop()">
+											<i class="fa fa-shopping-bag"></i>
+										</a>
+										<a data-tooltip="Achievements" onclick="view_achievements()">
+											<i class="fa fa-trophy"></i>
+										</a>
+									</p>
+								</div>
+							</a>
+							<div class="media-content">
+								<b class="username">user</b>
+								<span class="badges">
+									<a target="_blank" href="https://server.duinocoin.com/verify.html" class="is-danger tag unverifiedbadge" style="display:none">
+										UNVERIFIED
+									</a>
+									<span class="is-success tag verifiedbadge" style="display:none">
+										VERIFIED
+									</span>
+									<span class="is-warning tag suspiciousbadge" style="display:none">
+										SUSPICIOUS
+									</span>
+									<span class="is-warning gold tag starterbadge" style="display:none">
+										STARTER
+									</span>
+								</span>
+								<div class="columns is-gapless">
+									<div class="column">
+										<p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
+											<strong class="has-text-weight-bold balance">?</strong> DUCO
+											<button class="button is-small buybutton" 
+													onclick="buymenu()">
+												<i class="fa fa-plus"></i>
+											</button>
+										</p>
+
+										<p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
+											<span class="balanceusd">$0.0</span>
+											<span class="has-text-grey-light" onclick="estimated_price_warning()">
+												<i class="fa fa-exclamation-circle"></i>
+											</span>
+										</p>
+										<small class="has-text-weight-normal estimatedprofits"
+											   style="display:none">
+											Earning
+											~<span class="dailyprofit"></span> ᕲ
+											a day
+											<span class="has-text-grey-light" 
+												  onclick="estimated_earnings_warning()">
+												<i class="fa fa-question-circle"></i>
+											</span>
+										</small>
+									</div>
+									<div class="column">
+										<div id="stake_info"></div>
+									</div>
+								</div>
+							</div>
+						</article>
+					</div>
+				</div>
+				<div class="tile is-parent">
+					<div class="tile is-child box">
+						<ins class="adsbygoogle" style="display:block" align="center" 
+							 data-ad-client="ca-pub-4670059148424169" 
+							 data-ad-slot="4342121726" 
+							 data-ad-format="horizontal" data-full-width-responsive="true">
+						</ins>
+						<div class="adblocker_detected" style="display:none">
+							<p class="title is-size-6 adblock_title"></p>
+							<p class="subtitle is-size-6 adblock_desc"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="tile is-ancestor" style="height:50vh">
+				
+				<div class="tile is-parent">
+					<div class="tile is-child box">
+						<div class="desktop-miners-container">
+							<div class="desktop-miners-content">
+
+								<div class="iotsection" style="display:none">
+									<h1 class="heading iotspan" onclick="toggle_iot()">
+										<i class="fa fa-caret-right"></i>&nbsp;IoT Data
+									</h1>
+									<div class="columns is-multiline iotdata">
+										Fetching data
+									</div>
+								</div>
+
+								<h1 class="heading">
+									Miners (<span class="minercount">0 of 50 slots used</span>)
+								</h1>
+								<div class="columns is-multiline miners-content"></div>
+
+								<div class="nominers">
+									<p class="has-text-weight-bold">
+										No miners detected.
+									</p>
+									<p class="has-text-weight-normal">
+										If you've turned them on recently it will take a minute
+										or two until their stats will appear here.
+									</p>
+									<p class="has-text-weight-normal mt-2">
+										Having issues? Try the <b>Help</b> tab.
+									</p>
+								</div>
+							</div>
+
+							<div class="desktop-miners-navbar">
+								<div class="columns">
+									<div class="column is-2">
+										<button class="button is-fullwidth minertogglebutton" 
+										        onclick="toggle_miner_view()">
+											<i class="fa fa-list"></i>
+										</button>
+									</div>
+									<div class="column">
+										<button class="button is-fullwidth" onclick="help_screen()">
+											<span class="icon-text">
+												<span class="icon">
+													<i class="fa fa-info-circle"></i>
+												</span>
+												<span>
+													Help
+												</span>
+											</span>
+										</button>
+									</div>
+									<div class="column is-6">
+										<button class="button is-fullwidth" onclick="focus_mining_key()">
+											<span class="icon-text" class="shorttext">
+												<span class="icon">
+													<i class="fa fa-key"></i>
+												</span>
+												<span>
+													Mining key
+												</span>
+											</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="tile is-parent">
+					<div class="tile is-child">
+						<div class="box fullheight">
+							<div class="desktop-transactions-container">
+								<h1 class="heading">Last transactions</h1>
+
+								<div class="transactions-content">
+									<p class="m-3">
+										No transactions yet. Maybe use a faucet?
+									</p>
+								</div>
+
+								<div class="desktop-transactions-navbar">
+									<div class="columns is-multiline">
+										<div class="column">
+											<a class="button is-fullwidth" onclick="open_txsend()">
+												<i class="fa fa-arrow-up"></i>&nbsp;
+												<span>Send</span>
+											</a>
+										</div>
+										<div class="column">
+											<a class="button is-fullwidth" onclick="open_txwrap()">
+												<i class="fa fa-redo"></i>&nbsp;
+												<span>Wrap</span>
+											</a>
+										</div>
+										<div class="column">
+											<a class="button is-fullwidth" onclick="open_stakemenu()">
+												<i class="fa fa-layer-group"></i>&nbsp;
+												<span>Stake</span>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="tile is-ancestor">
+
+				<div class="tile is-parent">
+					<div class="tile is-child box">
+						<h1 class="heading">News</h1>
+						<div class="iframe-container fullheight">
+							<iframe src="https://server.duinocoin.com/news.html" 
+									style="height:90%; width:100%" frameborder="0" allowtransparency="true">
+								Please wait
+							</iframe>
+						</div>
+					</div>
+				</div>
+
+				<div class="tile is-parent is-3 event_box" style="display:none">
+					<div class="tile is-child">
+						<div class="box fullheight">
+							<h1 class="heading">Current event</h1>
+							<p class="title is-size-6 event_title">None</p>
+							<p class="subtitle is-size-6 event_desc">No event</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="tile is-parent">
+					<div class="tile is-child">
+						<div class="box">
+							<h1 class="heading">Exchange rates</h1>
+							<div class="columns is-multiline prices-content" 
+								 style="max-height:200px; overflow-y:auto; margin-top:0.25em">
+								Fetching data...
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
 	<section class="section is-hidden-desktop" style="display:none" id="wallet-mobile">
 		<div class="container" id="screen-user-mobile">
 			<div class="columns">
 				<div class="column">
-					<h2 class="heading">Overview</h1>
+					<h2 class="heading">Overview</h2>
 
 					<h1 class="title is-size-6">
 						<span id="greeting">Welcome back</span>, <span id="username">user</span>!
 						<span class="badges">
-							<a target="_blank" href="https://server.duinocoin.com/verify.html" class="is-danger tag" id="unverifiedbadge" style="display:none">
+							<a target="_blank" href="https://server.duinocoin.com/verify.html" class="is-danger tag unverifiedbadge" style="display:none">
 								UNVERIFIED
 							</a>
-							<span class="is-success tag" id="verifiedbadge" style="display:none">
+							<span class="is-success tag verifiedbadge" style="display:none">
 								VERIFIED
 							</span>
-							<span class="is-warning tag" id="suspiciousbadge" style="display:none">
+							<span class="is-warning tag suspiciousbadge" style="display:none">
 								SUSPICIOUS
 							</span>
-							<span class="is-warning gold tag" id="starterbadge" style="display:none">
+							<span class="is-warning gold tag starterbadge" style="display:none">
 								STARTER
 							</span>
 						</span>
@@ -163,23 +486,25 @@
 
 					<div class="columns is-mobile is-vcentered box mx-0 p-1">
 						<div class="column is-narrow">
-							<img id="hat">
 							<p class="subtitle is-size-6">
 								Your balance
-								<button class="button is-small buybutton" onclick="buymenu()"><i class="fa fa-plus"></i></button>
+								<button class="button is-small buybutton" 
+								        onclick="buymenu()">
+								    <i class="fa fa-plus"></i>
+								</button>
 							</p>
 							<p class="title is-size-5">
-								<b id="balance">0.0</b><wbr> DUCO
+								<b class="balance">0.0</b><wbr> DUCO
 							</p>
 							<p class="subtitle is-size-6 mb-2">
-								<span id="balanceusd">$0.0</span>
+								<span class="balanceusd">$0.0</span>
 								<span class="has-text-grey-light" onclick="estimated_price_warning()">
 									<i class="fa fa-exclamation-circle"></i>
 								</span>
 							</p>
-							<p id="estimatedprofits" class="subtitle is-size-6 mb-2" style="display:none">
+							<p class="subtitle is-size-6 mb-2 estimatedprofits" style="display:none">
 								Earning 
-								~<span id="dailyprofit">0.0</span> ᕲ
+								~<span class="dailyprofit">0.0</span> ᕲ
 								a day
 								<span class="has-text-grey-light" onclick="estimated_earnings_warning()">
 									<i class="fa fa-question-circle"></i>
@@ -232,19 +557,26 @@
 					</div>
 					<div class="box has-background-success-light" id="staking" style="display:none">
 						<h1 class="heading">Staking</h1>
-						<p class="title is-size-6"><b id="stakeamount">0.0</b> DUCO in stake</p>
-						<p class="subtitle is-size-6 mb-4">~<span id="stakereward">0.0</span> DUCO reward</p>
+						<p class="title is-size-6">
+							<b class="stakeamount">0.0</b> DUCO in stake
+						</p>
+						<p class="subtitle is-size-6 mb-4">
+							<b class="stakereward">0.0</b> DUCO reward
+						</p>
 						<progress id="stakeprogress" class="progress is-success mb-2" min="0" value="0" max="100">0%</progress>
-						<p class="subtitle is-size-6">Finishes staking on <b id="stakedate">never</b></p>
+						<p class="subtitle is-size-6">
+							Finishes staking on <b class="stakedate">never</b>
+						</p>
 					</div>
 
 					<div class="box">
 						<ins class="adsbygoogle" style="display:block" align="center" 
 							 data-ad-client="ca-pub-4670059148424169" data-ad-slot="4342121726"
-							 data-ad-format="vertical,rectangle" data-full-width-responsive="false"></ins>
-						<div id="adblocker_detected" style="display:none">
-							<p class="title is-size-6" id="adblock_title"></p>
-							<p class="subtitle is-size-6" id="adblock_desc"></p>
+							 data-ad-format="vertical,rectangle" data-full-width-responsive="false">
+						</ins>
+						<div class="adblocker_detected" style="display:none">
+							<p class="title is-size-6 adblock_title"></p>
+							<p class="subtitle is-size-6 adblock_desc"></p>
 						</div>
 					</div>
 
@@ -268,10 +600,10 @@
 						</div>
 					</div>
 
-					<div class="box has-background-link-light" style="display:none" id="event_box">
+					<div class="box has-background-link-light event_box" style="display:none">
 						<h1 class="heading">Current event</h1>
-						<p class="title is-size-6" id="event_title">None</p>
-						<p class="subtitle is-size-6" id="event_desc">No event</p>
+						<p class="title is-size-6 event_title">None</p>
+						<p class="subtitle is-size-6 event_desc">No event</p>
 					</div>
 
 					<div class="box">
@@ -317,13 +649,13 @@
 						</div>
 					</div>
 
-					<div id="transactions">
+					<div class="transactions-content">
 						<p class="m-3">
-							No transactions yet. Maybe use a <a href="">faucet</a>?
+							No transactions yet. Maybe use a faucet?
 						</p>
 					</div>
 					<br>
-					<button class="button is-fullwidth" onclick="more_transactions()" id="more_tx">
+					<button class="button is-fullwidth more_tx" onclick="more_transactions()">
 						Load more
 					</button>
 
@@ -336,20 +668,20 @@
 			<div class="columns">
 				<div class="column">
 
-					<div id="iotsection" style="display:none">
-						<span class="heading" onclick="toggle_iot()" id="iotspan">
+					<div class="iotsection" style="display:none">
+						<span class="heading iotspan" onclick="toggle_iot()">
 							<i class="fa fa-caret-right"></i>&nbsp;IOT DATA
 						</span>
-						<div id="iotdata" class="columns">
+						<div class="columns iotdata">
 							Fetching data
 						</div>
 					</div>
 
-					<h1 class="heading">Miners (<span id="minercount">0 of 50 slots used</span>)</h1>
+					<h1 class="heading">Miners (<span class="minercount">0 of 50 slots used</span>)</h1>
 					<div class="navbar is-fixed-bottom is-transparent" style="margin-bottom:4em">
 						<div class="columns is-mobile m-1">
 							<div class="column is-2">
-								<button class="button is-fullwidth" id="minertogglebutton" onclick="toggle_miner_view()">
+								<button class="button is-fullwidth minertogglebutton" onclick="toggle_miner_view()">
 									<i class="fa fa-list"></i>
 								</button>
 							</div>
@@ -380,14 +712,14 @@
 						</div>
 					</div>
 					
-					<div id="nominers">
+					<div class="nominers">
 						<p>
 							Nothing here.<br>
 							Having issues? Try the <b>Help</b> tab.
 						</p>
 					</div>
 
-					<div id="miners" class="columns is-mobile is-multiline"></div>
+					<div class="columns is-mobile is-multiline miners-content"></div>
 
 					<br><br><br><br>
 
@@ -399,7 +731,7 @@
 				<div class="column">
 					<h1 class="heading">Exchange rates</h1>
 					
-					<div id="prices" class="columns is-mobile is-multiline">
+					<div class="columns is-mobile is-multiline prices-content">
 						<p class="m-3">
 							Nothing here... Perhaps the data hasn't loaded yet?
 						</p>
@@ -410,7 +742,7 @@
 				</div>
 			</div>
 		</div>
-		 <div class="container" id="screen-settings-mobile" style="display:none">
+		<div class="container" id="screen-settings-mobile" style="display:none">
 			<div class="columns">
 				<div class="column">
 
@@ -435,29 +767,29 @@
 					<div class="buttons">
 						<a class="button" target="_blank"
 						   href="https://server.duinocoin.com/webminer.html">
-						    <img class="icon" src="assets/webminer.png">
-						    <span>
+							<img class="icon" src="assets/webminer.png">
+							<span>
 								Web miner
 							</span>
 						</a>
 						<a class="button" target="_blank"
 						   href="https://server.duinocoin.com/miniminer.html">
-						    <img class="icon" src="assets/miniminer.png">
-						    <span>
+							<img class="icon" src="assets/miniminer.png">
+							<span>
 								Mini miner
 							</span>
 						</a>
 						<a class="button" target="_blank"
 						   href="https://explorer.duinocoin.com">
-						    <img class="icon" src="assets/explorer.png">
-						    <span>
+							<img class="icon" src="assets/explorer.png">
+							<span>
 								Network stats & explorer
 							</span>
 						</a>
 						<a class="button" target="_blank"
 						   href="https://magi.duinocoin.com/">
-						    <img class="icon" src="assets/magi.png">
-						    <span>
+							<img class="icon" src="assets/magi.png">
+							<span>
 								DUCO x Coin Magi
 							</span>
 						</a>
@@ -546,8 +878,38 @@
 				</div>
 			</div>
 		</div>
-		<nav class="navbar is-fixed-bottom has-shadow" role="navigation" aria-label="main navigation">
+
+		<nav class="navbar is-hidden-desktop is-fixed-bottom has-shadow" role="navigation" aria-label="main navigation">
 			<div class="columns is-mobile is-centered navbar-menu">
+				<div id="screen-user-mobile-nav" class="column navbar-button navbar-selected" onclick="screen('screen-user-mobile');">
+					<center>
+						<i class="fa fa-lg fa-user"></i>
+					</center>
+				</div>
+				<div id="screen-transactions-mobile-nav" class="column navbar-button" onclick="screen('screen-transactions-mobile');">
+					<center>
+						<i class="fa fa-lg fa-exchange-alt"></i>
+					</center>
+				</div>
+				<div id="screen-miners-mobile-nav" class="column navbar-button" onclick="screen('screen-miners-mobile');">
+					<center>
+						<img style="height:1.3333em" src="assets/pick.svg">
+					</center>
+				</div>
+				<div id="screen-prices-mobile-nav" class="column navbar-button" onclick="screen('screen-prices-mobile');">
+					<center>
+						<i class="fas fa-money-bill-wave"></i>
+					</center>
+				</div>
+				<div id="screen-settings-mobile-nav" class="column navbar-button" onclick="screen('screen-settings-mobile');">
+					<center>
+						<i class="fa fa-lg fa-cog"></i>
+					</center>
+				</div>
+			</div>
+		</nav>
+		<nav class="navbar is-hidden-touch" role="navigation" aria-label="main navigation">
+			<div class="columns is-mobile is-centered">
 				<div id="screen-user-mobile-nav" class="column navbar-button navbar-selected" onclick="screen('screen-user-mobile');">
 					<center>
 						<i class="fa fa-lg fa-user"></i>
@@ -956,7 +1318,7 @@
 					<div class="notification is-size-6">
 						Over time you will you earn achievements from using Duino-Coin. Some of them give rewards (indicated with <i class="fa fa-coins" style="color:orange"></i>), some are quite hard to get. <i>Can you get them all?</i>
 					</div>
-					<div class="columns" id="achievements_content">Nothing here?</div>
+					<div class="columns is-multiline" id="achievements_content">Nothing here?</div>
 				</section>
 			</div>
 		</div>
@@ -983,7 +1345,7 @@
 						Some items are cosmetic-only and some give you extra perks.
 						<span class="has-text-danger">Purchased items cannot be returned.</span>
 					</div>
-					<div class="columns" id="shop_content">Nothing here?</div>
+					<div class="columns is-multiline" id="shop_content">Nothing here?</div>
 				</section>
 			</div>
 		</div>
@@ -1060,6 +1422,150 @@
 						</p>
 					</div>
 				</section>
+			</div>
+		</div>
+	</div>
+
+	<div id="settings-desktop" style="display:none" class="darkmode-dark-bg">
+		<div class="container">
+			<div class="navbar p-4">
+				<div class="columns is-vcentered mx-3">
+					<div class="column is-narrow">
+						<div class="triangle-left" onclick="close_settings()"></div>
+					</div>
+					<div class="column">
+						<span>
+							Settings
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="p-4">
+				<div class="buttons">
+					<button class="button mt-2" onclick="logout()">
+						Logout
+					</button>
+					<div class="control has-icons-left">
+						<div class="select">
+							<select id="theme">
+								<option selected>Adaptive</option>
+							</select>
+						</div>
+						<span class="icon is-small is-left">
+							<i class="fas fa-sun"></i>
+						</span>
+					</div>
+				</div>
+
+				<h1 class="heading">Official links</h1>
+				<div class="buttons">
+					<a class="button" target="_blank"
+					   href="https://server.duinocoin.com/webminer.html">
+						<img class="icon" src="assets/webminer.png">
+						<span>
+							Web miner
+						</span>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://server.duinocoin.com/miniminer.html">
+						<img class="icon" src="assets/miniminer.png">
+						<span>
+							Mini miner
+						</span>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://explorer.duinocoin.com">
+						<img class="icon" src="assets/explorer.png">
+						<span>
+							Network stats & explorer
+						</span>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://magi.duinocoin.com/">
+						<img class="icon" src="assets/magi.png">
+						<span>
+							DUCO x Coin Magi
+						</span>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://play.google.com/store/apps/details?id=com.protothis.duinocoin">
+						Android app
+					</a>
+					<a class="button" target="_blank"
+					   href="https://github.com/revoxhere/duino-coin">
+						<i class="fab fa-lg fa-github"></i>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://discord.gg/kvBkccy">
+						<i class="fab fa-lg fa-discord"></i>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://www.reddit.com/r/Duinocoin/">
+						<i class="fab fa-lg fa-reddit"></i>
+					</a>
+					<a class="button" target="_blank"
+					   href="https://www.instagram.com/duino_coin_official/">
+						<i class="fab fa-lg fa-instagram"></i>
+					</a>
+				</div>
+
+
+				<h1 class="heading">Community links</h1>
+				<div class="buttons">
+					<a class="button" target="_blank" href="https://duco.pcgeek.pl/">
+						Duino-Coin in Charts
+					</a>
+					<a class="button" target="_blank" href="https://siunus.github.io/duco-monitor/">
+						DUCO Monitor
+					</a>
+				</div>
+
+				<h1 class="heading">Faucets</h1>
+				<div class="buttons">
+					<a class="button" target="_blank" href="https://server.duinocoin.com/faucet.html">
+						Official faucet for new users
+					</a>
+					<a class="button" target="_blank" href="https://duco-faucet.pcgeek.pl/">  
+						Amogus faucet
+					</a>
+					<a class="button" target="_blank" href="https://duinofaucet.com">
+						Beyondtoshi's faucet
+					</a>
+				</div>
+
+				<h1 class="heading">Change password</h1>
+				<div class="columns is-mobile">
+					<div class="column">
+						<input class="input" type="password" 
+							   placeholder="Current password" id="changepass_old_desktop"
+							   autocomplete="current-password">
+					</div>
+					<div class="column">
+						<input class="input" type="password" 
+								placeholder="New password" id="changepass_new_desktop"
+								autocomplete="new-password">
+					</div>
+					<div class="column is-narrow">
+						<button class="button is-fullwidth" id="changepass_confirm_desktop" onclick="change_password_desktop()">
+							Change
+						</button>
+					</div>
+				</div>
+
+				<h1 class="heading">Mining key</h1>
+				<div class="columns is-mobile">
+					<div class="column">
+						<input class="input" placeholder="None" type="text" id="mining_key_desktop">
+						<p class="help">
+							Changing your key may take up to 10 minutes to propagate across all servers.
+						</p>
+					</div>
+					<div class="column is-narrow">
+						<button class="button is-fullwidth" id="changekey_confirm_desktop" onclick="change_mining_key_desktop()">
+							Set
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
