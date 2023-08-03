@@ -22,12 +22,20 @@ const backdrops = [
 	"Rbean",
 	"Tsifios",
 	"Shibby",
+	"gjanas",
+	"Jonny11",
 ]
 
 login_backdrop = backdrops[Math.floor(Math.random() * backdrops.length)];
-$("#backdrop").css("background-image",
+if (on_mobile()) {
+	$("#backdrop-mobile").css("background-image",
 	"url('/assets/community_screens/" + login_backdrop + ".jpg')")
-$("#image_author").text(login_backdrop)
+	$("#image_author").text(login_backdrop)
+} else {
+	$("#backdrop-desktop").css("background-image",
+	"url('/assets/community_screens/" + login_backdrop + ".jpg')")
+	$("#image_author_desktop").text(login_backdrop)
+}
 
 const balanceChartOptions = {
 	responsive: true,
@@ -64,51 +72,103 @@ const balanceChartOptions = {
 	}
 };
 
-const adblockNotifications = [{
-		title: "Oh, you're using an adblocker? Color us surprised! 🎉 Not.",
-		description: "Surprise, surprise! Another adblocker user in the house. While we understand the desire for an ad-free experience, our bills won't pay themselves. If you'd like to be a hero and help keep our servers running, consider supporting us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or sparing a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. We promise, no guilt trips here! Just a friendly reminder that your whitelisting powers can bring joy and content to both our team and the pixels. Let's make the internet a better place, one non-blocked ad at a time! 😄🚫🔍",
-	},
-	{
-		title: "Attention, adblock aficionado! Yes, you!",
-		description: "Ahoy, ad-blocking mate! We see you navigating the seas of the internet with that adblocker flag high. While we respect your preference for an ad-free voyage, our crew needs sustenance to continue sailing smoothly. If you find it in your heart (and wallet) to support our ship, check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - treasure awaits! Alternatively, if you wish to drop some gold coins in our <a href='https://duinocoin.com/donate.html' target='_blank'>donation chest</a>, it will undoubtedly fuel our journey. By the way, no pressure on the whole whitelist thing, but think of it as shining a lighthouse to guide us through the stormy waves of financial challenges. 🏴‍☠️🚫💰",
-	},
-	{
-		title: "A wild adblocker appears!",
-		description: "Look who's tamed the virtual wilds with an adblocker! While you're enjoying an ad-free safari, our digital menagerie needs sustenance to thrive. If you're feeling adventurous, support our cause by exploring our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection - a treasure trove of delights! Alternatively, if you prefer a stealthy approach, a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> can do wonders for our conservation efforts. Don't worry; we won't send a herd of sad emojis your way, but a few happy ones might be nice. Oh, and before you venture deeper into the web, consider adding a touch of magic by whitelisting us. You'll become a mythical creature in the realm of ad-supported content! 🦁🚫🌐",
-	},
-	{
-		title: "To block or not to block, that is the adblocker's question.",
-		description: "Hark, the eternal question: to block or not to block? While the adblocker provides sanctuary from the ad storm, our humble kingdom needs some support to stand tall. Thou art invited to peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium, where treasures await discerning eyes. Should thou be in a philanthropic mood, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will gladden our virtual hearts. We shan't pester thee about the whitelist, but 'tis akin to casting a benevolent enchantment upon our humble land. Let us join forces to create an internet realm both ad-free and sustainable, where all may thrive in harmony. 🏰🚫💫",
-	},
-	{
-		title: "Adblocker strikes again! ⚔️🛡️",
-		description: "Hail, valiant adblocker user! Thy sword of ad-blocking prowess is undeniable, but even warriors need allies. As we battle the forces of server maintenance costs, thou canst lend thy hand in various ways. Behold our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium - the spoils of victory shall be thine! Shouldst thou seek a noble quest, venture forth with a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and thy name shall be whispered in the halls of digital legend. And lo! Whitelisting us is like bestowing the blessing of the internet gods, ensuring the harmony of content and sustenance. Together, we shall forge a prosperous realm where everyone wins! ⚔️🚫🛍️",
-	},
-	{
-		title: "Adblocker vs. Fairy Godmothers: The revenue battle!",
-		description: "Alas, our tale unfolds as adblockers thwart the flow of revenue, and fairy godmothers seem scarce these days. Fear not, for thou hast the power to script a happier ending! Support our endeavors by perusing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - a realm of enchantment awaits thee! Shouldst thou wish to perform a good deed, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> shall pave the way to our financial salvation. And lo, whitelisting us is akin to unleashing a cascade of digital pixie dust, bringing prosperity to both our kingdom and thine ad-free browsing. Let's weave a tale of symbiotic harmony in the ever-changing land of the web! 🧚🚫✨",
-	},
-	{
-		title: "Adblockers, assemble! 🚫💂‍♂️",
-		description: "Calling all adblocker heroes! While you're protecting your screen from ads, spare a thought for our digital fortress. Supporting us is as easy as wielding a mouse - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> and embrace your inner e-commerce warrior. Don't worry; we're not pulling any heartstrings here. But, just a tiny nudge: a <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could upgrade our servers from a village hut to a grand castle. And if you decide to whitelist us, it's like offering an olive branch to the ever-hungry ad gods. So, let's unite and create a harmonious internet realm! 🏰🛡️💰",
-	},
-	{
-		title: "Adblockageddon! 🚀🌌",
-		description: "Adblockers have descended upon the internet like a cosmic storm, leaving us in need of celestial support. If you're an adblocker astronaut floating through the galaxy, consider fueling our mission with a quick visit to our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> store. And should you stumble upon a stardust pouch, a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will aid our interstellar journey. No forceful persuasion here, but whitelisting us is like opening a cosmic gateway to the universe of ad-supported content. Together, we'll soar among the stars of sustainable internet. 🚀🌌🚫",
-	},
-	{
-		title: "Adblocker Artistry! 🎨🚫",
-		description: "Ah, the elegance of adblockers - a brushstroke of web browsing mastery. But while you craft your ad-free masterpiece, spare a thought for our virtual gallery. Peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection, where art meets utility in a harmonious blend. An art connoisseur's spirit, you might decide to grant a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to fuel our creative endeavors. And if you choose to grace us with your virtual signature by whitelisting, it's like an art collaboration that brings our content to life. Together, we'll curate an internet landscape that's both ad-free and artistically vibrant! 🎨🚫🎭",
-	},
-	{
-		title: "Adblockers: The Quiet Rebellion 🤫🚫",
-		description: "In the realm of silent adblockers, a rebellion brews against noisy ads. But while you fight the good fight for peace and tranquility, consider supporting our tranquil sanctuary too. Delve into our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> garden, where serenity and practicality intertwine. As you embrace the art of virtual zen, a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could water our server gardens. And if you choose to whisper a few whitelisting mantras, the serene harmony of ads and content shall be restored. Let's embark on a quest for digital tranquility together! 🌿🚫🧘‍♀️",
-	},
-	{
-		title: "Ad-free, Adored, Ad-supported! 🥰🚫",
-		description: "Adored adblocker users, we cherish your preference for an ad-free experience. And as you fill your virtual heart with love, consider sharing some with us too. Explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> kingdom, where love and practicality intertwine. Shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and we'll feel the virtual hugs. And if you choose to share the love by whitelisting us, it's like a virtual love fest between ads and content. Together, we'll create an internet where love reigns, ad-free and ad-supported! 🥰🚫💘",
-	}
-];
+// Desktop - shorter versions
+let adblockNotifications = [
+  {
+	title: "Oh, you're using an adblocker? Color us surprised! 🎉 Not.",
+	description: "Support us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donating</a>  to help cover server costs. Whitelisting us would be a pixel-perfect gesture!",
+  },
+  {
+	title: "Attention, adblock aficionado! Yes, you!",
+	description: "Help our crew sail smoothly by checking out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us is like shining a lighthouse on our financial challenges.",
+  },
+  {
+	title: "A wild adblocker appears!",
+	description: "Explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection or give a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to support our digital menagerie. Whitelisting us brings magic to the realm of ad-supported content!",
+  },
+  {
+	title: "To block or not to block, that is the adblocker's question.",
+	description: "Join our quest for an ad-free and sustainable internet by perusing <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us casts a benevolent enchantment on our humble land.",
+  },
+  {
+	title: "Adblocker strikes again! ⚔️🛡️",
+	description: "Battle server maintenance costs with your support - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a>. Whitelisting us bestows the blessing of the internet gods!",
+  },
+  {
+	title: "Adblocker vs. Fairy Godmothers: The revenue battle!",
+	description: "Script a happier ending with a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> or exploring our <a href='https://store.duinocoin.com' target='_blank'>official merch</a>. Whitelisting us unleashes a cascade of digital pixie dust for prosperity!",
+  },
+    {
+    title: "Adblockers, assemble! 🚫💂‍♂️",
+    description: "Become an adblocker hero - support us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us unites us in a harmonious internet realm!",
+  },
+  {
+    title: "Adblockageddon! 🚀🌌",
+    description: "Fuel our interstellar journey - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a> as an adblocker astronaut. Whitelisting us opens a cosmic gateway to ad-supported content!",
+  },
+  {
+    title: "Adblocker Artistry! 🎨🚫",
+    description: "Craft a masterpiece of support - explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection or contribute a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings artistic vibrancy to the internet!",
+  },
+  {
+    title: "Adblockers: The Quiet Rebellion 🤫🚫",
+    description: "Join the silent rebellion with our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or a tranquil <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us begins a quest for digital tranquility!",
+  },
+  {
+    title: "Ad-free, Adored, Ad-supported! 🥰🚫",
+    description: "Share the love - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings love to an ad-free and ad-supported internet!",
+  }
+]
+
+// Mobile longer versions since we have unlimited space
+if (on_mobile()) {
+	adblockNotifications = [
+		{
+			title: "Oh, you're using an adblocker? Color us surprised! 🎉 Not.",
+			description: "Surprise, surprise! Another adblocker user in the house. While we understand the desire for an ad-free experience, our bills won't pay themselves. If you'd like to be a hero and help keep our servers running, consider supporting us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or sparing a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. We promise, no guilt trips here! Just a friendly reminder that your whitelisting powers can bring joy and content to both our team and the pixels. Let's make the internet a better place, one non-blocked ad at a time! 😄🚫🔍",
+		},
+		{
+			title: "Attention, adblock aficionado! Yes, you!",
+			description: "Ahoy, ad-blocking mate! We see you navigating the seas of the internet with that adblocker flag high. While we respect your preference for an ad-free voyage, our crew needs sustenance to continue sailing smoothly. If you find it in your heart (and wallet) to support our ship, check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - treasure awaits! Alternatively, if you wish to drop some gold coins in our <a href='https://duinocoin.com/donate.html' target='_blank'>donation chest</a>, it will undoubtedly fuel our journey. By the way, no pressure on the whole whitelist thing, but think of it as shining a lighthouse to guide us through the stormy waves of financial challenges. 🏴‍☠️🚫💰",
+		},
+		{
+			title: "A wild adblocker appears!",
+			description: "Look who's tamed the virtual wilds with an adblocker! While you're enjoying an ad-free safari, our digital menagerie needs sustenance to thrive. If you're feeling adventurous, support our cause by exploring our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection - a treasure trove of delights! Alternatively, if you prefer a stealthy approach, a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> can do wonders for our conservation efforts. Don't worry; we won't send a herd of sad emojis your way, but a few happy ones might be nice. Oh, and before you venture deeper into the web, consider adding a touch of magic by whitelisting us. You'll become a mythical creature in the realm of ad-supported content! 🦁🚫🌐",
+		},
+		{
+			title: "To block or not to block, that is the adblocker's question.",
+			description: "Hark, the eternal question: to block or not to block? While the adblocker provides sanctuary from the ad storm, our humble kingdom needs some support to stand tall. Thou art invited to peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium, where treasures await discerning eyes. Should thou be in a philanthropic mood, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will gladden our virtual hearts. We shan't pester thee about the whitelist, but 'tis akin to casting a benevolent enchantment upon our humble land. Let us join forces to create an internet realm both ad-free and sustainable, where all may thrive in harmony. 🏰🚫💫",
+		},
+		{
+			title: "Adblocker strikes again! ⚔️🛡️",
+			description: "Hail, valiant adblocker user! Thy sword of ad-blocking prowess is undeniable, but even warriors need allies. As we battle the forces of server maintenance costs, thou canst lend thy hand in various ways. Behold our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium - the spoils of victory shall be thine! Shouldst thou seek a noble quest, venture forth with a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and thy name shall be whispered in the halls of digital legend. And lo! Whitelisting us is like bestowing the blessing of the internet gods, ensuring the harmony of content and sustenance. Together, we shall forge a prosperous realm where everyone wins! ⚔️🚫🛍️",
+		},
+		{
+			title: "Adblocker vs. Fairy Godmothers: The revenue battle!",
+			description: "Alas, our tale unfolds as adblockers thwart the flow of revenue, and fairy godmothers seem scarce these days. Fear not, for thou hast the power to script a happier ending! Support our endeavors by perusing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - a realm of enchantment awaits thee! Shouldst thou wish to perform a good deed, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> shall pave the way to our financial salvation. And lo, whitelisting us is akin to unleashing a cascade of digital pixie dust, bringing prosperity to both our kingdom and thine ad-free browsing. Let's weave a tale of symbiotic harmony in the ever-changing land of the web! 🧚🚫✨",
+		},
+		{
+			title: "Adblockers, assemble! 🚫💂‍♂️",
+			description: "Calling all adblocker heroes! While you're protecting your screen from ads, spare a thought for our digital fortress. Supporting us is as easy as wielding a mouse - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> and embrace your inner e-commerce warrior. Don't worry; we're not pulling any heartstrings here. But, just a tiny nudge: a <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could upgrade our servers from a village hut to a grand castle. And if you decide to whitelist us, it's like offering an olive branch to the ever-hungry ad gods. So, let's unite and create a harmonious internet realm! 🏰🛡️💰",
+		},
+		{
+			title: "Adblockageddon! 🚀🌌",
+			description: "Adblockers have descended upon the internet like a cosmic storm, leaving us in need of celestial support. If you're an adblocker astronaut floating through the galaxy, consider fueling our mission with a quick visit to our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> store. And should you stumble upon a stardust pouch, a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will aid our interstellar journey. No forceful persuasion here, but whitelisting us is like opening a cosmic gateway to the universe of ad-supported content. Together, we'll soar among the stars of sustainable internet. 🚀🌌🚫",
+		},
+		{
+			title: "Adblocker Artistry! 🎨🚫",
+			description: "Ah, the elegance of adblockers - a brushstroke of web browsing mastery. But while you craft your ad-free masterpiece, spare a thought for our virtual gallery. Peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection, where art meets utility in a harmonious blend. An art connoisseur's spirit, you might decide to grant a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to fuel our creative endeavors. And if you choose to grace us with your virtual signature by whitelisting, it's like an art collaboration that brings our content to life. Together, we'll curate an internet landscape that's both ad-free and artistically vibrant! 🎨🚫🎭",
+		},
+		{
+			title: "Adblockers: The Quiet Rebellion 🤫🚫",
+			description: "In the realm of silent adblockers, a rebellion brews against noisy ads. But while you fight the good fight for peace and tranquility, consider supporting our tranquil sanctuary too. Delve into our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> garden, where serenity and practicality intertwine. As you embrace the art of virtual zen, a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could water our server gardens. And if you choose to whisper a few whitelisting mantras, the serene harmony of ads and content shall be restored. Let's embark on a quest for digital tranquility together! 🌿🚫🧘‍♀️",
+		},
+		{
+			title: "Ad-free, Adored, Ad-supported! 🥰🚫",
+			description: "Adored adblocker users, we cherish your preference for an ad-free experience. And as you fill your virtual heart with love, consider sharing some with us too. Explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> kingdom, where love and practicality intertwine. Shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and we'll feel the virtual hugs. And if you choose to share the love by whitelisting us, it's like a virtual love fest between ads and content. Together, we'll create an internet where love reigns, ad-free and ad-supported! 🥰🚫💘",
+		}
+	];
+}
 
 const receive_template = `
 <div class="columns is-mobile is-vcentered txdialog">
@@ -224,28 +284,46 @@ const send_template = `
 	</div>
 </div>`;
 
-const exchange_template = `
-<div class="column" style="min-width:40vw">
-	<div class="box">
-	  <p class="title is-size-6">
-		<a href="{{LINK}}" target="_blank" class="text-wrap">
-			<span class="icon-text">
-				<img src="{{ICON}}" class="icon is-small">
-			</span>
-			{{NAME}}
-		</a>
-	  </p>
-	  <p class="subtitle is-size-6 mb-0">
-		&dollar;{{PRICE}}
-	  </p>
-	  <small class="has-text-grey">
-		{{TYPE}}
-	  </small>
-	</div>
-</div>`
-
+let exchange_template = `
+	<div class="column" style="min-width:150px">
+		  <p class="title is-size-6">
+			<a href="{{LINK}}" target="_blank" class="text-wrap">
+				<span class="icon-text">
+					<img src="{{ICON}}" class="icon is-small">
+				</span>
+				{{NAME}}
+			</a>
+		  </p>
+		  <p class="subtitle is-size-6 mb-0">
+			&dollar;{{PRICE}}
+		  </p>
+		  <small class="has-text-grey">
+			{{TYPE}}
+		  </small>
+	</div>`
+if (on_mobile()) {
+	exchange_template = `
+	<div class="column" style="min-width:200px">
+		<div class="box">
+		  <p class="title is-size-6">
+			<a href="{{LINK}}" target="_blank" class="text-wrap">
+				<span class="icon-text">
+					<img src="{{ICON}}" class="icon is-small">
+				</span>
+				{{NAME}}
+			</a>
+		  </p>
+		  <p class="subtitle is-size-6 mb-0">
+			&dollar;{{PRICE}}
+		  </p>
+		  <small class="has-text-grey">
+			{{TYPE}}
+		  </small>
+		</div>
+	</div>`
+}
 let iot_template = `
-<div class="column mb-3" style="min-width:40vw">
+<div class="column mb-3" style="min-width:200px">
 	<div class="box">
 		<p class="title is-size-6">
 			<i class="{{ICON}}"></i>
@@ -278,6 +356,7 @@ let miner_template1 = `
 					{{HASH}}
 					&bull; 
 					<span class="{{EFF_COLOR}}">{{EFF}}</span>
+					<span class="is-hidden-mobile">({{EFF_COUNT}} shares)</span>
 				</p>
 			</div>
 			<div class="column is-narrow" onclick="miner_details('{{MINER_NUM}}')">
@@ -320,7 +399,7 @@ const miner_template2 = `
 `
 
 const achievement_template = `
-<div class="column">
+<div class="column is-half">
 	<div class="box">
 		<div class="columns is-mobile {{GRAY}}">
 			<div class="column is-narrow">
@@ -342,7 +421,7 @@ const achievement_template = `
 </div>`
 
 const shop_template = `
-<div class="column">
+<div class="column is-half">
 	<div class="box">
 		<div class="columns is-mobile">
 			<div class="column is-narrow">
@@ -368,34 +447,51 @@ const shop_template = `
 
 let miner_template = miner_template1;
 
-
-if (localStorage.getItem("username") && localStorage.getItem("authToken")) {
-	username = $("#login_username").val(localStorage.getItem("username"))
-	password = $("#login_password").val(localStorage.getItem("authToken"))
-	setTimeout(function() {
-		$("#loginbutton").click();
-	}, 150)
-}
+$(document).ready(function() {
+	if (localStorage.getItem("username") && localStorage.getItem("authToken")) {
+		if (on_mobile()) {
+			username = $("#login_username").val(localStorage.getItem("username"))
+			password = $("#login_password").val(localStorage.getItem("authToken"))
+			setTimeout(function() {
+				$("#loginbutton").click();
+			}, 500);
+		} else {
+			username = $("#login_username_desktop").val(localStorage.getItem("username"))
+			password = $("#login_password_desktop").val(localStorage.getItem("authToken"))
+			setTimeout(function() {
+				$("#loginbutton_desktop").click();
+			}, 500);
+		}
+	}
+});
 
 
 function login(token) {
-	username = $("#login_username").val()
-	password = $("#login_password").val()
-	loginbutton = $("#loginbutton");
+	if (on_mobile()) {
+		username_input = $("#login_username");
+		password_input = $("#login_password");
+		loginbutton = $("#loginbutton");
+	} else {
+		username_input = $("#login_username_desktop");
+		password_input = $("#login_password_desktop");
+		loginbutton = $("#loginbutton_desktop");
+	}
+	username = username_input.val();
+	password = password_input.val();
 
 	if (!username && !password) {
-		$("#login_username").effect("shake", { distance: 5 });
-		$("#login_password").effect("shake", { distance: 5 });
+		username_input.effect("shake", { distance: 5 });
+		password_input.effect("shake", { distance: 5 });
 		return;
 	}
 
 	if (!password) {
-		$("#login_password").effect("shake", { distance: 5 });
+		password_input.effect("shake", { distance: 5 });
 		return;
 	}
 
 	if (!username) {
-		$("#login_username").effect("shake", { distance: 5 });
+		username_input.effect("shake", { distance: 5 });
 		return;
 	}
 
@@ -407,19 +503,33 @@ function login(token) {
 		if (data.success) {
 			localStorage.setItem("username", encodeURIComponent(username));
 			localStorage.setItem("authToken", data.result[2]);
+
+			$(".username").text(username);
 			$("#mining_key").val(data.result[3]);
+			$("#mining_key_desktop").val(data.result[3]);
 
 			user_data(username, true);
 			setInterval(function() { user_data(username) }, 12000);
 
-			$("#login-mobile").hide(function() {
-				$("#wallet-mobile").show();
-				adblock_check();
-			});
+			if (on_mobile()) {
+				$("#login-mobile").hide(function() {
+					$("#wallet-mobile").show();
+					adblock_check();
+				});
+			} else {
+				$("#useravatar").attr("src",
+					`https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
+					`?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/64/${get_user_color(username)}/ffffff/1`);
+
+				$("#login-desktop").fadeOut(function() {
+					$("#wallet-desktop").fadeIn();
+					adblock_check();
+				});
+			}
 		} else {
 			console.log(data.message);
 			if (data.message.includes("This user doesn't exist")) {
-				$("#login_username").effect("shake", { distance: 5 });
+				username_input.effect("shake", { distance: 5 });
 				return;
 			} else if (data.message.includes("captcha")) {
 				alert_bulma("Incorrect captcha. Refresh and try again. Make sure nothing blocks ReCaptcha");
@@ -429,10 +539,11 @@ function login(token) {
 				return;
 			} else if (data.message.includes("Token")) {
 				alert_bulma("Token expired. Please login again");
-				$("#login_password").val('');
+				password_input.val('');
+				localStorage.removeItem("authToken");
 				return;
 			} else {
-				$("#login_password").effect("shake", { distance: 5 });
+				password_input.effect("shake", { distance: 5 });
 				return;
 			}
 		}
@@ -441,14 +552,15 @@ function login(token) {
 		alert_bulma(`Network is unreachable: ${jqXHR}, ${textStatus}, ${errorThrown}`)
 	}).catch(function(err) {
 		console.error(err);
-		alert_bulma(`Network error: ${err}`)
+		alert_bulma(`Network error: ${err.statusText}. Check browser console for possibly more information`)
 	}).always(function() {
 		loginbutton.removeClass("is-loading");
 	});
 }
 
+let adBlockEnabled = false;
+
 function adblock_check() {
-	let adBlockEnabled = false;
 	const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
 
 	try {
@@ -468,9 +580,9 @@ function adblock_check() {
 			selected_notif = Math.floor(Math.random() * adblockNotifications.length);
 			adblock_title = adblockNotifications[selected_notif].title;
 			adblock_desc = adblockNotifications[selected_notif].description;
-			$("#adblock_title").html(adblock_title);
-			$("#adblock_desc").html(adblock_desc);
-			$("#adblocker_detected").fadeIn();
+			$(".adblock_title").html(adblock_title);
+			$(".adblock_desc").html(adblock_desc);
+			$(".adblocker_detected").fadeIn();
 		}
 	}, 2000);
 }
@@ -492,17 +604,18 @@ function screen(transition_to) {
 let miner_list = JSON.parse(localStorage.getItem("miner_list"));
 if (!miner_list) {
 	miner_template = miner_template2;
-	$("#minertogglebutton").html("<i class='fa fa-th-large'></i>")
+	$(".minertogglebutton").html("<i class='fa fa-th-large'></i>")
 }
+
 function toggle_miner_view() {
 	if (miner_template == miner_template2) {
 		miner_template = miner_template1;
-		$("#minertogglebutton").html("<i class='fa fa-list'></i>")
-		localStorage.setItem("miner_list",true);
+		$(".minertogglebutton").html("<i class='fa fa-list'></i>")
+		localStorage.setItem("miner_list", true);
 	} else {
 		miner_template = miner_template2;
-		$("#minertogglebutton").html("<i class='fa fa-th-large'></i>")
-		localStorage.setItem("miner_list",false);
+		$(".minertogglebutton").html("<i class='fa fa-th-large'></i>")
+		localStorage.setItem("miner_list", false);
 	}
 	create_miners(miners);
 }
@@ -510,20 +623,20 @@ function toggle_miner_view() {
 
 let iot_collapsed = JSON.parse(localStorage.getItem("iot_collapsed"));
 if (!iot_collapsed) {
-	$("#iotspan").html("<i class='fa fa-caret-right'></i>&nbsp;IOT DATA");
-	$("#iotdata").hide('normal');
+	$(".iotspan").html("<i class='fa fa-caret-right'></i>&nbsp;IOT DATA");
+	$(".iotdata").hide('normal');
 }
 
 
 function toggle_iot() {
 	if (!iot_collapsed) {
-		$("#iotspan").html("<i class='fa fa-caret-down'></i>&nbsp;IOT DATA");
+		$(".iotspan").html("<i class='fa fa-caret-down'></i>&nbsp;IOT DATA");
 		iot_collapsed = true;
-		$("#iotdata").show('normal');
+		$(".iotdata").show('normal');
 	} else {
-		$("#iotspan").html("<i class='fa fa-caret-right'></i>&nbsp;IOT DATA");
+		$(".iotspan").html("<i class='fa fa-caret-right'></i>&nbsp;IOT DATA");
 		iot_collapsed = false;
-		$("#iotdata").hide('normal');
+		$(".iotdata").hide('normal');
 	}
 	localStorage.setItem("iot_collapsed", iot_collapsed)
 }
@@ -654,7 +767,7 @@ function create_prices(prices) {
 			.replace("{{PRICE}}", round_to(6, prices[price]));
 	}
 
-	$("#prices").html(finalhtml);
+	$(".prices-content").html(finalhtml);
 }
 
 
@@ -662,6 +775,11 @@ function alert_bulma(content) {
 	$("html").css("overflow-y", "hidden");
 	$("#alert_content").text(content);
 	$('#fullscreen_alert').fadeIn('fast');
+	$(document).click(function(event) {
+		if (event.target.id == ("fullscreen_alert") && $('#fullscreen_alert').is(":visible")) {
+			close_alert();
+		}
+	});
 }
 
 
@@ -673,6 +791,7 @@ function close_alert() {
 
 
 let start_balance = 0;
+
 function calculdaily(newb, oldb, user_items) {
 	/* Accurate daily calculator by Lukas */
 	// Ducos since start / time * day
@@ -683,26 +802,9 @@ function calculdaily(newb, oldb, user_items) {
 		let daily = 86400000 * (newb - start_balance) / (Date.now() - start_time);
 		// Large values mean transaction or big block - ignore this value
 		if (daily > 0 && daily < 500 && miners.length) {
-			$("#estimatedprofits").fadeIn();
+			$(".estimatedprofits").fadeIn();
 			daily = round_to(3, daily);
-			$("#dailyprofit").text(daily)
-
-			/*if (user_items.includes(3) && user_items.includes(4)) {
-				// Both upgrades, 20%
-				no_upgrade_earning = round_to(3, daily / 1.20);
-				upgrade_earning = round_to(4, daily - no_upgrade_earning);
-			} else if ((user_items.includes(3))) {
-				// 5%
-				no_upgrade_earning = round_to(3, daily / 1.05);
-				upgrade_earning = round_to(4, daily - no_upgrade_earning);
-				$("#dailyprofit").text(no_upgrade_earning + " (+" +upgrade_earning+")")
-			} else if ((user_items.includes(3))) {
-				// 15%
-				no_upgrade_earning = round_to(3, daily / 1.15);
-				upgrade_earning = round_to(4, daily - no_upgrade_earning);
-				$("#dailyprofit").text(no_upgrade_earning + " (+" +upgrade_earning+")")
-			} else {
-			}*/
+			$(".dailyprofit").text(daily)
 		}
 	}
 }
@@ -737,7 +839,7 @@ const user_data = (req_username, first_open) => {
 				refresh_shop(user_items);
 
 				if (user_items.includes(12)) {
-					$("#starterbadge").fadeIn();
+					$(".starterbadge").fadeIn();
 				}
 			}
 
@@ -753,7 +855,7 @@ const user_data = (req_username, first_open) => {
 				oldb = balance;
 			}
 
-			if (first_open) {
+			if (first_open && on_mobile()) {
 				balanceChartData = {
 					labels: get_stored_balance("dates"),
 					datasets: [{
@@ -778,19 +880,41 @@ const user_data = (req_username, first_open) => {
 					data: balanceChartData,
 					options: balanceChartOptions,
 				});
-			} else {
+			} else if (on_mobile()) {
 				balanceChart.data.labels.push(Date.now());
 				balanceChart.data.datasets.forEach((dataset) => {
 					dataset.data.push(balance);
 				});
 				balanceChart.update();
 			}
-			$("#balance").text(balance);
+			$(".balance").text(balance);
 			balance_usd = balance * duco_price;
-			$("#balanceusd").text(`$${balance_usd.toFixed(4)}`);
+			$(".balanceusd").text(`$${balance_usd.toFixed(4)}`);
 
 			if (data.balance.stake_amount) {
-				date_opt = { day: 'numeric', month: "long" };
+				/* ------------- desktop version -------- */
+
+				$("#stake_info").html(
+					`<span>
+						<i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
+						Staking <b>${round_to(2, data.balance.stake_amount)} DUCO</b>
+					</span><br>
+					<small>
+						Ends on <b>${
+							new Date(data.balance.stake_date*1000).toLocaleString("en-US", date_opt)
+						}<br>
+						${round_to(2, (
+							data.balance.stake_amount * (
+								1 + (STAKING_PERC/100)
+							) - data.balance.stake_amount
+						))} DUCO
+						<span class="has-text-weight-normal">
+							est. reward
+						</span>
+					</small>`);
+
+				/* ------------- mobile version -------- */
+
 				stake_reward = (data.balance.stake_amount *
 					(1 + (STAKING_PERC / 100)) -
 					data.balance.stake_amount);
@@ -809,16 +933,28 @@ const user_data = (req_username, first_open) => {
 				$("#stakeprogress").attr('value', progress_val);
 				$("#stakeprogress").text(progress_val.toFixed(2) + "%");
 
-				$("#stakeamount").text(data.balance.stake_amount);
-				$("#stakereward").text(stake_reward.toFixed(2))
-				$("#stakedate").text(stake_date);
 				$("#notstaking").fadeOut(function() {
 					$("#staking").fadeIn();
 				});
+
+				/* ------------- common -------- */
+
+				$(".stakeamount").text(data.balance.stake_amount);
+				$(".stakereward").text(stake_reward.toFixed(2))
+				$(".stakedate").text(stake_date);
 			} else {
 				$("#staking").fadeOut(function() {
 					$("#notstaking").fadeIn();
 				});
+
+				$("#stake_info").html(
+					`<span>
+						<i class="fa fa-layer-group"></i>
+						Not staking
+					</span><br>
+					<small>
+						Click the <b>Stake coins</b> button to start
+					</small>`);
 			}
 
 			trustscore = data.balance.trust_score;
@@ -826,15 +962,15 @@ const user_data = (req_username, first_open) => {
 				verified = data.balance.verified;
 
 				if (verified === "yes") {
-					$("#verifiedbadge").fadeIn();
+					$(".verifiedbadge").fadeIn();
 				} else {
-					$("#unverifiedbadge").fadeIn();
+					$(".unverifiedbadge").fadeIn();
 					$("#unverified_box").fadeIn();
 				}
 			} else {
 				$("#warning_num").text(data.balance.warnings);
 				$("#warning_box").fadeIn();
-				$("#suspiciousbadge").fadeIn();
+				$(".suspiciousbadge").fadeIn();
 			}
 
 			transactions = data.transactions.reverse();
@@ -889,14 +1025,61 @@ const user_data = (req_username, first_open) => {
 					}
 				}
 			}
-			$("#transactions").html(finalhtml)
-			$("#more_tx").removeClass("is-loading");
+			$(".transactions-content").html(finalhtml)
+			$(".more_tx").removeClass("is-loading");
 
 			user_miners = data.miners;
 			create_miners(user_miners);
 		})
 }
+let loggedIn = true;
+let balance = 0;
+let curr_bal = 0;
+let profitcheck = 0;
+let duco_price = 0.0065;
+let daily_average = [];
+let oldb = 0;
+let total_hashrate = 0;
+let start = Date.now();
+let timestamps = [];
+let balances = [];
+let user_items;
+let cache_miners = 0;
+let notify_shown = false;
+let first_launch = true;
+let start_time = Date.now();
+const STAKE_DAYS = 21;
+const date_opt = { day: 'numeric', month: "long" };
+oldb = 0;
+stopUpdate = false;
 
+function capitalize(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function key_from_value(object, value) {
+	try {
+		return capitalize(Object.keys(object).find(key => object[key] === value));
+	} catch (err) {
+		return 'Unknown';
+	}
+}
+
+function update_element(element, value) {
+	// Nicely fade in the new value if it changed
+	element = "#" + element;
+	old_value = $(element).text()
+
+	if ($("<div>" + value + "</div>").text() != old_value) {
+		if (localStorage.getItem("disableAnims") == "false") $(element).fadeOut('fast', function() {
+			$(element).html(value);
+			$(element).fadeIn('fast');
+		});
+		else $(element).html(value);
+		return true;
+	}
+	return false;
+}
 
 function change_password() {
 	changepass_old = $("#changepass_old");
@@ -910,6 +1093,56 @@ function change_password() {
 
 	if (!changepass_new.val() || changepass_new.val() == changepass_old.val()) {
 		$("#changepass_new").effect("shake", { distance: 5 });
+		return;
+	}
+
+	changepass_confirm.addClass("is-loading");
+	fetch("https://server.duinocoin.com/changepass/" + encodeURIComponent(username) +
+			"?password=" + encodeURIComponent(changepass_old.val()) +
+			"&newpassword=" + encodeURIComponent(changepass_new.val()))
+		.then(response => response.json())
+		.then(data => {
+			changepass_confirm.removeClass("is-loading");
+			if (data.success) {
+				changepass_old.val('');
+				changepass_new.val('');
+				changepass_confirm.addClass("is-success");
+				changepass_confirm.html("<i class='fa fa-check'></i>");
+			} else {
+				changepass_confirm.addClass("is-danger");
+				changepass_confirm.text("Error");
+				alert_bulma(data.message);
+			}
+			setTimeout(function() {
+				changepass_confirm.removeClass("is-danger");
+				changepass_confirm.removeClass("is-success");
+				changepass_confirm.text("Change");
+			}, 3000);
+		}).catch(error => {
+			changepass_confirm.removeClass("is-loading");
+			changepass_confirm.addClass("is-danger");
+			changepass_confirm.text("Error");
+			alert_bulma(error);
+			setTimeout(function() {
+				changepass_confirm.removeClass("is-danger");
+				changepass_confirm.text("Change");
+			}, 3000);
+		});
+}
+
+
+function change_password_desktop() {
+	changepass_old = $("#changepass_old_desktop");
+	changepass_new = $("#changepass_new_desktop");
+	changepass_confirm = $("#changepass_confirm_desktop");
+
+	if (!changepass_old.val()) {
+		$("#changepass_old_desktop").effect("shake", { distance: 5 });
+		return;
+	}
+
+	if (!changepass_new.val() || changepass_new.val() == changepass_old.val()) {
+		$("#changepass_new_desktop").effect("shake", { distance: 5 });
 		return;
 	}
 
@@ -988,8 +1221,48 @@ function change_mining_key() {
 }
 
 
+function change_mining_key_desktop() {
+	mining_key = $("#mining_key_desktop");
+	changekey_confirm = $("#changekey_confirm_desktop");
+
+	if (!mining_key.val()) mining_key.val("None")
+
+	changekey_confirm.addClass("is-loading");
+	fetch("https://server.duinocoin.com/mining_key" +
+			"?u=" + encodeURIComponent(username) +
+			"&password=" + encodeURIComponent(password) +
+			"&k=" + encodeURIComponent(mining_key.val()), { method: 'POST' })
+		.then(response => response.json())
+		.then(data => {
+			changekey_confirm.removeClass("is-loading");
+			if (data.success) {
+				changekey_confirm.addClass("is-success");
+				changekey_confirm.html("<i class='fa fa-check'></i>");
+			} else {
+				changekey_confirm.addClass("is-danger");
+				changekey_confirm.text("Error");
+				alert_bulma(data.message);
+			}
+			setTimeout(function() {
+				changekey_confirm.removeClass("is-danger");
+				changekey_confirm.removeClass("is-success");
+				changekey_confirm.text("Set");
+			}, 3000);
+		}).catch(error => {
+			changekey_confirm.removeClass("is-loading");
+			changekey_confirm.addClass("is-danger");
+			changekey_confirm.text("Error");
+			alert_bulma(error);
+			setTimeout(function() {
+				changekey_confirm.removeClass("is-danger");
+				changekey_confirm.text("Set");
+			}, 3000);
+		});
+}
+
+
 function create_iotdevices(iot_devices) {
-	$("#iotsection").fadeIn();
+	$(".iotsection").fadeIn();
 
 	finalhtml = "";
 	for (device in iot_devices) {
@@ -1010,7 +1283,7 @@ function create_iotdevices(iot_devices) {
 				.replace("{{NAME}}", data);
 		}
 	}
-	$("#iotdata").html(finalhtml);
+	$(".iotdata").html(finalhtml);
 }
 
 
@@ -1174,7 +1447,7 @@ function create_miners(user_miners) {
 				color = "#F97F51";
 				icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
 				miner_type = "PC (Normal)";
-				if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
+				//if (Math.floor(Math.random() * 50) == 1) $("#magi_notify").fadeIn();
 			} else if (miner_software.includes("Web")) {
 				color = "#009432";
 				icon = `<i class="fa fa-lg fa-globe" style="color:${color}"></i>`;
@@ -1240,6 +1513,12 @@ function create_miners(user_miners) {
 					</span>`
 			}*/
 
+			let thread_string = '';
+			if (miners[miner]["threads"] > 1) {
+				thread_string = ` &bull; ${miners[miner]["threads"]} threads`;
+			}
+			miner_name += thread_string;
+
 			function textWidth(text, fontProp) {
 				var tag = document.createElement('div')
 				tag.style.position = 'absolute'
@@ -1254,7 +1533,8 @@ function create_miners(user_miners) {
 				return result;
 			}
 
-			if (textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.65) {
+			if ((on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.65)
+				|| !on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.21) {
 				miner_name = `<div class="marquee">
 								<div class="has-text-weight-bold marquee__content">
 									${miner_name}
@@ -1266,21 +1546,22 @@ function create_miners(user_miners) {
 				.replace("{{NAME}}", miner_name)
 				.replace("{{ICON}}", icon)
 				.replace("{{EFF}}", accepted_rate + "%")
+				.replace("{{EFF_COUNT}}", scientific_prefix(miner_accepted))
 				.replace("{{EFF_COLOR}}", accept_color)
 				.replace("{{MINER_NUM}}", miner)
 				.replace("{{HASH}}", scientific_prefix(miner_hashrate) + "H/s");
 		}
-		$("#nominers").fadeOut();
-		$("#miners").html(miners_html);
+		$(".nominers").fadeOut();
+		$(".miners-content").html(miners_html);
 
 		maxslots = 50;
 		if (user_items.includes(10)) maxslots = 75;
 		if (user_items.includes(11)) maxslots = 100;
 		if (user_items.includes(11) && user_items.includes(10)) maxslots = 125;
-		$("#minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
+		$(".minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
 	} else {
-		$("#nominers").fadeIn();
-		$("#estimatedprofits").fadeOut();
+		$(".nominers").fadeIn();
+		$(".estimatedprofits").fadeOut();
 	}
 }
 
@@ -1315,17 +1596,31 @@ function scientific_prefix(value) {
 
 
 function focus_mining_key() {
-	screen('screen-settings-mobile');
+	if (on_mobile()) screen('screen-settings-mobile');
+	else open_settings()
 	setTimeout(function() {
-		$("#mining_key")[0].scrollIntoView();
-		$("#mining_key").focus();
+		if (on_mobile()) {
+			$("#mining_key")[0].scrollIntoView();
+			$("#mining_key").focus();
+		} else {
+			$("#mining_key_desktop")[0].scrollIntoView();
+			$("#mining_key_desktop").focus();
+		}
 	}, 300)
 }
 
 
 function miner_details(miner_id) {
 	$("html").css("overflow-y", "hidden");
-	$("#minerdetails").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#minerdetails").show("slide", { direction: "right" }, '50');
+	else {
+		$("#minerdetails").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("minerdetails") && $('#minerdetails').is(":visible")) {
+				close_minerdetails();
+			}
+		});
+	}
 
 	$("#miner_name").text(miners[miner_id]["software"])
 	miner_software = miners[miner_id]["software"];
@@ -1505,62 +1800,124 @@ function miner_details(miner_id) {
 
 
 function close_minerdetails() {
-	$("#minerdetails").hide("slide", { direction: "right" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#minerdetails").hide("slide", { direction: "right" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#minerdetails").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function buymenu() {
 	$("html").css("overflow-y", "hidden");
-	$("#buymenu").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#buymenu").show("slide", { direction: "right" }, '50');
+	else {
+		$("#buymenu").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("buymenu") && $('#buymenu').is(":visible")) {
+				close_buymenu();
+			}
+		});
+	}
 	$("#receive_username").text(username);
 }
 
 
 function close_buymenu() {
-	$("#buymenu").hide("slide", { direction: "right" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#buymenu").hide("slide", { direction: "right" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#buymenu").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function help_screen() {
 	$("html").css("overflow-y", "hidden");
-	$("#help").show("slide", { direction: "down" }, '50');
+	if (on_mobile()) $("#help").show("slide", { direction: "down" }, '50');
+	else {
+		$("#help").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("help") && $('#help').is(":visible")) {
+				close_help();
+			}
+		});
+	}
 }
 
 
 function close_help() {
-	$("#help").hide("slide", { direction: "down" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#help").hide("slide", { direction: "down" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#help").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function view_achievements() {
 	$("html").css("overflow-y", "hidden");
-	$("#achievements").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#achievements").show("slide", { direction: "right" }, '50');
+	else {
+		$("#achievements").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("achievements") && $('#achievements').is(":visible")) {
+				close_achievements();
+			}
+		});
+	}
 }
 
 
 function close_achievements() {
-	$("#achievements").hide("slide", { direction: "right" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#achievements").hide("slide", { direction: "right" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#achievements").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function open_shop() {
 	$("html").css("overflow-y", "hidden");
-	$("#shop").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#shop").show("slide", { direction: "right" }, '50');
+	else {
+		$("#shop").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("shop") && $('#shop').is(":visible")) {
+				close_shop();
+			}
+		});
+	}
 }
 
 
 function close_shop() {
-	$("#shop").hide("slide", { direction: "right" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#shop").hide("slide", { direction: "right" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#shop").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
@@ -1601,22 +1958,22 @@ function refresh_shop(user_items) {
 	if (!user_items) return;
 
 	if (user_items.includes(0)) {
-		//$("#useravatar").attr("src", "https://server.duinocoin.com/assets/items/0.png");
+		$("#useravatar").attr("src", "https://server.duinocoin.com/assets/items/0.png");
 	}
 
 	if (user_items.includes(1)) {
-		//$("#hat").attr("src", "https://server.duinocoin.com/assets/items/1.png")
-		//$("#hat").fadeIn();
+		$("#hat").attr("src", "https://server.duinocoin.com/assets/items/1.png")
+		$("#hat").fadeIn();
 	}
 
 	if (user_items.includes(2)) {
-		//$("#sunglasses").attr("src", "https://server.duinocoin.com/assets/items/2.png")
-		//if (enabledItems.includes(2)) $("#sunglasses").fadeIn();
+		$("#sunglasses").attr("src", "https://server.duinocoin.com/assets/items/2.png")
+		$("#sunglasses").fadeIn();
 	}
 
 	if (user_items.includes(3)) {
-		//$("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
-		//if (enabledItems.includes(3)) $("#bowtie").fadeIn();
+		$("#bowtie").attr("src", "https://server.duinocoin.com/assets/items/3.png")
+		$("#bowtie").fadeIn();
 	}
 }
 
@@ -1666,7 +2023,15 @@ function shop_buy(item_name) {
 
 function tx_details(tx_id) {
 	$("html").css("overflow-y", "hidden");
-	$("#txdetails").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#txdetails").show("slide", { direction: "right" }, '50');
+	else {
+		$("#txdetails").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("txdetails") && $('#txdetails').is(":visible")) {
+				close_txdetails();
+			}
+		});
+	}
 
 	tx = transactions[tx_id];
 
@@ -1765,39 +2130,77 @@ function tx_details(tx_id) {
 
 
 function close_txdetails() {
-	$("#txdetails").hide("slide", { direction: "right" }, '50', function() {
-		$("#transaction_nav").removeClass("is-danger")
-		$("#transaction_icon_color").removeClass("has-text-danger");
-		$("#transaction_nav").removeClass("is-success")
-		$("#transaction_icon_color").removeClass("has-text-success");
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#txdetails").hide("slide", { direction: "right" }, '50', function() {
+			$("#transaction_nav").removeClass("is-danger")
+			$("#transaction_icon_color").removeClass("has-text-danger");
+			$("#transaction_nav").removeClass("is-success")
+			$("#transaction_icon_color").removeClass("has-text-success");
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#txdetails").fadeOut('fast', function() {
+			$("#transaction_nav").removeClass("is-danger")
+			$("#transaction_icon_color").removeClass("has-text-danger");
+			$("#transaction_nav").removeClass("is-success")
+			$("#transaction_icon_color").removeClass("has-text-success");
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function open_txsend() {
 	$("html").css("overflow-y", "hidden");
-	$("#txsend").show("slide", { direction: "down" }, '50');
+	if (on_mobile()) $("#txsend").show("slide", { direction: "down" }, '50');
+	else {
+		$("#txsend").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("txsend") && $('#txsend').is(":visible")) {
+				close_txsend();
+			}
+		});
+	}
 }
 
 
 function close_txsend() {
-	$("#txsend").hide("slide", { direction: "down" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#txsend").hide("slide", { direction: "down" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#txsend").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
 function open_txwrap() {
 	$("html").css("overflow-y", "hidden");
-	$("#txwrap").show("slide", { direction: "down" }, '50');
+	if (on_mobile()) $("#txwrap").show("slide", { direction: "down" }, '50');
+	else {
+		$("#txwrap").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("txwrap") && $('#txwrap').is(":visible")) {
+				close_txwrap();
+			}
+		});
+	}
 }
 
 
 function close_txwrap() {
-	$("#txwrap").hide("slide", { direction: "down" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
-	});
+	if (on_mobile()) {
+		$("#txwrap").hide("slide", { direction: "down" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#txwrap").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
 }
 
 
@@ -1822,16 +2225,50 @@ $("#stake_amount").on("input", function() {
 
 function open_stakemenu() {
 	$("html").css("overflow-y", "hidden");
-	$("#stakemenu").show("slide", { direction: "right" }, '50');
+	if (on_mobile()) $("#stakemenu").show("slide", { direction: "right" }, '50');
+	else {
+		$("#stakemenu").fadeIn('fast');
+		$(document).click(function(event) {
+			if (event.target.id == ("stakemenu") && $('#stakemenu').is(":visible")) {
+				close_stakemenu();
+			}
+		});
+	}
 }
 
 
 function close_stakemenu() {
-	$("#stakemenu").hide("slide", { direction: "right" }, '50', function() {
-		$("html").css("overflow-y", "scroll");
+	if (on_mobile()) {
+		$("#stakemenu").hide("slide", { direction: "right" }, '50', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	} else {
+		$("#stakemenu").fadeOut('fast', function() {
+			$("html").css("overflow-y", "scroll");
+		});
+	}
+}
+
+
+
+function open_settings() {
+	// desktop only (no separate screen)
+	$("html").css("overflow-y", "hidden");
+	$("#settings-desktop").fadeIn('fast', function() {
+		$(document).click(function(event) {
+			if (event.target.id == ("settings-desktop") && $('#settings-desktop').is(":visible")) {
+				close_settings();
+			}
+		});
 	});
 }
 
+function close_settings() {
+	// desktop only (no separate screen)
+	$("#settings-desktop").fadeOut('fast', function() {
+		$("html").css("overflow-y", "scroll");
+	});
+}
 
 function stake() {
 	stake_amount = $("#stake_amount").val();
@@ -2011,7 +2448,7 @@ function send() {
 		return;
 	}
 
-	document.getElementById("send_confirm").classList.add("is-loading");
+	$("#send_confirm").addClass('is-loading');
 	$.getJSON('https://server.duinocoin.com/transaction/' +
 		'?username=' + encodeURIComponent(username) +
 		"&password=" + encodeURIComponent(password) +
@@ -2019,7 +2456,7 @@ function send() {
 		"&amount=" + encodeURIComponent(amount) +
 		"&memo=" + encodeURIComponent(memo),
 		function(data) {
-			document.getElementById("send_confirm").classList.remove("is-loading");
+			$("#send_confirm").removeClass('is-loading');
 			if (data.success == true) {
 				$('#send_recipient').val('');
 				$('#send_amount').val('');
@@ -2046,9 +2483,9 @@ function refresh_event() {
 		.then(response => response.json())
 		.then(data => {
 			if (data.result.topic != "None") {
-				$("#event_box").fadeIn();
-				$("#event_title").html(data.result.topic);
-				$("#event_desc").html(data.result.description);
+				$(".event_box").fadeIn();
+				$(".event_title").html(data.result.topic);
+				$(".event_desc").html(data.result.description);
 			}
 		});
 }
@@ -2056,7 +2493,7 @@ refresh_event()
 
 
 function more_transactions() {
-	$("#more_tx").addClass("is-loading");
+	$(".more_tx").addClass("is-loading");
 	transaction_limit += 10;
 	user_data(username);
 }
@@ -2083,29 +2520,29 @@ function timeSince(date) {
 	}
 	interval = seconds / 86400;
 	if (Math.floor(interval) == 1) {
-		return Math.floor(interval) + " d ago";
+		return Math.floor(interval) + " day ago";
 	}
 	if (interval > 1) {
-		return Math.floor(interval) + " d ago";
+		return Math.floor(interval) + " days ago";
 	}
 	interval = seconds / 3600;
 	if (Math.floor(interval) == 1) {
-		return Math.floor(interval) + " h ago";
+		return Math.floor(interval) + " hour ago";
 	}
 	if (interval > 1) {
-		return Math.floor(interval) + " h ago";
+		return Math.floor(interval) + " hours ago";
 	}
 	interval = seconds / 60;
 	if (Math.floor(interval) == 1) {
-		return Math.floor(interval) + " m ago";
+		return Math.floor(interval) + " minute ago";
 	}
 	if (interval > 1) {
-		return Math.floor(interval) + " m ago";
+		return Math.floor(interval) + " minutes ago";
 	}
 	if (Math.floor(seconds) == 1) {
-		return Math.floor(seconds) + " s ago";
+		return Math.floor(seconds) + " second ago";
 	}
-	return Math.floor(seconds) + " s ago";
+	return Math.floor(seconds) + " seconds ago";
 }
 
 
@@ -2163,17 +2600,34 @@ function estimated_earnings_warning() {
 }
 
 
+$(document).keyup(function(e) {
+	 if (e.key === "Escape") {
+		close_alert();
+		close_help();
+		close_shop();
+		close_stakemenu();
+		close_txsend();
+		close_txwrap();
+		close_achievements();
+		close_txdetails();
+		close_minerdetails();
+		close_buymenu();
+		close_settings();
+	}
+});
+
+
 function on_mobile() {
 	const ua = navigator.userAgent;
-    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
-        return true;
-    }
-    return false;
+	if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+		return true;
+	}
+	return false;
 }
 
 
-if (!localStorage.getItem('first-launch') && on_mobile()) {
-	alert_bulma("Hello! This is a beta version of the new mobile online wallet look. It's finished in ~80% but I'm open for suggestions - reach out to me on Discord (revox - Founder) or e-mail me at robert@piotrowsky.dev if you find something missing or needing a change. Have fun!")
+if (!localStorage.getItem('first-launch')) {
+	alert_bulma("Hello! This is a beta version of the new online wallet look. Mobile version has been remade from scratch and desktop has been updated to overall work better. It's finished in ~90% but I'm open for suggestions - reach out to me on Discord (revox - Founder) or e-mail me at robert@piotrowsky.dev if you find something missing or needing a change. Have fun!")
 	localStorage.setItem('first-launch', true);
 }
 
@@ -2206,7 +2660,65 @@ $("#greeting").text(greetings[Math.floor(Math.random() * greetings.length)]);
 
 
 window.addEventListener('load', function() {
-    console.log(`%cHold on!`, "color: red; font-size: 3em");
-    console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
-    console.log(`%cDo not execute unknown code here. We will not be responsible for your loss.`, "color: orange; font-size: 1.5em;");
+	console.log(`%cHold on!`, "color: red; font-size: 3em");
+	console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
+	console.log(`%cDo not execute unknown code here. We will not be responsible for your loss.`, "color: orange; font-size: 1.5em;");
 });
+
+// desktop avatar stuff //
+
+function component_to_hex(c) {
+	/* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+}
+
+function get_user_color(username) {
+	/* https://www.cluemediator.com/create-a-random-color-based-on-a-string-using-javascript */
+	const firstAlphabet = username.charAt(0).toLowerCase();
+	const asciiCode = firstAlphabet.charCodeAt(0);
+	const colorNum = asciiCode.toString() + asciiCode.toString() + asciiCode.toString();
+
+	let num = Math.round(0xffffff * parseInt(colorNum));
+	let r = num >> 16 & 255;
+	let g = num >> 8 & 255;
+	let b = num & 255;
+
+	return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
+}
+
+// ------ helper MD5 functions ------- //
+
+const MD5 = function(d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase() };
+
+function M(d) { for (var _, m = "0123456789ABCDEF", f = "", r = 0; r < d.length; r++) _ = d.charCodeAt(r), f += m.charAt(_ >>> 4 & 15) + m.charAt(15 & _); return f }
+
+function X(d) { for (var _ = Array(d.length >> 2), m = 0; m < _.length; m++) _[m] = 0; for (m = 0; m < 8 * d.length; m += 8) _[m >> 5] |= (255 & d.charCodeAt(m / 8)) << m % 32; return _ }
+
+function V(d) { for (var _ = "", m = 0; m < 32 * d.length; m += 8) _ += String.fromCharCode(d[m >> 5] >>> m % 32 & 255); return _ }
+
+function Y(d, _) {
+	d[_ >> 5] |= 128 << _ % 32, d[14 + (_ + 64 >>> 9 << 4)] = _;
+	for (var m = 1732584193, f = -271733879, r = -1732584194, i = 271733878, n = 0; n < d.length; n += 16) {
+		var h = m,
+			t = f,
+			g = r,
+			e = i;
+		f = md5_ii(f = md5_ii(f = md5_ii(f = md5_ii(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_hh(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_gg(f = md5_ff(f = md5_ff(f = md5_ff(f = md5_ff(f, r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 0], 7, -680876936), f, r, d[n + 1], 12, -389564586), m, f, d[n + 2], 17, 606105819), i, m, d[n + 3], 22, -1044525330), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 4], 7, -176418897), f, r, d[n + 5], 12, 1200080426), m, f, d[n + 6], 17, -1473231341), i, m, d[n + 7], 22, -45705983), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 8], 7, 1770035416), f, r, d[n + 9], 12, -1958414417), m, f, d[n + 10], 17, -42063), i, m, d[n + 11], 22, -1990404162), r = md5_ff(r, i = md5_ff(i, m = md5_ff(m, f, r, i, d[n + 12], 7, 1804603682), f, r, d[n + 13], 12, -40341101), m, f, d[n + 14], 17, -1502002290), i, m, d[n + 15], 22, 1236535329), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 1], 5, -165796510), f, r, d[n + 6], 9, -1069501632), m, f, d[n + 11], 14, 643717713), i, m, d[n + 0], 20, -373897302), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 5], 5, -701558691), f, r, d[n + 10], 9, 38016083), m, f, d[n + 15], 14, -660478335), i, m, d[n + 4], 20, -405537848), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 9], 5, 568446438), f, r, d[n + 14], 9, -1019803690), m, f, d[n + 3], 14, -187363961), i, m, d[n + 8], 20, 1163531501), r = md5_gg(r, i = md5_gg(i, m = md5_gg(m, f, r, i, d[n + 13], 5, -1444681467), f, r, d[n + 2], 9, -51403784), m, f, d[n + 7], 14, 1735328473), i, m, d[n + 12], 20, -1926607734), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 5], 4, -378558), f, r, d[n + 8], 11, -2022574463), m, f, d[n + 11], 16, 1839030562), i, m, d[n + 14], 23, -35309556), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 1], 4, -1530992060), f, r, d[n + 4], 11, 1272893353), m, f, d[n + 7], 16, -155497632), i, m, d[n + 10], 23, -1094730640), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 13], 4, 681279174), f, r, d[n + 0], 11, -358537222), m, f, d[n + 3], 16, -722521979), i, m, d[n + 6], 23, 76029189), r = md5_hh(r, i = md5_hh(i, m = md5_hh(m, f, r, i, d[n + 9], 4, -640364487), f, r, d[n + 12], 11, -421815835), m, f, d[n + 15], 16, 530742520), i, m, d[n + 2], 23, -995338651), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 0], 6, -198630844), f, r, d[n + 7], 10, 1126891415), m, f, d[n + 14], 15, -1416354905), i, m, d[n + 5], 21, -57434055), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 12], 6, 1700485571), f, r, d[n + 3], 10, -1894986606), m, f, d[n + 10], 15, -1051523), i, m, d[n + 1], 21, -2054922799), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 8], 6, 1873313359), f, r, d[n + 15], 10, -30611744), m, f, d[n + 6], 15, -1560198380), i, m, d[n + 13], 21, 1309151649), r = md5_ii(r, i = md5_ii(i, m = md5_ii(m, f, r, i, d[n + 4], 6, -145523070), f, r, d[n + 11], 10, -1120210379), m, f, d[n + 2], 15, 718787259), i, m, d[n + 9], 21, -343485551), m = safe_add(m, h), f = safe_add(f, t), r = safe_add(r, g), i = safe_add(i, e)
+	}
+	return Array(m, f, r, i)
+}
+
+function md5_cmn(d, _, m, f, r, i) { return safe_add(bit_rol(safe_add(safe_add(_, d), safe_add(f, i)), r), m) }
+
+function md5_ff(d, _, m, f, r, i, n) { return md5_cmn(_ & m | ~_ & f, d, _, r, i, n) }
+
+function md5_gg(d, _, m, f, r, i, n) { return md5_cmn(_ & f | m & ~f, d, _, r, i, n) }
+
+function md5_hh(d, _, m, f, r, i, n) { return md5_cmn(_ ^ m ^ f, d, _, r, i, n) }
+
+function md5_ii(d, _, m, f, r, i, n) { return md5_cmn(m ^ (_ | ~f), d, _, r, i, n) }
+
+function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + (_ >> 16) + (m >> 16) << 16 | 65535 & m }
+
+function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
