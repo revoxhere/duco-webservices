@@ -2369,7 +2369,7 @@ function wrap() {
         return;
     }
 
-    if (wrap_amount >= 501) {
+    if (wrap_amount >= 250) {
         document.getElementById("wrap_confirm").classList.add("is-loading");
 
         if (wrap_network == "wDUCO (Tron)") {
