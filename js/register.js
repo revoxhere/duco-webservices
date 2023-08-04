@@ -110,6 +110,7 @@ function checkInputs() {
     const emailValue = email.value.trim();
     const passwordValue = password.value.trim();
     const passwordConfirmValue = passwordConfirm.value.trim();
+    const miner_keyValue = miner_key.value.trim();
     const check1Value = check1.checked;
     const check2Value = check2.checked;
     const check3Value = check3.checked;
@@ -122,6 +123,13 @@ function checkInputs() {
         isFormValid = false;
     } else {
         setSuccessFor(username);
+    }
+
+    if (miner_keyValue === '') {
+        isFormValid = false;
+        setErrorFor(miner_key, 'Mining key cannot be blank.');
+    } else {
+        setSuccessFor(miner_key);
     }
 
     if (emailValue === '') {
