@@ -405,7 +405,7 @@ const miner_template2 = `
 `
 
 const achievement_template = `
-<div class="column is-half">
+<div class="column" style="min-width: 250px">
 	<div class="box">
 		<div class="columns is-mobile {{GRAY}}">
 			<div class="column is-narrow">
@@ -2657,7 +2657,10 @@ $(document).keyup(function(e) {
         close_buymenu();
         close_settings();
     } else if (e.key === "Enter") {
-        login();
+    	setTimeout(function() {
+    		$("#loginbutton_desktop").click();
+    	}, 150);
+        
     }
 });
 
