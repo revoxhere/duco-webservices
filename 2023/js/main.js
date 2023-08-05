@@ -1436,14 +1436,18 @@ function create_miners(user_miners) {
                     miner_identifier.includes("RPi"))) {
                 icon = `<img src="assets/pi.gif">`;
             } else if (miner_software.includes("PC")) {
+            	color = "#F97F51";
                 icon = `<i class="fa fa-laptop" style="color:${color}"></i>`;
             } else if (miner_software.includes("Web")) {
+            	color = "#009432";
                 icon = `<i class="fa fa-lg fa-globe" style="color:${color}"></i>`;
             } else if (miner_software.includes("Android") ||
                 miner_software.includes("Phone") ||
                 miner_software.includes("Mini Miner")) {
+            	color = "#FA983A";
                 icon = `<i class="fa fa-lg fa-mobile" style="color:${color}"></i>`;
             } else {
+            	color = "#EE4B2B";
                 icon = `<i class="fa fa-lg fa-question-circle" style="color:${color}"></i>`;
             }
 
