@@ -481,7 +481,7 @@ function login(token) {
         password_input = $("#login_password_desktop");
         loginbutton = $("#loginbutton_desktop");
     }
-    username = username_input.val().strip();
+    username = username_input.val().trim();
     password = password_input.val();
 
     if (!username && !password) {
@@ -2476,9 +2476,9 @@ function wrap() {
 
 
 function send() {
-    let recipient = $('#send_recipient').val().strip()
-    let amount = $('#send_amount').val().strip()
-    let memo = $('#send_memo').val().strip()
+    let recipient = $('#send_recipient').val().trim()
+    let amount = $('#send_amount').val().trim()
+    let memo = $('#send_memo').val().trim()
 
     if (!recipient) {
         $("#send_recipient").effect("shake", { distance: 5 });
