@@ -426,7 +426,7 @@ const achievement_template = `
 </div>`
 
 const shop_template = `
-<div class="column is-half">
+<div class="column" style="min-width: 250px">
 	<div class="box">
 		<div class="columns is-mobile">
 			<div class="column is-narrow">
@@ -842,7 +842,7 @@ const user_data = (req_username, first_open) => {
                 } else $(".acc-creation-date").text(data.balance.created);
 
                 $(".acc-last-login").text(
-                    new Date(data.balance.last_login * 1000).toLocaleString('en-US'));
+                    new Date(data.balance.last_login * 1000).toLocaleString('en-UK'));
 
                 $(".acc-trustscore").text(data.balance.trust_score);
 
@@ -915,7 +915,7 @@ const user_data = (req_username, first_open) => {
 					</span><br>
 					<small>
 						Ends on <b>${
-							new Date(data.balance.stake_date*1000).toLocaleString("en-US", date_opt)
+							new Date(data.balance.stake_date*1000).toLocaleString("en-UK", date_opt)
 						}<br>
 						${round_to(2, (
 							data.balance.stake_amount * (
@@ -933,7 +933,7 @@ const user_data = (req_username, first_open) => {
                     (1 + (STAKING_PERC / 100)) -
                     data.balance.stake_amount);
                 stake_date = new Date(data.balance.stake_date * 1000)
-                    .toLocaleString("en-US", date_opt);
+                    .toLocaleString("en-UK", date_opt);
 
                 progress_min = data.balance.stake_date * 1000 - 21 * 86400000;
                 progress_max = data.balance.stake_date * 1000;
@@ -975,7 +975,7 @@ const user_data = (req_username, first_open) => {
             if (data.balance.warnings < 1) {
                 verified = data.balance.verified;
                 verification_date = new Date(data.balance.verified_date * 1000)
-                    .toLocaleString('en-US');
+                    .toLocaleString('en-UK');
 
                 if (verified === "yes") {
                     $(".verifiedbadge").fadeIn();
