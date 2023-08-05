@@ -22,6 +22,7 @@ const BACKDROPS = [
     "Bujonek",
     "Kwiatens",
     "renderman",
+    "CaptSwirly"
 ];
 let last_screen = "screen-user-mobile";
 let username, password;
