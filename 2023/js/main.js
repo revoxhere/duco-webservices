@@ -1332,7 +1332,7 @@ function create_miners(user_miners) {
 
                 if (user_miners[miner]["it"] != null) {
                     if (!user_miners[miner]["it"].includes(":")) {
-                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                        temp = user_miners[miner]["it"].split("@")[0];
                         hum = user_miners[miner]["it"].split("@")[1];
 
                         if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">
@@ -1362,7 +1362,7 @@ function create_miners(user_miners) {
 
                 if (user_miners[miner]["it"] != null) {
                     if (!user_miners[miner]["it"].includes(":")) {
-                        temp = parseTemperature(user_miners[miner]["it"].split("@")[0]);
+                        temp = user_miners[miner]["it"].split("@")[0];
                         hum = user_miners[miner]["it"].split("@")[1];
 
                         if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">

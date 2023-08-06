@@ -172,7 +172,6 @@ progress.show-value.is-large:after {
     }
 
     .darkmode-dark-bg>.container {
-    	height:100%;
         background-color: #17181C !important;
     }
 
@@ -352,6 +351,10 @@ input[type="checkbox"]:checked::before {
         width: 100% !important;
         height: 100% !important;
         border-radius: 6px 0px 0px 6px;
+    }
+
+    .darkmode-dark-bg>.container {
+    	height:100%;
     }
 
     #image_author_desktop {
