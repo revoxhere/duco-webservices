@@ -1430,7 +1430,7 @@ function create_miners(user_miners) {
                 icon = `<img src="assets/wemos.gif">`;
             } else if (miner_software.includes("ESP32")) {
                 icon = `<img src="assets/esp32.gif">`;
-            } else if (miner_software.includes("AVR") && miner_diff >= 256) {
+            } else if (miner_software.includes("AVR") && miner_diff >= 128) {
                 icon = `<img src="assets/pico.gif">`;
             } else if (miner_software.includes("I2C")) {
                 icon = `<img src="assets/arduino.gif">`;
@@ -1618,12 +1618,12 @@ function miner_details(miner_id) {
         percentage = 0.96;
         hashrate_range = [35000, 50000];
         diff_range = [1000, 2000];
-    } else if (miner_software.includes("AVR") && miner_diff >= 256) {
+    } else if (miner_software.includes("AVR") && miner_diff >= 128) {
         icon = `<img src="assets/pico.gif">`;
         color = "#056938";
         miner_type = "AVR (Pico)";
         percentage = 0.96;
-        hashrate_range = [1000, 5000];
+        hashrate_range = [15000, 25000];
         diff_range = [128, 2000];
     } else if (miner_software.includes("I2C")) {
         icon = `<img src="assets/arduino.gif">`;
