@@ -1433,7 +1433,8 @@ function create_miners(user_miners) {
             } else if (miner_software.includes("AVR") && miner_diff >= 128) {
                 icon = `<img src="assets/pico.gif">`;
             } else if (miner_software.includes("I2C")) {
-                icon = `<img src="assets/arduino.gif">`;
+                color = "#6ab04c";
+                icon = `<i class="fa fa-microchip" style="color:${color}"></i>`;
             } else if (miner_software.includes("AVR")) {
                 icon = `<img src="assets/arduino.gif">`;
             } else if (miner_software.includes("PC") &&
@@ -1626,8 +1627,8 @@ function miner_details(miner_id) {
         hashrate_range = [15000, 25000];
         diff_range = [128, 2000];
     } else if (miner_software.includes("I2C")) {
-        icon = `<img src="assets/arduino.gif">`;
-        color = "#4261EE";
+        color = "#6ab04c";
+        icon = `<i class="fa fa-microchip" style="color:${color}"></i>`;
         miner_type = "AVR (I²C)";
         percentage = 0.96;
         hashrate_range = [100, 400];
