@@ -1430,7 +1430,7 @@ function create_miners(user_miners) {
                 icon = `<img src="assets/wemos.gif">`;
             } else if (miner_software.includes("ESP32")) {
                 icon = `<img src="assets/esp32.gif">`;
-            } else if (miner_software.includes("AVR") && miner_diff == 333) {
+            } else if (miner_software.includes("AVR") && miner_diff >= 256) {
                 icon = `<img src="assets/pico.gif">`;
             } else if (miner_software.includes("I2C")) {
                 icon = `<img src="assets/arduino.gif">`;
