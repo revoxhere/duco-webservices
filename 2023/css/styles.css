@@ -172,6 +172,7 @@ progress.show-value.is-large:after {
     }
 
     .darkmode-dark-bg>.container {
+    	min-height: 100vh;
         background-color: #17181C !important;
     }
 
