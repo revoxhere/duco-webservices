@@ -35,6 +35,8 @@
 	<link rel="stylesheet" type="text/css" href="2023/css/bulma-prefers-dark.css">
 	<link rel="stylesheet" type="text/css" href="2023/css/bulma-checkbox.css">
 	<link rel="stylesheet" type="text/css" href="2023/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="2023/css/theme-terminal.css" disabled id="theme-terminal">
+	<link rel="stylesheet" type="text/css" href="2023/css/theme-glossy.css" disabled id="theme-glossy">
 	<!--JS-->
 	<script src="https://duinocoin.com/assets/js/all.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -228,8 +230,7 @@
 									<img id="bowtie" style="height:44px;width:44px;position:absolute;top:2.3em;left:.6em;display:none;pointer-events: none;opacity:0.9">
 
 									<p class="mt-1 has-text-centered">
-										<a data-tooltip="Settings" class="modal-button" 
-											onclick="open_settings()">
+										<a data-tooltip="Settings" onclick="open_settings()">
 											<i class="fa fa-cog"></i>
 										</a>
 										<a data-tooltip="Item shop" onclick="open_shop()">
@@ -755,8 +756,10 @@
 						</button>
 						<div class="control has-icons-left">
 							<div class="select">
-								<select id="theme">
-									<option selected>Adaptive</option>
+								<select id="theme_mobile">
+									<option value="Adaptive" selected>Adaptive</option>
+									<option value="Terminal">Terminal</option>
+									<option value="Glossy">Glossy</option>
 								</select>
 							</div>
 							<span class="icon is-small is-left">
@@ -1470,8 +1473,10 @@
 					</button>
 					<div class="control has-icons-left">
 						<div class="select">
-							<select id="theme">
-								<option selected>Adaptive</option>
+							<select id="theme_desktop">
+								<option selected value="Adaptive">Adaptive</option>
+								<option value="Terminal">Terminal</option>
+								<option value="Glossy">Glossy</option>
 							</select>
 						</div>
 						<span class="icon is-small is-left">

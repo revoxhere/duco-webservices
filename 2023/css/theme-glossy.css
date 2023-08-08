@@ -1,0 +1,46 @@
+.box,
+.button,
+select,
+input {
+    border-radius: 24px !important;
+}
+
+.box {
+    backdrop-filter: blur(3px);
+    background-color: rgba(247, 251, 252, 0.75) !important;
+    -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+}
+
+#txdetails>.container,
+#txsend>.container,
+#txwrap>.container,
+#stakemenu>.container,
+#minerdetails>.container,
+#buymenu>.container,
+#achievements>.container,
+#shop>.container,
+#help>.container,
+#settings-desktop>.container {
+    background-color: rgba(247, 251, 252, 0.85) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .box {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+    }
+}
+
+body:before {
+    opacity: 1.0 !important;
+    filter: none !important;
+}
+
+.login-backdrop-desktop {
+    border-radius: 24px 0px 0px 24px;
+}
+
+input[type="checkbox"]::before {
+    border-radius: 24px !important;
+}

@@ -1,0 +1,104 @@
+small,
+h1,
+h2,
+p,
+label,
+.input,
+.button,
+i,
+select,
+summary {
+    color: green !important;
+
+    border-radius: 0 !important;
+}
+
+.button,
+input,
+select {
+    border: 1px solid darkseagreen !important;
+}
+
+.tag {
+    color: white !important;
+}
+
+.login-backdrop {
+    filter: contrast(180%) invert(37%) sepia(98%) saturate(800%) hue-rotate(60deg) brightness(106%) contrast(98%);
+}
+
+
+input,
+.button,
+select,
+.darkmode-dark-bg>.container {
+    background-color: black !important;
+    border-radius: 0 !important;
+}
+
+.box {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.navbar {
+    background-color: #171717 !important;
+}
+
+.navbar-button>center>img {
+    filter: invert(86%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(87%) contrast(84%) !important;
+}
+
+a {
+    color: #008748 !important;
+}
+
+body {
+    background-color: black !important;
+}
+
+input[type="checkbox"] {
+    background-color: rgba(16, 16, 16) !important;
+}
+
+body:before {
+    opacity: 0.2 !important;
+    filter: none !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgb(16, 16, 16) !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: gray !important;
+    border-radius: 8px !important;
+    border: 2px solid rgb(16, 16, 16) !important;
+}
+
+.has-background-success-light {
+    background-color: #072b14 !important;
+}
+
+.has-background-info-light {
+    background-color: #0f1b36 !important;
+}
+
+.has-background-warning-light {
+    background-color: #362c09 !important;
+}
+
+
+body:before {
+    background-image: url('https://media.tenor.com/IvyuPtEfzhoAAAAM/matrix.gif') !important;
+    background-repeat: repeat !important;
+    background-size: initial !important;
+}
+
+.letter {
+    counter-reset: timer;
+    animation: animate-letter 2s linear infinite running;
+}
+
+.letter div:before {
+    content: counter(timer, lower-alpha);
+}
