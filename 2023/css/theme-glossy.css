@@ -35,6 +35,15 @@ input {
 }
 
 @media (prefers-color-scheme: dark) {
+    #txdetails>.container,
+    #txsend>.container,
+    #txwrap>.container,
+    #stakemenu>.container,
+    #minerdetails>.container,
+    #buymenu>.container,
+    #achievements>.container,
+    #shop>.container,
+    #help>.container,
     #settings-desktop>.container,
     .box {
         background-color: rgba(0, 0, 0, 0.7) !important;
