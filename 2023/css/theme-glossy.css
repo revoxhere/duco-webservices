@@ -35,6 +35,7 @@ input {
 }
 
 @media (prefers-color-scheme: dark) {
+    #settings-desktop>.container,
     .box {
         background-color: rgba(0, 0, 0, 0.7) !important;
     }
