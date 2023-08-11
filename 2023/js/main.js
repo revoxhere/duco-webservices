@@ -26,6 +26,7 @@ const BACKDROPS = [
 	"iNimbleSloth",
 	"Mike_Morgan",
 	"Ecthelias",
+	"Kizeren Killeshan",
 ];
 let last_screen = "screen-user-mobile";
 let username, password;
@@ -33,7 +34,6 @@ let transaction_limit = 10;
 let transactions = [];
 let miners = [];
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || VISUAL_ITEMS;
-
 
 let login_backdrop = BACKDROPS[Math.floor(Math.random() * BACKDROPS.length)];
 if (on_mobile()) {
