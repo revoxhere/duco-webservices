@@ -198,6 +198,9 @@ const receive_template = `
 			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
 				{{HASH}}
 			</a>
+			<a onclick="copy('{{HASH_FULL}}', this)">
+				<i class="fa fa-copy"></i>
+			</a>
 		</h2>
 	</div>
 	<div class="column is-narrow has-text-right pr-0">
@@ -236,6 +239,9 @@ const wrap_template = `
 			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
 				{{HASH}}
 			</a>
+			<a onclick="copy('{{HASH_FULL}}', this)">
+				<i class="fa fa-copy"></i>
+			</a>
 		</h2>
 	</div>
 	<div class="column is-narrow has-text-right pr-0">
@@ -273,6 +279,9 @@ const send_template = `
 			{{DATE}} &bull;
 			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
 				{{HASH}}
+			</a>
+			<a onclick="copy('{{HASH_FULL}}', this)">
+				<i class="fa fa-copy"></i>
 			</a>
 		</h2>
 	</div>
@@ -1028,7 +1037,7 @@ const user_data = (req_username, first_open) => {
 						.replace("{{AMOUNT}}", round_to(8, tx.amount))
 						.replace("{{SENDER}}", tx.sender)
 						.replace("{{HASH}}", formatted_hash)
-						.replace("{{HASH_FULL}}", tx.hash)
+						.replaceAll("{{HASH_FULL}}", tx.hash)
 						.replace("{{MEMO}}", formatted_memo)
 						.replace("{{DATE}}", sent_ago)
 						.replace("{{TX_NUM}}", transaction);
@@ -1038,7 +1047,7 @@ const user_data = (req_username, first_open) => {
 							.replace("{{AMOUNT}}", -round_to(8, tx.amount))
 							.replace("{{RECIPIENT}}", tx.recipient)
 							.replace("{{HASH}}", formatted_hash)
-							.replace("{{HASH_FULL}}", tx.hash)
+							.replaceAll("{{HASH_FULL}}", tx.hash)
 							.replace("{{MEMO}}", formatted_memo)
 							.replace("{{DATE}}", sent_ago)
 							.replace("{{TX_NUM}}", transaction);
@@ -1047,7 +1056,7 @@ const user_data = (req_username, first_open) => {
 							.replace("{{AMOUNT}}", -round_to(8, tx.amount))
 							.replace("{{RECIPIENT}}", tx.recipient)
 							.replace("{{HASH}}", formatted_hash)
-							.replace("{{HASH_FULL}}", tx.hash)
+							.replaceAll("{{HASH_FULL}}", tx.hash)
 							.replace("{{DATE}}", sent_ago)
 							.replace("{{ADDRESS}}", tx.memo)
 							.replace("{{TX_NUM}}", transaction);
