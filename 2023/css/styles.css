@@ -16,6 +16,13 @@
     transition: all 0.1s ease-in-out;
 }
 
+.long_button {
+    padding-top:2em !important;
+    padding-bottom:2em !important;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
 .red-dot {
     position: absolute;
     height: 10px;
@@ -587,6 +594,10 @@ input[type="checkbox"]:checked::before {
     }
 
     .has-background-info-light {
+        background-color: #0f1b36 !important;
+    }
+
+    .has-background-link-light {
         background-color: #0f1b36 !important;
     }
 

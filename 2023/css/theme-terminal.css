@@ -61,7 +61,7 @@ input[type="checkbox"] {
 }
 
 body:before {
-    opacity: 0.35 !important;
+    opacity: 0.2 !important;
     filter: none !important;
 }
 

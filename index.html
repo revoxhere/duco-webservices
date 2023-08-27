@@ -50,6 +50,285 @@
 </head>
 
 <body>
+	<div class="section" id="register" style="display:none">
+		<div class="container">
+			<div class="columns">
+				<div class="column"></div>
+				<div class="column">
+					<div class="box">
+						<center>
+							<h1 class="title">
+								<span class="icon-text">
+									<img class="icon" src="assets/duco.svg">
+									<span>Duino-Coin</span>
+								</span>
+							</h1>
+							<h1 class="subtitle">
+								Create a new wallet
+							</h1>
+							<div class="content" id="register_content_start">
+								Hello! <b>Welcome to the Duino-Coin wallet creator</b>.<br>
+								We'll ask you some questions to make sure you understand 
+								what Duino is all about.
+							</div>
+							<button class="button is-fullwidth is-success" id="register_start" 
+									onclick="register_quiz_start()">
+								Start
+							</button>
+
+
+							<div class="content" id="register_content_1" style="display:none">
+								First of all - what are you looking for?
+							</div>
+							<div id="register_buttons_1" class="buttons " style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_1(1)">
+									I'm here to make money and profits
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_1(2)">
+									I want to tinker around with electronics
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_1(3)">
+									I want to learn something new and explore
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_1(4)">
+									I'm looking for a new hobby
+								</button>
+							</div>
+
+							<div class="content" id="register_content_2" style="display:none">
+								Do you prefer cryptocurrencies with a decentralized network and the ability to run your own public nodes?
+							</div>
+							<div id="register_buttons_2" class="buttons" style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_2(1)">
+									Yes, I prefer decentralization and user-run nodes
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_2(2)">
+									Not really, I'm not paranoid and prefer hassle-free networks
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_2(3)">
+									I don't know/don't care
+								</button>
+							</div>
+
+							<div class="content" id="register_content_3" style="display:none">
+								Do you value the ability to mine cryptocurrency on a wide range of low-cost, low-power devices?
+							</div>
+							<div id="register_buttons_3" class="buttons" style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_3(1)">
+									No, I prefer using high-end, specialized mining equipment
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_3(2)">
+									Yes, I like the flexibility of using various devices
+								</button>
+							</div>
+
+							<div class="content" id="register_content_4" style="display:none">
+								Do you want to create a big mining setup - "farm"?
+							</div>
+							<div id="register_buttons_4" class="buttons" style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_4(1)">
+									Yes, I want to be a DUCO lord!
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_4(2)">
+									No, I just want to mine with what I have
+								</button>
+							</div>
+
+							<div class="content" id="register_content_5" style="display:none">
+								How patient are you with the potential volatility of coin prices?
+							</div>
+							<div id="register_buttons_5" class="buttons" style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_5(1)">
+									I'm comfortable with significant price fluctuations and can hold for the long term
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_5(2)">
+									I prefer less volatile assets and may not handle large price swings well
+								</button>
+								<button class="button is-fullwidth long_button" onclick="register_quiz_5(3)">
+									I have a low tolerance for price volatility and prefer stable cryptocurrencies
+								</button>
+							</div>
+
+							<div class="content" id="register_content_6" style="display:none">
+								Please get familiar with our <a href="https://duinocoin.com/terms">terms of service</a>:
+								<iframe class="mt-3" src="https://duinocoin.com/terms" height="300px" width="100%"></iframe>
+							</div>
+							<div id="register_buttons_6" class="buttons" style="display:none">
+								<button class="button is-fullwidth long_button" onclick="register_quiz_end()">
+									I've read, understood and will comply with the ToS
+								</button>
+							</div>
+
+							<div class="content" id="register_fail" style="display:none">
+								We appreciate your interest in Duino-Coin. 
+								However, based on your preferences and goals, <b>it seems that Duino-Coin 
+								may not be the most suitable cryptocurrency choice for you at this time</b>. 
+								Duino-Coin is primarily designed for individuals who 
+								<b>enjoy tinkering with electronics, learning programming, 
+								and participating in a community focused on 
+								technology exploration rather than profit</b>.<br><br>
+
+								Duino-Coin is <b>not primarily intended for those seeking 
+								significant financial gains</b> or passive investments in the 
+								cryptocurrency market. It offers a unique experience that 
+								emphasizes low-power device mining, community involvement, and continuous learning.<br><br>
+
+								If you are still interested in this coin, please <b>try taking the quiz again</b>.
+								<button class="button mt-3 is-fullwidth" id="register_start" 
+									onclick="register_quiz_start()">
+									Try again
+								</button>
+							</div>
+						</center>
+
+						<div class="content" id="register_end_1" style="display:none">
+							<center>
+								Thanks for taking the quiz. Looks like <b>you will have a great time with Duino-Coin</b>! Let's proceed with the registration.
+							</center>
+
+							<div class="field">
+		                        <label for="input" class="label">Username</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="register_username" type="text" placeholder="e.g. my_cool_username">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-user"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                        <p class="subtitle is-size-6 has-text-info">
+		                            <i class="fa fa-info-circle"></i>
+		                            The username will also be your wallet address. It can consist of alphanumeric characters, numbers and underscores or dashes.
+		                        </p>
+		                    </div>
+		                    <div class="field">
+		                        <label for="input" class="label">Password</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="register_password" type="password" placeholder="******">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-lock"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                        <p class="subtitle is-size-6 has-text-info">
+		                            <i class="fa fa-info-circle"></i>
+		                            Choose a strong password and save it in a safe place.
+		                        </p>
+		                    </div>
+		                    <div class="field">
+		                        <label for="input" class="label">Confirm Password</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="register_password_c" type="password" placeholder="******">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-lock"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                    </div>
+		                    <button class="button mt-3 is-fullwidth is-success" 
+		                    		onclick="register_end_1()">
+								Next
+							</button>
+						</div>
+
+						<div class="content" id="register_end_2" style="display:none">
+							<center>
+								<b>Almost there!</b> Last page...
+							</center>
+
+							<div class="field">
+		                        <label for="input" class="label">Miner key</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="register_miner_key" type="text" 
+		                                		placeholder="None">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-lock"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                        <p class="subtitle is-size-6 has-text-info">
+		                            <i class="fa fa-info-circle"></i>
+		                            Setup a <b>key that you will put in your miners</b> so that 
+		                            other people can't mine on your account and mess with 
+		                            your Kolka efficiency drops.
+		                        </p>
+		                    </div>
+		                    <div class="field">
+		                        <label for="input" class="label">E-Mail</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="register_email" type="email" placeholder="my@email.com">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-at"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                        <p class="subtitle is-size-6 has-text-info">
+		                            <i class="fa fa-info-circle"></i>
+		                            <b>Please provide a real e-mail</b> as it will be used to 
+		                            confirm exchanges and receive updates about your account. 
+		                            <b>We will delete your account if the e-mail is invalid.</b> 
+		                            We won't send spam.
+		                        </p>
+		                    </div>
+		                    <div class="field has-text-centered">
+		                        <div class="h-captcha" data-theme="dark" data-sitekey="1c77cf53-13bc-46a2-b358-84c6766be2bc"></div>
+		                        <small id="captchainfo" class="has-text-danger"></small>
+		                    </div>
+		                    <div class="columns is-mobile">
+		                    	<div class="column is-1">
+		                        	<input class="is-checkbox mt-3" type="checkbox" id="check1">
+		                        </div>
+		                        <div class="column">
+		                        	<label for="check1">I agree to receive <b>announcement e-mails</b> from Duino-Coin and when <b>something's happening with my account</b>.</label>
+		                        </div>
+		                    </div>
+		                    <div class="columns is-mobile">
+		                    	<div class="column is-1">
+		                        	<input class="is-checkbox is-danger" type="checkbox" id="check2">
+		                        </div>
+		                        <div class="column">
+		                        	<label for="check2">I understand that <b>some of my personal data will be saved</b>. For example, my saved <b>IP address may get reported to the AbuseIPDB list if I break the rules</b>.</label>
+		                        </div>
+		                    </div>
+		                    <small class="has-text-danger" id="checkInfo"></small>
+		                    <button class="button mt-3 is-fullwidth is-success" 
+		                    		onclick="register_end_2()" id="register_button">
+								Register
+							</button>
+		                </div>
+		                <footer class="has-text-grey">
+							<center class="mt-5 pt-5 is-size-7">
+								<p>
+									This site is protected by reCAPTCHA and the<br>
+									Google
+									<a href="https://policies.google.com/privacy">Privacy Policy</a> and
+									<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+								</p>
+								<p>
+									2019-2023 © The
+									<a href="https://duinocoin.com/team.html">
+										Duino-Coin Team
+									</a>
+								</p>
+							</center>
+						</footer>
+					</div>
+				</div>
+				<div class="column"></div>
+			</div>
+		</div>
+	</div>
+
+
 	<section class="section is-hidden-touch" id="login-desktop">
 		<div class="container login-content-desktop">
 			<div class="box p-0">
@@ -106,7 +385,7 @@
 										</a>
 									</div>
 									<div class="column has-text-right">
-										<a href="register.html">
+										<a onclick="register_open()">
 											Create wallet
 										</a>
 									</div>
@@ -134,6 +413,7 @@
 			</div>
 		</div>
 	</section>
+
 	<section class="section is-hidden-desktop" id="login-mobile">
 		<div class="container">
 			<div class="login-backdrop" id="backdrop-mobile"></div>
@@ -186,7 +466,7 @@
 								</a>
 							</div>
 							<div class="column has-text-right">
-								<a href="register.html">
+								<a onclick="register_open()">
 									Create wallet
 								</a>
 							</div>
