@@ -2695,13 +2695,21 @@ function on_mobile() {
     return false;
 }
 
+function pass_reset_open() {
+    $("#login-desktop").fadeOut('fast', function() {
+        $("#login-mobile").fadeOut('fast', function() {
+            $("#pass_reset").fadeIn('fast');
+        });
+    });
+}
+
 function register_open() {
-	$("body").append('<script src="https://js.hcaptcha.com/1/api.js" async defer></script>');
-	$("#login-desktop").fadeOut('fast', function() {
-		$("#login-mobile").fadeOut('fast', function() {
-			$("#register").fadeIn('fast');
-		});
-	});
+    $("body").append('<script src="https://js.hcaptcha.com/1/api.js" async defer></script>');
+    $("#login-desktop").fadeOut('fast', function() {
+        $("#login-mobile").fadeOut('fast', function() {
+            $("#register").fadeIn('fast');
+        });
+    });
 }
 
 function register_quiz_start() {
@@ -2798,8 +2806,8 @@ function register_quiz_end() {
 
 function register_end_1() {
     if (checkInputs_1()) {
-        $("#register_end_1").fadeOut('fast', function () {
-        	$("#register_end_2").fadeIn('fast');
+        $("#register_end_1").fadeOut('fast', function() {
+            $("#register_end_2").fadeIn('fast');
         });
     }
 }
@@ -2953,6 +2961,62 @@ function setSuccessFor(input) {
 
 function isEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+function generatePassword() {
+    const user = $("#reset_username");
+    if (user.val()) {
+        $("#reset_button").addClass("is-loading");
+        fetch("https://server.duinocoin.com/recovery?username=" + user.val())
+            .then(data => data.json()).then(data => {
+                $("#reset_button").removeClass("is-loading");
+                if (data.success && data.result.includes("sent")) {
+                    alert_bulma(`${data.result}`);
+                } else {
+                    alert_bulma(`${data.message}`);
+                }
+            }).catch(err => {
+                $("#reset_button").removeClass("is-loading");
+                alert_bulma(`Your web browser couldn't connect to the Duino-Coin servers.<br><br>
+
+	                We'd like to help, but there are many possible causes - 
+	                before asking the support, try disabling your browser extensions 
+	                or similar programs and try again.<br><br>
+
+	                Make sure nothing blocks server.duinocoin.com`);
+            });
+    } else {
+        setErrorFor(user, "Enter your username!")
+    }
+}
+
+
+url = new URL(window.location);
+recovery_username = url.searchParams.get("username");
+recovery_hash = url.searchParams.get("hash");
+
+if (recovery_username && recovery_hash) {
+    fetch("https://server.duinocoin.com/recovering/" + recovery_username + "?hash=" + recovery_hash)
+        .then(data => data.json()).then(data => {
+            if (data.success && data.result.includes("new password")) {
+                alert_bulma(`${data.result}<br><br>
+
+                Your new passphrase: <b>${data.password}</b><br><br>
+
+                Please consider changing it soon.`);
+            } else {
+                alert_bulma(`<b>${data.message}</b>`);
+            }
+        })
+        .catch(err => {
+            alert_bulma(`Your web browser couldn't connect to the Duino-Coin servers.<br><br>
+
+                We'd like to help, but there are many possible causes - 
+                before asking the support, try disabling your browser extensions 
+                or similar programs and try again.<br><br>
+
+                Make sure nothing blocks server.duinocoin.com`);
+        });
 }
 
 greetings = [
