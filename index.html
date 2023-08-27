@@ -328,6 +328,71 @@
 		</div>
 	</div>
 
+	<div class="section" id="pass_reset" style="display:none">
+		<div class="container">
+			<div class="columns">
+				<div class="column"></div>
+				<div class="column">
+					<div class="box">
+						<center>
+							<h1 class="title">
+								<span class="icon-text">
+									<img class="icon" src="assets/duco.svg">
+									<span>Duino-Coin</span>
+								</span>
+							</h1>
+							<h1 class="subtitle">
+								Passphrase reset
+							</h1>
+						</center>
+						<br>
+						<div class="content">
+							<div class="field">
+		                        <label for="input" class="label">Username</label>
+		                        <div class="field">
+		                            <p class="control has-icons-left">
+		                                <input class="input" id="reset_username" type="text" 
+		                                		placeholder="e.g. my_cool_username">
+		                                <span class="icon is-small is-left">
+		                                    <i class="fas fa-user"></i>
+		                                </span>
+		                                <small class="has-text-danger"></small>
+		                            </p>
+		                        </div>
+		                    </div>
+		                    <div class="buttons">
+			                    <button class="button is-fullwidth is-success" 
+			                    		onclick="generatePassword()" id="reset_button">
+									Send password reset link
+								</button>
+								<button class="button is-fullwidth" onclick="window.location.reload()">
+									Back to login
+								</button>
+							</div>
+		                </div>
+		                <footer class="has-text-grey">
+							<center class="mt-5 pt-5 is-size-7">
+								<p>
+									This site is protected by reCAPTCHA and the<br>
+									Google
+									<a href="https://policies.google.com/privacy">Privacy Policy</a> and
+									<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+								</p>
+								<p>
+									2019-2023 © The
+									<a href="https://duinocoin.com/team.html">
+										Duino-Coin Team
+									</a>
+								</p>
+							</center>
+						</footer>
+					</div>
+				</div>
+				<div class="column"></div>
+			</div>
+		</div>
+	</div>
+
 
 	<section class="section is-hidden-touch" id="login-desktop">
 		<div class="container login-content-desktop">
@@ -380,7 +445,7 @@
 							<div class="field">
 								<div class="columns is-mobile">
 									<div class="column">
-										<a href="recovery.html">
+										<a onclick="pass_reset_open()">
 											Forgot password?
 										</a>
 									</div>
@@ -461,7 +526,7 @@
 					<div class="field">
 						<div class="columns is-mobile">
 							<div class="column">
-								<a href="recovery.html">
+								<a onclick="pass_reset_open()">
 									Forgot password?
 								</a>
 							</div>
