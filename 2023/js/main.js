@@ -311,7 +311,7 @@ let exchange_template = `
 			</a>
 		  </p>
 		  <p class="subtitle is-size-6 mb-0">
-			&dollar;{{PRICE}}
+			&dollar;{{PRICE}} <small>{{TREND}}</small>
 		  </p>
 		  <small class="has-text-grey">
 			{{TYPE}}
@@ -331,7 +331,7 @@ if (on_mobile()) {
 			</a>
 		  </p>
 		  <p class="subtitle is-size-6 mb-0">
-			&dollar;{{PRICE}}
+			&dollar;{{PRICE}} {{TREND}}
 		  </p>
 		  <small class="has-text-grey">
 			{{TYPE}}
@@ -728,62 +728,63 @@ function refresh_achievements(user_achievements) {
         });
 }
 
-
 function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
+    delete prices.max;
 
     finalhtml = "";
     for (price in prices) {
+        console.log(price)
         link = "https://exchange.duinocoin.com";
         icon = "assets/ducoexchange.png";
 
         if (price == "bch") {
             name = "DUCO Exch. <wbr>BCH";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
-        }
-        if (price == "xmg") {
+        } else if (price == "xmg") {
             name = "DUCO Exch. <wbr>XMG";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XMG";
-        }
-        if (price == "trx") {
+        } else if (price == "trx") {
             name = "DUCO Exch. <wbr>TRX";
             type = "DUCO <i class='fa fa-exchange-alt'></i> TRX";
-        }
-        if (price == "nano") {
+        } else if (price == "nano") {
             name = "DUCO Exch. <wbr>XNO";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XNO";
-        }
-
-        if (price == "fluffy") {
+        } else if (price == "fluffy") {
             name = "Fluffy<wbr>Swap";
             icon = "assets/fluffyswap.png";
             link = "https://fluffyswap.com";
             type = "DUCO <i class='fa fa-exchange-alt'></i> ALL"
-        }
-        if (price == "sushi") {
+        } else if (price == "sushi") {
             name = "Sushi<wbr>Swap";
             icon = "assets/sushiswap.png";
             type = "maticDUCO <i class='fa fa-exchange-alt'></i> MATIC"
             link = "https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2";
-        }
-        if (price == "pancake") {
+        } else if (price == "pancake") {
             name = "Pancake<wbr>Swap";
             icon = "assets/pancakeswap.png";
             type = "bscDUCO <i class='fa fa-exchange-alt'></i> BSC"
             link = "https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b"
-        }
-        if (price == "ubeswap") {
+        } else if (price == "ubeswap") {
             name = "Ube<wbr>Swap";
             icon = "assets/ubeswap.png";
             type = "celoDUCO <i class='fa fa-exchange-alt'></i> mCUSD"
             link = "https://info.ubeswap.org/pair/0x7703874bd9fdacceca5085eae2776e276411f171"
-        }
-        if (price == "sunswap") {
+        } else if (price == "sunswap") {
             name = "Sun<wbr>Swap";
             icon = "assets/sunswap.png";
             type = "wDUCO <i class='fa fa-exchange-alt'></i> TRX"
             link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U"
+        }
+
+        percentage = round_to(2, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
+
+        trend = "";
+        if (percentage > 0) {
+            trend = "<span class='has-text-success'><i class='fa fa-arrow-up'></i> " + percentage + "%</span>";
+        } else if (percentage < 0) {
+            trend = "<span class='has-text-sanger'><i class='fa fa-arrow-down'></i> " + percentage + "%</span>";
         }
 
         finalhtml += exchange_template
@@ -791,7 +792,8 @@ function create_prices(prices) {
             .replace("{{NAME}}", name)
             .replace("{{ICON}}", icon)
             .replace("{{TYPE}}", type)
-            .replace("{{PRICE}}", round_to(6, prices[price]));
+            .replace("{{PRICE}}", round_to(6, prices[price]["price"]))
+            .replace("{{TREND}}", trend);
     }
 
     $(".prices-content").html(finalhtml);
@@ -839,7 +841,7 @@ function calculdaily(newb, oldb, user_items) {
 
 const user_data = (req_username, first_open) => {
     username = req_username;
-    fetch(`https://server.duinocoin.com/v2/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
+    fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
         .then(response => {
             try {
                 return response.json();
@@ -851,10 +853,8 @@ const user_data = (req_username, first_open) => {
         })
         .then(data => {
             data = data.result;
-            duco_price = data.prices.max;
-            delete data.prices.max;
-
-            create_prices(data.prices);
+            duco_price = data.exch_rates["max"]["price"];
+            create_prices(data.exch_rates);
 
             if (first_open) {
                 if (data.balance.created.includes("before")) {
@@ -1077,7 +1077,7 @@ let loggedIn = true;
 let balance = 0;
 let curr_bal = 0;
 let profitcheck = 0;
-let duco_price = 0.0065;
+let duco_price = 0.0;
 let daily_average = [];
 let oldb = 0;
 let total_hashrate = 0;
