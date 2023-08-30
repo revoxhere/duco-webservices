@@ -784,7 +784,7 @@ function create_prices(prices) {
         if (percentage > 0) {
             trend = "<span class='has-text-success'><i class='fa fa-arrow-up'></i> " + percentage + "%</span>";
         } else if (percentage < 0) {
-            trend = "<span class='has-text-sanger'><i class='fa fa-arrow-down'></i> " + percentage + "%</span>";
+            trend = "<span class='has-text-danger'><i class='fa fa-arrow-down'></i> " + percentage + "%</span>";
         }
 
         finalhtml += exchange_template
