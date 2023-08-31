@@ -731,6 +731,17 @@ function refresh_achievements(user_achievements) {
 function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
+
+    // global price
+    percentage = round_to(1, ((prices["max"]["change_24h"] / prices["max"]["price"]) * 100));
+    if (percentage > 0) {
+        $(".price_trend").html(
+            "<span class='has-text-success'><i class='fa fa-arrow-up'></i> " + percentage + "%</span>");
+    } else if (percentage < 0) {
+        $(".price_trend").html(
+            "<span class='has-text-danger'><i class='fa fa-arrow-down'></i> " + percentage + "%</span>");
+    }
+
     delete prices.max;
 
     finalhtml = "";
@@ -778,7 +789,7 @@ function create_prices(prices) {
             link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U"
         }
 
-        percentage = round_to(2, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
+        percentage = round_to(1, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
 
         trend = "";
         if (percentage > 0) {
