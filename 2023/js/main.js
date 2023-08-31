@@ -733,7 +733,11 @@ function create_prices(prices) {
     delete prices.furim;
 
     // global price
-    percentage = round_to(1, ((prices["max"]["change_24h"] / prices["max"]["price"]) * 100));
+    if (prices["max"]["price"] > 0) {
+    	percentage = round_to(1, ((prices["max"]["change_24h"] / prices["max"]["price"]) * 100));
+    } else {
+        percentage = -100;
+    }
     if (percentage > 0) {
         $(".price_trend").html(
             "<span class='has-text-success'><i class='fa fa-arrow-up'></i> " + percentage + "%</span>");
@@ -789,7 +793,11 @@ function create_prices(prices) {
             link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U"
         }
 
-        percentage = round_to(1, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
+        if (prices[price]["price"] > 0) {
+        	percentage = round_to(1, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
+        } else {
+        	percentage = -100;
+        }
 
         trend = "";
         if (percentage > 0) {
