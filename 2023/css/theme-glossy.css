@@ -10,12 +10,12 @@ html, body {
 }
 
 .box {
-    backdrop-filter: blur(3px);
-    background-color: rgba(247, 251, 252, 0.75) !important;
+    background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg");
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
     -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
     -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
     box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
-    will-change: auto;
 }
 
 #txdetails>.container,
@@ -43,6 +43,7 @@ html, body {
     #help>.container,
     #settings-desktop>.container,
     .box {
+        background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg");
         background-color: rgba(0, 0, 0, 0.7) !important;
     }
 }
