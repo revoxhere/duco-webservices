@@ -1463,6 +1463,8 @@ function create_miners(user_miners) {
 
             if (miner_software.includes("Starter")) {
                 icon = `<img src="assets/starter.gif">`;
+            } else if (miner_software.includes("BlushyBox")) {
+                icon = `<img src="assets/blushybox.gif">`;
             } else if (miner_software.includes("ESP8266")) {
                 icon = `<img src="assets/wemos.gif">`;
             } else if (miner_software.includes("ESP32")) {
@@ -1617,7 +1619,12 @@ function miner_details(miner_id) {
 
     $("#miner_name").text(miners[miner_id]["software"])
     miner_ki = miners[miner_id]["ki"];
+    miner_diff = miners[miner_id]["diff"];
+    miner_identifier = miners[miner_id]["identifier"];
     miner_software = miners[miner_id]["software"];
+    miner_hashrate = miners[miner_id]["hashrate"];
+    miner_ping = miners[miner_id]["pg"];
+
     percentage = 0.8;
     miner_type = "Other";
     device_icon = "<i class='fa fa-check-circle has-text-success'></i>";
@@ -1641,21 +1648,29 @@ function miner_details(miner_id) {
         icon = `<img src="assets/starter.gif">`;
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [20000, 30000];
+        hashrate_range = [18000, 30000];
+        diff_range = [1000, 4000];
+    } else if (miner_software.includes("Blushybox")) {
+        color = "#ec42f5";
+        icon = `<img src="assets/blushybox.gif">`;
+        miner_type = "ESP32";
+        if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
+        percentage = 0.96;
+        hashrate_range = [18000, 45000];
         diff_range = [1000, 4000];
     } else if (miner_software.includes("ESP8266")) {
         icon = `<img src="assets/wemos.gif">`;
         color = "#4895EF";
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [20000, 45000];
+        hashrate_range = [18000, 45000];
         diff_range = [1000, 4000];
     } else if (miner_software.includes("ESP32")) {
         color = "#6B6B6B";
         icon = `<img src="assets/esp32.gif">`;
         miner_type = "ESP32";
         percentage = 0.96;
-        hashrate_range = [35000, 50000];
+        hashrate_range = [35000, 46000];
         diff_range = [1000, 2000];
     } else if (miner_software.includes("AVR") && miner_diff >= 128) {
         icon = `<img src="assets/pico.gif">`;
