@@ -1650,7 +1650,7 @@ function miner_details(miner_id) {
         percentage = 0.96;
         hashrate_range = [18000, 30000];
         diff_range = [1000, 4000];
-    } else if (miner_software.includes("Blushybox")) {
+    } else if (miner_software.includes("BlushyBox")) {
         color = "#ec42f5";
         icon = `<img src="assets/blushybox.gif">`;
         miner_type = "ESP32";
