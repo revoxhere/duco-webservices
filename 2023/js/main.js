@@ -1092,6 +1092,10 @@ const user_data = (req_username, first_open) => {
 
             user_miners = data.miners;
             create_miners(user_miners);
+
+            if (data.notices.includes(1)) {
+                $(".invalid_miner_keys").fadeIn();
+            }
         })
 }
 let loggedIn = true;
