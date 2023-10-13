@@ -687,6 +687,14 @@
 										Having issues? Try the <b>Help</b> tab.
 									</p>
 								</div>
+
+								<div class="invalid_miner_keys mt-3" style="display:none">
+									<div class="notification has-text-info has-background-info-light">
+										<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
+										<b>Invalid miner configuration detected</b><br>
+										One or more miner is trying to mine on your account but has <b>an incorrect mining key entered</b>. If it's yours, double check your config files.
+									</div>
+								</div>
 							</div>
 
 							<div class="desktop-miners-navbar">
@@ -1067,6 +1075,14 @@
 							Nothing here.<br>
 							Having issues? Try the <b>Help</b> tab.
 						</p>
+					</div>
+
+					<div class="invalid_miner_keys mt-3" style="display:none">
+						<div class="notification has-text-info has-background-info-light">
+							<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
+							<b>Invalid miner configuration detected</b><br>
+							One or more miner is trying to mine on your account but has <b>an incorrect mining key entered</b>. If it's yours, double check your config files.
+						</div>
 					</div>
 
 					<div class="columns is-mobile is-multiline miners-content"></div>
