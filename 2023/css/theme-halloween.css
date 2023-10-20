@@ -1,0 +1,98 @@
+.box,
+.button,
+select,
+input {
+    border-radius: 14px !important;
+}
+
+html, body {
+    will-change: auto;
+}
+
+@media screen and (min-width: 1024px) {
+    .box {
+        background-image: url("/assets/backgrounds/halloween-blur-light.jpg");
+        background-size: 100vw 100vh;
+        background-attachment: fixed;
+        -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    }
+}
+
+.button, .input {
+    background-color: #F39F5A44 !important;
+}
+
+#txdetails>.container,
+#txsend>.container,
+#txwrap>.container,
+#stakemenu>.container,
+#minerdetails>.container,
+#buymenu>.container,
+#achievements>.container,
+#shop>.container,
+#help>.container,
+#settings-desktop>.container {
+    background-color: rgba(247, 251, 252, 0.85) !important;
+}
+
+.has-text-info, a {
+    color: #008170 !important;
+}
+
+.is-info {
+    background-color: #008170 !important;
+}
+
+.is-danger {
+    background-color: #662549 !important;
+}
+
+.has-text-danger {
+    color: #662549 !important;
+}
+
+.is-success {
+    background-color: #005B41 !important;
+}
+
+.has-text-success {
+    color: #005B41 !important;
+}
+
+body:before {
+    background-image: url("/assets/backgrounds/halloween-light.jpg") !important;
+    opacity: 1.0 !important;
+    filter: none !important;
+}
+
+@media screen and (min-width: 1024px) {
+    @media (prefers-color-scheme: dark) {
+        #txdetails>.container,
+        #txsend>.container,
+        #txwrap>.container,
+        #stakemenu>.container,
+        #minerdetails>.container,
+        #buymenu>.container,
+        #achievements>.container,
+        #shop>.container,
+        #help>.container,
+        #settings-desktop>.container,
+        .box {
+            background-image: url("/assets/backgrounds/halloween-blur-dark.jpg");
+            background-color: rgba(0, 0, 0, 0.7) !important;
+        }
+        body:before {
+            background-image: url("/assets/backgrounds/halloween-dark.jpg") !important;
+        }
+    }
+}
+
+.login-backdrop-desktop {
+    border-radius: 14px 0px 0px 14px;
+}
+
+input[type="checkbox"]::before {
+    border-radius: 14px !important;
+}
