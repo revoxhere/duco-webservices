@@ -31,7 +31,7 @@ const BACKDROPS = [
     "ismellcows"
 ];
 let last_screen = "screen-user-mobile";
-let username, password;
+let username, password, verified;
 let transaction_limit = 10;
 let transactions = [];
 let miners = [];
@@ -1100,6 +1100,9 @@ const user_data = (req_username, first_open) => {
             if (data.notices.includes(1)) {
                 $(".invalid_miner_keys").fadeIn();
             }
+            if (data.notices.includes(2)) {
+                $(".minercount_exceeded").fadeIn();
+            }
         })
 }
 let loggedIn = true;
@@ -1553,17 +1556,18 @@ function create_miners(user_miners) {
         }
         $(".nominers").fadeOut();
         $(".miners-content").html(miners_html);
-
-        maxslots = 50;
-        if (user_items.includes(10)) maxslots = 75;
-        if (user_items.includes(11)) maxslots = 100;
-        if (user_items.includes(11) && user_items.includes(10)) maxslots = 125;
-        $(".minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
     } else {
         $(".miners-content").html("");
         $(".nominers").fadeIn();
         $(".estimatedprofits").fadeOut();
     }
+
+    maxslots = 8;
+    if (verified === "yes") maxslots = 50;
+    if (verified === "yes" && user_items.includes(10)) maxslots = 75;
+    if (verified === "yes" && user_items.includes(11)) maxslots = 100;
+    if (verified === "yes" && user_items.includes(11) && user_items.includes(10)) maxslots = 125;
+    $(".minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
 }
 
 
