@@ -676,7 +676,7 @@
 								</div>
 
 								<h1 class="heading">
-									Miners (<span class="minercount">0 of 50 slots used</span>)
+									Miners (<span class="minercount">0 of 8 slots used</span>)
 								</h1>
 								<div class="columns is-multiline miners-content"></div>
 
@@ -698,6 +698,14 @@
 										<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
 										<b>Invalid miner configuration detected</b><br>
 										One or more miner is trying to mine on your account but has <b>an incorrect mining key entered</b>. If it's yours, double check your config files.
+									</div>
+								</div>
+
+								<div class="minercount_exceeded mt-3" style="display:none">
+									<div class="notification has-text-danger has-background-danger-light">
+										<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
+										<b>Max miner count exceeded</b><br>
+										You're trying to run more mining threads than your account allows. <b>Make sure your account is verified or buy additional mining slots</b> to enable more miners.
 									</div>
 								</div>
 							</div>
@@ -1039,7 +1047,7 @@
 					</div>
 
 					<h1 class="heading">
-						Miners (<span class="minercount">0 of 50 slots used</span>)
+						Miners (<span class="minercount">0 of 8 slots used</span>)
 					</h1>
 					<div class="navbar is-fixed-bottom is-transparent" style="margin-bottom:4em">
 						<div class="columns is-mobile m-1">
@@ -1087,6 +1095,14 @@
 							<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
 							<b>Invalid miner configuration detected</b><br>
 							One or more miner is trying to mine on your account but has <b>an incorrect mining key entered</b>. If it's yours, double check your config files.
+						</div>
+					</div>
+
+					<div class="minercount_exceeded mt-3" style="display:none">
+						<div class="notification has-text-danger has-background-danger-light">
+							<button class="delete" onclick="$(this).parent().fadeOut('fast')"></button>
+							<b>Max miner count exceeded</b><br>
+							You're trying to run more mining threads than your account allows. <b>Make sure your account is verified or buy additional mining slots</b> to enable more miners.
 						</div>
 					</div>
 
