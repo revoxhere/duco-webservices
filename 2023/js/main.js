@@ -1020,8 +1020,12 @@ const user_data = (req_username, first_open) => {
             trustscore = data.balance.trust_score;
             if (data.balance.warnings < 1) {
                 verified = data.balance.verified;
-                verification_date = new Date(data.balance.verified_date * 1000)
-                    .toLocaleString('en-UK');
+                if (data.balance.verified_date === 0) {
+                    verification_date = "before summer 2022"
+                } else {
+                    verification_date = new Date(data.balance.verified_date * 1000)
+                        .toLocaleString('en-UK');
+                }
 
                 if (verified === "yes") {
                     $(".verifiedbadge").fadeIn();
