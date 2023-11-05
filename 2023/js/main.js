@@ -486,10 +486,7 @@ $(document).ready(function() {
         }
     }
 
-    if (!localStorage.getItem('halloween')) {
-        localStorage.setItem('halloween', "true");
-        localStorage.setItem('theme', "Halloween");
-    } 
+
     saved_theme = localStorage.getItem('theme');
     if (saved_theme) {
         $(`#theme_mobile option[value='${saved_theme}']`).prop('selected', true).change();
@@ -1580,7 +1577,6 @@ function logout() {
     localStorage.removeItem("username");
     localStorage.removeItem("authToken");
     localStorage.removeItem("balance_history");
-    localStorage.removeItem("halloween");
     location.reload()
 }
 
@@ -1932,7 +1928,7 @@ function close_help() {
 }
 
 function adblock_alert() {
-    alert_bulma("Please disable your ad-blocking software. There is just a single ad space on this website and we have to pay the bills somehow.");
+    //alert_bulma("Please disable your ad-blocking software. There is just a single ad space on this website and we have to pay the bills somehow.");
 }
 
 
@@ -2742,7 +2738,8 @@ $(document).keyup(function(e) {
 
 function on_mobile() {
     const ua = navigator.userAgent;
-    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+    if ($(window).width() >= 1024) return false;
+    if (/Mobile|Android|iP(hone|od|ad)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
         return true;
     }
     return false;
@@ -3104,23 +3101,15 @@ $("#theme_desktop").on('change', function() {
     if (selected_theme == "Terminal") {
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Glossy');
-    } else if (selected_theme == "Halloween") {
-        $("#theme-terminal").attr('disabled', true);
-        $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', false);
-        localStorage.setItem('theme', 'Halloween');
     } else {
         // default adaptive - disable all
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Adaptive');
     }
 });
@@ -3131,23 +3120,15 @@ $("#theme_mobile").on('change', function() {
     if (selected_theme == "Terminal") {
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Glossy');
-    } else if (selected_theme == "Halloween") {
-        $("#theme-terminal").attr('disabled', true);
-        $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', false);
-        localStorage.setItem('theme', 'Halloween');
     } else {
         // default adaptive - disable all
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
-        $("#theme-halloween").attr('disabled', true);
         localStorage.setItem('theme', 'Adaptive');
     }
 });
