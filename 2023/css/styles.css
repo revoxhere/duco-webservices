@@ -652,3 +652,11 @@ input[type="checkbox"]:checked::before {
         background-position: 0% 43%;
     }
 }
+
+a, a:link, a:visited {
+    color: #FF9209;
+}
+
+a:hover, a:active {
+  color: #FF6C22;
+}
