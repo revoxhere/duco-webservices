@@ -548,8 +548,7 @@ function login(token) {
                 });
             } else {
                 $("#useravatar").attr("src",
-                    `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}` +
-                    `?d=https%3A%2F%2Fui-avatars.com%2Fapi%2F/${encodeURIComponent(username)}/64/${get_user_color(username)}/ffffff/1`);
+                    `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}?d=retro`);
 
                 $("#login-desktop").fadeOut(function() {
                     $("#wallet-desktop").fadeIn();
@@ -1025,13 +1024,18 @@ const user_data = (req_username, first_open) => {
                 }
 
                 if (verified === "yes") {
+                    $(".unverifiedbadge").fadeOut();
                     $(".verifiedbadge").fadeIn();
                     $(".acc-verification-date").text(verification_date);
                 } else {
+                    $(".acc-verification-date").text("never");
+                    $(".verifiedbadge").fadeOut();
                     $(".unverifiedbadge").fadeIn();
                     $("#unverified_box").fadeIn();
                 }
             } else {
+                $(".verifiedbadge").fadeOut();
+                $(".verifiedbadge").fadeOut();
                 $("#warning_num").text(data.balance.warnings);
                 $("#warning_box").fadeIn();
                 $(".suspiciousbadge").fadeIn();
