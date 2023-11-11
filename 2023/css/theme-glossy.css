@@ -64,3 +64,16 @@ body:before {
 input[type="checkbox"]::before {
     border-radius: 24px !important;
 }
+
+a,
+a:link,
+a:visited {
+    color: #7c73e6;
+    transition: 0.2s all;
+}
+
+a:hover,
+a:active {
+    color: #9896f1;
+    transition: 0.2s all;
+}
