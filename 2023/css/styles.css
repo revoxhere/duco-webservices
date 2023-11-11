@@ -17,8 +17,8 @@
 }
 
 .long_button {
-    padding-top:2em !important;
-    padding-bottom:2em !important;
+    padding-top: 2em !important;
+    padding-bottom: 2em !important;
     white-space: normal;
     word-wrap: break-word;
 }
@@ -653,10 +653,15 @@ input[type="checkbox"]:checked::before {
     }
 }
 
-a, a:link, a:visited {
-    color: #FF9209;
+a,
+a:link,
+a:visited {
+    color: var(--primary);
+    transition: 0.2s all;
 }
 
-a:hover, a:active {
-  color: #FF6C22;
+a:hover,
+a:active {
+    color: #FF9209;
+    transition: 0.2s all;
 }
