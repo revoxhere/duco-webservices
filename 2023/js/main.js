@@ -1680,7 +1680,7 @@ function miner_details(miner_id) {
         color = "#4895EF";
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 45000];
+        hashrate_range = [18000, 85000];
         diff_range = [1000, 4000];
     } else if (miner_software.includes("ESP32")) {
         color = "#6B6B6B";
