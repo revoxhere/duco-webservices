@@ -13,6 +13,10 @@ summary {
     border-radius: 0 !important;
 }
 
+.darkmode-dark-bg>.container {
+    height: 100%;
+}
+
 .button,
 input,
 select {
@@ -36,16 +40,16 @@ select,
     border-radius: 0 !important;
 }
 
+.is-fixed-bottom, .navbar-menu {
+    background-color: black !important;
+}
+
 .box {
-    background-color: rgba(0, 0, 0, 0.6) !important;
+    background-color: black !important;
 }
 
 .navbar {
     background-color: #171717 !important;
-}
-
-.navbar-button>center>img {
-    filter: invert(86%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(87%) contrast(84%) !important;
 }
 
 a {

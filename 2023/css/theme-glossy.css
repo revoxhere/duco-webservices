@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
+
+* {
+    font-family: 'Lato', sans-serif !important;
+}
+
 .box,
 .button,
 select,
-input {
-    border-radius: 24px !important;
+input,
+.notification {
+    border-radius: 16px !important;
 }
 
 html, body {
@@ -10,8 +17,9 @@ html, body {
 }
 
 @media screen and (min-width: 1024px) {
-    .box {
-        background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg");
+    .box, .notification {
+        /* background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); */
+        background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
         background-size: 100vw 100vh;
         background-attachment: fixed;
         -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
@@ -19,6 +27,19 @@ html, body {
         box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
     }
 }
+
+ @media (prefers-color-scheme: light) {
+.navbar {
+    color: #333 !important;
+    background-color: rgba(255,255,255, 0.6) !important; 
+}
+
+.button, input, .notification, select {
+    color: #333 !important;
+    background-color: rgba(255,255,255, 0.4) !important;
+}
+}
+
 
 #txdetails>.container,
 #txsend>.container,
@@ -30,8 +51,15 @@ html, body {
 #shop>.container,
 #help>.container,
 #settings-desktop>.container {
-    background-color: rgba(247, 251, 252, 0.85) !important;
+    background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
+        background-size: 100vw 100vh;
+        background-attachment: fixed;
+        -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
 }
+
+
 
 @media screen and (min-width: 1024px) {
     @media (prefers-color-scheme: dark) {
@@ -45,8 +73,10 @@ html, body {
         #shop>.container,
         #help>.container,
         #settings-desktop>.container,
-        .box {
-            background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg");
+        .box,
+        .notification {
+            /*background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg");*/
+            background-image: url("/assets/backgrounds/yenn-mountains-1-blur-dark.jpg");
             background-color: rgba(0, 0, 0, 0.7) !important;
         }
     }

@@ -36,6 +36,7 @@ let transaction_limit = 10;
 let transactions = [];
 let miners = [];
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || VISUAL_ITEMS;
+let miners_state_changed = true;
 
 let login_backdrop = BACKDROPS[Math.floor(Math.random() * BACKDROPS.length)];
 if (on_mobile()) {
@@ -181,289 +182,289 @@ if (on_mobile()) {
 
 const receive_template = `
 <div class="columns is-mobile is-vcentered txdialog">
-	<div class="column is-narrow">
-		<span class="icon">
-			<center>
-			  <span class="fa-stack has-text-success mt-5">
-					<i class="fas fa-arrow-down fa-stack-1x"></i>
-					<i class="far fa-circle fa-stack-2x"></i>
-			  </span>
-			</center>
-		</span>
-	</div>
-	<div class="column">
-		<h1 class="title shorttext is-size-6 has-text-weight-normal" style="overflow:hidden;">
-			<b>{{SENDER}}</b> <i>{{MEMO}}</i>
-		</h1>
-		<h2 class="subtitle is-size-6 shorttext">
-			{{DATE}} &bull;
-			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
-				{{HASH}}
-			</a>
-			<a onclick="copy('{{HASH_FULL}}', this)">
-				<i class="fa fa-copy"></i>
-			</a>
-		</h2>
-	</div>
-	<div class="column is-narrow has-text-right pr-0">
-		<div class="title is-size-6">
-			<b>{{AMOUNT}}</b><br>
-		</div>
-		<div class="subtitle is-size-6">
-			DUCO
-		</div>
-	</div>
-	<div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
-		<center>
-			<div class="triangle"></div>
-		</center>
-	</div>
+    <div class="column is-narrow">
+        <span class="icon">
+            <center>
+              <span class="fa-stack has-text-success mt-5">
+                    <i class="fas fa-arrow-down fa-stack-1x"></i>
+                    <i class="far fa-circle fa-stack-2x"></i>
+              </span>
+            </center>
+        </span>
+    </div>
+    <div class="column">
+        <h1 class="title shorttext is-size-6 has-text-weight-normal" style="overflow:hidden;">
+            <b>{{SENDER}}</b> <i>{{MEMO}}</i>
+        </h1>
+        <h2 class="subtitle is-size-6 shorttext">
+            {{DATE}} &bull;
+            <a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
+                {{HASH}}
+            </a>
+            <a onclick="copy('{{HASH_FULL}}', this)">
+                <i class="fa fa-copy"></i>
+            </a>
+        </h2>
+    </div>
+    <div class="column is-narrow has-text-right pr-0">
+        <div class="title is-size-6">
+            <b>{{AMOUNT}}</b><br>
+        </div>
+        <div class="subtitle is-size-6">
+            DUCO
+        </div>
+    </div>
+    <div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
+        <center>
+            <div class="triangle"></div>
+        </center>
+    </div>
 </div>`;
 
 const wrap_template = `
 <div class="columns is-mobile is-vcentered txdialog">
-	<div class="column is-narrow">
-		<span class="icon">
-			<center>
-			  <span class="fa-stack has-text-info mt-5">
-					<i class="fas fa-redo fa-stack-1x"></i>
-					<i class="far fa-circle fa-stack-2x"></i>
-			  </span>
-			</center>
-		</span>
-	</div>
-	<div class="column">
-		<h1 class="title shorttext is-size-6 has-text-weight-normal" style="overflow:hidden;">
-			{{ADDRESS}}<br>
-		</h1>
-		<h2 class="subtitle is-size-6">
-			{{DATE}} &bull;
-			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
-				{{HASH}}
-			</a>
-			<a onclick="copy('{{HASH_FULL}}', this)">
-				<i class="fa fa-copy"></i>
-			</a>
-		</h2>
-	</div>
-	<div class="column is-narrow has-text-right pr-0">
-		<div class="title is-size-6">
-			<b>{{AMOUNT}}</b><br>
-		</div>
-		<div class="subtitle is-size-6">
-			DUCO
-		</div>
-	</div>
-	<div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
-		<center>
-			<div class="triangle"></div>
-		</center>
-	</div>
+    <div class="column is-narrow">
+        <span class="icon">
+            <center>
+              <span class="fa-stack has-text-info mt-5">
+                    <i class="fas fa-redo fa-stack-1x"></i>
+                    <i class="far fa-circle fa-stack-2x"></i>
+              </span>
+            </center>
+        </span>
+    </div>
+    <div class="column">
+        <h1 class="title shorttext is-size-6 has-text-weight-normal" style="overflow:hidden;">
+            {{ADDRESS}}<br>
+        </h1>
+        <h2 class="subtitle is-size-6">
+            {{DATE}} &bull;
+            <a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
+                {{HASH}}
+            </a>
+            <a onclick="copy('{{HASH_FULL}}', this)">
+                <i class="fa fa-copy"></i>
+            </a>
+        </h2>
+    </div>
+    <div class="column is-narrow has-text-right pr-0">
+        <div class="title is-size-6">
+            <b>{{AMOUNT}}</b><br>
+        </div>
+        <div class="subtitle is-size-6">
+            DUCO
+        </div>
+    </div>
+    <div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
+        <center>
+            <div class="triangle"></div>
+        </center>
+    </div>
 </div>`;
 
 const send_template = `
 <div class="columns is-mobile is-vcentered txdialog">
-	<div class="column is-narrow">
-		<span class="icon">
-			<center>
-			  <span class="fa-stack has-text-danger mt-5">
-					<i class="fas fa-arrow-up fa-stack-1x"></i>
-					<i class="far fa-circle fa-stack-2x"></i>
-			  </span>
-			</center>
-		</span>
-	</div>
-	<div class="column">
-		<h1 class="title shorttext is-size-6 has-text-weight-normal">
-			<b>{{RECIPIENT}}</b> <i>{{MEMO}}</i>
-		</h1>
-		<h2 class="subtitle is-size-6 shorttext">
-			{{DATE}} &bull;
-			<a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
-				{{HASH}}
-			</a>
-			<a onclick="copy('{{HASH_FULL}}', this)">
-				<i class="fa fa-copy"></i>
-			</a>
-		</h2>
-	</div>
-	<div class="column is-narrow has-text-right pr-0">
-		<div class="title is-size-6">
-			<b>{{AMOUNT}}</b><br>
-		</div>
-		<div class="subtitle is-size-6">
-			DUCO
-		</div>
-	</div>
-	<div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
-		<center>
-			<div class="triangle"></div>
-		</center>
-	</div>
+    <div class="column is-narrow">
+        <span class="icon">
+            <center>
+              <span class="fa-stack has-text-danger mt-5">
+                    <i class="fas fa-arrow-up fa-stack-1x"></i>
+                    <i class="far fa-circle fa-stack-2x"></i>
+              </span>
+            </center>
+        </span>
+    </div>
+    <div class="column">
+        <h1 class="title shorttext is-size-6 has-text-weight-normal">
+            <b>{{RECIPIENT}}</b> <i>{{MEMO}}</i>
+        </h1>
+        <h2 class="subtitle is-size-6 shorttext">
+            {{DATE}} &bull;
+            <a href="https://explorer.duinocoin.com/?search={{HASH_FULL}}">
+                {{HASH}}
+            </a>
+            <a onclick="copy('{{HASH_FULL}}', this)">
+                <i class="fa fa-copy"></i>
+            </a>
+        </h2>
+    </div>
+    <div class="column is-narrow has-text-right pr-0">
+        <div class="title is-size-6">
+            <b>{{AMOUNT}}</b><br>
+        </div>
+        <div class="subtitle is-size-6">
+            DUCO
+        </div>
+    </div>
+    <div class="column is-narrow" onclick="tx_details({{TX_NUM}})">
+        <center>
+            <div class="triangle"></div>
+        </center>
+    </div>
 </div>`;
 
 let exchange_template = `
-	<div class="column" style="min-width:150px">
-		  <p class="title is-size-6">
-			<a href="{{LINK}}" target="_blank" class="text-wrap">
-				<span class="icon-text">
-					<img src="{{ICON}}" class="icon is-small">
-				</span>
-				{{NAME}}
-			</a>
-		  </p>
-		  <p class="subtitle is-size-6 mb-0">
-			&dollar;{{PRICE}} <small>{{TREND}}</small>
-		  </p>
-		  <small class="has-text-grey">
-			{{TYPE}}
-		  </small>
-	</div>`
+    <div class="column" style="min-width:150px">
+          <p class="title is-size-6">
+            <a href="{{LINK}}" target="_blank" class="text-wrap">
+                <span class="icon-text">
+                    <img src="{{ICON}}" class="icon is-small">
+                </span>
+                {{NAME}}
+            </a>
+          </p>
+          <p class="subtitle is-size-6 mb-0">
+            &dollar;{{PRICE}} <small>{{TREND}}</small>
+          </p>
+          <small class="has-text-grey">
+            {{TYPE}}
+          </small>
+    </div>`
 
 if (on_mobile()) {
     exchange_template = `
-	<div class="column" style="min-width:200px">
-		<div class="box">
-		  <p class="title is-size-6">
-			<a href="{{LINK}}" target="_blank" class="text-wrap">
-				<span class="icon-text">
-					<img src="{{ICON}}" class="icon is-small">
-				</span>
-				{{NAME}}
-			</a>
-		  </p>
-		  <p class="subtitle is-size-6 mb-0">
-			&dollar;{{PRICE}} {{TREND}}
-		  </p>
-		  <small class="has-text-grey">
-			{{TYPE}}
-		  </small>
-		</div>
-	</div>`
+    <div class="column" style="min-width:200px">
+        <div class="box">
+          <p class="title is-size-6">
+            <a href="{{LINK}}" target="_blank" class="text-wrap">
+                <span class="icon-text">
+                    <img src="{{ICON}}" class="icon is-small">
+                </span>
+                {{NAME}}
+            </a>
+          </p>
+          <p class="subtitle is-size-6 mb-0">
+            &dollar;{{PRICE}} {{TREND}}
+          </p>
+          <small class="has-text-grey">
+            {{TYPE}}
+          </small>
+        </div>
+    </div>`
 }
 
 let iot_template = `
 <div class="column mb-3" style="min-width:200px">
-	<div class="box">
-		<p class="title is-size-6">
-			<i class="{{ICON}}"></i>
-			{{DATA}}
-		</p>
-		<p class="subtitle is-size-6 mb-0">
-			{{NAME}}
-		</p>
-		<small>{{DEVICE}}</small>
-	</div>
+    <div class="box">
+        <p class="title is-size-6">
+            <i class="{{ICON}}"></i>
+            {{DATA}}
+        </p>
+        <p class="subtitle is-size-6 mb-0">
+            {{NAME}}
+        </p>
+        <small>{{DEVICE}}</small>
+    </div>
 </div>
 `
 
 let miner_template1 = `
 <div class="column is-full">
-	<div class="box">
-		<div class="columns is-mobile is-vcentered">
-			<div class="column is-narrow">
-				<center>
-					<div class="icon is-large fa-2x">
-						{{ICON}}
-					</div>
-				</center>
-			</div>
-			<div class="column">
-				<p class="has-text-weight-bold is-size-6">
-					{{NAME}}
-				</p>
-				<p class="subtitle is-size-6 shorttext">
-					{{HASH}}
-					&bull; 
-					<span class="{{EFF_COLOR}}">{{EFF}}</span>
-					<span class="is-hidden-mobile">({{EFF_COUNT}} shares)</span>
-					<span class="is-hidden-mobile">{{DIFF}}</span>
-					<span class="is-hidden-mobile">{{PING}}</span>
-				</p>
-			</div>
-			<div class="column is-narrow" onclick="miner_details('{{MINER_NUM}}')">
-				<div class="triangle"></div>
-			</div>
-		</div>
-	</div>
+    <div class="box">
+        <div class="columns is-mobile is-vcentered">
+            <div class="column is-narrow">
+                <center>
+                    <div class="icon is-large fa-2x">
+                        {{ICON}}
+                    </div>
+                </center>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold is-size-6">
+                    {{NAME}}
+                </p>
+                <p class="subtitle is-size-6 shorttext">
+                    {{HASH}}
+                    &bull; 
+                    <span class="{{EFF_COLOR}}">{{EFF}}</span>
+                    <span class="is-hidden-mobile">({{EFF_COUNT}} shares)</span>
+                    <span class="is-hidden-mobile">{{DIFF}}</span>
+                    <span class="is-hidden-mobile">{{PING}}</span>
+                </p>
+            </div>
+            <div class="column is-narrow" onclick="miner_details('{{MINER_NUM}}')">
+                <div class="triangle"></div>
+            </div>
+        </div>
+    </div>
 </div>`;
 
 const miner_template2 = `
 <div class="column is-full p-0 pl-3 mt-3 mr-5">
-	<div class="columns is-mobile is-gapless">
-		<div class="column is-narrow">
-			<center>
-				<figure class="icon">
-					{{ICON}}
-				</figure>
-			</center>
-		</div>
-		<div class="column mx-2">
-			<span class="has-text-weight-bold">
-				{{NAME}}
-			</span>
-		</div>
-		<div class="column is-2 has-text-right">
-			<span class="{{EFF_COLOR}}">
-				{{EFF}}
-			</span>
-		</div>
-		<div class="column ml-1 is-3 has-text-right">
-			<span>
-				{{HASH}}
-			</span>	
-		</div>
-		<div class="column is-narrow mr-3 ml-3" onclick="miner_details('{{MINER_NUM}}')">
-			<i class="fa fa-chevron-right"></i>
-		</div>
-	</div>
+    <div class="columns is-mobile is-gapless">
+        <div class="column is-narrow">
+            <center>
+                <figure class="icon">
+                    {{ICON}}
+                </figure>
+            </center>
+        </div>
+        <div class="column mx-2">
+            <span class="has-text-weight-bold">
+                {{NAME}}
+            </span>
+        </div>
+        <div class="column is-2 has-text-right">
+            <span class="{{EFF_COLOR}}">
+                {{EFF}}
+            </span>
+        </div>
+        <div class="column ml-1 is-3 has-text-right">
+            <span>
+                {{HASH}}
+            </span> 
+        </div>
+        <div class="column is-narrow mr-3 ml-3" onclick="miner_details('{{MINER_NUM}}')">
+            <i class="fa fa-chevron-right"></i>
+        </div>
+    </div>
 </div>
 `
 
 const achievement_template = `
 <div class="column" style="min-width: 250px">
-	<div class="box">
-		<div class="columns is-mobile {{GRAY}}">
-			<div class="column is-narrow">
-				<img class="icon is-large" src="{{ICON}}">
-			</div>
-			<div class="column">
-				<p class="title is-size-6">
-					{{TITLE}}
-					<small style="color:#FFA500">
-						{{REWARD}}
-					</small>
-				</p>
-				<p class="subtitle is-size-6">
-					{{SUBTITLE}}
-				</p>
-			</div>
-		</div>
-	</div>
+    <div class="box">
+        <div class="columns is-mobile {{GRAY}}">
+            <div class="column is-narrow">
+                <img class="icon is-large" src="{{ICON}}">
+            </div>
+            <div class="column">
+                <p class="title is-size-6">
+                    {{TITLE}}
+                    <small style="color:#FFA500">
+                        {{REWARD}}
+                    </small>
+                </p>
+                <p class="subtitle is-size-6">
+                    {{SUBTITLE}}
+                </p>
+            </div>
+        </div>
+    </div>
 </div>`
 
 const shop_template = `
 <div class="column" style="min-width: 250px">
-	<div class="box">
-		<div class="columns is-mobile">
-			<div class="column is-narrow">
-				<img class="icon is-large" src="{{ICON}}">
-			</div>
-			<div class="column">
-				<p class="title is-size-6">
-					{{NAME}}
-				</p>
-				<p class="subtitle is-size-6">
-					{{DESCRIPTION}}
-				</p>
-			</div>
-		</div>
-		<div class="columns is-mobile is-vcentered">
-			<div class="column">
-				{{BUTTON}}
-			</div>
-		</div>
-	</div>
+    <div class="box">
+        <div class="columns is-mobile">
+            <div class="column is-narrow">
+                <img class="icon is-large" src="{{ICON}}">
+            </div>
+            <div class="column">
+                <p class="title is-size-6">
+                    {{NAME}}
+                </p>
+                <p class="subtitle is-size-6">
+                    {{DESCRIPTION}}
+                </p>
+            </div>
+        </div>
+        <div class="columns is-mobile is-vcentered">
+            <div class="column">
+                {{BUTTON}}
+            </div>
+        </div>
+    </div>
 </div>`
 
 
@@ -539,7 +540,7 @@ function login(token) {
             $("#mining_key_desktop").val(data.result[3]);
 
             user_data(username, true);
-            setInterval(function() { user_data(username) }, 12000);
+            setInterval(function() { user_data(username) }, 7500);
 
             if (on_mobile()) {
                 $("#login-mobile").hide(function() {
@@ -567,7 +568,7 @@ function login(token) {
                 document.getElementsByTagName('html')[0].remove();
                 return;
             } else if (data.message.includes("Token")) {
-                alert_bulma("Token expired. Please login again");
+                toast_bulma("Token expired. Please login again");
                 password_input.val('');
                 localStorage.removeItem("authToken");
                 return;
@@ -616,6 +617,19 @@ function adblock_check() {
     }, 2000);
 }
 
+
+last_e_tab = "tab-earnings";
+
+function e_tab(transition_to) {
+    if (last_e_tab == transition_to) return;
+    $(`.${last_e_tab}`).removeClass("is-active");
+    $(`.${transition_to}`).addClass("is-active");
+
+    $(`.${last_e_tab}-content`).fadeOut(50, function() {
+        $(`.${transition_to}-content`).fadeIn(120);
+        last_e_tab = transition_to;
+    });
+}
 
 function screen(transition_to) {
     if (last_screen == transition_to) return;
@@ -736,7 +750,7 @@ function create_prices(prices) {
 
     // global price
     if (prices["max"]["price"] > 0) {
-    	percentage = round_to(1, ((prices["max"]["change_24h"] / prices["max"]["price"]) * 100));
+        percentage = round_to(1, ((prices["max"]["change_24h"] / prices["max"]["price"]) * 100));
     } else {
         percentage = -100;
     }
@@ -757,16 +771,16 @@ function create_prices(prices) {
         icon = "assets/ducoexchange.png";
 
         if (price == "bch") {
-            name = "DUCO Exch. <wbr>BCH";
+            name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
         } else if (price == "xmg") {
-            name = "DUCO Exch. <wbr>XMG";
+            name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XMG";
         } else if (price == "trx") {
-            name = "DUCO Exch. <wbr>TRX";
+            name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> TRX";
         } else if (price == "nano") {
-            name = "DUCO Exch. <wbr>XNO";
+            name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XNO";
         } else if (price == "fluffy") {
             name = "Fluffy<wbr>Swap";
@@ -796,9 +810,9 @@ function create_prices(prices) {
         }
 
         if (prices[price]["price"] > 0) {
-        	percentage = round_to(1, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
+            percentage = round_to(1, ((prices[price]["change_24h"] / prices[price]["price"]) * 100));
         } else {
-        	percentage = -100;
+            percentage = -100;
         }
 
         trend = "";
@@ -832,6 +846,16 @@ function alert_bulma(content) {
     });
 }
 
+function toast_bulma(content) {
+    bulmaToast.toast({
+        message: content,
+        dismissible: true,
+        closeOnClick: true,
+        position: 'bottom-right',
+        duration: 5000,
+        animate: { in: 'fadeIn', out: 'fadeOut' },
+    })
+}
 
 function close_alert() {
     $('#fullscreen_alert').fadeOut('fast', function() {
@@ -852,9 +876,13 @@ function calculdaily(newb, oldb, user_items) {
         let daily = 86400000 * (newb - start_balance) / (Date.now() - start_time);
         // Large values mean transaction or big block - ignore this value
         if (daily > 0 && daily < 500 && miners.length) {
-            $(".estimatedprofits").fadeIn();
-            daily = round_to(3, daily);
+            daily = round_to(1, daily);
             $(".dailyprofit").text(daily)
+            $(".estimatedprofits_wait").fadeOut(function() {
+                $(".estimatedprofits_nominers").fadeOut(function() {
+                    $(".estimatedprofits").fadeIn();
+                });
+            });
         }
     }
 }
@@ -897,10 +925,13 @@ const user_data = (req_username, first_open) => {
                 if (user_items.includes(12)) {
                     $(".starterbadge").fadeIn();
                 }
+                if (user_items.includes(13)) {
+                    $(".blushyboxbadge").fadeIn();
+                }
             }
 
             balance = round_to(
-                12 - parseFloat(data.balance.balance).toString().split(".")[0].length,
+                16 - parseFloat(data.balance.balance).toString().split(".")[0].length,
                 parseFloat(data.balance.balance)
             );
             store_balance(balance);
@@ -945,32 +976,13 @@ const user_data = (req_username, first_open) => {
             }
             $(".balance").text(balance);
             balance_usd = balance * duco_price;
-            $(".balanceusd").text(`$${balance_usd.toFixed(4)}`);
+            $(".balanceusd").text(`$${
+                round_to(
+                8 - parseFloat(balance_usd).toString().split(".")[0].length,
+                parseFloat(balance_usd)
+            )}`);
 
             if (data.balance.stake_amount) {
-                /* ------------- desktop version -------- */
-
-                $("#stake_info").html(
-                    `<span>
-						<i class="has-text-success-dark fa fa-layer-group animated faa-slow faa-pulse"></i>
-						Staking <b>${round_to(2, data.balance.stake_amount)} DUCO</b>
-					</span><br>
-					<small>
-						Ends on <b>${
-							new Date(data.balance.stake_date*1000).toLocaleString("en-UK", date_opt)
-						}<br>
-						${round_to(2, (
-							data.balance.stake_amount * (
-								1 + (STAKING_PERC/100)
-							) - data.balance.stake_amount
-						))} DUCO
-						<span class="has-text-weight-normal">
-							est. reward
-						</span>
-					</small>`);
-
-                /* ------------- mobile version -------- */
-
                 stake_reward = (data.balance.stake_amount *
                     (1 + (STAKING_PERC / 100)) -
                     data.balance.stake_amount);
@@ -986,11 +998,11 @@ const user_data = (req_username, first_open) => {
                 q = Math.abs(today - start);
                 d = Math.abs(end - start);
                 progress_val = (q / d) * 100
-                $("#stakeprogress").attr('value', progress_val);
-                $("#stakeprogress").text(progress_val.toFixed(2) + "%");
+                $(".stakeprogress").attr('value', progress_val);
+                $(".stakeprogress").text(progress_val.toFixed(2) + "%");
 
-                $("#notstaking").fadeOut(function() {
-                    $("#staking").fadeIn();
+                $(".notstaking").fadeOut(function() {
+                    $(".staking").fadeIn();
                 });
 
                 /* ------------- common -------- */
@@ -999,18 +1011,9 @@ const user_data = (req_username, first_open) => {
                 $(".stakereward").text(stake_reward.toFixed(2))
                 $(".stakedate").text(stake_date);
             } else {
-                $("#staking").fadeOut(function() {
-                    $("#notstaking").fadeIn();
+                $(".staking").fadeOut(function() {
+                    $(".notstaking").fadeIn();
                 });
-
-                $("#stake_info").html(
-                    `<span>
-						<i class="fa fa-layer-group"></i>
-						Not staking
-					</span><br>
-					<small>
-						Click the <b>Stake coins</b> button to start
-					</small>`);
             }
 
             trustscore = data.balance.trust_score;
@@ -1028,16 +1031,16 @@ const user_data = (req_username, first_open) => {
                     $(".verifiedbadge").fadeIn();
                     $(".acc-verification-date").text(verification_date);
                 } else {
-                    $(".acc-verification-date").text("never");
+                    $(".acc-verification-date").html("never - <a href='https://server.duinocoin.com/verify.html' target='_blank'>verify here!</a>");
                     $(".verifiedbadge").fadeOut();
                     $(".unverifiedbadge").fadeIn();
-                    $("#unverified_box").fadeIn();
+                    $(".unverified_box").fadeIn();
                 }
             } else {
                 $(".verifiedbadge").fadeOut();
                 $(".verifiedbadge").fadeOut();
-                $("#warning_num").text(data.balance.warnings);
-                $("#warning_box").fadeIn();
+                $(".warning_num").text(data.balance.warnings);
+                $(".warning_box").fadeIn();
                 $(".suspiciousbadge").fadeIn();
             }
 
@@ -1064,7 +1067,8 @@ const user_data = (req_username, first_open) => {
 
                 if (tx.recipient == username) {
                     finalhtml += receive_template
-                        .replace("{{AMOUNT}}", round_to(8, tx.amount))
+                        .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>+</span>"+
+                                                                round_to(8, tx.amount))
                         .replace("{{SENDER}}", tx.sender)
                         .replace("{{HASH}}", formatted_hash)
                         .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -1074,7 +1078,8 @@ const user_data = (req_username, first_open) => {
                 } else {
                     if (!CHAIN_ACCOUNTS.includes(tx.recipient)) {
                         finalhtml += send_template
-                            .replace("{{AMOUNT}}", -round_to(8, tx.amount))
+                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>"+
+                                                                round_to(8, tx.amount))
                             .replace("{{RECIPIENT}}", tx.recipient)
                             .replace("{{HASH}}", formatted_hash)
                             .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -1083,7 +1088,8 @@ const user_data = (req_username, first_open) => {
                             .replace("{{TX_NUM}}", transaction);
                     } else {
                         finalhtml += wrap_template
-                            .replace("{{AMOUNT}}", -round_to(8, tx.amount))
+                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>"+
+                                                                round_to(8, tx.amount))
                             .replace("{{RECIPIENT}}", tx.recipient)
                             .replace("{{HASH}}", formatted_hash)
                             .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -1094,8 +1100,8 @@ const user_data = (req_username, first_open) => {
                 }
             }
             finalhtml += `<button class="button is-fullwidth more_tx" onclick="more_transactions()">
-							Load more
-						  </button>`
+                            Load more
+                          </button>`
             $(".transactions-content").html(finalhtml)
             $(".more_tx").removeClass("is-loading");
 
@@ -1364,7 +1370,6 @@ function create_iotdevices(iot_devices) {
     $(".iotdata").html(finalhtml);
 }
 
-
 function create_miners(user_miners) {
     total_hashrate = 0;
     t_miners = []
@@ -1390,7 +1395,7 @@ function create_miners(user_miners) {
                         hum = user_miners[miner]["it"].split("@")[1];
 
                         if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">
-										Check your wiring and code</small>`;
+                                        Check your wiring and code</small>`;
                         else hum += "%";
 
                         iot_devices[user_miners[miner]["identifier"]] = {
@@ -1420,7 +1425,7 @@ function create_miners(user_miners) {
                         hum = user_miners[miner]["it"].split("@")[1];
 
                         if (!hum) hum = `Error<br><small class="is-size-6 has-text-grey">
-										Check you wiring and code</small>`;
+                                        Check you wiring and code</small>`;
                         else hum += "%";
 
                         iot_devices[user_miners[miner]["identifier"]] = {
@@ -1542,10 +1547,10 @@ function create_miners(user_miners) {
             if ((on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.65) ||
                 !on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.21) {
                 miner_name = `<div class="marquee">
-								<div class="has-text-weight-bold marquee__content">
-									${miner_name}
-								</div>
-							  </div>`;
+                                <div class="has-text-weight-bold marquee__content">
+                                    ${miner_name}
+                                </div>
+                              </div>`;
             }
 
             miners_html += miner_template
@@ -1561,10 +1566,22 @@ function create_miners(user_miners) {
         }
         $(".nominers").fadeOut();
         $(".miners-content").html(miners_html);
+        $(".estimatedprofits_nominers").fadeOut(function() {
+            if (miners_state_changed) {
+                $(".estimatedprofits_wait").fadeIn();
+                miners_state_changed = false;
+            }
+        });
     } else {
+        miners_state_changed = true;
         $(".miners-content").html("");
         $(".nominers").fadeIn();
-        $(".estimatedprofits").fadeOut();
+        $(".iotdata").fadeOut();
+        $(".estimatedprofits").fadeOut(function() {
+            $(".estimatedprofits_wait").fadeOut(function() {
+                $(".estimatedprofits_nominers").fadeIn();
+            });
+        });
     }
 
     maxslots = 8;
@@ -1758,107 +1775,107 @@ function miner_details(miner_id) {
     else share_string = `${miners[miner_id]["sharerate"]} shares/min`;
 
     finalhtml = `
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Identifier
-			</div>
-			<div class="column">
-				<b>${miners[miner_id]["identifier"]}</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Software
-			</div>
-			<div class="column">
-				<b>${miners[miner_id]["software"]}</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Hashrate
-			</div>
-			<div class="column">
-				<b>${scientific_prefix(miners[miner_id]["hashrate"])}H/s</b>
-				${thread_string}
-			</div>
-			<div class="column is-narrow">
-				${hashrate_icon}
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Accepted shares
-			</div>
-			<div class="column">
-				<b>
-					${miners[miner_id]["accepted"]} 
-					/
-					${miners[miner_id]["accepted"]+miners[miner_id]["rejected"]}
-				</b> (${round_to(1, (miners[miner_id]["accepted"]/
-						(miners[miner_id]["accepted"]+miners[miner_id]["rejected"]))*100)}%)
-			</div>
-			<div class="column is-narrow">
-				${accept_icon}
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Difficulty
-			</div>
-			<div class="column">
-				<b>${scientific_prefix(miners[miner_id]["diff"])}</b>
-			</div>
-			<div class="column is-narrow">
-				${diff_icon}
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile is-vcentered">
-			<div class="column is-4">
-				Efficiency
-			</div>
-			<div class="column">
-				<progress class="progress ${efficiency_color} show-value" 
-						  min="0" max="100" 
-						  value="${miner_efficiency}">
-					${miner_efficiency}
-				</progress>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Ping
-			</div>
-			<div class="column is-3">
-				<b>${miners[miner_id]["pg"]}ms</b>
-			</div>
-			<div class="column">
-				(${miners[miner_id]["pool"].replace("pool", "node")})
-			</div>
-			<div class="column is-narrow">
-				${ping_icon}
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Last share
-			</div>
-			<div class="column">
-				<b>${round_to(3, miners[miner_id]["sharetime"])}s</b>
-				(${share_string})
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Device type
-			</div>
-			<div class="column">
-				<b>${miner_type}</b>
-			</div>
-			<div class="column is-narrow">
-				${device_icon}
-			</div>
-		</div>`
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Identifier
+            </div>
+            <div class="column">
+                <b>${miners[miner_id]["identifier"]}</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Software
+            </div>
+            <div class="column">
+                <b>${miners[miner_id]["software"]}</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Hashrate
+            </div>
+            <div class="column">
+                <b>${scientific_prefix(miners[miner_id]["hashrate"])}H/s</b>
+                ${thread_string}
+            </div>
+            <div class="column is-narrow">
+                ${hashrate_icon}
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Accepted shares
+            </div>
+            <div class="column">
+                <b>
+                    ${miners[miner_id]["accepted"]} 
+                    /
+                    ${miners[miner_id]["accepted"]+miners[miner_id]["rejected"]}
+                </b> (${round_to(1, (miners[miner_id]["accepted"]/
+                        (miners[miner_id]["accepted"]+miners[miner_id]["rejected"]))*100)}%)
+            </div>
+            <div class="column is-narrow">
+                ${accept_icon}
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Difficulty
+            </div>
+            <div class="column">
+                <b>${scientific_prefix(miners[miner_id]["diff"])}</b>
+            </div>
+            <div class="column is-narrow">
+                ${diff_icon}
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile is-vcentered">
+            <div class="column is-4">
+                Efficiency
+            </div>
+            <div class="column">
+                <progress class="progress ${efficiency_color} show-value" 
+                          min="0" max="100" 
+                          value="${miner_efficiency}">
+                    ${miner_efficiency}
+                </progress>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Ping
+            </div>
+            <div class="column is-3">
+                <b>${miners[miner_id]["pg"]}ms</b>
+            </div>
+            <div class="column">
+                (${miners[miner_id]["pool"].replace("pool", "node")})
+            </div>
+            <div class="column is-narrow">
+                ${ping_icon}
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Last share
+            </div>
+            <div class="column">
+                <b>${round_to(3, miners[miner_id]["sharetime"])}s</b>
+                (${share_string})
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Device type
+            </div>
+            <div class="column">
+                <b>${miner_type}</b>
+            </div>
+            <div class="column is-narrow">
+                ${device_icon}
+            </div>
+        </div>`
 
     $("#miner_content").html(finalhtml)
 }
@@ -2041,22 +2058,22 @@ function refresh_shop(user_items) {
                 }
 
                 button_string = `
-						<button class="button is-fullwidth" disabled>
-							Owned
-						</button>`;
+                        <button class="button is-fullwidth" disabled>
+                            Owned
+                        </button>`;
                 if (VISUAL_ITEMS.includes(parseInt(item)) && user_items.includes(parseInt(item))) {
                     button_string = `
-					<label class="checkbox-label">
-						<input class="checkbox" type="checkbox" ${enabledItems.includes(parseInt(item)) ? "checked" : ""} onclick="toggleItem(${item});">
-						Display (PC)
-					</label>`
+                    <label class="checkbox-label">
+                        <input class="checkbox" type="checkbox" ${enabledItems.includes(parseInt(item)) ? "checked" : ""} onclick="toggleItem(${item});">
+                        Display (PC)
+                    </label>`
                 } else if (!user_items.includes(parseInt(item))) {
                     button_string = `
-						<button class="button is-success is-fullwidth" onclick="shop_buy('${item}')" id="${item}_button">
-							Buy for
-							&nbsp;<i class="fa fa-coins"></i>&nbsp;
-							${shop_items[item]["price"]} DUCO
-						</button>`;
+                        <button class="button is-success is-fullwidth" onclick="shop_buy('${item}')" id="${item}_button">
+                            Buy for
+                            &nbsp;<i class="fa fa-coins"></i>&nbsp;
+                            ${shop_items[item]["price"]} DUCO
+                        </button>`;
                 }
 
                 finalhtml += shop_template
@@ -2166,78 +2183,78 @@ function tx_details(tx_id) {
     }
 
     finalhtml = `
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Status
-			</div>
-			<div class="column">
-				<b>Delivered</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Sender
-			</div>
-			<div class="column">
-				<b>${tx.sender}</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Recipient
-			</div>
-			<div class="column">
-				<b>${tx.recipient}</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Amount
-			</div>
-			<div class="column">
-				<b>${tx.amount} DUCO</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Date
-			</div>
-			<div class="column">
-				<b>${tx.datetime} (UTC)</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column  is-4">
-				Memo
-			</div>
-			<div class="column text-wrap">
-				<b>"${tx.memo}"</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				Hash
-			</div>
-			<div class="column text-wrap">
-				<b>
-					<a href="https://explorer.duinocoin.com/?search=${tx.hash}">
-						${tx.hash}
-					</a>
-					<a onclick="copy('${tx.hash}', this)">
-						<i class="fa fa-copy"></i>
-					</a>
-				</b>
-			</div>
-		</div>
-		<div class="columns is-gapless is-mobile">
-			<div class="column is-4">
-				ID
-			</div>
-			<div class="column">
-				<b>${tx.id}</b>
-				<a onclick="copy('${tx.id}', this)"><i class="fa fa-copy"></i></a>
-			</div>
-		</div>`
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Status
+            </div>
+            <div class="column">
+                <b>Delivered</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Sender
+            </div>
+            <div class="column">
+                <b>${tx.sender}</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Recipient
+            </div>
+            <div class="column">
+                <b>${tx.recipient}</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Amount
+            </div>
+            <div class="column">
+                <b>${tx.amount} DUCO</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Date
+            </div>
+            <div class="column">
+                <b>${tx.datetime} (UTC)</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column  is-4">
+                Memo
+            </div>
+            <div class="column text-wrap">
+                <b>"${tx.memo}"</b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                Hash
+            </div>
+            <div class="column text-wrap">
+                <b>
+                    <a href="https://explorer.duinocoin.com/?search=${tx.hash}" target="_blank">
+                        ${tx.hash}
+                    </a>
+                    <a onclick="copy('${tx.hash}', this)">
+                        <i class="fa fa-copy"></i>
+                    </a>
+                </b>
+            </div>
+        </div>
+        <div class="columns is-gapless is-mobile">
+            <div class="column is-4">
+                ID
+            </div>
+            <div class="column">
+                <b>${tx.id}</b>
+                <a onclick="copy('${tx.id}', this)"><i class="fa fa-copy"></i></a>
+            </div>
+        </div>`
 
     $("#transaction_content").html(finalhtml);
 }
@@ -2708,6 +2725,12 @@ function copy(text, element) {
 }
 
 
+function calculator_warning() {
+    alert_bulma(`Estimated value straight from gathered benchmarks (2020-2021). It may not be very accurate at this time.`);
+}
+
+
+
 function estimated_price_warning() {
     alert_bulma(`Estimated value based on the highest exchange rate. No guarantee that any of the exchange sites has enough liquidity in it's reserves to swap your coins at that rate.`);
 }
@@ -2749,6 +2772,7 @@ function on_mobile() {
     return false;
 }
 
+
 function pass_reset_open() {
     $("#login-desktop").fadeOut('fast', function() {
         $("#login-mobile").fadeOut('fast', function() {
@@ -2756,6 +2780,7 @@ function pass_reset_open() {
         });
     });
 }
+
 
 function register_open() {
     $("body").append('<script src="https://js.hcaptcha.com/1/api.js" async defer></script>');
@@ -2766,6 +2791,7 @@ function register_open() {
     });
 }
 
+
 function register_quiz_start() {
     $("#register_start").fadeOut('fast');
     $("#register_fail").fadeOut('fast', function() {
@@ -2775,6 +2801,7 @@ function register_quiz_start() {
         });
     });
 }
+
 
 function register_quiz_1(result) {
     if (result > 1) {
@@ -2791,6 +2818,7 @@ function register_quiz_1(result) {
     }
 }
 
+
 function register_quiz_2(result) {
     if (result > 1) {
         $("#register_content_2").fadeOut('fast');
@@ -2805,6 +2833,7 @@ function register_quiz_2(result) {
         });
     }
 }
+
 
 function register_quiz_3(result) {
     if (result == 2) {
@@ -2821,6 +2850,7 @@ function register_quiz_3(result) {
     }
 }
 
+
 function register_quiz_4(result) {
     if (result == 2) {
         $("#register_content_4").fadeOut('fast');
@@ -2835,6 +2865,7 @@ function register_quiz_4(result) {
         });
     }
 }
+
 
 function register_quiz_5(result) {
     if (result == 1) {
@@ -2851,12 +2882,14 @@ function register_quiz_5(result) {
     }
 }
 
+
 function register_quiz_end() {
     $("#register_content_6").fadeOut('fast');
     $("#register_buttons_6").fadeOut('fast', function() {
         $("#register_end_1").fadeIn('fast');
     });
 }
+
 
 function register_end_1() {
     if (checkInputs_1()) {
@@ -2865,6 +2898,7 @@ function register_end_1() {
         });
     }
 }
+
 
 function register_end_2() {
     if (checkInputs_2()) {
@@ -2900,6 +2934,7 @@ function register_end_2() {
             });
     }
 }
+
 
 $(register_username).focusout(function() {
     fetch('https://server.duinocoin.com/users/' +
@@ -2966,6 +3001,7 @@ register_username = $("#register_username");
 register_password = $("#register_password");
 register_password_c = $("#register_password_c");
 
+
 function checkInputs_1() {
     const usernameValue = register_username.val().trim();
     const passwordValue = register_password.val().trim();
@@ -2999,12 +3035,14 @@ function checkInputs_1() {
     return isFormValid;
 }
 
+
 function setErrorFor(input, message) {
     input.addClass('is-danger');
     const field = input.parent();
     const small = field.children('small')[0];
     small.innerText = message;
 }
+
 
 function setSuccessFor(input) {
     input.removeClass('is-danger');
@@ -3013,9 +3051,11 @@ function setSuccessFor(input) {
     small.innerText = '';
 }
 
+
 function isEmail(email) {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }
+
 
 function generatePassword() {
     const user = $("#reset_username");
@@ -3033,11 +3073,11 @@ function generatePassword() {
                 $("#reset_button").removeClass("is-loading");
                 alert_bulma(`Your web browser couldn't connect to the Duino-Coin servers.<br><br>
 
-	                We'd like to help, but there are many possible causes - 
-	                before asking the support, try disabling your browser extensions 
-	                or similar programs and try again.<br><br>
+                    We'd like to help, but there are many possible causes - 
+                    before asking the support, try disabling your browser extensions 
+                    or similar programs and try again.<br><br>
 
-	                Make sure nothing blocks server.duinocoin.com`);
+                    Make sure nothing blocks server.duinocoin.com`);
             });
     } else {
         setErrorFor(user, "Enter your username!")
@@ -3088,6 +3128,11 @@ greetings = [
     "It's good to have you back",
     "Good to have you here once more",
     "Greetings",
+    "Happy mining",
+    "Welcome to the vault",
+    "May the Kolka be with you",
+    "Good luck and have fun",
+    "Have a nice day",
     "Hey there",
     "It's been a while",
     "Glad to see you're back",
@@ -3097,21 +3142,29 @@ greetings = [
     "It's a pleasure to see you again"
 ]
 
-$("#greeting").text(greetings[Math.floor(Math.random() * greetings.length)]);
+$(".greeting").text(greetings[Math.floor(Math.random() * greetings.length)]);
 
 $("#theme_desktop").on('change', function() {
     selected_theme = $("#theme_desktop").val();
 
     if (selected_theme == "Terminal") {
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
         localStorage.setItem('theme', 'Glossy');
+    } else if (selected_theme == "Retro") {
+        $("#theme-retro").attr('disabled', false);
+        $("#theme-terminal").attr('disabled', true);
+        $("#theme-glossy").attr('disabled', true);
+        localStorage.setItem('theme', 'Retro');
     } else {
         // default adaptive - disable all
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Adaptive');
@@ -3119,18 +3172,26 @@ $("#theme_desktop").on('change', function() {
 });
 
 $("#theme_mobile").on('change', function() {
-    selected_theme = $("#theme_desktop").val();
+    selected_theme = $("#theme_mobile").val();
 
     if (selected_theme == "Terminal") {
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
         localStorage.setItem('theme', 'Glossy');
+    } else if (selected_theme == "Retro") {
+        $("#theme-retro").attr('disabled', false);
+        $("#theme-terminal").attr('disabled', true);
+        $("#theme-glossy").attr('disabled', true);
+        localStorage.setItem('theme', 'Retro');
     } else {
         // default adaptive - disable all
+        $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Adaptive');
@@ -3143,28 +3204,6 @@ window.addEventListener('load', function() {
     console.log(`%cThis browser feature is intended for developers.\nIf someone instructed you to copy and paste something here to enable some feature or to "hack" someone's account, it usually means he's trying to get access to your account.`, "font-size: 1.5em;");
     console.log(`%cDo not execute unknown code here. We will not be responsible for your loss.`, "color: orange; font-size: 1.5em;");
 });
-
-// desktop avatar stuff //
-
-function component_to_hex(c) {
-    /* https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb */
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-
-function get_user_color(username) {
-    /* https://www.cluemediator.com/create-a-random-color-based-on-a-string-using-javascript */
-    const firstAlphabet = username.charAt(0).toLowerCase();
-    const asciiCode = firstAlphabet.charCodeAt(0);
-    const colorNum = asciiCode.toString() + asciiCode.toString() + asciiCode.toString();
-
-    let num = Math.round(0xffffff * parseInt(colorNum));
-    let r = num >> 16 & 255;
-    let g = num >> 8 & 255;
-    let b = num & 255;
-
-    return component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
-}
 
 // ------ helper MD5 functions ------- //
 
@@ -3201,3 +3240,60 @@ function md5_ii(d, _, m, f, r, i, n) { return md5_cmn(m ^ (_ | ~f), d, _, r, i, 
 function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + (_ >> 16) + (m >> 16) << 16 | 65535 & m }
 
 function bit_rol(d, _) { return d << _ | d >>> 32 - _ }
+
+// ------ 2021 estimated earnings from various devices ------ //
+
+let multiplier = document.getElementById('multiplier');
+let inputHashrate = document.getElementById('input-hashrate');
+
+multiplier.addEventListener('input', updateValueDevices);
+inputHashrate.addEventListener('input', updateValueDevices);
+
+function floatmap(x, in_min, in_max, out_min, out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+}
+
+let device = document.getElementById('device-type');
+let input_devices = document.getElementById('input-devices');
+
+device.addEventListener('input', updateValueDevices);
+input_devices.addEventListener('input', updateValueDevices);
+
+function updateValueDevices(e) {
+    /* https://github.com/revoxhere/duino-coin#some-of-the-officially-tested-devices-duco-s1 */
+
+    let result = 0;
+    let hashrate = inputHashrate.value * parseInt(multiplier.value); //* multiplier.value;
+
+    if (hashrate <= 0 || input_devices.value <= 0 || input_devices.value > 125 || hashrate > 50000) {
+        update_element("values", "Error");
+        return;
+    }
+
+    if (device.value === 'PC') {
+        $(".device_selector").fadeOut('fast', function() {
+            $(".hashrate_selector").fadeIn('fast');
+        });
+
+        //result = (0.000363636 * hashrate) + 1.54545 // 2021
+        result = (0.0013 * hashrate) + 2.2 // 2023?
+
+        // extreme diff tier, TODO (2021)
+        if (hashrate > 8000) result = floatmap(result, 14.2, 100, 12.2, 30); 
+    } else {
+        $(".hashrate_selector").fadeOut('fast', function() {
+            $(".device_selector").fadeIn('fast');
+        });
+
+        if (device.value === 'AVR') basereward = 8
+        if (device.value === 'ESP8266') basereward = 4
+        if (device.value === 'ESP32') basereward = 6
+
+        // kolka efficiency drop
+        for (i = 0; i < input_devices.value; i++) {
+            result += basereward;
+            basereward *= 0.94;
+        }
+    }
+    update_element("values", round_to(2, result) + " ᕲ/day");
+}
