@@ -363,6 +363,7 @@ input[type="checkbox"]:checked::before {
     transform: scale(1);
 }
 
+
 @media screen and (min-width: 1024px) {
     /* Small tag style */
     .badges>.tag {
@@ -401,7 +402,7 @@ input[type="checkbox"]:checked::before {
     }
 
     body {
-        background-color: var(--primary);
+        /* background-color: var(--primary); */
         min-height: 100vh;
     }
 
@@ -412,6 +413,7 @@ input[type="checkbox"]:checked::before {
     .adblocker_detected {
         margin-bottom: 24px !important;
     }
+
 
     body:before {
         content: ' ';
@@ -454,7 +456,7 @@ input[type="checkbox"]:checked::before {
 
     @media (prefers-color-scheme: dark) {
         body {
-            background-color: black;
+            background-color: black !important;
         }
 
         input[type="checkbox"] {
@@ -675,4 +677,22 @@ a:active {
 
 .unverifiedbadge {
     animation: blink 1s linear infinite;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+/* Christmas progress bars */
+progress::-webkit-progress-value {
+  background: repeating-linear-gradient(60deg, #e44d26, #e44d26 15px, #fff 15px, #fff 30px);
+  border-radius: 15px;
+  background-size: 30px 30px;
+}
+
+progress::-moz-progress-bar {
+  background: repeating-linear-gradient(60deg, #e44d26, #e44d26 15px, #fff 15px, #fff 30px);
+  border-radius: 15px;
+  background-size: 30px 30px;
 }

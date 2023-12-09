@@ -12,12 +12,14 @@ input,
     border-radius: 16px !important;
 }
 
-html, body {
+html,
+body {
     will-change: auto;
 }
 
 @media screen and (min-width: 1024px) {
-    .box, .notification {
+    .box,
+    .notification {
         /* background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); */
         background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
         background-size: 100vw 100vh;
@@ -28,16 +30,19 @@ html, body {
     }
 }
 
- @media (prefers-color-scheme: light) {
-.navbar {
-    color: #333 !important;
-    background-color: rgba(255,255,255, 0.6) !important; 
-}
+@media (prefers-color-scheme: light) {
+    .navbar {
+        color: #333 !important;
+        background-color: rgba(255, 255, 255, 0.6) !important;
+    }
 
-.button, input, .notification, select {
-    color: #333 !important;
-    background-color: rgba(255,255,255, 0.4) !important;
-}
+    .button,
+    input,
+    .notification,
+    select {
+        color: #333 !important;
+        background-color: rgba(255, 255, 255, 0.4) !important;
+    }
 }
 
 
@@ -52,14 +57,17 @@ html, body {
 #help>.container,
 #settings-desktop>.container {
     background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
-        background-size: 100vw 100vh;
-        background-attachment: fixed;
-        -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
-        -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
-        box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+    -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
 }
 
-
+body:before {
+    opacity: 1.0 !important;
+    filter: none !important;
+}
 
 @media screen and (min-width: 1024px) {
     @media (prefers-color-scheme: dark) {
@@ -80,11 +88,6 @@ html, body {
             background-color: rgba(0, 0, 0, 0.7) !important;
         }
     }
-}
-
-body:before {
-    opacity: 1.0 !important;
-    filter: none !important;
 }
 
 .login-backdrop-desktop {

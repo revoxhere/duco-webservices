@@ -623,7 +623,7 @@
                                 </h1>
                                 <div class="columns is-multiline miners-content"></div>
                                 <div class="nominers">
-                                	<div style="position: absolute;top:50%;-ms-transform:translateY(-50%);transform:translateY(-50%);">
+                                	<div class="mt-5">
 	                                    <p class="title is-size-5">
 	                                        No miners detected.
 	                                    </p>
@@ -632,7 +632,7 @@
 	                                        or two until their stats will appear here.
 	                                    </p>
 	                                    <p class="subtitle is-size-6">
-	                                        Having issues? See the <b>Help</b> tab or launch the <a href="https://server.duinocoin.com/webminer.html" target="_blank">webminer</a>.
+	                                        Having issues? See the <b>Help</b> tab or launch the <a href="https://server.duinocoin.com/webminer.html" target="_blank">webminer</a> to get started easily.
 	                                    </p>
 	                                </div>
                                 </div>
@@ -746,9 +746,18 @@
                                     </p>
                                 </div>
                             </div>
-                            <progress class="progress stakeprogress is-success mb-2" min="0" value="0" max="100">0%
+                            <progress class="progress stakeprogress is-success" min="0" value="0" max="100">0%
                             </progress>
                         </div>
+                    </div>
+                </div>
+                <div class="tile is-parent is-3 event_box" style="display:none">
+                    <div class="tile is-child box fullheight">
+                        <h1 class="heading">Current event</h1>
+                        <p class="title is-size-6 event_title">None</p>
+                        <p class="subtitle is-size-6 event_desc">No event</p>
+                        <progress class="progress eventprogress is-info" min="0" value="0" max="100">
+                        </progress>
                     </div>
                 </div>
                 <div class="tile is-parent">
@@ -781,15 +790,24 @@
                                 </p>
                             </span>
                             <small class="estimatedprofits" style="display:none">
-                            	<p class="title is-size-5">
-                                    Estimated earnings: <span class="dailyprofit">0</span> ᕲ a day
-	                                <span class="has-text-grey-light" onclick="estimated_earnings_warning()">
-	                                    <i class="fa fa-question-circle"></i>
-	                                </span>
-                                </p>
-                                <p class="subtitle is-size-6">
-                                    The longer you leave the wallet open, the more accurate the estimate value will get
-                                </p>
+                                <div class="columns">
+                                    <div class="column is-gapless">
+                                        <p class="title is-size-5">
+                                            Estimated earnings: <span class="dailyprofit">0</span> ᕲ a day
+        	                                <span class="has-text-grey-light" onclick="estimated_earnings_warning()">
+        	                                    <i class="fa fa-question-circle"></i>
+        	                                </span>
+                                        </p>
+                                        <p class="subtitle is-size-6">
+                                            The longer you leave the wallet open, the more accurate the estimate value will get
+                                        </p>
+                                    </div>
+                                    <div class="column is-narrow pr-5">
+                                        <a onclick="refresh_calcs()">
+                                            <i class="fa fa-redo"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </small>
                         </div>
                         <div class="tab-calculator-content" style="display: none">
@@ -881,15 +899,6 @@
                             <iframe src="https://server.duinocoin.com/news.html" style="height:90%; width:100%" frameborder="0" allowtransparency="true">
                                 Please wait
                             </iframe>
-                        </div>
-                    </div>
-                </div>
-                <div class="tile is-parent is-3 event_box" style="display:none">
-                    <div class="tile is-child">
-                        <div class="box fullheight">
-                            <h1 class="heading">Current event</h1>
-                            <p class="title is-size-6 event_title">None</p>
-                            <p class="subtitle is-size-6 event_desc">No event</p>
                         </div>
                     </div>
                 </div>
@@ -1149,8 +1158,8 @@
                     </div>
                     <div class="nominers">
                         <p>
-                            Nothing here.<br>
-                            Having issues? See the <b>Help</b> tab or launch the <a href="https://server.duinocoin.com/webminer.html" target="_blank">webminer</a>.
+                            No miners detected.<br>
+                            Having issues? See the <b>Help</b> tab or launch the <a href="https://server.duinocoin.com/webminer.html" target="_blank">webminer</a> to get started easily.
                         </p>
                     </div>
                     <div class="invalid_miner_keys mt-3" style="display:none">
@@ -1672,12 +1681,12 @@
                     <div class="field">
                         <label class="label">Network</label>
                         <div class="control">
-                            <div class="select is-fullwidth">
+                            <div class="select is-fullwidth" onchange="update_wrap_fees()">
                                 <select id="wrap_network">
-                                    <option>wDUCO (Tron)</option>
-                                    <option>bscDUCO (Binance Smart Chain)</option>
-                                    <option>maticDUCO (Polygon)</option>
-                                    <option>celoDUCO (Celo)</option>
+                                    <option value="wDUCO">wDUCO (Tron)</option>
+                                    <option value="bscDUCO">bscDUCO (Binance Smart Chain)</option>
+                                    <option value="maticDUCO">maticDUCO (Polygon)</option>
+                                    <option value="celoDUCO">celoDUCO (Celo)</option>
                                 </select>
                             </div>
                         </div>
@@ -1695,7 +1704,7 @@
                             </div>
                         </div>
                         <p class="help mt-1">
-                            Minimum 250 DUCO. A 200 DUCO transaction fee will apply.
+                            Minimum <span class="wrap_min">201</span> DUCO. <b>A <span class="wrap_fee">200</span> DUCO network fee will apply</b>.
                         </p>
                     </div>
                     <div class="field">

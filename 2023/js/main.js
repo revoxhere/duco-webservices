@@ -35,6 +35,7 @@ let username, password, verified;
 let transaction_limit = 10;
 let transactions = [];
 let miners = [];
+let wrap_api = [];
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || VISUAL_ITEMS;
 let miners_state_changed = true;
 
@@ -671,6 +672,14 @@ if (!iot_collapsed) {
 }
 
 
+function refresh_calcs() {
+    $(".estimatedprofits").fadeOut(function() {
+        $(".estimatedprofits_wait").fadeIn();
+    });
+    let start_balance = 0;
+}
+
+
 function toggle_iot() {
     if (!iot_collapsed) {
         $(".iotspan").html("<i class='fa fa-caret-down'></i>&nbsp;IOT DATA");
@@ -707,6 +716,15 @@ function get_stored_balance(type) {
 
     if (type == "dates") return (data.map(x => x[1]));
     return (data.map(x => x[0]));
+}
+
+
+function refresh_wrap_api() {
+    fetch(`https://server.duinocoin.com/wrapped_duco_api.json`)
+        .then(response => response.json())
+        .then(data => {
+            wrap_api = data;
+        });
 }
 
 
@@ -918,6 +936,7 @@ const user_data = (req_username, first_open) => {
 
                 user_achievements = data.achievements;
                 refresh_achievements(user_achievements);
+                refresh_wrap_api();
 
                 user_items = data.items;
                 refresh_shop(user_items);
@@ -989,7 +1008,7 @@ const user_data = (req_username, first_open) => {
                 stake_date = new Date(data.balance.stake_date * 1000)
                     .toLocaleString("en-UK", date_opt);
 
-                progress_min = data.balance.stake_date * 1000 - 21 * 86400000;
+                progress_min = data.balance.stake_date * 1000 - STAKE_DAYS * 86400000;
                 progress_max = data.balance.stake_date * 1000;
 
                 start = new Date(progress_min),
@@ -2456,6 +2475,13 @@ function stake() {
 }
 
 
+function update_wrap_fees() {
+    wrap_network = document.getElementById("wrap_network").value;
+    $(".wrap_fee").text(wrap_api["fee"][wrap_network]);
+    $(".wrap_min").text(wrap_api["min"][wrap_network]);
+}
+
+
 function wrap() {
     wrap_network = document.getElementById("wrap_network").value;
     wrap_amount = document.getElementById("wrap_amount").value;
@@ -2466,104 +2492,102 @@ function wrap() {
         return;
     }
 
-    if (wrap_amount >= 250) {
-        document.getElementById("wrap_confirm").classList.add("is-loading");
-
-        if (wrap_network == "wDUCO (Tron)") {
-            fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
-                    "?password=" + encodeURIComponent(password) +
-                    "&address=" + encodeURIComponent(address) +
-                    "&amount=" + encodeURIComponent(wrap_amount))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        $("#wrap_confirm").removeClass("is-info");
-                        $("#wrap_confirm").addClass("is-success");
-                        $("#wrap_confirm").text("Sucessful wrap");
-                        $('#wrap_amount').val('');
-                        $('#wrap_address').val('');
-                    } else {
-                        $("#wrap_confirm").attr("disabled", true);
-                        $("#wrap_confirm").removeClass("is-info");
-                        $("#wrap_confirm").addClass("is-danger");
-                        $("#wrap_confirm").text("Error");
-                        alert_bulma(data.message);
-                    }
-                    document.getElementById("wrap_confirm").classList.remove("is-loading");
-                    setTimeout(function() {
-                        $("#wrap_confirm").attr("disabled", false);
-                        $("#wrap_confirm").removeClass("is-danger");
-                        $("#wrap_confirm").removeClass("is-success");
-                        $("#wrap_confirm").addClass("is-info");
-                        $("#wrap_confirm").text("Wrap");
-                    }, 3000)
-                }).catch(function(error) {
-                    document.getElementById("wrap_confirm").classList.remove("is-loading");
-                    $("#wrap_confirm").attr("disabled", true);
-                    $("#wrap_confirm").removeClass("is-info");
-                    $("#wrap_confirm").addClass("is-danger");
-                    $("#wrap_confirm").text("Error");
-                    alert_bulma(error);
-                    setTimeout(function() {
-                        $("#wrap_confirm").attr("disabled", false);
-                        $("#wrap_confirm").removeClass("is-danger");
-                        $("#wrap_confirm").removeClass("is-success");
-                        $("#wrap_confirm").addClass("is-info");
-                        $("#wrap_confirm").text("Wrap");
-                    }, 3000)
-                });
-        } else {
-            if (wrap_network == "bscDUCO (Binance Smart Chain)") recipient = "bscDUCO";
-            else if (wrap_network == "maticDUCO (Polygon)") recipient = "maticDUCO";
-            else if (wrap_network == "celoDUCO (Celo)") recipient = "celoDUCO";
-
-            fetch("https://server.duinocoin.com/transaction/" +
-                    "?username=" + encodeURIComponent(username) +
-                    "&password=" + encodeURIComponent(password) +
-                    "&recipient=" + encodeURIComponent(recipient) +
-                    "&memo=" + encodeURIComponent(address) +
-                    "&amount=" + encodeURIComponent(wrap_amount))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        $("#wrap_confirm").removeClass("is-info");
-                        $("#wrap_confirm").addClass("is-success");
-                        $("#wrap_confirm").text("Sucessful wrap");
-                        $('#wrap_amount').val('');
-                        $('#wrap_address').val('');
-                    } else {
-                        $("#wrap_confirm").attr("disabled", true);
-                        $("#wrap_confirm").removeClass("is-info");
-                        $("#wrap_confirm").addClass("is-danger");
-                        $("#wrap_confirm").text("Error");
-                        alert_bulma(data.message.split(",")[1]);
-                    }
-                    document.getElementById("wrap_confirm").classList.remove("is-loading");
-                    setTimeout(function() {
-                        $("#wrap_confirm").attr("disabled", false);
-                        $("#wrap_confirm").removeClass("is-danger");
-                        $("#wrap_confirm").removeClass("is-success");
-                        $("#wrap_confirm").addClass("is-info");
-                        $("#wrap_confirm").text("Wrap");
-                    }, 3000)
-                }).catch(function(error) {
-                    document.getElementById("wrap_confirm").classList.remove("is-loading");
-                    $("#wrap_confirm").attr("disabled", true);
-                    $("#wrap_confirm").removeClass("is-info");
-                    $("#wrap_confirm").addClass("is-danger");
-                    $("#wrap_confirm").text("Error");
-                    alert_bulma(error);
-                    setTimeout(function() {
-                        $("#wrap_confirm").attr("disabled", false);
-                        $("#wrap_confirm").removeClass("is-danger");
-                        $("#wrap_confirm").removeClass("is-success");
-                        $("#wrap_confirm").addClass("is-info");
-                        $("#wrap_confirm").text("Wrap");
-                    }, 3000)
-                });
-        }
-    } else {
+    if (wrap_amount < wrap_api["min"][wrap_network] || wrap_amount > balance) {
         $("#wrap_amount").effect("shake", { distance: 5 });
+        return;
+    }
+
+    document.getElementById("wrap_confirm").classList.add("is-loading");
+
+    if (wrap_network == "wDUCO (Tron)") {
+        fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
+                "?password=" + encodeURIComponent(password) +
+                "&address=" + encodeURIComponent(address) +
+                "&amount=" + encodeURIComponent(wrap_amount))
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#wrap_confirm").removeClass("is-info");
+                    $("#wrap_confirm").addClass("is-success");
+                    $("#wrap_confirm").text("Sucessful wrap");
+                    $('#wrap_amount').val('');
+                    $('#wrap_address').val('');
+                } else {
+                    $("#wrap_confirm").attr("disabled", true);
+                    $("#wrap_confirm").removeClass("is-info");
+                    $("#wrap_confirm").addClass("is-danger");
+                    $("#wrap_confirm").text("Error");
+                    alert_bulma(data.message);
+                }
+                document.getElementById("wrap_confirm").classList.remove("is-loading");
+                setTimeout(function() {
+                    $("#wrap_confirm").attr("disabled", false);
+                    $("#wrap_confirm").removeClass("is-danger");
+                    $("#wrap_confirm").removeClass("is-success");
+                    $("#wrap_confirm").addClass("is-info");
+                    $("#wrap_confirm").text("Wrap");
+                }, 3000)
+            }).catch(function(error) {
+                document.getElementById("wrap_confirm").classList.remove("is-loading");
+                $("#wrap_confirm").attr("disabled", true);
+                $("#wrap_confirm").removeClass("is-info");
+                $("#wrap_confirm").addClass("is-danger");
+                $("#wrap_confirm").text("Error");
+                alert_bulma(error);
+                setTimeout(function() {
+                    $("#wrap_confirm").attr("disabled", false);
+                    $("#wrap_confirm").removeClass("is-danger");
+                    $("#wrap_confirm").removeClass("is-success");
+                    $("#wrap_confirm").addClass("is-info");
+                    $("#wrap_confirm").text("Wrap");
+                }, 3000)
+            });
+    } else {
+
+        fetch("https://server.duinocoin.com/transaction/" +
+                "?username=" + encodeURIComponent(username) +
+                "&password=" + encodeURIComponent(password) +
+                "&recipient=" + encodeURIComponent(wrap_network) +
+                "&memo=" + encodeURIComponent(address) +
+                "&amount=" + encodeURIComponent(wrap_amount))
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $("#wrap_confirm").removeClass("is-info");
+                    $("#wrap_confirm").addClass("is-success");
+                    $("#wrap_confirm").text("Sucessful wrap");
+                    $('#wrap_amount').val('');
+                    $('#wrap_address').val('');
+                } else {
+                    $("#wrap_confirm").attr("disabled", true);
+                    $("#wrap_confirm").removeClass("is-info");
+                    $("#wrap_confirm").addClass("is-danger");
+                    $("#wrap_confirm").text("Error");
+                    alert_bulma(data.message.split(",")[1]);
+                }
+                document.getElementById("wrap_confirm").classList.remove("is-loading");
+                setTimeout(function() {
+                    $("#wrap_confirm").attr("disabled", false);
+                    $("#wrap_confirm").removeClass("is-danger");
+                    $("#wrap_confirm").removeClass("is-success");
+                    $("#wrap_confirm").addClass("is-info");
+                    $("#wrap_confirm").text("Wrap");
+                }, 3000)
+            }).catch(function(error) {
+                document.getElementById("wrap_confirm").classList.remove("is-loading");
+                $("#wrap_confirm").attr("disabled", true);
+                $("#wrap_confirm").removeClass("is-info");
+                $("#wrap_confirm").addClass("is-danger");
+                $("#wrap_confirm").text("Error");
+                alert_bulma(error);
+                setTimeout(function() {
+                    $("#wrap_confirm").attr("disabled", false);
+                    $("#wrap_confirm").removeClass("is-danger");
+                    $("#wrap_confirm").removeClass("is-success");
+                    $("#wrap_confirm").addClass("is-info");
+                    $("#wrap_confirm").text("Wrap");
+                }, 3000)
+            });
     }
 }
 
@@ -2618,9 +2642,14 @@ function refresh_event() {
         .then(response => response.json())
         .then(data => {
             if (data.result.topic != "None") {
+                q = Math.abs(new Date() / 1000 - data.result.starts);
+                d = Math.abs(data.result.ends - data.result.starts);
+                progress_val = (q / d) * 100
+
                 $(".event_box").fadeIn();
                 $(".event_title").html(data.result.topic);
                 $(".event_desc").html(data.result.description);
+                $(".eventprogress").attr('value', progress_val);
             }
         });
 }
