@@ -2499,7 +2499,7 @@ function wrap() {
 
     document.getElementById("wrap_confirm").classList.add("is-loading");
 
-    if (wrap_network == "wDUCO (Tron)") {
+    if (wrap_network == "wDUCO") {
         fetch("https://server.duinocoin.com/wduco_wrap/" + encodeURIComponent(username) +
                 "?password=" + encodeURIComponent(password) +
                 "&address=" + encodeURIComponent(address) +
@@ -2543,7 +2543,6 @@ function wrap() {
                 }, 3000)
             });
     } else {
-
         fetch("https://server.duinocoin.com/transaction/" +
                 "?username=" + encodeURIComponent(username) +
                 "&password=" + encodeURIComponent(password) +
