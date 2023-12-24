@@ -45,23 +45,24 @@ body {
     }
 }
 
-
-#txdetails>.container,
-#txsend>.container,
-#txwrap>.container,
-#stakemenu>.container,
-#minerdetails>.container,
-#buymenu>.container,
-#achievements>.container,
-#shop>.container,
-#help>.container,
-#settings-desktop>.container {
-    background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
-    background-size: 100vw 100vh;
-    background-attachment: fixed;
-    -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
-    -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
-    box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+@media screen and (min-width: 1024px) {
+    #txdetails>.container,
+    #txsend>.container,
+    #txwrap>.container,
+    #stakemenu>.container,
+    #minerdetails>.container,
+    #buymenu>.container,
+    #achievements>.container,
+    #shop>.container,
+    #help>.container,
+    #settings-desktop>.container {
+        background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
+        background-size: 100vw 100vh;
+        background-attachment: fixed;
+        -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        -moz-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+        box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
+    }
 }
 
 body:before {
