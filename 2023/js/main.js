@@ -1507,6 +1507,8 @@ function create_miners(user_miners) {
                 icon = `<img src="assets/blushybox.gif">`;
             } else if (miner_software.includes("ESP8266")) {
                 icon = `<img src="assets/wemos.gif">`;
+            } else if (miner_software.includes("ESP32-S2")) {
+                icon = `<img src="assets/esp32s.gif">`;
             } else if (miner_software.includes("ESP32")) {
                 icon = `<img src="assets/esp32.gif">`;
             } else if (miner_software.includes("AVR") && miner_diff >= 128) {
@@ -1702,7 +1704,7 @@ function miner_details(miner_id) {
         miner_type = "ESP8266";
         percentage = 0.96;
         hashrate_range = [18000, 30000];
-        diff_range = [1000, 4000];
+        diff_range = [1000, 6000];
     } else if (miner_software.includes("BlushyBox")) {
         color = "#ec42f5";
         icon = `<img src="assets/blushybox.gif">`;
@@ -1710,21 +1712,28 @@ function miner_details(miner_id) {
         if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
         percentage = 0.96;
         hashrate_range = [18000, 45000];
-        diff_range = [1000, 4000];
+        diff_range = [1000, 6000];
     } else if (miner_software.includes("ESP8266")) {
         icon = `<img src="assets/wemos.gif">`;
         color = "#4895EF";
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 85000];
-        diff_range = [1000, 4000];
+        hashrate_range = [71000, 61000];
+        diff_range = [4999, 5001];
+    } else if (miner_software.includes("ESP32-S2")) {
+        color = "#6B6B6B";
+        icon = `<img src="assets/esp32s.gif">`;
+        miner_type = "ESP32-S2";
+        percentage = 0.96;
+        hashrate_range = [55000, 90000];
+        diff_range = [5799, 5801];
     } else if (miner_software.includes("ESP32")) {
         color = "#6B6B6B";
         icon = `<img src="assets/esp32.gif">`;
         miner_type = "ESP32";
         percentage = 0.96;
-        hashrate_range = [35000, 46000];
-        diff_range = [1000, 2000];
+        hashrate_range = [37000, 46000];
+        diff_range = [5399, 5401];
     } else if (miner_software.includes("AVR") && miner_diff >= 128) {
         icon = `<img src="assets/pico.gif">`;
         color = "#056938";
