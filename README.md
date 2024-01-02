@@ -1,6 +1,6 @@
 <!--
 *** Official Duino-Coin webservices README
-*** by revoxhere, 2021
+*** by revoxhere, 2021-present
 -->
 
 <a href="https://wallet.duinocoin.com">
