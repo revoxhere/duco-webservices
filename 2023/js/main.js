@@ -781,6 +781,7 @@ function create_prices(prices) {
     }
 
     delete prices.max;
+    delete prices.bch;
 
     finalhtml = "";
     for (price in prices) {
