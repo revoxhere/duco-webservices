@@ -788,10 +788,11 @@ function create_prices(prices) {
         link = "https://exchange.duinocoin.com";
         icon = "assets/ducoexchange.png";
 
-        if (price == "bch") {
+        /*if (price == "bch") {
             name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
-        } else if (price == "xmg") {
+        } else*/
+        if (price == "xmg") {
             name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XMG";
         } else if (price == "trx") {
