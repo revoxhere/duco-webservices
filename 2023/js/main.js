@@ -765,6 +765,9 @@ function refresh_achievements(user_achievements) {
 function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
+    
+    delete prices.bch;
+    delete prices.sunswap;
 
     // global price
     if (prices["max"]["price"] > 0) {
@@ -781,7 +784,6 @@ function create_prices(prices) {
     }
 
     delete prices.max;
-    delete prices.bch;
 
     finalhtml = "";
     for (price in prices) {
