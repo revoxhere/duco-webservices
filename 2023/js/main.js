@@ -769,6 +769,7 @@ function create_prices(prices) {
     delete prices.bch;
     delete prices.sunswap;
     delete prices.nano;
+    delete prices.fluffy;
 
     // global price
     if (prices["max"]["price"] > 0) {
