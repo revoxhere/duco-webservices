@@ -1040,7 +1040,9 @@ const user_data = (req_username, first_open) => {
                     $(".notstaking").fadeIn();
                 });
             }
-
+            
+            maxslots = data.balance.max_miners;
+            
             trustscore = data.balance.trust_score;
             if (data.balance.warnings < 1) {
                 verified = data.balance.verified;
@@ -1611,11 +1613,11 @@ function create_miners(user_miners) {
         });
     }
 
-    maxslots = 8;
-    if (verified === "yes") maxslots = 50;
-    if (verified === "yes" && user_items.includes(10)) maxslots = 75;
-    if (verified === "yes" && user_items.includes(11)) maxslots = 100;
-    if (verified === "yes" && user_items.includes(11) && user_items.includes(10)) maxslots = 125;
+    if (maxslots == 0) maxslots = 8;
+    //if (verified === "yes") maxslots = 50;
+    //if (verified === "yes" && user_items.includes(10)) maxslots = 75;
+    //if (verified === "yes" && user_items.includes(11)) maxslots = 100;
+    //if (verified === "yes" && user_items.includes(11) && user_items.includes(10)) maxslots = 125;
     $(".minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
 }
 
