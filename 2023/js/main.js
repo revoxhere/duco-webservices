@@ -558,7 +558,6 @@ function login(token) {
                 });
             }
         } else {
-            console.log(data.message);
             if (data.message.includes("This user doesn't exist")) {
                 username_input.effect("shake", { distance: 5 });
                 return;
@@ -789,7 +788,6 @@ function create_prices(prices) {
 
     finalhtml = "";
     for (price in prices) {
-        console.log(price)
         link = "https://exchange.duinocoin.com";
         icon = "assets/ducoexchange.png";
 
@@ -1041,7 +1039,8 @@ const user_data = (req_username, first_open) => {
                 });
             }
             
-            maxslots = data.balance.max_miners;
+            verified_for_slots = data.balance.max_miners;
+            $(".verified_for_slots").html(`verified to use <b>${verified_for_slots}</b>`);
             
             trustscore = data.balance.trust_score;
             if (data.balance.warnings < 1) {
@@ -1140,6 +1139,9 @@ const user_data = (req_username, first_open) => {
             }
             if (data.notices.includes(2)) {
                 $(".minercount_exceeded").fadeIn();
+            }
+            if (data.notices.includes(3)) {
+                $(".verified_minercount_exceeded").fadeIn();
             }
         })
 }
@@ -1613,12 +1615,12 @@ function create_miners(user_miners) {
         });
     }
 
-    if (maxslots == 0) maxslots = 8;
-    //if (verified === "yes") maxslots = 50;
-    //if (verified === "yes" && user_items.includes(10)) maxslots = 75;
-    //if (verified === "yes" && user_items.includes(11)) maxslots = 100;
-    //if (verified === "yes" && user_items.includes(11) && user_items.includes(10)) maxslots = 125;
-    $(".minercount").text(`${user_miners.flat().length} out of ${maxslots} slots used`);
+    maxslots = 8;
+    if (verified === "yes") maxslots = 50;
+    if (verified === "yes" && user_items.includes(10)) maxslots = 75;
+    if (verified === "yes" && user_items.includes(11)) maxslots = 100;
+    if (verified === "yes" && user_items.includes(11) && user_items.includes(10)) maxslots = 125;
+    $(".minercount").html(`<b>${user_miners.flat().length} out of ${maxslots}</b> slots used`);
 }
 
 
@@ -2764,7 +2766,6 @@ function copy(text, element) {
     });
 
     setTimeout(function() {
-        console.log("run")
         $(element).html("<i class='fa fa-copy'></i>")
     }, 1000)
 }
