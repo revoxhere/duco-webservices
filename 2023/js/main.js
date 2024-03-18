@@ -1615,7 +1615,7 @@ function create_miners(user_miners) {
         });
     }
 
-    maxslots = 8;
+    maxslots = 25;
     if (verified === "yes") maxslots = 50;
     if (verified === "yes" && user_items.includes(10)) maxslots = 75;
     if (verified === "yes" && user_items.includes(11)) maxslots = 100;
