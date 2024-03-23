@@ -541,7 +541,7 @@ function login(token) {
             $("#mining_key_desktop").val(data.result[3]);
 
             user_data(username, true);
-            setInterval(function() { user_data(username) }, 7500);
+            setInterval(function() { user_data(username) }, 5000);
 
             if (on_mobile()) {
                 $("#login-mobile").hide(function() {
@@ -765,10 +765,7 @@ function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
     
-    delete prices.bch;
-    delete prices.sunswap;
-    delete prices.nano;
-    delete prices.fluffy;
+    delete prices.nano; // currently unavailable
 
     // global price
     if (prices["max"]["price"] > 0) {
@@ -791,11 +788,10 @@ function create_prices(prices) {
         link = "https://exchange.duinocoin.com";
         icon = "assets/ducoexchange.png";
 
-        /*if (price == "bch") {
+        if (price == "bch") {
             name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
-        } else*/
-        if (price == "xmg") {
+        } else if (price == "xmg") {
             name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XMG";
         } else if (price == "trx") {
