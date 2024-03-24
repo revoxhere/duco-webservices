@@ -564,6 +564,9 @@ function login(token) {
             } else if (data.message.includes("captcha")) {
                 alert_bulma("Incorrect captcha. Refresh and try again, if the issue persists make sure nothing blocks ReCaptcha");
                 return;
+            } else if (data.message.includes("IP")) {
+                alert_bulma("Your IP address is considered malicious. If you're not doing anything wrong, change your network (e.g. to Wi-Fi or mobile data) or restart your router");
+                return;
             } else if (data.message.includes("banned")) {
                 document.getElementsByTagName('html')[0].remove();
                 return;
