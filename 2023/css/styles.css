@@ -426,7 +426,8 @@ input[type="checkbox"]:checked::before {
         opacity: 0.8;
         filter: brightness(90%) contrast(100%) blur(3px);
         /* background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important; */
-        background-image: url("/assets/backgrounds/yenn-mountains-1.jpg") !important;
+        /* background-image: url("/assets/backgrounds/yenn-mountains-1.jpg") !important; */
+        background-image: url("/assets/backgrounds/jpx13-spring-1.jpg") !important;
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
