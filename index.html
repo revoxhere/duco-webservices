@@ -413,8 +413,7 @@
 							</center>
 
 							<div class="notification is-warning">
-								Unfortunately the DDoS attacks continue. We're taking measures to make them less impactful but some bursts still get through. We may run a second server to handle the backup API calls, but we don't want to share too much data for obvious reasons.
-								~ Duino Team
+								Unfortunately the DDoS attacks continue. We're taking measures to make them less impactful but some bursts still get through. We have opened a second API server for basic readonly functions until the attack is mitigated. ~ Duino Team
 							</div>
 
 							<div class="field">
@@ -490,8 +489,7 @@
 			<div class="login-bottom box">
 				
 				<div class="notification is-warning">
-					Unfortunately the DDoS attacks continue. We're taking measures to make them less impactful but some bursts still get through. We may run a second server to handle the backup API calls, but we don't want to share too much data for obvious reasons.
-					~ Duino Team
+					Unfortunately the DDoS attacks continue. We're taking measures to make them less impactful but some bursts still get through. We have opened a second API server for basic readonly functions until the attack is mitigated. ~ Duino Team
 				</div>
 
 				<span id="image_author">...</span>
@@ -627,6 +625,13 @@
 							<p class="title is-size-6 adblock_title"></p>
 							<p class="subtitle is-size-6 adblock_desc"></p>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div class="tile is-ancestor">
+				<div class="tile is-parent">
+					<div class="notification is-warning">
+						<b>Wallet is running in readonly mode because the main server isn't responding.</b> We're suffering from DDoS attacks and you're currently connected to a backup node while we're trying to mitigate the problem. Thanks for your patience ~ Duino Team
 					</div>
 				</div>
 			</div>
@@ -1009,6 +1014,9 @@
 								<canvas id="balanceChart"></canvas>
 							</div>
 						</div>
+					</div>
+					<div class="box has-background-danger-light readonly_mode" style="display:none">
+						<b>Wallet is running in readonly mode because the main server isn't responding.</b> We're suffering from DDoS attacks and you're currently connected to a backup node while we're trying to mitigate the problem. Thanks for your patience ~ Duino Team
 					</div>
 					<div class="box has-background-danger-light unverified_box" style="display:none">
 						<p class="title is-size-6">
