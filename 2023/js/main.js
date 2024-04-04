@@ -38,6 +38,7 @@ let miners = [];
 let wrap_api = [];
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || VISUAL_ITEMS;
 let miners_state_changed = true;
+let api_url = "server.duinocoin.com";
 
 let login_backdrop = BACKDROPS[Math.floor(Math.random() * BACKDROPS.length)];
 if (on_mobile()) {
@@ -496,8 +497,7 @@ $(document).ready(function() {
     }
 });
 
-
-function login(token) {
+function login(token, connect_timeout=3000) {
     if (on_mobile()) {
         username_input = $("#login_username");
         password_input = $("#login_password");
@@ -527,68 +527,75 @@ function login(token) {
     }
 
     loginbutton.addClass("is-loading");
-    $.getJSON(`https://server.duinocoin.com/v2/auth/${encodeURIComponent(username)}`, {
-        password: window.btoa(unescape(encodeURIComponent(password))),
-        captcha: token
-    }, function(data) {
-        if (data.success) {
-            localStorage.setItem("username", encodeURIComponent(username));
-            localStorage.setItem("authToken", data.result[2]);
 
-            $(".username").text(username);
-            $(".email").text(data.result[1]);
-            $("#mining_key").val(data.result[3]);
-            $("#mining_key_desktop").val(data.result[3]);
-
-            user_data(username, true);
-            setInterval(function() { user_data(username) }, 5000);
-
-            if (on_mobile()) {
-                $("#login-mobile").hide(function() {
-                    $("#wallet-mobile").show();
-                    adblock_check();
-                });
+    $.ajax({
+        url: `https://${api_url}/v2/auth/${encodeURIComponent(username)}`
+            + `?password=${window.btoa(unescape(encodeURIComponent(password)))}`,
+        timeout: connect_timeout, 
+        captcha: token,
+        error: function(jqXHR, textStatus, errorThrown) {
+            loginbutton.removeClass("is-loading");
+            if (api_url != "server2.duinocoin.com") {
+                toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
+                api_url = "server2.duinocoin.com";
+                login(token, 10000);
             } else {
-                $("#useravatar").attr("src",
-                    `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}?d=retro`);
-
-                $("#login-desktop").fadeOut(function() {
-                    $("#wallet-desktop").fadeIn();
-                    adblock_check();
-                });
+                alert_bulma("Network error. Check your internet connection and make sure nothing is blocking duinocoin.com");
             }
-        } else {
-            if (data.message.includes("This user doesn't exist")) {
-                username_input.effect("shake", { distance: 5 });
-                return;
-            } else if (data.message.includes("captcha")) {
-                alert_bulma("Incorrect captcha. Refresh and try again, if the issue persists make sure nothing blocks ReCaptcha");
-                return;
-            } else if (data.message.includes("IP")) {
-                alert_bulma("Your IP address is considered malicious. If you're not doing anything wrong, change your network (e.g. to Wi-Fi or mobile data) or restart your router");
-                return;
-            } else if (data.message.includes("banned")) {
-                document.getElementsByTagName('html')[0].remove();
-                return;
-            } else if (data.message.includes("Token")) {
-                toast_bulma("Token expired. Please login again");
-                password_input.val('');
-                localStorage.removeItem("authToken");
-                return;
+        },
+        success: function(data) {
+            loginbutton.removeClass("is-loading");
+            if (data.success) {
+                localStorage.setItem("username", encodeURIComponent(username));
+                localStorage.setItem("authToken", data.result[2]);
+
+                $(".username").text(username);
+                $(".email").text(data.result[1]);
+                $("#mining_key").val(data.result[3]);
+                $("#mining_key_desktop").val(data.result[3]);
+
+                user_data(username, true);
+                setInterval(function() { user_data(username) }, 5000);
+
+                if (on_mobile()) {
+                    $("#login-mobile").hide(function() {
+                        $("#wallet-mobile").show();
+                        adblock_check();
+                    });
+                } else {
+                    $("#useravatar").attr("src",
+                        `https://www.gravatar.com/avatar/${encodeURIComponent(MD5(data.result[1]))}?d=retro`);
+
+                    $("#login-desktop").fadeOut(function() {
+                        $("#wallet-desktop").fadeIn();
+                        adblock_check();
+                    });
+                }
             } else {
-                password_input.effect("shake", { distance: 5 });
-                return;
+                if (data.message.includes("This user doesn't exist")) {
+                    username_input.effect("shake", { distance: 5 });
+                    return;
+                } else if (data.message.includes("captcha")) {
+                    alert_bulma("Incorrect captcha. Refresh and try again, if the issue persists make sure nothing blocks ReCaptcha");
+                    return;
+                } else if (data.message.includes("IP")) {
+                    alert_bulma("Your IP address is considered malicious. If you're not doing anything wrong, change your network (e.g. to Wi-Fi or mobile data) or restart your router");
+                    return;
+                } else if (data.message.includes("banned")) {
+                    document.getElementsByTagName('html')[0].remove();
+                    return;
+                } else if (data.message.includes("Token")) {
+                    toast_bulma("Token expired. Please login again");
+                    password_input.val('');
+                    localStorage.removeItem("authToken");
+                    return;
+                } else {
+                    password_input.effect("shake", { distance: 5 });
+                    return;
+                }
             }
         }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.error(jqXHR, textStatus, errorThrown)
-        alert_bulma(`Network is unreachable: ${jqXHR}, ${textStatus}, ${errorThrown}`)
-    }).catch(function(err) {
-        console.error(err);
-        alert_bulma(`Network error: ${err.statusText}. Check browser console for possibly more information`)
-    }).always(function() {
-        loginbutton.removeClass("is-loading");
-    });
+    })
 }
 
 let adBlockEnabled = false;
@@ -731,7 +738,7 @@ function refresh_wrap_api() {
 
 
 function refresh_achievements(user_achievements) {
-    fetch(`https://server.duinocoin.com/achievements`)
+    fetch(`https://${api_url}/achievements`)
         .then(response => response.json())
         .then(data => {
             achievements = data.result;
@@ -911,7 +918,7 @@ function calculdaily(newb, oldb, user_items) {
 
 const user_data = (req_username, first_open) => {
     username = req_username;
-    fetch(`https://server.duinocoin.com/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
+    fetch(`https://${api_url}/v3/users/${encodeURIComponent(username)}?limit=${transaction_limit}`)
         .then(response => {
             try {
                 return response.json();
@@ -927,6 +934,10 @@ const user_data = (req_username, first_open) => {
             create_prices(data.exch_rates);
 
             if (first_open) {
+                if (api_url == "server2.duinocoin.com") {
+                    $(".readonly_mode").fadeIn();
+                }
+
                 if (data.balance.created.includes("before")) {
                     $(".acc-creation-date").text(
                         data.balance.created + " - welcome, OG member!");
@@ -2655,7 +2666,7 @@ function send() {
 
 
 function refresh_event() {
-    fetch(`https://server.duinocoin.com/event`)
+    fetch(`https://${api_url}/event`)
         .then(response => response.json())
         .then(data => {
             if (data.result.topic != "None") {
@@ -2975,14 +2986,14 @@ function register_end_2() {
                 before asking the support, try disabling your browser extensions 
                 or similar programs and try again.<br><br>
 
-                Make sure nothing blocks server.duinocoin.com`);
+                Make sure nothing blocks server2.duinocoin.com`);
             });
     }
 }
 
 
 $(register_username).focusout(function() {
-    fetch('https://server.duinocoin.com/users/' +
+    fetch(`https://${api_url}/users/` +
         encodeURIComponent(register_username.val().trim())
     ).then(data => data.json()).then(
         (data) => {
@@ -3122,7 +3133,7 @@ function generatePassword() {
                     before asking the support, try disabling your browser extensions 
                     or similar programs and try again.<br><br>
 
-                    Make sure nothing blocks server.duinocoin.com`);
+                    Make sure nothing blocks server2.duinocoin.com`);
             });
     } else {
         setErrorFor(user, "Enter your username!")
@@ -3154,7 +3165,7 @@ if (recovery_username && recovery_hash) {
                 before asking the support, try disabling your browser extensions 
                 or similar programs and try again.<br><br>
 
-                Make sure nothing blocks server.duinocoin.com`);
+                Make sure nothing blocks server2.duinocoin.com`);
         });
 }
 
