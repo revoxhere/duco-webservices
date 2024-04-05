@@ -497,7 +497,7 @@ $(document).ready(function() {
     }
 });
 
-function login(token, connect_timeout=3000) {
+function login(token, connect_timeout=7000) {
     if (on_mobile()) {
         username_input = $("#login_username");
         password_input = $("#login_password");
