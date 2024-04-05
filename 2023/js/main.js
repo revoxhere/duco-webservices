@@ -497,7 +497,7 @@ $(document).ready(function() {
     }
 });
 
-function login(token, connect_timeout=7000) {
+function login(token, connect_timeout=30000) {
     if (on_mobile()) {
         username_input = $("#login_username");
         password_input = $("#login_password");
@@ -535,13 +535,13 @@ function login(token, connect_timeout=7000) {
         captcha: token,
         error: function(jqXHR, textStatus, errorThrown) {
             loginbutton.removeClass("is-loading");
-            if (api_url != "server2.duinocoin.com") {
-                toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
-                api_url = "server2.duinocoin.com";
-                login(token, 10000);
-            } else {
+            //if (api_url != "server2.duinocoin.com") {
+                //toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
+                //api_url = "server2.duinocoin.com";
+                //login(token, 10000);
+            //} else {
                 alert_bulma("Network error. Check your internet connection and make sure nothing is blocking duinocoin.com");
-            }
+            //}
         },
         success: function(data) {
             loginbutton.removeClass("is-loading");
