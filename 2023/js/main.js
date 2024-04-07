@@ -533,15 +533,18 @@ function login(token, connect_timeout=30000) {
             + `?password=${window.btoa(unescape(encodeURIComponent(password)))}`,
         timeout: connect_timeout, 
         captcha: token,
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function(data, textStatus, xhr) {
             loginbutton.removeClass("is-loading");
-            //if (api_url != "server2.duinocoin.com") {
-                //toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
-                //api_url = "server2.duinocoin.com";
-                //login(token, 10000);
-            //} else {
+
+            if (data.status == 429 || data.status == 0) { 
+                alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
+            } else if (api_url != "server2.duinocoin.com") {
+                toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
+                api_url = "server2.duinocoin.com";
+                login(token, 10000);
+            } else {
                 alert_bulma("Network error. Check your internet connection and make sure nothing is blocking duinocoin.com");
-            //}
+            }
         },
         success: function(data) {
             loginbutton.removeClass("is-loading");
@@ -588,6 +591,9 @@ function login(token, connect_timeout=30000) {
                     toast_bulma("Token expired. Please login again");
                     password_input.val('');
                     localStorage.removeItem("authToken");
+                    return;
+                } else if (data.message.includes("many requests")) {
+                    alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
                     return;
                 } else {
                     password_input.effect("shake", { distance: 5 });
