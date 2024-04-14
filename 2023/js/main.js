@@ -936,8 +936,13 @@ const user_data = (req_username, first_open) => {
         })
         .then(data => {
             data = data.result;
-            duco_price = data.exch_rates["max"]["price"];
-            create_prices(data.exch_rates);
+            duco_price = data["prices"]["max"];
+
+            try {
+                create_prices(data.exch_rates);
+            } catch(error) {
+                console.log(error);
+            }
 
             if (first_open) {
                 if (api_url == "server2.duinocoin.com") {
