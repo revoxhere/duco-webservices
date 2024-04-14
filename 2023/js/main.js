@@ -537,7 +537,7 @@ function login(token, connect_timeout=30000) {
             loginbutton.removeClass("is-loading");
 
             if (data.status == 429 || data.status == 0) { 
-                alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
+                alert_bulma("You are being rate limited or the APIs are unreachable (maintenance or another DDoS attack). Try again in later.");
             } else if (api_url != "server2.duinocoin.com") {
                 toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
                 api_url = "server2.duinocoin.com";
