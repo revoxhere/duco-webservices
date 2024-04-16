@@ -936,7 +936,7 @@ const user_data = (req_username, first_open) => {
         })
         .then(data => {
             data = data.result;
-            duco_price = data["prices"]["max"];
+            duco_price = data["exch_rates"]["max"]["price"];
 
             try {
                 create_prices(data.exch_rates);
