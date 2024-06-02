@@ -50,6 +50,14 @@ select,
     border-color: silver #000 #000 silver !important;
 }
 
+.is-fixed-left {
+    color: black !important;
+    background-color: #C3C3C3 !important;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px gray !important;
+    border: 1px solid !important;
+    border-color: silver #000 silver silver !important;
+}
+
 .darkmode-dark-bg>.container {
     height: 100%;
 }
@@ -83,12 +91,12 @@ a:not(.button) {
     background-color: #C3C3C3 !important;
 }
 
-.navbar:not(.is-fixed-bottom) {
+.navbar:not(.is-fixed-bottom):not(.is-fixed-left) {
     color: white !important;
     background-color: #000082 !important;
 }
 
-.is-fixed-bottom, .navbar-menu {
+.is-fixed-bottom, .navbar-menu, .is-fixed-left {
     background-color: #C3C3C3 !important;
     box-shadow: none !important;
 }
