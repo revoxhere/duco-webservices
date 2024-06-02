@@ -50,6 +50,7 @@
 	<link rel="preload" as="script" href="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
 	<script type="text/javascript" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	<script tyle="text/javascript" src="https://cdn.jsdelivr.net/npm/bulma-toast@2.3.1/dist/bulma-toast.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 
@@ -413,10 +414,6 @@
 								<img src="assets/duco.svg" width="80px" class="mb-5">
 							</center>
 
-							<!--<div class="notification is-danger">
-								Thanks for all the help! I've managed to gater a few experienced people to the team and we'll be working hard as ever on mitigating the attacks.
-							</div>-->
-
 							<div class="field">
 								<label class="label">Username</label>
 								<div class="control">
@@ -488,10 +485,6 @@
 				</section>
 			</div>
 			<div class="login-bottom box">
-				
-				<!--<div class="notification is-warning">
-					We're suffering from yet another attack. You may face difficulties using the API.
-				</div>-->
 
 				<span id="image_author">...</span>
 				<img src="assets/duco.svg" width="100px" class="login-logo">
@@ -550,72 +543,178 @@
 		</div>
 	</section>
 	<section class="section is-hidden-touch" id="wallet-desktop" style="display:none">
-		<div class="container">
+		<div class="navbar is-hidden-touch is-fixed-left has-shadow" role="navigation" aria-label="main navigation">
+			<div class="navbar-item navbar-button" style="margin-bottom: 30px">
+				<center>
+					<a class="icon is-large" href="https://duinocoin.com" target="_blank">
+						<img src="assets/duco.svg">
+					</a>
+				</center>
+			</div>
+			<div id="screen-user-desktop-nav" class="navbar-item navbar-button navbar-selected" onclick="screen('screen-user-desktop')">
+				<center>
+					<i class="fa fa-lg fa-home"></i>
+				</center>
+			</div>
+			<div id="screen-iot-desktop-nav" class="navbar-item navbar-button" onclick="screen('screen-iot-desktop')">
+				<center>
+					<i class="fa fa-lg fa-cloud"></i>
+					<i class="beta fa fa-flask"></i>
+				</center>
+			</div>
+			<!--<div id="screen-balance-desktop-nav" class="navbar-item navbar-button" onclick="screen('screen-balance-desktop')">
+				<center>
+					<i class="fa fa-lg fa-chart-line"></i>
+					<i class="beta fa fa-flask"></i>
+				</center>
+			</div>-->
+			<div id="screen-settings-desktop-nav" class="navbar-item navbar-button" style="margin-top: auto; margin-bottom: 30px" onclick="screen('screen-settings-desktop')">
+				<center>
+					<i class="fa fa-lg fa-cog"></i>
+				</center>
+			</div>
+		</div>
+		<div style="display:none;" class="container" id="screen-balance-desktop">
 			<div class="tile is-ancestor">
 				<div class="tile is-parent">
 					<div class="tile is-child box p-5">
-						<article class="media">
-							<a href="https://gravatar.com" target="_blank">
-								<div class="media-left is-relative">
-									<figure class="image is-64x64">
-										<img class="is-rounded" id="useravatar" alt="User avatar" src="https://server.duinocoin.com/assets/achievements/more.png">
-									</figure>
-									<img id="hat" style="height:50px;width:50px;position:absolute;top:-1.75em;margin-left:10px;display:none;pointer-events: none;opacity:0.9">
-									<img id="sunglasses" style="height:64px;width:64px;position:absolute;top:-0.25em;display:none;pointer-events: none;opacity:0.9">
-									<img id="bowtie" style="height:44px;width:44px;position:absolute;top:2.3em;left:.6em;display:none;pointer-events: none;opacity:0.9">
-									<p class="has-text-centered">
-										<a onclick="open_settings()">
-											<i class="fa fa-cog"></i>
-										</a>
-										<a onclick="open_shop()">
-											<i class="fa fa-shopping-bag"></i>
-										</a>
-										<a onclick="view_achievements()">
-											<i class="fa fa-trophy"></i>
-										</a>
-									</p>
-								</div>
-							</a>
-							<div class="media-content">
-								<h1 class="heading">
-									<span class="greeting">Welcome back</span>, <b class="username">user</b>!
-									<span class="badges">
-										<a target="_blank" href="https://server.duinocoin.com/verify.html" class="is-danger tag unverifiedbadge" style="display:none">
-											UNVERIFIED
-										</a>
-										<span class="is-success tag verifiedbadge" style="display:none">
-											<i class='fa fa-user-check'></i>
-										</span>
-										<span class="is-warning tag suspiciousbadge" style="display:none">
-											SUSPICIOUS
-										</span>
-										<span class="is-warning gold tag starterbadge" style="display:none">
-											STARTER
-										</span>
-										<span class="is-danger tag blushyboxbadge" style="display:none">
-											😊
-										</span>
-									</span>
-								</h1>
-								<div class="columns is-gapless">
-									<div class="column">
-										<p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
-											<strong class="has-text-weight-bold balance">?</strong> DUCO
-											<button class="button is-small buybutton" onclick="buymenu()">
-												<i class="fa fa-plus"></i>
-											</button>
-										</p>
-										<p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
-											<span class="balanceusd">$0.0</span>
-											<small class="price_trend"></small>
-											<span class="has-text-grey-light" onclick="estimated_price_warning()">
-												<i class="fa fa-exclamation-circle"></i>
+						<div id="balance-chart-desktop-container">
+							<canvas id="balance-chart-desktop">
+							</canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="display:none;" class="container" id="screen-iot-desktop">
+			<div class="tile is-ancestor">
+				<div class="tile is-parent">
+					<div class="tile is-child box p-5">
+						<p class="title">
+							Your Duino IoT historic data
+						</p>
+						<p class="subtitle">
+							Saved every 5 minutes on our servers for free; current limit: 500 data points per user
+						</p>
+						<p class="notification is-info">
+							<i class="fa fa-info-circle"></i>
+							This is an experimental feature subject to many changes in the future. Feel free to share feedback and submit PRs to improve it
+						</p>
+						<p class="heading">
+							Settings
+						</p>
+						<div class="columns is-vcentered is-mobile">
+							<div class="column is-narrow">
+								<label>
+									Start at 0
+								</label>
+							</div>
+							<div class="column is-narrow">
+						  		<input type="checkbox" checked id="iot-start-zero" onclick="refresh_iot_charts()">
+						  	</div>
+
+						  	<div class="column is-narrow">
+								<label>Time range</label>
+							</div>
+							<div class="column is-narrow">
+								<div class="control">
+									<div class="field">
+										<p class="control">
+											<span class="select">
+												<select id="iot-data-since" onclick="refresh_iot_charts()">
+													<option value="1">24 hours</option>
+													<option value="2">48 hours</option>
+													<option selected value="3">3 days</option>
+													<option value="5">5 days</option>
+													<option value="10">10 days</option>
+													<option value="14">2 weeks</option>
+												</select>
 											</span>
 										</p>
 									</div>
 								</div>
 							</div>
-						</article>
+						</div>
+						<p class="heading">Charts</p>
+						<div id="chartContainer" class="columns is-multiline">
+							<div class="container p-3">
+								<p class="title is-size-5">
+									No data saved yet
+								</p>
+								<p class="subtitle is-size-5">
+									If you have setup Duino IoT on your device, wait at least 10 minutes - the charts need at least two data points to start showing up
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="screen-user-desktop">
+			<div class="tile is-ancestor">
+				<div class="tile is-parent">
+					<div class="tile is-child box p-0">
+						<div id="userbox-wrapper" class="p-5">
+							<article class="media">
+								<a href="https://gravatar.com" target="_blank">
+									<div class="media-left is-relative">
+										<figure class="image is-64x64">
+											<img class="is-rounded" id="useravatar" alt="User avatar" src="https://server.duinocoin.com/assets/achievements/more.png">
+										</figure>
+										<img id="hat" style="height:50px;width:50px;position:absolute;top:-1.75em;margin-left:10px;display:none;pointer-events: none;opacity:0.9">
+										<img id="sunglasses" style="height:64px;width:64px;position:absolute;top:-0.25em;display:none;pointer-events: none;opacity:0.9">
+										<img id="bowtie" style="height:44px;width:44px;position:absolute;top:2.3em;left:.6em;display:none;pointer-events: none;opacity:0.9">
+										<p class="has-text-centered">
+											<a onclick="open_shop()">
+												<i class="fa fa-shopping-bag"></i>
+											</a>
+											<a onclick="view_achievements()">
+												<i class="fa fa-trophy"></i>
+											</a>
+										</p>
+									</div>
+								</a>
+								<div class="media-content">
+									<h1 class="heading">
+										<span class="greeting">Welcome back</span>, <b class="username">user</b>!
+										<span class="badges">
+											<a target="_blank" href="https://server.duinocoin.com/verify.html" class="is-danger tag unverifiedbadge" style="display:none">
+												UNVERIFIED
+											</a>
+											<span class="is-success tag verifiedbadge" style="display:none">
+												<i class='fa fa-user-check'></i>
+											</span>
+											<span class="is-warning tag suspiciousbadge" style="display:none">
+												SUSPICIOUS
+											</span>
+											<span class="is-warning gold tag starterbadge" style="display:none">
+												STARTER
+											</span>
+											<span class="is-danger tag blushyboxbadge" style="display:none">
+												😊
+											</span>
+										</span>
+									</h1>
+									<div class="columns is-gapless">
+										<div class="column">
+											<p class="title is-size-5 has-text-left has-text-weight-normal mb-0">
+												<strong class="has-text-weight-bold balance">?</strong> DUCO
+												<button class="button is-small buybutton" onclick="buymenu()">
+													<i class="fa fa-plus"></i>
+												</button>
+											</p>
+											<p class="title is-size-6 has-text-left has-text-weight-normal mb-0 mt-0">
+												<span class="balanceusd">$0.0</span>
+												<small class="price_trend"></small>
+												<span class="has-text-grey-light" onclick="estimated_price_warning()">
+													<i class="fa fa-exclamation-circle"></i>
+												</span>
+											</p>
+										</div>
+									</div>
+								</div>
+							</article>
+						</div>
 					</div>
 				</div>
 				<div class="tile is-parent">
@@ -1430,7 +1529,7 @@
 			<div class="columns is-mobile is-centered navbar-menu">
 				<div id="screen-user-mobile-nav" class="column navbar-button navbar-selected" onclick="screen('screen-user-mobile');">
 					<center>
-						<i class="fa fa-lg fa-user"></i>
+						<i class="fa fa-lg fa-home"></i>
 					</center>
 				</div>
 				<div id="screen-transactions-mobile-nav" class="column navbar-button" onclick="screen('screen-transactions-mobile');">
@@ -1935,25 +2034,11 @@
 			</div>
 		</div>
 	</div>
-	<div id="settings-desktop" style="display:none" class="darkmode-dark-bg">
-		<div class="container">
-			<div class="navbar p-4">
-				<div class="columns is-vcentered mx-3">
-					<div class="column is-narrow">
-						<div class="triangle-left" onclick="close_settings()"></div>
-					</div>
-					<div class="column">
-						<span>
-							Settings
-						</span>
-					</div>
-				</div>
-			</div>
+	<div id="screen-settings-desktop" style="display:none" class="darkmode-dark-bg">
+		<div class="container box">
 			<div class="p-4">
+				<h1 class="heading">Appearance</h1>
 				<div class="buttons">
-					<button class="button mt-2" onclick="logout()">
-						Logout
-					</button>
 					<div class="control has-icons-left">
 						<div class="select">
 							<select id="theme_desktop">
@@ -2116,8 +2201,14 @@
 						<span class="acc-trustscore">0</span>
 					</div>
 				</div>
+				<div class="buttons">
+					<button class="button" onclick="logout()">
+						Logout
+					</button>
+				</div>
 			</div>
 		</div>
+		<br><br><br>
 	</div>
 	<div id="fullscreen_alert" class="greyout" style="display:none">
 		<div class="notification m-3" id="alert_container">
