@@ -19,7 +19,8 @@ body {
 
 @media screen and (min-width: 1024px) {
     .box,
-    .notification {
+    .notification,
+    .is-fixed-left {
         /* background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); */
         background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg");
         background-size: 100vw 100vh;
@@ -83,7 +84,8 @@ body:before {
         #help>.container,
         #settings-desktop>.container,
         .box,
-        .notification {
+        .notification,
+        .is-fixed-left {
             /*background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg");*/
             background-image: url("/assets/backgrounds/yenn-mountains-1-blur-dark.jpg");
             background-color: rgba(0, 0, 0, 0.7) !important;
