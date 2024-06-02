@@ -30,7 +30,8 @@ const BACKDROPS = [
     "lunarismemo",
     "ismellcows"
 ];
-let last_screen = "screen-user-mobile";
+
+let last_screen = "screen-user-desktop";
 let username, password, verified;
 let transaction_limit = 10;
 let transactions = [];
@@ -39,9 +40,12 @@ let wrap_api = [];
 let enabledItems = JSON.parse(localStorage.getItem("enabledItems")) || VISUAL_ITEMS;
 let miners_state_changed = true;
 let api_url = "server.duinocoin.com";
+let timedelta = 3;
 
 let login_backdrop = BACKDROPS[Math.floor(Math.random() * BACKDROPS.length)];
 if (on_mobile()) {
+    last_screen = "screen-user-mobile";
+    timedelta = 1;
     $("#backdrop-mobile").css("background-image",
         "url('/assets/community_screens/" + login_backdrop + ".jpg')")
     $("#image_author").text(login_backdrop)
@@ -537,7 +541,7 @@ function login(token, connect_timeout=30000) {
             loginbutton.removeClass("is-loading");
 
             if (data.status == 429 || data.status == 0) { 
-                alert_bulma("You are being rate limited or the APIs are unreachable (maintenance or another DDoS attack). Try again in later.");
+                alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
             } else if (api_url != "server2.duinocoin.com") {
                 toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
                 api_url = "server2.duinocoin.com";
@@ -652,9 +656,9 @@ function screen(transition_to) {
 
     $(`#${last_screen}-nav`).removeClass("navbar-selected");
     $(`#${transition_to}-nav`).addClass("navbar-selected");
-    $(`#${last_screen}`).fadeOut(50, function() {
+    $(`#${last_screen}`).fadeOut(timedelta*50, function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        $(`#${transition_to}`).fadeIn(120);
+        $(`#${transition_to}`).fadeIn(timedelta*120);
         last_screen = transition_to;
     });
 }
@@ -936,13 +940,8 @@ const user_data = (req_username, first_open) => {
         })
         .then(data => {
             data = data.result;
-            duco_price = data["exch_rates"]["max"]["price"];
-
-            try {
-                create_prices(data.exch_rates);
-            } catch(error) {
-                console.log(error);
-            }
+            duco_price = data.exch_rates["max"]["price"];
+            create_prices(data.exch_rates);
 
             if (first_open) {
                 if (api_url == "server2.duinocoin.com") {
@@ -966,6 +965,8 @@ const user_data = (req_username, first_open) => {
                 user_items = data.items;
                 refresh_shop(user_items);
 
+                refresh_iot_charts();
+
                 if (user_items.includes(12)) {
                     $(".starterbadge").fadeIn();
                 }
@@ -985,8 +986,76 @@ const user_data = (req_username, first_open) => {
                 calculdaily(balance, oldb, user_items);
                 oldb = balance;
             }
+            
+            /*function fetch_balance_data(username) {
+                fetch(`http://127.0.0.1:5000/historic_balance?username=${username}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        create_balance_chart(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching balance data:', error);
+                    });
+                setTimeout(function() {
+                    fetch_balance_data(username);
+                }, 10000)
+            }
+            // fetch_balance_data(username);
+            function create_balance_chart(data) {
+                let chartContainer = document.getElementById('balance-chart-desktop');
+                chartContainer.innerHTML = ''; // Clear existing charts
+                console.log(data);
+                let datasetsByThreadId = {};
 
-            if (first_open && on_mobile()) {
+                data.datasets.forEach(dataset => {
+                    let threadId = dataset.label;
+                    if (!datasetsByThreadId[threadId]) {
+                        datasetsByThreadId[threadId] = [];
+                    }
+                    datasetsByThreadId[threadId].push(dataset);
+                });
+
+                for (let threadId in datasetsByThreadId) {
+                    if (datasetsByThreadId.hasOwnProperty(threadId)) {
+                        let datasets = datasetsByThreadId[threadId];
+
+                        let ctx = chartContainer.getContext('2d');
+
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: data.labels.map(timestamp => new Date(timestamp * 1000).toLocaleString()),
+                                datasets: datasets
+                            },
+                            options: {
+                                animation: {
+                                    duration: 0
+                                },
+                                responsive: true,
+                                elements: {
+                                    line: {
+                                        tension: 0.15,
+                                    },
+                                    point: {
+                                        radius: 2,
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: threadId
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }*/
+
+            if (first_open) {
                 balanceChartData = {
                     labels: get_stored_balance("dates"),
                     datasets: [{
@@ -1005,12 +1074,32 @@ const user_data = (req_username, first_open) => {
                         },
                     }, ],
                 };
-                const ctx = document.getElementById('balanceChart').getContext('2d');
-                balanceChart = new Chart(ctx, {
-                    type: 'line',
-                    data: balanceChartData,
-                    options: balanceChartOptions,
-                });
+                if (on_mobile()) {
+                    balanceChartData = {
+                        labels: get_stored_balance("dates"),
+                        datasets: [{
+                            label: 'Balance',
+                            borderColor: '#FC6803',
+                            backgroundColor: 'rgba(252, 104, 3, 0.2)',
+                            borderWidth: 2,
+                            fill: true,
+                            showLine: true,
+                            data: get_stored_balance("values"),
+                            pointRadius: 0,
+                            pluginData: {
+                                fill: '+1',
+                                borderColor: 'rgba(0, 0, 0, 0)',
+                                borderDash: [5, 5],
+                            },
+                        }, ],
+                    };
+                    const ctx = document.getElementById('balanceChart').getContext('2d');
+                    balanceChart = new Chart(ctx, {
+                        type: 'line',
+                        data: balanceChartData,
+                        options: balanceChartOptions,
+                    });
+                }
             } else if (on_mobile()) {
                 balanceChart.data.labels.push(Date.now());
                 balanceChart.data.datasets.forEach((dataset) => {
@@ -1018,6 +1107,7 @@ const user_data = (req_username, first_open) => {
                 });
                 balanceChart.update();
             }
+
             $(".balance").text(balance);
             balance_usd = balance * duco_price;
             $(".balanceusd").text(`$${
@@ -1677,7 +1767,7 @@ function scientific_prefix(value) {
 
 function focus_mining_key() {
     if (on_mobile()) screen('screen-settings-mobile');
-    else open_settings()
+    else screen('screen-settings-desktop')
     setTimeout(function() {
         if (on_mobile()) {
             $("#mining_key")[0].scrollIntoView();
@@ -2104,6 +2194,111 @@ function toggleItem(itemid) {
 }
 
 
+function refresh_iot_charts() {
+    let charts = {};
+
+    function fetch_iot_data(username) {
+        let days = $("#iot-data-since").val();
+        fetch(`https://${api_url}/historic_iot?username=${username}&days=${days}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.datasets.length) create_iot_charts(data);
+            })
+            .catch(error => {
+                console.error('Error fetching IoT data:', error);
+            });
+        setTimeout(function() {
+            fetch_iot_data(username);
+        }, 60 * 1000);
+    }
+
+    function create_iot_charts(data) {
+        let chartContainer = document.getElementById('chartContainer');
+        chartContainer.innerHTML = '';
+
+        let startAtZero = $("#iot-start-zero").is(':checked');
+
+        let chartColors = [
+            'green', 'red', 'orange', 'blue', 'purple', 'cyan', 'magenta', 'yellow'
+        ];
+
+        let datasetsByThreadId = {};
+
+        data.datasets.forEach(dataset => {
+            let threadId = dataset.label;
+            if (!datasetsByThreadId[threadId]) {
+                datasetsByThreadId[threadId] = [];
+            }
+            datasetsByThreadId[threadId].push(dataset);
+        });
+
+        let color_idx = 0;
+        for (let threadId in datasetsByThreadId) {
+            if (datasetsByThreadId.hasOwnProperty(threadId)) {
+                let datasets = datasetsByThreadId[threadId];
+
+                let canvas_div = document.createElement('div');
+                canvas_div.classList.add('column');
+                canvas_div.classList.add('is-half');
+                chartContainer.appendChild(canvas_div);
+
+                let canvas = document.createElement('canvas');
+                canvas_div.appendChild(canvas);
+
+                let ctx = canvas.getContext('2d');
+
+                datasets.forEach((dataset, index) => {
+                    dataset.borderColor = chartColors[color_idx % chartColors.length];
+                });
+
+                if (charts[threadId]) {
+                    charts[threadId].data.labels = data.labels.map(timestamp => new Date(timestamp * 1000).toLocaleString());
+                    charts[threadId].data.datasets = datasets;
+                    charts[threadId].options.scales.y.beginAtZero = startAtZero;
+                    charts[threadId].update();
+                } else {
+                    charts[threadId] = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels.map(timestamp => new Date(timestamp * 1000).toLocaleString()),
+                            datasets: datasets
+                        },
+                        options: {
+                            animation: {
+                                duration: 0
+                            },
+                            responsive: true,
+                            elements: {
+                                line: {
+                                    tension: 0.15,
+                                },
+                                point: {
+                                    radius: 2,
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: threadId
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: startAtZero
+                                }
+                            }
+                        }
+                    });
+                }
+
+                color_idx++;
+            }
+        }
+    }
+
+    fetch_iot_data(username);
+}
+
+
+
 function refresh_shop(user_items) {
     fetch(`https://server.duinocoin.com/shop_items`)
         .then(response => response.json())
@@ -2442,27 +2637,6 @@ function close_stakemenu() {
     }
 }
 
-
-
-function open_settings() {
-    if (adBlockEnabled) adblock_alert();
-    // desktop only (no separate screen)
-    $("html").css("overflow-y", "hidden");
-    $("#settings-desktop").fadeIn('fast', function() {
-        $(document).click(function(event) {
-            if (event.target.id == ("settings-desktop") && $('#settings-desktop').is(":visible")) {
-                close_settings();
-            }
-        });
-    });
-}
-
-function close_settings() {
-    // desktop only (no separate screen)
-    $("#settings-desktop").fadeOut('fast', function() {
-        $("html").css("overflow-y", "scroll");
-    });
-}
 
 function stake() {
     stake_amount = $("#stake_amount").val();
