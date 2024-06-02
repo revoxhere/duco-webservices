@@ -685,7 +685,7 @@ input[type="checkbox"]:checked::before {
 /* Gold gradient effect */
 .gold {
     color: white !important;
-    background: linear-gradient(102deg, #fcf581, #dfb322, #bc7113, #fff686);
+    background: linear-gradient(105deg, #fcf581, #dfb322, #bc7113, #fff686);
     background-size: 400% 400%;
     animation: gold 7s ease infinite;
 }
