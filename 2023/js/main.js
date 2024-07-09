@@ -802,7 +802,9 @@ function create_prices(prices) {
     }
 
     delete prices.max;
-
+    delete prices.bch;
+    delete prices.nano;
+    
     finalhtml = "";
     for (price in prices) {
         link = "https://exchange.duinocoin.com";
