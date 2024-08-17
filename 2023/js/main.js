@@ -1848,15 +1848,15 @@ function miner_details(miner_id) {
         icon = `<img src="assets/esp32s.gif">`;
         miner_type = "ESP32-S2";
         percentage = 0.96;
-        hashrate_range = [55000, 90000];
-        diff_range = [5799, 5801];
+        hashrate_range = [65000, 130000];
+        diff_range = [6399, 6401];
     } else if (miner_software.includes("ESP32")) {
         color = "#6B6B6B";
         icon = `<img src="assets/esp32.gif">`;
         miner_type = "ESP32";
         percentage = 0.96;
-        hashrate_range = [37000, 46000];
-        diff_range = [5399, 5401];
+        hashrate_range = [40000, 100000];
+        diff_range = [8199, 8201];
     } else if (miner_software.includes("AVR") && miner_diff >= 128) {
         icon = `<img src="assets/pico.gif">`;
         color = "#056938";
