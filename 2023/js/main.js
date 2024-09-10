@@ -1834,14 +1834,14 @@ function miner_details(miner_id) {
         miner_type = "ESP32";
         if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 45000];
-        diff_range = [1000, 6000];
+        hashrate_range = [18000, 95000];
+        diff_range = [1000, 9000];
     } else if (miner_software.includes("ESP8266")) {
         icon = `<img src="assets/wemos.gif">`;
         color = "#4895EF";
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [71000, 61000];
+        hashrate_range = [51000, 91000];
         diff_range = [4999, 5001];
     } else if (miner_software.includes("ESP32-S2")) {
         color = "#6B6B6B";
@@ -1855,7 +1855,7 @@ function miner_details(miner_id) {
         icon = `<img src="assets/esp32.gif">`;
         miner_type = "ESP32";
         percentage = 0.96;
-        hashrate_range = [40000, 100000];
+        hashrate_range = [40000, 200000];
         diff_range = [8199, 8201];
     } else if (miner_software.includes("AVR") && miner_diff >= 128) {
         icon = `<img src="assets/pico.gif">`;
