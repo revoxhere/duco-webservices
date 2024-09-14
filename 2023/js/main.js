@@ -14,10 +14,6 @@ const BACKDROPS = [
     "CUTSDBZ",
     "Albedo",
     "Baphomet",
-    "Rbean",
-    "Tsifios",
-    "Shibby",
-    "gjanas",
     "Jonny11",
     "Bujonek",
     "Kwiatens",
@@ -428,7 +424,7 @@ const miner_template2 = `
 `
 
 const achievement_template = `
-<div class="column" style="min-width: 250px">
+<div class="column" style="min-width: 300px">
     <div class="box">
         <div class="columns is-mobile {{GRAY}}">
             <div class="column is-narrow">
@@ -450,7 +446,7 @@ const achievement_template = `
 </div>`
 
 const shop_template = `
-<div class="column" style="min-width: 250px">
+<div class="column" style="min-width: 300px">
     <div class="box">
         <div class="columns is-mobile">
             <div class="column is-narrow">
@@ -775,9 +771,9 @@ function refresh_achievements(user_achievements) {
             }
             $("#dash_achv_all").text(total_achievements)
             $("#dash_achv_unlocked").text(user_achievements.length)
-            $("#achievements_all").text(total_achievements)
-            $("#achievements_unlocked").text(user_achievements.length)
-            $("#achievements_content").html(finalhtml)
+            $(".achievements_all").text(total_achievements)
+            $(".achievements_unlocked").text(user_achievements.length)
+            $(".achievements_content").html(finalhtml)
         });
 }
 
@@ -2338,7 +2334,7 @@ function refresh_shop(user_items) {
                     .replace("{{ICON}}", shop_items[item]["icon"])
                     .replace("{{BUTTON}}", button_string);
             }
-            $("#shop_content").html(finalhtml)
+            $(".shop_content").html(finalhtml)
         });
 
     if (!user_items) return;
@@ -3539,4 +3535,8 @@ function updateValueDevices(e) {
         }
     }
     update_element("values", round_to(2, result) + " ᕲ/day");
+}
+
+function update_shop_devices() {
+    
 }
