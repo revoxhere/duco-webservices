@@ -3392,22 +3392,32 @@ $("#theme_desktop").on('change', function() {
     selected_theme = $("#theme_desktop").val();
 
     if (selected_theme == "Terminal") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
         localStorage.setItem('theme', 'Glossy');
     } else if (selected_theme == "Retro") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', false);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Retro');
+    } else if (selected_theme == "Halloween") {
+        $("#theme-halloween").attr('disabled', false);
+        $("#theme-retro").attr('disabled', true);
+        $("#theme-terminal").attr('disabled', true);
+        $("#theme-glossy").attr('disabled', true);
+        localStorage.setItem('theme', 'Halloween');
     } else {
         // default adaptive - disable all
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
@@ -3419,22 +3429,32 @@ $("#theme_mobile").on('change', function() {
     selected_theme = $("#theme_mobile").val();
 
     if (selected_theme == "Terminal") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', false);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Terminal');
     } else if (selected_theme == "Glossy") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', false);
         localStorage.setItem('theme', 'Glossy');
     } else if (selected_theme == "Retro") {
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', false);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Retro');
+    } else if (selected_theme == "Halloween") {
+        $("#theme-halloween").attr('disabled', false);
+        $("#theme-retro").attr('disabled', true);
+        $("#theme-terminal").attr('disabled', true);
+        $("#theme-glossy").attr('disabled', true);
+        localStorage.setItem('theme', 'Halloween');
     } else {
         // default adaptive - disable all
+        $("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
