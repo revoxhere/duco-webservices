@@ -97,8 +97,8 @@ body:before {
     }
 }
 
-.login-backdrop-desktop {
-    border-radius: 24px 0px 0px 24px;
+#backdrop-desktop {
+    border-radius: 16px 0px 0px 16px;
 }
 
 input[type="checkbox"]::before {
