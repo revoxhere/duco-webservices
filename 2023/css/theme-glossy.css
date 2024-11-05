@@ -21,8 +21,9 @@ body {
     .box,
     .notification,
     .is-fixed-left {
-        background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); 
+        /* background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); */
         /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg"); */
+        background-image: url("/assets/backgrounds/eberhardgross-blur-light.jpg");
         background-size: 100vw 100vh;
         background-attachment: fixed;
         -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
@@ -57,8 +58,9 @@ body {
     #shop>.container,
     #help>.container,
     #settings-desktop>.container {
-        background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); 
+        /* background-image: url("/assets/backgrounds/yenn-sea-1-blur.jpg"); */
         /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg"); */
+        background-image: url("/assets/backgrounds/eberhardgross-blur-light.jpg");
         background-size: 100vw 100vh;
         background-attachment: fixed;
         -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
@@ -87,8 +89,9 @@ body:before {
         .box,
         .notification,
         .is-fixed-left {
-            background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg");
-            /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur-dark.jpg"); */
+            /* background-image: url("/assets/backgrounds/yenn-sea-1-blur-dark.jpg"); */
+            /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur-dark.jpg");*/
+            background-image: url("/assets/backgrounds/eberhardgross-blur-dark.jpg");
             background-color: rgba(0, 0, 0, 0.7) !important;
         }
     }
