@@ -118,7 +118,7 @@
 .is-fixed-left {
     z-index:100;
     position: fixed;
-    background-color: rgba(255,255,255, 0.8) !important;
+    background-color: rgba(255,255,255, 0.85) !important;
     left:0;
     top:0;
     width:4vw;
@@ -448,7 +448,7 @@ input[type="checkbox"]:checked::before {
     }
 
     .box {
-        background-color: rgba(255, 255, 255, 0.9) !important;
+        background-color: rgba(255, 255, 255, 0.85) !important;
     }
 
     .adblocker_detected {
@@ -466,7 +466,8 @@ input[type="checkbox"]:checked::before {
         height: 100%;
         opacity: 0.8;
         filter: brightness(90%) contrast(100%) blur(3px);
-        background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important;
+        background-image: url("/assets/backgrounds/eberhardgross-1.jpg") !important;
+        /* background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-mountains-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/jpx13-spring-1.jpg") !important; */
         background-repeat: no-repeat;
@@ -511,7 +512,7 @@ input[type="checkbox"]:checked::before {
         }
 
         .box, .is-fixed-left {
-            background-color: rgba(16, 16, 16, 0.9) !important;
+            background-color: rgba(16, 16, 16, 0.85) !important;
         }
 
         *::-webkit-scrollbar-track {
