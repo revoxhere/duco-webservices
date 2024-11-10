@@ -805,6 +805,7 @@ function create_prices(prices) {
     delete prices.max;
     delete prices.bch;
     delete prices.nano;
+    delete prices.trx;
     
     finalhtml = "";
     for (price in prices) {
