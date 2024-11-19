@@ -497,7 +497,7 @@ $(document).ready(function() {
     }
 });
 
-function login(token, connect_timeout=30000) {
+function login(token, connect_timeout=5000) {
     if (on_mobile()) {
         username_input = $("#login_username");
         password_input = $("#login_password");
@@ -536,14 +536,14 @@ function login(token, connect_timeout=30000) {
         error: function(data, textStatus, xhr) {
             loginbutton.removeClass("is-loading");
 
-            if (data.status == 429 || data.status == 0) { 
+            if (data.status == 429) { 
                 alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
             } else if (api_url != "server2.duinocoin.com") {
-                toast_bulma(`Main server seems unreachable. Retrying with a backup node.`)
+                toast_bulma(`Main server seems unreachable. Retrying with a backup node...`)
                 api_url = "server2.duinocoin.com";
                 login(token, 10000);
             } else {
-                alert_bulma("Network error. Check your internet connection and make sure nothing is blocking duinocoin.com");
+                alert_bulma("Network error. Check your internet connection and make sure nothing is blocking server.duinocoin.com. It's also possible there is some maintenance going on - if that's the case, try again in a few minutes.");
             }
         },
         success: function(data) {
@@ -805,7 +805,6 @@ function create_prices(prices) {
     delete prices.max;
     delete prices.bch;
     delete prices.nano;
-    delete prices.trx;
     
     finalhtml = "";
     for (price in prices) {
