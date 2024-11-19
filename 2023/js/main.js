@@ -538,6 +538,8 @@ function login(token, connect_timeout=5000) {
 
             if (data.status == 429) { 
                 alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
+            } else if (data.status == 502) {
+                alert_bulma("APIs are down. Either there's some maintenance going on, or an outage has happened. Please try again later.")
             } else if (api_url != "server2.duinocoin.com") {
                 toast_bulma(`Main server seems unreachable. Retrying with a backup node...`)
                 api_url = "server2.duinocoin.com";
