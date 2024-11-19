@@ -812,7 +812,7 @@ function create_prices(prices) {
     for (price in prices) {
         link = "https://exchange.duinocoin.com";
         icon = "assets/ducoexchange.png";
-
+        type = "Unknown";
         if (price == "bch") {
             name = "DUCO Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
