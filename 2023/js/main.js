@@ -609,7 +609,7 @@ function login(token, connect_timeout=5000) {
 let adBlockEnabled = false;
 
 function adblock_check() {
-    const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6607105763246092';
 
     try {
         fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true);
@@ -632,7 +632,7 @@ function adblock_check() {
             $(".adblock_desc").html(adblock_desc);
             $(".adblocker_detected").fadeIn();
         }
-    }, 2000);
+    }, 5000);
 }
 
 
