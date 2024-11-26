@@ -620,9 +620,9 @@ function adblock_check() {
     let initial_height = $('.adsbygoogle').height();
     (adsbygoogle = window.adsbygoogle || []).push({});
     setTimeout(function() {
-        if ($('.adsbygoogle').height() == initial_height) {
+        /*if ($('.adsbygoogle').height() <= initial_height) {
             adBlockEnabled = true;
-        }
+        }*/
 
         if (adBlockEnabled) {
             selected_notif = Math.floor(Math.random() * adblockNotifications.length);
