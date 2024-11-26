@@ -620,9 +620,9 @@ function adblock_check() {
     let initial_height = $('.adsbygoogle').height();
     (adsbygoogle = window.adsbygoogle || []).push({});
     setTimeout(function() {
-        if ($('.adsbygoogle').height() <= initial_height) {
+        /*if ($('.adsbygoogle').height() <= initial_height) {
             adBlockEnabled = true;
-        }
+        }*/
 
         if (adBlockEnabled) {
             selected_notif = Math.floor(Math.random() * adblockNotifications.length);
@@ -632,7 +632,7 @@ function adblock_check() {
             $(".adblock_desc").html(adblock_desc);
             $(".adblocker_detected").fadeIn();
         }
-    }, 5000);
+    }, 3000);
 }
 
 
