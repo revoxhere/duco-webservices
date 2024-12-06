@@ -466,7 +466,8 @@ input[type="checkbox"]:checked::before {
         height: 100%;
         opacity: 0.8;
         filter: brightness(90%) contrast(100%) blur(3px);
-        background-image: url("/assets/backgrounds/eberhardgross-1.jpg") !important;
+        background-image: url("/assets/backgrounds/yenn-mountains-2.jpg") !important;
+        /* background-image: url("/assets/backgrounds/eberhardgross-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-mountains-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/jpx13-spring-1.jpg") !important; */
@@ -722,7 +723,7 @@ a:active {
     animation: blink 1s linear infinite;
 }
 
-/* Christmas progress bars
+Christmas progress bars
 progress::-webkit-progress-bar {
   background-color: #fff;
   border-radius: 15px;
@@ -739,4 +740,4 @@ progress::-moz-progress-bar {
   background: repeating-linear-gradient(60deg, #e44d26, #e44d26 15px, #fff 15px, #fff 30px);
   border-radius: 15px;
   background-size: 30px 30px;
-}*/
+}
