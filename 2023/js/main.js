@@ -2135,18 +2135,6 @@ function close_achievements() {
 }
 
 
-function open_gift() {
-    fetch(`https://${api_url}/events/christmas_2024?username=${username}`)
-        .then(response => response.json())
-        .then(data => {
-            alert_bulma(`Your random christmas gift for this year: <b>${data.result}</b><br>Enjoy!`);
-        })
-        .catch(error => {
-            console.error('Error fetching gift data:', error);
-        });
-}
-
-
 function open_shop() {
     if (adBlockEnabled) adblock_alert();
     $("html").css("overflow-y", "hidden");
