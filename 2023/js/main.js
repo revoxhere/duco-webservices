@@ -834,7 +834,7 @@ function create_prices(prices) {
             name = "Sushi<wbr>Swap";
             icon = "assets/sushiswap.png";
             type = "maticDUCO <i class='fa fa-exchange-alt'></i> MATIC"
-            link = "https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2";
+            link = "https://www.sushi.com/polygon/swap?token0=0xaf965beB8C830aE5dc8280d1c7215B8F0aCC0CeA&token1=NATIVE";
         } else if (price == "pancake") {
             name = "Pancake<wbr>Swap";
             icon = "assets/pancakeswap.png";
@@ -844,7 +844,7 @@ function create_prices(prices) {
             name = "Ube<wbr>Swap";
             icon = "assets/ubeswap.png";
             type = "celoDUCO <i class='fa fa-exchange-alt'></i> mCUSD"
-            link = "https://info.ubeswap.org/pair/0x7703874bd9fdacceca5085eae2776e276411f171"
+            link = "https://app.ubeswap.org/#/swap?inputCurrency=0xDB452CC669D3Ae454226AbF232Fe211bAfF2a1F9&outputCurrency=0x918146359264c492bd6934071c6bd31c854edbc3"
         } else if (price == "sunswap") {
             name = "Sun<wbr>Swap";
             icon = "assets/sunswap.png";
