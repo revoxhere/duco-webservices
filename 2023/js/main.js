@@ -1140,9 +1140,9 @@ const user_data = (req_username, first_open) => {
                 $(".stakeprogress").attr('value', progress_val);
                 $(".stakeprogress").text(progress_val.toFixed(2) + "%");
 
-                //$(".notstaking").fadeOut(function() {
+                $(".notstaking").fadeOut(function() {
                     $(".staking").fadeIn();
-                //});
+                });
 
                 /* ------------- common -------- */
 
@@ -1151,7 +1151,7 @@ const user_data = (req_username, first_open) => {
                 $(".stakedate").text(stake_date);
             } else {
                 $(".staking").fadeOut(function() {
-                    //$(".notstaking").fadeIn();
+                    $(".notstaking").fadeIn();
                 });
             }
             
