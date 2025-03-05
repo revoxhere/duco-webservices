@@ -89,47 +89,47 @@ const balanceChartOptions = {
 // Desktop - shorter versions
 let adblockNotifications = [{
         title: "Oh, you're using an adblocker? Color us surprised! 🎉 Not.",
-        description: "This website and other servers do not run on magic dust. Since you're so inclined on using an adblocker, maybe at least purchase our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a> to help?",
+        description: "This website and other servers do not run on magic dust. Since you're so inclined on using an adblocker, maybe at least purchase our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a> to help?",
     },
     {
         title: "Attention, adblock aficionado! Yes, you!",
-        description: "Help our crew sail smoothly by checking out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us is like shining a lighthouse on our financial challenges which aren't small.",
+        description: "Help our crew sail smoothly by checking out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us is like shining a lighthouse on our financial challenges which aren't small.",
     },
     {
         title: "A wild adblocker appears!",
-        description: "Explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection or give a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to support our digital menagerie. Maybe you don't care, if that's the case then don't be surprised we won't care about your account.",
+        description: "Explore our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> collection or give a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to support our digital menagerie.",
     },
     {
         title: "To block or not to block, that is the adblocker's question.",
-        description: "Join our quest for an ad-free and sustainable internet by perusing <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us casts a benevolent enchantment on our humble land.",
+        description: "Join our quest for an ad-free and sustainable internet by perusing <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or making a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us casts a benevolent enchantment on our humble land.",
     },
     {
         title: "Adblocker strikes again! ⚔️🛡️",
-        description: "Looks like you're very selfish... Battle server maintenance costs with your support - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a>.",
+        description: "Battle server maintenance costs with your support - check out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a>.",
     },
     {
         title: "Adblocker vs. Fairy Godmothers: The revenue battle!",
-        description: "Script a happier ending with a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> or exploring our <a href='https://store.duinocoin.com' target='_blank'>official merch</a>. Maybe even whitelist us? I don't think a SINGLE ad will drive you crazy.",
+        description: "Script a happier ending with a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> or exploring our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a>.",
     },
     {
         title: "Adblockers, assemble! 🚫💂‍♂️",
-        description: "Become an adblocker hero - support us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. If you can, please whitelist us. It's just a single ad.",
+        description: "Become an adblocker hero - support us by purchasing our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or making a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>.",
     },
     {
         title: "Adblockageddon! 🚀🌌",
-        description: "Fuel our interstellar journey - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a> as an adblocker astronaut. Whitelisting us opens a cosmic gateway to ad-supported content!",
+        description: "Fuel our interstellar journey - check out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or <a href='https://duinocoin.com/donate.html' target='_blank'>donate</a> as an adblocker astronaut. Whitelisting us opens a cosmic gateway to ad-supported content!",
     },
     {
         title: "Adblocker Artistry! 🎨🚫",
-        description: "Craft a masterpiece of support - explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection or contribute a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings artistic vibrancy to the internet!",
+        description: "Craft a masterpiece of support - explore our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> collection or contribute a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings artistic vibrancy to the internet!",
     },
     {
         title: "Adblockers: The Quiet Rebellion 🤫🚫",
-        description: "Join the silent rebellion with our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or a tranquil <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us begins a quest for digital tranquility!",
+        description: "Join the silent rebellion with our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or a tranquil <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us begins a quest for digital tranquility!",
     },
     {
         title: "Ad-free, Adored, Ad-supported! 🥰🚫",
-        description: "Share the love - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings love to an ad-free and ad-supported internet!",
+        description: "Share the love - check out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. Whitelisting us brings love to an ad-free and ad-supported internet!",
     }
 ]
 
@@ -137,47 +137,47 @@ let adblockNotifications = [{
 if (on_mobile()) {
     adblockNotifications = [{
             title: "Oh, you're using an adblocker? Color us surprised! 🎉 Not.",
-            description: "Surprise, surprise! Another adblocker user in the house. While we understand the desire for an ad-free experience, our bills won't pay themselves. If you'd like to be a hero and help keep our servers running, consider supporting us by purchasing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> or sparing a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. We promise, no guilt trips here! Just a friendly reminder that your whitelisting powers can bring joy and content to both our team and the pixels. Let's make the internet a better place, one non-blocked ad at a time! 😄🚫🔍",
+            description: "Surprise, surprise! Another adblocker user in the house. While we understand the desire for an ad-free experience, our bills won't pay themselves. If you'd like to be a hero and help keep our servers running, consider supporting us by purchasing our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> or sparing a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>. We promise, no guilt trips here! Just a friendly reminder that your whitelisting powers can bring joy and content to both our team and the pixels. Let's make the internet a better place, one non-blocked ad at a time! 😄🚫🔍",
         },
         {
             title: "Attention, adblock aficionado! Yes, you!",
-            description: "Ahoy, ad-blocking mate! We see you navigating the seas of the internet with that adblocker flag high. While we respect your preference for an ad-free voyage, our crew needs sustenance to continue sailing smoothly. If you find it in your heart (and wallet) to support our ship, check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - treasure awaits! Alternatively, if you wish to drop some gold coins in our <a href='https://duinocoin.com/donate.html' target='_blank'>donation chest</a>, it will undoubtedly fuel our journey. By the way, no pressure on the whole whitelist thing, but think of it as shining a lighthouse to guide us through the stormy waves of financial challenges. 🏴‍☠️🚫💰",
+            description: "Ahoy, ad-blocking mate! We see you navigating the seas of the internet with that adblocker flag high. While we respect your preference for an ad-free voyage, our crew needs sustenance to continue sailing smoothly. If you find it in your heart (and wallet) to support our ship, check out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> - treasure awaits! Alternatively, if you wish to drop some gold coins in our <a href='https://duinocoin.com/donate.html' target='_blank'>donation chest</a>, it will undoubtedly fuel our journey. By the way, no pressure on the whole whitelist thing, but think of it as shining a lighthouse to guide us through the stormy waves of financial challenges. 🏴‍☠️🚫💰",
         },
         {
             title: "A wild adblocker appears!",
-            description: "Look who's tamed the virtual wilds with an adblocker! While you're enjoying an ad-free safari, our digital menagerie needs sustenance to thrive. If you're feeling adventurous, support our cause by exploring our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection - a treasure trove of delights! Alternatively, if you prefer a stealthy approach, a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> can do wonders for our conservation efforts. Don't worry; we won't send a herd of sad emojis your way, but a few happy ones might be nice. Oh, and before you venture deeper into the web, consider adding a touch of magic by whitelisting us. You'll become a mythical creature in the realm of ad-supported content! 🦁🚫🌐",
+            description: "Look who's tamed the virtual wilds with an adblocker! While you're enjoying an ad-free safari, our digital menagerie needs sustenance to thrive. If you're feeling adventurous, support our cause by exploring our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> collection - a treasure trove of delights! Alternatively, if you prefer a stealthy approach, a modest <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> can do wonders for our conservation efforts. Don't worry; we won't send a herd of sad emojis your way, but a few happy ones might be nice. Oh, and before you venture deeper into the web, consider adding a touch of magic by whitelisting us. You'll become a mythical creature in the realm of ad-supported content! 🦁🚫🌐",
         },
         {
             title: "To block or not to block, that is the adblocker's question.",
-            description: "Hark, the eternal question: to block or not to block? While the adblocker provides sanctuary from the ad storm, our humble kingdom needs some support to stand tall. Thou art invited to peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium, where treasures await discerning eyes. Should thou be in a philanthropic mood, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will gladden our virtual hearts. We shan't pester thee about the whitelist, but 'tis akin to casting a benevolent enchantment upon our humble land. Let us join forces to create an internet realm both ad-free and sustainable, where all may thrive in harmony. 🏰🚫💫",
+            description: "Hark, the eternal question: to block or not to block? While the adblocker provides sanctuary from the ad storm, our humble kingdom needs some support to stand tall. Thou art invited to peruse our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> emporium, where treasures await discerning eyes. Should thou be in a philanthropic mood, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will gladden our virtual hearts. We shan't pester thee about the whitelist, but 'tis akin to casting a benevolent enchantment upon our humble land. Let us join forces to create an internet realm both ad-free and sustainable, where all may thrive in harmony. 🏰🚫💫",
         },
         {
             title: "Adblocker strikes again! ⚔️🛡️",
-            description: "Hail, valiant adblocker user! Thy sword of ad-blocking prowess is undeniable, but even warriors need allies. As we battle the forces of server maintenance costs, thou canst lend thy hand in various ways. Behold our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> emporium - the spoils of victory shall be thine! Shouldst thou seek a noble quest, venture forth with a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and thy name shall be whispered in the halls of digital legend. And lo! Whitelisting us is like bestowing the blessing of the internet gods, ensuring the harmony of content and sustenance. Together, we shall forge a prosperous realm where everyone wins! ⚔️🚫🛍️",
+            description: "Hail, valiant adblocker user! Thy sword of ad-blocking prowess is undeniable, but even warriors need allies. As we battle the forces of server maintenance costs, thou canst lend thy hand in various ways. Behold our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> emporium - the spoils of victory shall be thine! Shouldst thou seek a noble quest, venture forth with a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and thy name shall be whispered in the halls of digital legend. And lo! Whitelisting us is like bestowing the blessing of the internet gods, ensuring the harmony of content and sustenance. Together, we shall forge a prosperous realm where everyone wins! ⚔️🚫🛍️",
         },
         {
             title: "Adblocker vs. Fairy Godmothers: The revenue battle!",
-            description: "Alas, our tale unfolds as adblockers thwart the flow of revenue, and fairy godmothers seem scarce these days. Fear not, for thou hast the power to script a happier ending! Support our endeavors by perusing our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> - a realm of enchantment awaits thee! Shouldst thou wish to perform a good deed, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> shall pave the way to our financial salvation. And lo, whitelisting us is akin to unleashing a cascade of digital pixie dust, bringing prosperity to both our kingdom and thine ad-free browsing. Let's weave a tale of symbiotic harmony in the ever-changing land of the web! 🧚🚫✨",
+            description: "Alas, our tale unfolds as adblockers thwart the flow of revenue, and fairy godmothers seem scarce these days. Fear not, for thou hast the power to script a happier ending! Support our endeavors by perusing our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> - a realm of enchantment awaits thee! Shouldst thou wish to perform a good deed, a humble <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> shall pave the way to our financial salvation. And lo, whitelisting us is akin to unleashing a cascade of digital pixie dust, bringing prosperity to both our kingdom and thine ad-free browsing. Let's weave a tale of symbiotic harmony in the ever-changing land of the web! 🧚🚫✨",
         },
         {
             title: "Adblockers, assemble! 🚫💂‍♂️",
-            description: "Calling all adblocker heroes! While you're protecting your screen from ads, spare a thought for our digital fortress. Supporting us is as easy as wielding a mouse - check out our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> and embrace your inner e-commerce warrior. Don't worry; we're not pulling any heartstrings here. But, just a tiny nudge: a <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could upgrade our servers from a village hut to a grand castle. And if you decide to whitelist us, it's like offering an olive branch to the ever-hungry ad gods. So, let's unite and create a harmonious internet realm! 🏰🛡️💰",
+            description: "Calling all adblocker heroes! While you're protecting your screen from ads, spare a thought for our digital fortress. Supporting us is as easy as wielding a mouse - check out our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> and embrace your inner e-commerce warrior. Don't worry; we're not pulling any heartstrings here. But, just a tiny nudge: a <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could upgrade our servers from a village hut to a grand castle. And if you decide to whitelist us, it's like offering an olive branch to the ever-hungry ad gods. So, let's unite and create a harmonious internet realm! 🏰🛡️💰",
         },
         {
             title: "Adblockageddon! 🚀🌌",
-            description: "Adblockers have descended upon the internet like a cosmic storm, leaving us in need of celestial support. If you're an adblocker astronaut floating through the galaxy, consider fueling our mission with a quick visit to our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> store. And should you stumble upon a stardust pouch, a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will aid our interstellar journey. No forceful persuasion here, but whitelisting us is like opening a cosmic gateway to the universe of ad-supported content. Together, we'll soar among the stars of sustainable internet. 🚀🌌🚫",
+            description: "Adblockers have descended upon the internet like a cosmic storm, leaving us in need of celestial support. If you're an adblocker astronaut floating through the galaxy, consider fueling our mission with a quick visit to our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> store. And should you stumble upon a stardust pouch, a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> will aid our interstellar journey. No forceful persuasion here, but whitelisting us is like opening a cosmic gateway to the universe of ad-supported content. Together, we'll soar among the stars of sustainable internet. 🚀🌌🚫",
         },
         {
             title: "Adblocker Artistry! 🎨🚫",
-            description: "Ah, the elegance of adblockers - a brushstroke of web browsing mastery. But while you craft your ad-free masterpiece, spare a thought for our virtual gallery. Peruse our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> collection, where art meets utility in a harmonious blend. An art connoisseur's spirit, you might decide to grant a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to fuel our creative endeavors. And if you choose to grace us with your virtual signature by whitelisting, it's like an art collaboration that brings our content to life. Together, we'll curate an internet landscape that's both ad-free and artistically vibrant! 🎨🚫🎭",
+            description: "Ah, the elegance of adblockers - a brushstroke of web browsing mastery. But while you craft your ad-free masterpiece, spare a thought for our virtual gallery. Peruse our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> collection, where art meets utility in a harmonious blend. An art connoisseur's spirit, you might decide to grant a small <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> to fuel our creative endeavors. And if you choose to grace us with your virtual signature by whitelisting, it's like an art collaboration that brings our content to life. Together, we'll curate an internet landscape that's both ad-free and artistically vibrant! 🎨🚫🎭",
         },
         {
             title: "Adblockers: The Quiet Rebellion 🤫🚫",
-            description: "In the realm of silent adblockers, a rebellion brews against noisy ads. But while you fight the good fight for peace and tranquility, consider supporting our tranquil sanctuary too. Delve into our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> garden, where serenity and practicality intertwine. As you embrace the art of virtual zen, a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could water our server gardens. And if you choose to whisper a few whitelisting mantras, the serene harmony of ads and content shall be restored. Let's embark on a quest for digital tranquility together! 🌿🚫🧘‍♀️",
+            description: "In the realm of silent adblockers, a rebellion brews against noisy ads. But while you fight the good fight for peace and tranquility, consider supporting our tranquil sanctuary too. Delve into our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> garden, where serenity and practicality intertwine. As you embrace the art of virtual zen, a serene <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a> could water our server gardens. And if you choose to whisper a few whitelisting mantras, the serene harmony of ads and content shall be restored. Let's embark on a quest for digital tranquility together! 🌿🚫🧘‍♀️",
         },
         {
             title: "Ad-free, Adored, Ad-supported! 🥰🚫",
-            description: "Adored adblocker users, we cherish your preference for an ad-free experience. And as you fill your virtual heart with love, consider sharing some with us too. Explore our <a href='https://store.duinocoin.com' target='_blank'>official merch</a> kingdom, where love and practicality intertwine. Shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and we'll feel the virtual hugs. And if you choose to share the love by whitelisting us, it's like a virtual love fest between ads and content. Together, we'll create an internet where love reigns, ad-free and ad-supported! 🥰🚫💘",
+            description: "Adored adblocker users, we cherish your preference for an ad-free experience. And as you fill your virtual heart with love, consider sharing some with us too. Explore our <a href='https://starter.duinocoin.com' target='_blank'>official merch</a> kingdom, where love and practicality intertwine. Shower us with a heartfelt <a href='https://duinocoin.com/donate.html' target='_blank'>donation</a>, and we'll feel the virtual hugs. And if you choose to share the love by whitelisting us, it's like a virtual love fest between ads and content. Together, we'll create an internet where love reigns, ad-free and ad-supported! 🥰🚫💘",
         }
     ];
 }
@@ -834,7 +834,7 @@ function create_prices(prices) {
             name = "Sushi<wbr>Swap";
             icon = "assets/sushiswap.png";
             type = "maticDUCO <i class='fa fa-exchange-alt'></i> MATIC"
-            link = "https://www.sushi.com/polygon/swap?token0=0xaf965beB8C830aE5dc8280d1c7215B8F0aCC0CeA&token1=NATIVE";
+            link = "https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2";
         } else if (price == "pancake") {
             name = "Pancake<wbr>Swap";
             icon = "assets/pancakeswap.png";
@@ -844,7 +844,7 @@ function create_prices(prices) {
             name = "Ube<wbr>Swap";
             icon = "assets/ubeswap.png";
             type = "celoDUCO <i class='fa fa-exchange-alt'></i> mCUSD"
-            link = "https://app.ubeswap.org/#/swap?inputCurrency=0xDB452CC669D3Ae454226AbF232Fe211bAfF2a1F9&outputCurrency=0x918146359264c492bd6934071c6bd31c854edbc3"
+            link = "https://info.ubeswap.org/pair/0x7703874bd9fdacceca5085eae2776e276411f171"
         } else if (price == "sunswap") {
             name = "Sun<wbr>Swap";
             icon = "assets/sunswap.png";
