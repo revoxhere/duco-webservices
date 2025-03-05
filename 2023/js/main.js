@@ -652,8 +652,8 @@ function e_tab(transition_to) {
 function screen(transition_to) {
     if (last_screen == transition_to) return;
 
-    if(transition_to == "screen-shop-desktop" && !localStorage.getItem("shop-open-blushybox")) {
-        localStorage.setItem("shop-open-blushybox", true);
+    if(transition_to == "screen-shop-desktop" && !localStorage.getItem("shop-open-blushybox-2")) {
+        localStorage.setItem("shop-open-blushybox-2", true);
         $(".info-dot").fadeOut();
     } 
 
@@ -3564,6 +3564,6 @@ function updateValueDevices(e) {
     update_element("values", round_to(2, result) + " ᕲ/day");
 }
 
-if (localStorage.getItem("shop-open-blushybox")) {
+if (localStorage.getItem("shop-open-blushybox-2")) {
     $(".info-dot").fadeOut();
 } 
