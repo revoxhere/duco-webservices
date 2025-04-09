@@ -692,6 +692,14 @@ input[type="checkbox"]:checked::before {
     animation: gold 7s ease infinite;
 }
 
+.ducocubebadge {
+    color: white !important;
+    background: linear-gradient(105deg, #77dd77, #2dd12d, #b0dab0, #3dcd3d);
+    background-size: 400% 400%;
+    animation: gold 7s ease infinite;
+    border: 1px solid white;
+}
+
 @keyframes gold {
     0% {
         background-position: 0% 43%;
