@@ -497,7 +497,7 @@ $(document).ready(function() {
     }
 });
 
-function login(token, connect_timeout=5000) {
+function login(token, connect_timeout = 5000) {
     if (on_mobile()) {
         username_input = $("#login_username");
         password_input = $("#login_password");
@@ -529,14 +529,14 @@ function login(token, connect_timeout=5000) {
     loginbutton.addClass("is-loading");
 
     $.ajax({
-        url: `https://${api_url}/v2/auth/${encodeURIComponent(username)}`
-            + `?password=${window.btoa(unescape(encodeURIComponent(password)))}`,
-        timeout: connect_timeout, 
+        url: `https://${api_url}/v2/auth/${encodeURIComponent(username)}` +
+            `?password=${window.btoa(unescape(encodeURIComponent(password)))}`,
+        timeout: connect_timeout,
         captcha: token,
         error: function(data, textStatus, xhr) {
             loginbutton.removeClass("is-loading");
 
-            if (data.status == 429) { 
+            if (data.status == 429) {
                 alert_bulma("You are being rate limited! Slow down, spamming the buttons won't do anything good. Try again in a few seconds.");
             } else if (data.status == 502) {
                 alert_bulma("APIs are down. Either there's some maintenance going on, or an outage has happened. Please try again later.")
@@ -652,16 +652,16 @@ function e_tab(transition_to) {
 function screen(transition_to) {
     if (last_screen == transition_to) return;
 
-    if(transition_to == "screen-shop-desktop" && !localStorage.getItem("shop-open-duco-cube")) {
+    if (transition_to == "screen-shop-desktop" && !localStorage.getItem("shop-open-duco-cube")) {
         localStorage.setItem("shop-open-duco-cube", true);
         $(".info-dot").fadeOut();
-    } 
+    }
 
     $(`#${last_screen}-nav`).removeClass("navbar-selected");
     $(`#${transition_to}-nav`).addClass("navbar-selected");
-    $(`#${last_screen}`).fadeOut(timedelta*50, function() {
+    $(`#${last_screen}`).fadeOut(timedelta * 50, function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        $(`#${transition_to}`).fadeIn(timedelta*120);
+        $(`#${transition_to}`).fadeIn(timedelta * 120);
         last_screen = transition_to;
     });
 }
@@ -758,6 +758,13 @@ function refresh_achievements(user_achievements) {
 
             finalhtml = "";
             total_achievements = -1;
+
+            account_html = "<div class='column is-full'><p class='heading'>Account</p><div class='columns is-multiline'>";
+            mining_html = "<div class='column is-full'><p class='heading'>Mining</p><div class='columns is-multiline'>";
+            investments_html = "<div class='column is-full'><p class='heading'>Investments</p><div class='columns is-multiline'>";
+            earnings_html = "<div class='column is-full'><p class='heading'>Earnings</p><div class='columns is-multiline'>";
+            other_html = "<div class='column is-full'><p class='heading'>Other</p><div class='columns is-multiline'>";
+
             for (achievement in achievements) {
                 achv = achievements[achievement]
                 reward_string = "";
@@ -768,26 +775,44 @@ function refresh_achievements(user_achievements) {
                 if (!user_achievements.includes(Number(achievement))) {
                     gray_str = "grayed-out"
                 }
-                finalhtml += achievement_template
+
+                finalhtml = achievement_template
                     .replace("{{TITLE}}", achv.name)
                     .replace("{{GRAY}}", gray_str)
                     .replace("{{SUBTITLE}}", achv.description)
                     .replace("{{REWARD}}", reward_string)
                     .replace("{{ICON}}", achv.icon);
+
+                if (achv.category == "mining") {
+                    mining_html += finalhtml;
+                } else if (achv.category == "account") {
+                    account_html += finalhtml;
+                } else if (achv.category == "investments") {
+                    investments_html += finalhtml;
+                } else if (achv.category == "earnings") {
+                    earnings_html += finalhtml;
+                } else {
+                    other_html += finalhtml;
+                }
+
                 total_achievements++;
             }
             $("#dash_achv_all").text(total_achievements)
             $("#dash_achv_unlocked").text(user_achievements.length)
             $(".achievements_all").text(total_achievements)
             $(".achievements_unlocked").text(user_achievements.length)
-            $(".achievements_content").html(finalhtml)
+            $(".achievements_content").html(account_html + "</div></div>" +
+                mining_html + "</div></div>" +
+                investments_html + "</div></div>" +
+                earnings_html + "</div></div>" +
+                other_html + "</div></div>")
         });
 }
 
 function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
-    
+
     delete prices.nano; // currently unavailable
 
     // global price
@@ -807,7 +832,7 @@ function create_prices(prices) {
     delete prices.max;
     delete prices.bch;
     delete prices.nano;
-    
+
     finalhtml = "";
     for (price in prices) {
         link = "https://exchange.duinocoin.com";
@@ -978,6 +1003,9 @@ const user_data = (req_username, first_open) => {
                 if (user_items.includes(13)) {
                     $(".blushyboxbadge").fadeIn();
                 }
+                if (user_items.includes(17)) {
+                    $(".ducocubebadge").fadeIn();
+                }
             }
 
             balance = round_to(
@@ -991,7 +1019,7 @@ const user_data = (req_username, first_open) => {
                 calculdaily(balance, oldb, user_items);
                 oldb = balance;
             }
-            
+
             /*function fetch_balance_data(username) {
                 fetch(`http://127.0.0.1:5000/historic_balance?username=${username}`)
                     .then(response => response.json())
@@ -1154,10 +1182,10 @@ const user_data = (req_username, first_open) => {
                     $(".notstaking").fadeIn();
                 });
             }
-            
+
             verified_for_slots = data.balance.max_miners;
             $(".verified_for_slots").html(`verified to use <b>${verified_for_slots}</b>`);
-            
+
             trustscore = data.balance.trust_score;
             if (data.balance.warnings < 1) {
                 verified = data.balance.verified;
@@ -1209,8 +1237,8 @@ const user_data = (req_username, first_open) => {
 
                 if (tx.recipient == username) {
                     finalhtml += receive_template
-                        .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>+</span>"+
-                                                                round_to(8, tx.amount))
+                        .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>+</span>" +
+                            round_to(8, tx.amount))
                         .replace("{{SENDER}}", tx.sender)
                         .replace("{{HASH}}", formatted_hash)
                         .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -1220,8 +1248,8 @@ const user_data = (req_username, first_open) => {
                 } else {
                     if (!CHAIN_ACCOUNTS.includes(tx.recipient)) {
                         finalhtml += send_template
-                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>"+
-                                                                round_to(8, tx.amount))
+                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>" +
+                                round_to(8, tx.amount))
                             .replace("{{RECIPIENT}}", tx.recipient)
                             .replace("{{HASH}}", formatted_hash)
                             .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -1230,8 +1258,8 @@ const user_data = (req_username, first_open) => {
                             .replace("{{TX_NUM}}", transaction);
                     } else {
                         finalhtml += wrap_template
-                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>"+
-                                                                round_to(8, tx.amount))
+                            .replace("{{AMOUNT}}", "<span class='has-text-weight-normal'>-</span>" +
+                                round_to(8, tx.amount))
                             .replace("{{RECIPIENT}}", tx.recipient)
                             .replace("{{HASH}}", formatted_hash)
                             .replaceAll("{{HASH_FULL}}", tx.hash)
@@ -3411,13 +3439,15 @@ $("#theme_desktop").on('change', function() {
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Retro');
-    } /* else if (selected_theme == "Halloween") {
-        //$("#theme-halloween").attr('disabled', false);
-        $("#theme-retro").attr('disabled', true);
-        $("#theme-terminal").attr('disabled', true);
-        $("#theme-glossy").attr('disabled', true);
-        localStorage.setItem('theme', 'Halloween');
-    } */ else {
+    }
+    /* else if (selected_theme == "Halloween") {
+           //$("#theme-halloween").attr('disabled', false);
+           $("#theme-retro").attr('disabled', true);
+           $("#theme-terminal").attr('disabled', true);
+           $("#theme-glossy").attr('disabled', true);
+           localStorage.setItem('theme', 'Halloween');
+       } */
+    else {
         // default adaptive - disable all
         //$("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
@@ -3448,13 +3478,15 @@ $("#theme_mobile").on('change', function() {
         $("#theme-terminal").attr('disabled', true);
         $("#theme-glossy").attr('disabled', true);
         localStorage.setItem('theme', 'Retro');
-    } /* else if (selected_theme == "Halloween") {
-        $("#theme-halloween").attr('disabled', false);
-        $("#theme-retro").attr('disabled', true);
-        $("#theme-terminal").attr('disabled', true);
-        $("#theme-glossy").attr('disabled', true);
-        localStorage.setItem('theme', 'Halloween');
-    } */ else {
+    }
+    /* else if (selected_theme == "Halloween") {
+           $("#theme-halloween").attr('disabled', false);
+           $("#theme-retro").attr('disabled', true);
+           $("#theme-terminal").attr('disabled', true);
+           $("#theme-glossy").attr('disabled', true);
+           localStorage.setItem('theme', 'Halloween');
+       } */
+    else {
         // default adaptive - disable all
         //$("#theme-halloween").attr('disabled', true);
         $("#theme-retro").attr('disabled', true);
@@ -3545,7 +3577,7 @@ function updateValueDevices(e) {
         result = (0.0013 * hashrate) + 2.2 // 2023?
 
         // extreme diff tier, TODO (2021)
-        if (hashrate > 8000) result = floatmap(result, 14.2, 100, 12.2, 30); 
+        if (hashrate > 8000) result = floatmap(result, 14.2, 100, 12.2, 30);
     } else {
         $(".hashrate_selector").fadeOut('fast', function() {
             $(".device_selector").fadeIn('fast');
@@ -3566,4 +3598,4 @@ function updateValueDevices(e) {
 
 if (localStorage.getItem("shop-open-duco-cube")) {
     $(".info-dot").fadeOut();
-} 
+}
