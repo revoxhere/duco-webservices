@@ -1659,6 +1659,8 @@ function create_miners(user_miners) {
                 icon = `<img src="assets/starter.gif">`;
             } else if (miner_software.includes("BlushyBox")) {
                 icon = `<img src="assets/blushybox.gif">`;
+            } else if (miner_software.includes("DUCOCUBE")) {
+                icon = `<img src="assets/ducocube.gif">`;
             } else if (miner_software.includes("ESP8266")) {
                 icon = `<img src="assets/wemos.gif">`;
             } else if (miner_software.includes("ESP32-S2")) {
@@ -1862,6 +1864,14 @@ function miner_details(miner_id) {
     } else if (miner_software.includes("BlushyBox")) {
         color = "#ec42f5";
         icon = `<img src="assets/blushybox.gif">`;
+        miner_type = "ESP32";
+        if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
+        percentage = 0.96;
+        hashrate_range = [18000, 95000];
+        diff_range = [1000, 9000];
+    } else if (miner_software.includes("DUCOCUBE")) {
+        color = "#f77dd77";
+        icon = `<img src="assets/ducocube.gif">`;
         miner_type = "ESP32";
         if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
         percentage = 0.96;
