@@ -2,8 +2,6 @@
     font-family: Tahoma, Arial, sans-serif !important;
 }
 
-@import url("https://unpkg.com/xp.css")
-
 .box,
 small,
 h1,
@@ -20,8 +18,8 @@ select,
 summary,
 .progress,
 .notification {
-    border-radius: 0 !important;
     color: black !important;
+    border-radius: 0 !important;
 }
 
 .has-text-grey {
