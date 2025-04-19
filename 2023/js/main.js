@@ -1859,7 +1859,7 @@ function miner_details(miner_id) {
         icon = `<img src="assets/starter.gif">`;
         miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 30000];
+        hashrate_range = [18000, 200000];
         diff_range = [1000, 6000];
     } else if (miner_software.includes("BlushyBox")) {
         color = "#ec42f5";
@@ -1867,7 +1867,7 @@ function miner_details(miner_id) {
         miner_type = "ESP32";
         if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 95000];
+        hashrate_range = [18000, 200000];
         diff_range = [1000, 9000];
     } else if (miner_software.includes("DUCOCUBE")) {
         color = "#f77dd77";
@@ -1875,7 +1875,7 @@ function miner_details(miner_id) {
         miner_type = "ESP32";
         if (miner_software.includes("ESP8266")) miner_type = "ESP8266";
         percentage = 0.96;
-        hashrate_range = [18000, 95000];
+        hashrate_range = [18000, 200000];
         diff_range = [1000, 9000];
     } else if (miner_software.includes("ESP8266")) {
         icon = `<img src="assets/wemos.gif">`;
