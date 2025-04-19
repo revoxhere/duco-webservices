@@ -1722,7 +1722,7 @@ function create_miners(user_miners) {
             }
 
             if ((on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.65) ||
-                !on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.21) {
+                !on_mobile() && textWidth(miner_name, 'bold 16px Arial') > $(window).width() * 0.3) {
                 miner_name = `<div class="marquee">
                                 <div class="has-text-weight-bold marquee__content">
                                     ${miner_name}
