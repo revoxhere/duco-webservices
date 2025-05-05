@@ -170,6 +170,7 @@
 /* Fixed overlays */
 #txdetails,
 #txsend,
+#fundraiserscreen,
 #txwrap,
 #stakemenu,
 #minerdetails,
@@ -563,6 +564,7 @@ input[type="checkbox"]:checked::before {
     /* Fixed overlays */
     #txdetails,
     #txsend,
+    #fundraiserscreen,
     #txwrap,
     #stakemenu,
     #minerdetails,
@@ -577,6 +579,7 @@ input[type="checkbox"]:checked::before {
 
     #txdetails>.container,
     #txsend>.container,
+    #fundraiserscreen>.container,
     #txwrap>.container,
     #stakemenu>.container,
     #minerdetails>.container,
