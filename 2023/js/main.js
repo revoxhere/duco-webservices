@@ -992,6 +992,8 @@ const user_data = (req_username, first_open) => {
                 refresh_achievements(user_achievements);
                 refresh_wrap_api();
 
+                refresh_fundraiser_progress();
+
                 user_items = data.items;
                 refresh_shop(user_items);
 
@@ -1005,6 +1007,9 @@ const user_data = (req_username, first_open) => {
                 }
                 if (user_items.includes(17)) {
                     $(".ducocubebadge").fadeIn();
+                }
+                if (user_achievements.includes(130)) {
+                    $(".herobadge").fadeIn();
                 }
             }
 
@@ -1178,9 +1183,9 @@ const user_data = (req_username, first_open) => {
                 $(".stakereward").text(stake_reward.toFixed(2))
                 $(".stakedate").text(stake_date);
             } else {
-                $(".staking").fadeOut(function() {
+                /*$(".staking").fadeOut(function() {
                     $(".notstaking").fadeIn();
-                });
+                });*/
             }
 
             verified_for_slots = data.balance.max_miners;
@@ -2575,6 +2580,80 @@ function close_txdetails() {
             $("html").css("overflow-y", "scroll");
         });
     }
+}
+
+
+function open_fundraiser() {
+    $("html").css("overflow-y", "hidden");
+    if (on_mobile()) $("#fundraiserscreen").show("slide", { direction: "down" }, '50');
+    else {
+        $("#fundraiserscreen").fadeIn('fast');
+        $(document).click(function(event) {
+            if (event.target.id == ("fundraiserscreen") && $('#fundraiserscreen').is(":visible")) {
+                close_fundraiser();
+            }
+        });
+    }
+}
+
+
+function close_fundraiser() {
+    if (on_mobile()) {
+        $("#fundraiserscreen").hide("slide", { direction: "down" }, '50', function() {
+            $("html").css("overflow-y", "scroll");
+        });
+    } else {
+        $("#fundraiserscreen").fadeOut('fast', function() {
+            $("html").css("overflow-y", "scroll");
+        });
+    }
+}
+
+prev_btn = "";
+
+function fundraiser(btn, coin="btc") {
+    $(btn).addClass("is-loading");
+
+    fetch(`https://server2.duinocoin.com/fundraiser?username=${username}&coin=${coin}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) alert(data.message);
+            if (!data.address) alert("Error, please try again later");
+            else {
+                finalhtml = `
+                <div class="box">
+                    Your ${coin.toUpperCase()} address:
+                    <b class="has-text-success">${data.address}</b> <a onclick="copy('${data.address}', this)"><i class="fa fa-copy"></i></a><br>
+                    <b>Thank you even for the smallest donation!</b><br>
+                    <small class="has-text-gray">
+                        This address will expire in 1 hour
+                    </small>
+                </div>
+                `;
+            }
+            $(".fundraiser_address").html(finalhtml)
+            if (prev_btn) $(prev_btn).attr("disabled", false);
+            $(btn).removeClass("is-loading");
+            $(btn).attr("disabled", true);
+            prev_btn = btn;
+        });
+}
+
+
+function refresh_fundraiser_progress() {
+    fetch(`https://server2.duinocoin.com/fundraiser_progress`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.target) {
+                $(".fundraiser_current").html(`${data.current}$`);
+                $(".fundraiser_goal").html(`${data.target}$`);
+                $(".fundraiser_percentage").html(`${data.perc.toFixed(2)}%`);
+
+                $(".fundraiserprogress").attr('value', data.perc);
+                $(".fundraiserprogress").text(data.perc.toFixed(2) + "%");
+            }
+            setTimeout(function() { refresh_fundraiser_progress() }, 5*60*1000);
+        });
 }
 
 
