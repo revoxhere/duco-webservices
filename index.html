@@ -630,8 +630,7 @@
 													<div class="columns is-multiline is-vcentered">
 														<div class="column">
 															<p class="subtitle has-text-success has-text-right">
-																<span>19.99 €</span>
-																<span class="tag is-success">PREORDER TILL 30.04</span>
+																<span>From 19.99 €</span>
 															</p>
 														</div>
 														<div class="column">
@@ -1336,6 +1335,9 @@
 											<span class="is-success tag ducocubebadge" style="display:none">
 												CUBE
 											</span>
+											<span class="is-info tag herobadge" style="display:none">
+												SUPPORTER
+											</span>
 										</span>
 									</h1>
 									<div class="columns is-gapless">
@@ -1511,6 +1513,25 @@
 			</div>
 			<div class="tile is-ancestor">
 				<div class="tile is-parent">
+					<div class="tile is-child box fullheight fundraiser">
+						<h1 class="heading">Fundraiser</h1>
+						<p class="subtitle is-size-6">
+							<b>Support Duino-Coin's listing on <a href="https://bitstorage.finance" target="_blank">Bitstorage</a>!</b> Help cover the listing fee and earn a special supporter badge.
+						</p>
+						<div class="columns mb-0">
+							<div class="column">
+								Current: <span class="fundraiser_current">-$</span>
+							</div>
+							<div class="column has-text-right">
+								Goal: <span class="fundraiser_goal">-$</span>
+							</div>
+						</div>
+						<progress class="progress fundraiserprogress is-success" min="0" value="0" max="100">0%
+						</progress>
+						<button class="button is-success is-fullwidth" onclick="open_fundraiser()">
+							Fuel the listing
+						</button>
+					</div>
 					<!--<div class="tile is-child box fullheight notstaking">
 						<h1 class="heading">Not staking</h1>
 						<p class="title is-size-6">Start staking and earn 1% interest</p>
@@ -1519,7 +1540,7 @@
 							Stake menu
 						</button>
 					</div>-->
-					<div class="tile is-child box fullheight notstaking">
+					<div class="tile is-child box fullheight notstaking" style="display:none">
 						<h1 class="heading">Staking notice</h1>
 						<p class="subtitle is-size-6">
 							Staking has been phased out after we analyzed that it was being used mainly by large holders who didn't contribute to the network (such as mining or supporting the project) and ended up damaging the liquidity of the exchanges which is not the point of Duino-Coin. We may come up with a similar but improved system in the future.
@@ -1738,6 +1759,9 @@
 							<span class="is-success tag ducocubebadge" style="display:none">
 								CUBE
 							</span>
+							<span class="is-info tag herobadge" style="display:none">
+								SUPPORTER
+							</span>
 						</span>
 					</h1>
 					<div class="columns is-mobile is-multiline is-vcentered box mx-0 p-1">
@@ -1811,7 +1835,26 @@
 							Stake menu
 						</button>
 					</div>-->
-					<div class="box notstaking">
+					<div class="box has-background-success-light fundraiser">
+						<h1 class="heading">Fundraiser</h1>
+						<p class="subtitle is-size-6">
+							<b>Support Duino-Coin's listing on <a href="https://bitstorage.finance" target="_blank">Bitstorage</a>!</b> Help cover the listing fee and earn a special supporter badge.
+						</p>
+						<div class="columns is-mobile mb-0">
+							<div class="column">
+								Current: <span class="fundraiser_current">-$</span>
+							</div>
+							<div class="column has-text-right">
+								Goal: <span class="fundraiser_goal">-$</span>
+							</div>
+						</div>
+						<progress class="progress fundraiserprogress is-success" min="0" value="0" max="100">0%
+						</progress>
+						<button class="button is-success is-fullwidth" onclick="open_fundraiser()">
+							Fuel the listing
+						</button>
+					</div>
+					<div class="box notstaking" style="display:none">
 						<h1 class="heading">Staking notice</h1>
 						<p class="subtitle is-size-6">
 							Staking has been phased out after we analyzed that it was being used mainly by large holders who didn't contribute to the network (such as mining or supporting the project) and ended up damaging the liquidity of the exchanges which is not the point of Duino-Coin. We may come up with a similar but improved system in the future.
@@ -2258,6 +2301,50 @@
 					<br>
 					<div id="transaction_content">
 						Nothing here?
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div id="fundraiserscreen" class="darkmode-dark-bg" style="display:none">
+		<div class="container">
+			<div class="navbar p-4 is-success">
+				<div class="columns is-vcentered is-mobile mx-3">
+					<div class="column is-narrow">
+						<div class="triangle-left" onclick="close_fundraiser()"></div>
+					</div>
+					<div class="column">
+						<span>
+							Fundraiser
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<section class="section">
+					<div class="content">
+						<figure class="image">
+							<img src="https://i.imgur.com/kGK1Wct.png">
+						</figure>
+						Long story short, there is an opportunity for Duino-Coin to get listed on the <a href="https://Bitstorage.finance" target="_blank">Bitstorage.finance</a> exchange platform, there is however a listing fee which needs to be paid first so that they integrate DUCO. If we can get at least 750$ we should get listed with the "Basic" listing package, and if we get close to 1500$, we can hope for the "Advanced" package.<br><br>
+						<b>If you want to see some movement in Duino-Coin's trading, we would be very thankful for any cent sent to this fundraiser</b>. You'll also receive a shiny supporter badge on your account 🎖️<br>
+						We have currently raised: <span class="fundraiser_current">0$</span> out of <span class="fundraiser_goal">0$</span> (<span class="fundraiser_percentage">0%</span>)<br><br>
+						<div class="buttons">
+							<button class="button is-warning" onclick="fundraiser(this, 'btc')">
+								Show Bitcoin address
+							</button>
+							<button class="button is-success" onclick="fundraiser(this, 'bch')">
+								Show Bitcoin Cash address
+							</button>
+							<button class="button is-danger" onclick="fundraiser(this, 'trx')">
+								Show Tron address
+							</button>
+						</div>
+						<div class="fundraiser_address"></div>
+						<br>
+						<span class="has-text-grey">
+							If you're up for helping, send any amount to one of the addresses above. When we detect a donation, you'll be sent an e-mail and a badge should appear within minutes on your account.
+						</span>
 					</div>
 				</section>
 			</div>
