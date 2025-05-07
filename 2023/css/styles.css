@@ -16,6 +16,7 @@
     transition: all 0.1s ease-in-out;
 }
 
+
 .long_button {
     padding-top: 2em !important;
     padding-bottom: 2em !important;
@@ -359,8 +360,13 @@ progress.show-value.is-large:after {
 
 /* Small tag style */
 .badges>.tag {
-    font-size: 0.7em !important;
+    font-size: 0.8em;
     text-shadow: 0px 0px 2px black;
+    vertical-align: middle;
+}
+.tag>i {
+  position: relative;
+  top: 4px !important;
 }
 
 .login-text-desktop {
@@ -407,9 +413,7 @@ input[type="checkbox"]:checked::before {
 
 
 @media screen and (min-width: 1024px) {
-    /* Small tag style */
     .badges>.tag {
-        font-size: 0.9em !important;
         text-shadow: 0px 0px 10px black;
     }
 
@@ -467,7 +471,8 @@ input[type="checkbox"]:checked::before {
         height: 100%;
         opacity: 0.8;
         filter: brightness(90%) contrast(100%) blur(3px);
-        background-image: url("/assets/backgrounds/yenn-mountains-2.jpg") !important;
+         background-image: url("/assets/backgrounds/revox.jpg") !important;
+        /* background-image: url("/assets/backgrounds/yenn-mountains-2.jpg") !important; */
         /* background-image: url("/assets/backgrounds/eberhardgross-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-mountains-1.jpg") !important; */
