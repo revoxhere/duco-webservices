@@ -992,7 +992,7 @@ const user_data = (req_username, first_open) => {
                 refresh_achievements(user_achievements);
                 refresh_wrap_api();
 
-                refresh_fundraiser_progress();
+                //refresh_fundraiser_progress();
 
                 user_items = data.items;
                 refresh_shop(user_items);
