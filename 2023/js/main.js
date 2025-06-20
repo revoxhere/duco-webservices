@@ -2047,7 +2047,7 @@ function miner_details(miner_id) {
                 <b>${miners[miner_id]["pg"]}ms</b>
             </div>
             <div class="column">
-                (${miners[miner_id]["pool"].replace("pool", "node")})
+                (${miners[miner_id]["pool"]})
             </div>
             <div class="column is-narrow">
                 ${ping_icon}
