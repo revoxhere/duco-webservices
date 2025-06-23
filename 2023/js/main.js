@@ -306,13 +306,17 @@ const send_template = `
 </div>`;
 
 let exchange_template = `
-    <div class="column" style="min-width:150px">
+    <div class="column" style="min-width:200px">
           <p class="title is-size-6">
-            <a href="{{LINK}}" target="_blank" class="text-wrap">
+            <a href="{{LINK}}" target="_blank">
                 <span class="icon-text">
-                    <img src="{{ICON}}" class="icon is-small">
+                    <span class="icon">
+                        <img src="{{ICON}}">
+                    </span>
+                    <span>
+                        {{NAME}}
+                    </span>
                 </span>
-                {{NAME}}
             </a>
           </p>
           <p class="subtitle is-size-6 mb-0">
@@ -839,16 +843,16 @@ function create_prices(prices) {
         icon = "assets/ducoexchange.png";
         type = "Unknown";
         if (price == "bch") {
-            name = "DUCO Exchange";
+            name = "DUCO<wbr> Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> BCH";
         } else if (price == "xmg") {
-            name = "DUCO Exchange";
+            name = "DUCO<wbr> Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XMG";
         } else if (price == "trx") {
-            name = "DUCO Exchange";
+            name = "DUCO<wbr> Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> TRX";
         } else if (price == "nano") {
-            name = "DUCO Exchange";
+            name = "DUCO<wbr> Exchange";
             type = "DUCO <i class='fa fa-exchange-alt'></i> XNO";
         } else if (price == "fluffy") {
             name = "Fluffy<wbr>Swap";
@@ -875,6 +879,11 @@ function create_prices(prices) {
             icon = "assets/sunswap.png";
             type = "wDUCO <i class='fa fa-exchange-alt'></i> TRX"
             link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U"
+        } else if (price == "bitstorage") {
+            name = "Bitstorage";
+            icon = "assets/bitstorage.png";
+            type = "DUCO <i class='fa fa-exchange-alt'></i> USDT"
+            link = "https://bitstorage.finance/refcode/8sv3ba"
         }
 
         if (prices[price]["price"] > 0) {
@@ -888,6 +897,8 @@ function create_prices(prices) {
             trend = "<span class='has-text-success'><i class='fa fa-arrow-up'></i> " + percentage + "%</span>";
         } else if (percentage < 0) {
             trend = "<span class='has-text-danger'><i class='fa fa-arrow-down'></i> " + percentage + "%</span>";
+        } else {
+             trend = "<span><i class='fa fa-arrow-right'></i> " + percentage + "%</span>";
         }
 
         finalhtml += exchange_template
@@ -3488,8 +3499,6 @@ greetings = [
     "Great to see you",
     "Back in action",
     "Howdy",
-    "It's good to have you back",
-    "Good to have you here once more",
     "Greetings",
     "Happy mining",
     "Welcome to the vault",
@@ -3501,8 +3510,7 @@ greetings = [
     "Glad to see you're back",
     "Back and ready for more",
     "Welcome aboard once more",
-    "You were missed",
-    "It's a pleasure to see you again"
+    "You were missed"
 ]
 
 $(".greeting").text(greetings[Math.floor(Math.random() * greetings.length)]);
