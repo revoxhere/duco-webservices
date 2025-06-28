@@ -858,32 +858,32 @@ function create_prices(prices) {
             name = "Fluffy<wbr>Swap";
             icon = "assets/fluffyswap.png";
             link = "https://fluffyswap.com";
-            type = "DUCO <i class='fa fa-exchange-alt'></i> ALL"
+            type = "DUCO <i class='fa fa-exchange-alt'></i> ALL";
         } else if (price == "sushi") {
             name = "Sushi<wbr>Swap";
             icon = "assets/sushiswap.png";
-            type = "maticDUCO <i class='fa fa-exchange-alt'></i> MATIC"
-            link = "https://medium.com/@johnny.mnemonic/guide-to-swapping-duino-coin-on-sushi-com-12bca3192ea2";
+            type = "maticDUCO <i class='fa fa-exchange-alt'></i> MATIC";
+            link = "https://www.sushi.com/polygon/swap?token0=0xaf965beB8C830aE5dc8280d1c7215B8F0aCC0CeA&token1=NATIVE";
         } else if (price == "pancake") {
             name = "Pancake<wbr>Swap";
             icon = "assets/pancakeswap.png";
-            type = "bscDUCO <i class='fa fa-exchange-alt'></i> BSC"
-            link = "https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b"
+            type = "bscDUCO <i class='fa fa-exchange-alt'></i> BSC";
+            link = "https://pancakeswap.finance/swap?inputCurrency=0xcf572ca0ab84d8ce1652b175e930292e2320785b";
         } else if (price == "ubeswap") {
             name = "Ube<wbr>Swap";
             icon = "assets/ubeswap.png";
-            type = "celoDUCO <i class='fa fa-exchange-alt'></i> mCUSD"
-            link = "https://info.ubeswap.org/pair/0x7703874bd9fdacceca5085eae2776e276411f171"
+            type = "celoDUCO <i class='fa fa-exchange-alt'></i> mCUSD";
+            link = "https://app.ubeswap.org/#/swap?inputCurrency=0xDB452CC669D3Ae454226AbF232Fe211bAfF2a1F9&outputCurrency=0x918146359264c492bd6934071c6bd31c854edbc3";
         } else if (price == "sunswap") {
             name = "Sun<wbr>Swap";
             icon = "assets/sunswap.png";
-            type = "wDUCO <i class='fa fa-exchange-alt'></i> TRX"
-            link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U"
+            type = "wDUCO <i class='fa fa-exchange-alt'></i> TRX";
+            link = "https://sunswap.com/#/scan/detail/TWYaXdxA12JywrUdou3PFD1fvx2PWjqK9U";
         } else if (price == "bitstorage") {
             name = "Bitstorage";
             icon = "assets/bitstorage.png";
-            type = "DUCO <i class='fa fa-exchange-alt'></i> USDT"
-            link = "https://bitstorage.finance/refcode/8sv3ba"
+            type = "DUCO <i class='fa fa-exchange-alt'></i> USDT";
+            link = "https://bitstorage.finance/refcode/8sv3ba";
         }
 
         if (prices[price]["price"] > 0) {
