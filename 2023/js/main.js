@@ -618,25 +618,26 @@ function adblock_check() {
     bait.style.cssText = 'width: 1px; height: 1px; position: absolute; left: -9999px;';
     document.body.appendChild(bait);
 
-    window.setTimeout(() => {
-        const baitHeight = bait.offsetHeight;
-        const baitDisplay = window.getComputedStyle(bait).getPropertyValue('display');
-
-        if (baitHeight === 0 || baitDisplay === 'none') {
+    setTimeout(() => {
+        const baitStyle = window.getComputedStyle(bait);
+        if (
+            bait.offsetHeight === 0 ||
+            baitStyle.getPropertyValue('display') === 'none' ||
+            baitStyle.getPropertyValue('visibility') === 'hidden'
+        ) {
             adBlockEnabled = true;
         }
 
         document.body.removeChild(bait);
 
         if (adBlockEnabled) {
-            $(".ducoadspace").attr("src", "assets/blushybox_ad.png");
-            $('.adsbygoogle').fadeOut(function () {
-                $(".ducoadspace").fadeIn();
-            });
+            $(".ducoadspace").attr("src", "assets/blushybox_ad.png").fadeIn();
+            $('.adsbygoogle').fadeOut();
         } else {
+            
             (adsbygoogle = window.adsbygoogle || []).push({});
         }
-    }, 2000); 
+    }, 2000);
 }
 
 
