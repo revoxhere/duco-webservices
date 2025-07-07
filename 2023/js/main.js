@@ -624,17 +624,22 @@ function adblock_check() {
     let initial_height = $('.adsbygoogle').height();
     (adsbygoogle = window.adsbygoogle || []).push({});
     setTimeout(function() {
-        /*if ($('.adsbygoogle').height() <= initial_height) {
+        if ($('.adsbygoogle').height() <= 50) {
             adBlockEnabled = true;
-        }*/
+        }
 
         if (adBlockEnabled) {
-            selected_notif = Math.floor(Math.random() * adblockNotifications.length);
-            adblock_title = adblockNotifications[selected_notif].title;
-            adblock_desc = adblockNotifications[selected_notif].description;
-            $(".adblock_title").html(adblock_title);
-            $(".adblock_desc").html(adblock_desc);
-            $(".adblocker_detected").fadeIn();
+            //selected_notif = Math.floor(Math.random() * adblockNotifications.length);
+            //adblock_title = adblockNotifications[selected_notif].title;
+            //adblock_desc = adblockNotifications[selected_notif].description;
+            //$(".adblock_title").html(adblock_title);
+            //$(".adblock_desc").html(adblock_desc);
+            //$(".adblocker_detected").fadeIn();
+
+            $(".ducoadspace").attr("src", "assets/blushybox_ad.png");
+            $('.adsbygoogle').fadeOut(function() {
+                $(".ducoadspace").fadeIn();
+            });
         }
     }, 3000);
 }
