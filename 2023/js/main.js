@@ -614,30 +614,55 @@ let adBlockEnabled = false;
 
 function adblock_check() {
     const bait = document.createElement('div');
-    bait.className = 'adsbygoogle';
+    bait.className = 'adsbygoogle ad-banner ad';
     bait.style.cssText = 'width: 1px; height: 1px; position: absolute; left: -9999px;';
     document.body.appendChild(bait);
 
+    const baitStyle = window.getComputedStyle(bait);
+    if (
+        bait.offsetHeight === 0 ||
+        baitStyle.display === 'none' ||
+        baitStyle.visibility === 'hidden'
+    ) {
+        adBlockEnabled = true;
+    }
+
+    document.body.removeChild(bait);
+
+    const testAd = document.createElement("ins");
+    testAd.className = "adsbygoogle";
+    testAd.style.cssText = "display:block;height:1px;width:1px;position:absolute;left:-9999px;";
+    testAd.setAttribute("data-ad-client", "ca-pub-6607105763246092");
+    document.body.appendChild(testAd);
+
+    try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+        adBlockEnabled = true;
+    }
+
     setTimeout(() => {
-        const baitStyle = window.getComputedStyle(bait);
+        const testStyle = window.getComputedStyle(testAd);
         if (
-            bait.offsetHeight === 0 ||
-            baitStyle.getPropertyValue('display') === 'none' ||
-            baitStyle.getPropertyValue('visibility') === 'hidden'
+            testAd.offsetHeight === 0 ||
+            testStyle.display === 'none' ||
+            testStyle.visibility === 'hidden'
         ) {
             adBlockEnabled = true;
         }
 
-        document.body.removeChild(bait);
+        document.body.removeChild(testAd);
 
         if (adBlockEnabled) {
+            console.log("AdBlock is ENABLED");
             $(".ducoadspace").attr("src", "assets/blushybox_ad.png").fadeIn();
             $('.adsbygoogle').fadeOut();
         } else {
-            
-            (adsbygoogle = window.adsbygoogle || []).push({});
+            console.log("AdBlock is DISABLED");
+            $(".ducoadspace").hide();
+            $('.adsbygoogle').fadeIn();
         }
-    }, 2000);
+    }, 1000); 
 }
 
 
