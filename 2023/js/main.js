@@ -613,35 +613,30 @@ function login(token, connect_timeout = 5000) {
 let adBlockEnabled = false;
 
 function adblock_check() {
-    const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6607105763246092';
+    let adBlockEnabled = false;
 
-    try {
-        fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true);
-    } catch (e) {
-        adBlockEnabled = true;
-    }
+    const bait = document.createElement('div');
+    bait.className = 'adsbygoogle';
+    bait.style.cssText = 'width: 1px; height: 1px; position: absolute; left: -9999px;';
+    document.body.appendChild(bait);
 
-    let initial_height = $('.adsbygoogle').height();
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    setTimeout(function() {
-        if ($('.adsbygoogle').height() <= 50) {
+    window.setTimeout(() => {
+        const baitHeight = bait.offsetHeight;
+        const baitDisplay = window.getComputedStyle(bait).getPropertyValue('display');
+
+        if (baitHeight === 0 || baitDisplay === 'none') {
             adBlockEnabled = true;
         }
 
-        if (adBlockEnabled) {
-            //selected_notif = Math.floor(Math.random() * adblockNotifications.length);
-            //adblock_title = adblockNotifications[selected_notif].title;
-            //adblock_desc = adblockNotifications[selected_notif].description;
-            //$(".adblock_title").html(adblock_title);
-            //$(".adblock_desc").html(adblock_desc);
-            //$(".adblocker_detected").fadeIn();
+        document.body.removeChild(bait);
 
+        if (adBlockEnabled) {
             $(".ducoadspace").attr("src", "assets/blushybox_ad.png");
-            $('.adsbygoogle').fadeOut(function() {
+            $('.adsbygoogle').fadeOut(function () {
                 $(".ducoadspace").fadeIn();
             });
         }
-    }, 3000);
+    }, 2000); 
 }
 
 
