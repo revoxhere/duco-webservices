@@ -633,6 +633,8 @@ function adblock_check() {
             $('.adsbygoogle').fadeOut(function () {
                 $(".ducoadspace").fadeIn();
             });
+        } else {
+            (adsbygoogle = window.adsbygoogle || []).push({});
         }
     }, 2000); 
 }
