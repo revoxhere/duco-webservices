@@ -16,6 +16,11 @@
     transition: all 0.1s ease-in-out;
 }
 
+.ducoadspace {
+    min-height: 60px;
+    object-fit: cover;
+}
+
 
 .long_button {
     padding-top: 2em !important;
@@ -415,6 +420,10 @@ input[type="checkbox"]:checked::before {
 @media screen and (min-width: 1024px) {
     .badges>.tag {
         text-shadow: 0px 0px 10px black;
+    }
+
+    .ducoadspace {
+        min-height: 80px !important;
     }
 
     .login-backdrop-desktop {
