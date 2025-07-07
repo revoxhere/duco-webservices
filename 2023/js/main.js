@@ -613,8 +613,6 @@ function login(token, connect_timeout = 5000) {
 let adBlockEnabled = false;
 
 function adblock_check() {
-    let adBlockEnabled = false;
-
     const bait = document.createElement('div');
     bait.className = 'adsbygoogle';
     bait.style.cssText = 'width: 1px; height: 1px; position: absolute; left: -9999px;';
