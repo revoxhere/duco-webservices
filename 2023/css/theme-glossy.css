@@ -25,7 +25,8 @@ body {
         /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg"); */
         /* background-image: url("/assets/backgrounds/eberhardgross-blur-light.jpg"); */
         /* background-image: url("/assets/backgrounds/yenn-mountains-2-blur.jpg"); */
-        background-image: url("/assets/backgrounds/revox-blur-light.jpg");
+        /* background-image: url("/assets/backgrounds/revox-blur-light.jpg"); */
+        background-image: url("/assets/backgrounds/revox-sea-blur.jpg");
         background-size: 100vw 100vh;
         background-attachment: fixed;
         -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
@@ -64,7 +65,8 @@ body {
         /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur.jpg"); */
         /* background-image: url("/assets/backgrounds/eberhardgross-blur-light.jpg"); */
         /* background-image: url("/assets/backgrounds/yenn-mountains-2-blur.jpg"); */
-        background-image: url("/assets/backgrounds/revox-blur-light.jpg");
+        /* background-image: url("/assets/backgrounds/revox-blur-light.jpg"); */
+        background-image: url("/assets/backgrounds/revox-sea-blur.jpg");
         background-size: 100vw 100vh;
         background-attachment: fixed;
         -webkit-box-shadow: 2px 5px 20px -11px rgba(66, 68, 90, 1) !important;
@@ -97,7 +99,8 @@ body:before {
             /* background-image: url("/assets/backgrounds/yenn-mountains-1-blur-dark.jpg");*/
             /* background-image: url("/assets/backgrounds/eberhardgross-blur-dark.jpg"); */
             /* background-image: url("/assets/backgrounds/yenn-mountains-2-blur-dark.jpg"); */
-            background-image: url("/assets/backgrounds/revox-blur-dark.jpg");
+            /* background-image: url("/assets/backgrounds/revox-blur-dark.jpg"); */
+            background-image: url("/assets/backgrounds/revox-sea-blur-dark.jpg");
             background-color: rgba(0, 0, 0, 0.7) !important;
         }
     }
