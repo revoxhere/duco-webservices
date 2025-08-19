@@ -480,7 +480,8 @@ input[type="checkbox"]:checked::before {
         height: 100%;
         opacity: 0.8;
         filter: brightness(90%) contrast(100%) blur(3px);
-         background-image: url("/assets/backgrounds/revox.jpg") !important;
+        background-image: url("/assets/backgrounds/revox-sea.jpg") !important;
+        /* background-image: url("/assets/backgrounds/revox.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-mountains-2.jpg") !important; */
         /* background-image: url("/assets/backgrounds/eberhardgross-1.jpg") !important; */
         /* background-image: url("/assets/backgrounds/yenn-sea-1.jpg") !important; */
