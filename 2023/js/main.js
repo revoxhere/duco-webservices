@@ -842,7 +842,7 @@ function refresh_achievements(user_achievements) {
 function create_prices(prices) {
     delete prices.nodes;
     delete prices.furim;
-
+    delete prices.fluffy;
     delete prices.nano; // currently unavailable
 
     // global price
